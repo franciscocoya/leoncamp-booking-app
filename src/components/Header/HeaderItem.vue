@@ -1,11 +1,13 @@
 <script>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView } from "vue-router";
+import SearchBarItem from "./SearchBar/SearchBarItem.vue";
 
 export default {
   name: "HeaderItem",
   components: {
-      RouterLink,
-      RouterView
+    RouterLink,
+    RouterView,
+    SearchBarItem,
   },
   setup(props) {},
 };
@@ -13,11 +15,14 @@ export default {
 
 <template>
   <header>
-       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/about">Otro</RouterLink>
-      </nav>
+    <img src="" alt="" class="app-logo" />
+    <SearchBarItem />
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/saved">Saved</RouterLink>
+      <RouterLink to="/upload">Upload</RouterLink>
+      <RouterLink to="/account/:username">Account</RouterLink>
+    </nav>
   </header>
 </template>
 
