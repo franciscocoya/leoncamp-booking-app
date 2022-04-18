@@ -1,16 +1,13 @@
 <script lang="ts">
-import HeaderItem from './components/Header/HeaderItem.vue';
+import HeaderItem from "./components/Header/HeaderItem.vue";
 
 export default {
-    name: "AccountIcon",
-    components : {
-      HeaderItem
-    },
-    setup() {
-        
-    },
-}
-
+  name: "AccountIcon",
+  components: {
+    HeaderItem,
+  },
+  setup() {},
+};
 </script>
 
 <template>
@@ -18,6 +15,9 @@ export default {
   <RouterView />
 </template>
   
-<style>
-
+<style lang="scss">
+@import "./assets/scss/_variables.scss";
+  p{
+    color: $color;
+  }
 </style>

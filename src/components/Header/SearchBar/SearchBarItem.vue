@@ -8,11 +8,15 @@ export default {
 </script>
 
 <template>
-    <div class="">
+    <div class="searchBar--light">
         adsfasdf
+        <p>Hello</p>
     </div>
 </template>
 
 <style scoped>
-
+@import "";
+p{
+    color: $color;
+}
 </style>
