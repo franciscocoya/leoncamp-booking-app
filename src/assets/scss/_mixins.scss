@@ -1,0 +1,38 @@
+// Flex mixins
+
+@mixin flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+@mixin flex-column-center{
+    @include flex-column;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flex-row-space-between{
+    @include flex-row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin flex-row-center{
+    @include flex-row;
+    justify-content: center;
+    align-items: center;
+}
+
+// Grid mixins
+
+@mixin grid-custom($cols, $rows, $gap){
+    display: grid;
+    gap: $gap;
+    grid-template-columns: repeat($cols, 1fr);
+    grid-template-rows: repeat($rows, 1fr);
+}

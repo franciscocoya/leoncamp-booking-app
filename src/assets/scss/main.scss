@@ -1,0 +1,57 @@
+@import "variables.scss";
+@import "mixins.scss";
+@import "buttons.scss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+// Estilos globales
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+// Tipografía
+
+h1 {
+    font-size: $heading-1-fontSize;
+}
+
+.heading-1-primary,
+a {
+    color: $color-primary;
+}
+
+.heading-1-dark {
+    color: #000000;
+}
+
+h2 {
+    font-size: $heading-2-fontSize;
+    color: $color-secondary;
+}
+
+h3,
+p {
+    color: #000000;
+}
+
+h3 {
+    font-size: $heading-3-fontSize;
+}
+
+p {
+    font-size: $paragraph-fontSize;
+}
+
+a {
+    font-size: $link-fontSize;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+button {
+    font-size: $button-fontSize;
+    outline: none;
+    cursor: pointer;
+}

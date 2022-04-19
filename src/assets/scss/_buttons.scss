@@ -1,0 +1,108 @@
+/**
+* author: Francisco Coya
+* version: v1.0.0
+* description: Estilos para los distintos estilos de los botones.
+*/
+
+// --------------------------------------
+// Estilos globales para un botón base (BaseButton)
+// --------------------------------------
+
+@mixin baseButton {
+    width: $base-button-width;
+    height: $base-button-height;
+    border-radius: $button-border-radius;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+// Botón con fondo de color sólido.
+@mixin baseButton--filled($background-color, $foregorund-color) {
+    @include baseButton;
+    background: $background-color;
+    color: $foregorund-color;
+}
+
+// Botón con fondo trasnparente y borde de color.
+@mixin baseButton--outlined($border-color, $foregorund-color) {
+    @include baseButton;
+    background: transparent;
+    border: $base-button-border solid $border-color;
+    color: $foregorund-color;
+}
+
+// Botones con fondo de color sólido.
+
+.baseButton-primary--filled {
+    @include baseButton--filled($color-primary, #FFF);
+}
+
+.baseButton-secondary--filled {
+    @include baseButton--filled($color-secondary, #FFF);
+}
+
+// Botones con fondo en degradado.
+
+.baseButton-primary-gradient--filled {
+    @include baseButton--filled($linear-gradient-primary, #FFF);
+}
+
+.baseButton-secondary-gradient--filled {
+    @include baseButton--filled($linear-gradient-secondary, #FFF);
+}
+
+// Botones con fondo transparente y borde de color.
+.baseButton-primary--outlined{
+    @include baseButton--outlined($color-primary, $color-primary);
+}
+
+.baseButton-secondary--outlined{
+    @include baseButton--outlined($color-secondary, $color-secondary);
+}
+
+// --------------------------------------
+// Estilos globales para un botón con icono (IconButton)
+// --------------------------------------
+
+@mixin iconButton--rounded {
+    @include baseButton;
+    // width: $base-button-width;
+    // height: $base-button-height;
+    border-radius: 25px;
+    outline: none;
+    cursor: pointer;
+}
+
+@mixin iconButton--rounded--outlined($border-color, $foregorund-color) {
+    @include iconButton--rounded;
+    @include flex-row-center;
+    background: transparent;
+    border: $base-button-border solid $border-color;
+    color: $foregorund-color;
+}
+
+// TODO: Revisar estiloss
+@mixin iconButton--rounded--outlined-small {
+    @include iconButton--rounded--outlined($color-primary, $color-primary);
+    width: 120px;
+    height: 35px;
+    border-radius: 10px;
+    border-width: 1px;
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
+}
+
+.iconButton-primary--outlined{
+    @include iconButton--rounded--outlined($color-primary, $color-primary);
+}
+
+.iconButton-primary--outlined-small{
+    @include iconButton--rounded--outlined-small;
+}
+
+
+
+
+
