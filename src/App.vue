@@ -2,7 +2,7 @@
 import HeaderItem from "./components/Header/HeaderItem.vue";
 
 export default {
-  name: "AccountIcon",
+  name: "App",
   components: {
     HeaderItem,
   },
@@ -16,8 +16,5 @@ export default {
 </template>
   
 <style lang="scss">
-@import "./assets/scss/_variables.scss";
-  p{
-    color: $color;
-  }
+@import "./assets/scss/main.scss";
 </style>

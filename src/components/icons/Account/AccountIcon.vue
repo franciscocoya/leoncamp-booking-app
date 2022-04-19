@@ -1,22 +1,31 @@
 <script>
 export default {
-    name: "AccountIcon",
-    props: {
-        username: {
-            type: String,
-            required: true,
-        },
+  name: "AccountIcon",
+  props: {
+    profileImage: {
+      type: String,
+      required: true,
     },
-    setup(props) {
-        
+    username: {
+      type: String,
+      required: true,
     },
-}
+  },
+  setup(props) {},
+};
 </script>
 
 <template>
-    <img src="" alt="username">
+  <img :src="profileImage" :alt="username" />
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
+img {
+  @include flex-column-center;
+  border-radius: 25px;
+}
+
 
 </style>

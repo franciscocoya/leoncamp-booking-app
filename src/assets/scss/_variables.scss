@@ -1,1 +1,32 @@
 $color: red;
+
+// Paleta de colores
+$color-primary: #034C5F;
+$color-primary-light: #97BEC6;
+$color-primary-dark: #0D353F;
+$color-secondary: #F5562A;
+$color-secondary-light: #F9C4BA;
+$color-tertiary-light: #F0F0F0;
+
+// Degradados
+$linear-gradient-primary: linear-gradient(267.05deg, $color-primary 11.77%, $color-primary-light 130.16%);
+$linear-gradient-secondary: linear-gradient(267.05deg, $color-secondary 11.77%, #F78568 62.33%, $color-secondary-light 130.16%);
+
+
+// TODO: Tamaño relativo para dispositivos móviles
+$heading-1-fontSize: 35px;
+$heading-2-fontSize: 24px;
+$heading-3-fontSize: 16px;
+$paragraph-fontSize: 14px;
+$link-fontSize: 14px;
+$button-fontSize: 18px;
+
+// Botones
+$button-border-radius: 10px;
+
+// Base button
+$base-button-width: 175px;
+$base-button-height: 50px;
+$base-button-border: 2px;
+
+// Icon buttons
