@@ -12,28 +12,35 @@ export default {
 
 <template>
   <div class="searchBar--light">
-
-      <img src="@/assets/img/icons/marker-secondary.svg" alt="" class="marker-search-icon">
+    <img
+      src="@/assets/img/icons/marker-icon.svg"
+      alt=""
+      class="marker-search-icon"
+    />
 
     <input type="text" placeholder="León" />
 
     <div class="search-filter-button-group">
-<!-- Boton checkIn -->
-    <IconButton
-      text="check in"
-      buttonStyle="iconButton-primary--outlined-small"
-      buttonIcon="src/assets/img/icons/calendar-icon.png"
-    />
+      <!-- Boton checkIn -->
+      <IconButton
+        text="check in"
+        buttonStyle="iconButton-primary--outlined-small"
+        buttonIcon="src/assets/img/icons/calendar-icon.svg"
+      />
 
-    <!-- Boton check out -->
-    <IconButton
-      text="check out"
-      buttonStyle="iconButton-primary--outlined-small"
-      buttonIcon="src/assets/img/icons/calendar-icon.png"
-    />
+      <!-- Boton check out -->
+      <IconButton
+        text="check out"
+        buttonStyle="iconButton-primary--outlined-small"
+        buttonIcon="src/assets/img/icons/calendar-icon.svg"
+      />
     </div>
-    
-    <img src="@/assets/img/icons/search-icon.png" alt="Buscar" class="search-icon--primary">
+
+    <img
+      src="@/assets/img/icons/search-icon.svg"
+      alt="Buscar"
+      class="search-icon--primary"
+    />
   </div>
 </template>
 
@@ -45,9 +52,9 @@ p {
   color: $color;
 }
 
-.search-filter-button-group{
-    @include flex-row-center;
-    gap: 10px; 
+.search-filter-button-group {
+  @include flex-row-center;
+  gap: 10px;
 }
 
 .searchBar--light {
@@ -67,15 +74,14 @@ input[type="text"] {
   color: $color-primary;
 }
 
-.marker-search-icon{
-    width: 20px;
+.marker-search-icon {
+  width: 20px;
 }
 
-.search-icon--primary{
-    width: 24px;
-    padding: 5px;
-    background-color: $color-primary;
-    border-radius: 25px;
+.search-icon--primary {
+  width: 24px;
+  padding: 5px;
+  background-color: $color-primary;
+  border-radius: 25px;
 }
-
 </style>
