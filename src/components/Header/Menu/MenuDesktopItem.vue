@@ -1,28 +1,22 @@
-<script>
+<script setup>
 import { RouterLink } from "vue-router";
 import MenuIcon from "./MenuIcon.vue";
-
-export default {
-  name: "MenuDesktopItem",
-  components: {
-    RouterLink,
-    MenuIcon,
-  },
-  setup() {},
-};
 </script>
 
 <template>
   <nav>
     <!-- Icono de alojamientos guardados -->
     <MenuIcon
-      icon="src/assets/img/icons/bookmark-icon.png"
+      icon="src/assets/img/icons/bookmark-icon.svg"
       text="Guardados"
       path="/saved"
     />
+
+    <CalendarIcon />
+
     <!-- Icono de reservas realizadas -->
     <MenuIcon
-      icon="src/assets/img/icons/calendar-icon.png"
+      icon="src/assets/img/icons/calendar-icon.svg"
       text="Reservas"
       path="/bookings"
     />
@@ -32,7 +26,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
 
-nav{
+nav {
   @include flex-row-center;
   gap: 20px;
 }
