@@ -1,34 +1,31 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { DatePicker } from "v-calendar";
 
-const dates = {
-  checkIn: Date,
-  checkOut: Date,
+const selectedDates = {
+  checkIn: new Date(),
+  checkOut: null,
 };
 
-const attrs = [
-  {
-    customData: {
-      type: "date",
-      format: "DD/MM/YYYY",
-    },
-  },
-];
+const datePicker = ref(null);
 
-onMounted(() => {
-  console.log(inputValue);
-});
+const handleChange = () => {
+  console.log(datePicker);
+};
 </script>
 
 <template :slot="{inputValue}">
   <h1>Hello</h1>
   <DatePicker
+    ref="datePicker"
     :model="range"
+    :from-page="new Date()"
+    :value="selectedDates"
     is-range
     :columns="$screens({ default: 1, lg: 2 })"
     color="gray"
-    :attributes="attrs"
+    :min-date="new Date()"
+    transition="slide-h"
   />
 </template>
 
