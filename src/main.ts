@@ -9,6 +9,6 @@ import 'v-calendar/dist/style.css';
 
 const app = createApp(App)
 
-app.use(router).use(SetupCalendar);
+app.use(router).use(SetupCalendar).use(DatePicker);
 
 app.mount('#app')

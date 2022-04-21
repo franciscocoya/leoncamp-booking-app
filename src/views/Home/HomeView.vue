@@ -2,41 +2,32 @@
 import { onMounted } from "vue";
 import { DatePicker } from "v-calendar";
 
-defineProps({
-  attrs: [
-    {
-      key: "today",
-      highlight: {
-        color: "purple",
-        fillMode: "solid",
-        contentClass: "italic",
-      },
-      dates: new Date(2022, 4, 12),
+const dates = {
+  checkIn: Date,
+  checkOut: Date,
+};
+
+const attrs = [
+  {
+    customData: {
+      type: "date",
+      format: "DD/MM/YYYY",
     },
-    {
-      highlight: {
-        color: "purple",
-        fillMode: "light",
-      },
-      dates: new Date(2022, 4, 13),
-    },
-    {
-      highlight: {
-        color: "purple",
-        fillMode: "outline",
-      },
-      dates: new Date(2022, 4, 14),
-    },
-  ],
+  },
+];
+
+onMounted(() => {
+  console.log(inputValue);
 });
 </script>
 
-<template>
+<template :slot="{inputValue}">
   <h1>Hello</h1>
   <DatePicker
     :model="range"
     is-range
     :columns="$screens({ default: 1, lg: 2 })"
+    color="gray"
     :attributes="attrs"
   />
 </template>
