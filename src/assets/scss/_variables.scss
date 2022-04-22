@@ -21,8 +21,11 @@ $paragraph-fontSize: 14px;
 $link-fontSize: 14px;
 $button-fontSize: 18px;
 
+// General
+$global-border-radius: 10px;
+
 // Botones
-$button-border-radius: 10px;
+$button-border-radius: $global-border-radius;
 
 // Base button
 $base-button-width: 175px;

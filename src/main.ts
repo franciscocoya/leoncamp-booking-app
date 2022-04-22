@@ -11,4 +11,4 @@ const app = createApp(App)
 
 app.use(router).use(SetupCalendar).use(DatePicker).use(InstantSearch);
 
-app.mount('#app')
+app.mount('#app');
