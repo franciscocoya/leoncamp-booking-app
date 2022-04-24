@@ -2,13 +2,13 @@
 import { onMounted, reactive, ref } from "vue";
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
-import { getAllAccomodations } from "@/services/accomodation/AccomodationService";
+// import { getAllAccomodations } from "@/services/accomodation/AccomodationService";
 
-let accomodations = ref([]);
+// let accomodations = ref([]);
 
-onMounted(async () => {
-  accomodations.value = await getAllAccomodations();
-});
+// onMounted(async () => {
+//   accomodations.value = await getAllAccomodations();
+// });
 </script>
 
 <template>

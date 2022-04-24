@@ -1,17 +1,26 @@
 $color: red;
 
 // Paleta de colores
-$color-primary: #034C5F;
-$color-primary-light: #97BEC6;
-$color-primary-dark: #0D353F;
-$color-secondary: #F5562A;
-$color-secondary-light: #F9C4BA;
-$color-tertiary-light: #F0F0F0;
+$color-primary: #034c5f;
+$color-primary-light: #97bec6;
+$color-primary-dark: #0d353f;
+$color-secondary: #f5562a;
+$color-secondary-light: #f9c4ba;
+$color-tertiary-light: #f0f0f0;
+$color-dark: #222222;
 
 // Degradados
-$linear-gradient-primary: linear-gradient(267.05deg, $color-primary 11.77%, $color-primary-light 130.16%);
-$linear-gradient-secondary: linear-gradient(267.05deg, $color-secondary 11.77%, #F78568 62.33%, $color-secondary-light 130.16%);
-
+$linear-gradient-primary: linear-gradient(
+  267.05deg,
+  $color-primary 11.77%,
+  $color-primary-light 130.16%
+);
+$linear-gradient-secondary: linear-gradient(
+  267.05deg,
+  $color-secondary 11.77%,
+  #f78568 62.33%,
+  $color-secondary-light 130.16%
+);
 
 // TODO: Tamaño relativo para dispositivos móviles
 $heading-1-fontSize: 35px;
@@ -24,12 +33,25 @@ $button-fontSize: 18px;
 // General
 $global-border-radius: 10px;
 
-// Botones
+// z-index
+$z-index-1: 1;
+$z-index-2: 2;
+$z-index-3: 3;
+$z-index-header: 4;
+
+// --------------------------------------------------
+
+// Buttons
 $button-border-radius: $global-border-radius;
 
-// Base button
+// -- Base button
 $base-button-width: 175px;
 $base-button-height: 50px;
 $base-button-border: 2px;
 
 // Icon buttons
+
+// Header
+
+// - Altura del header
+$header-height: 90px;

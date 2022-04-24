@@ -3,11 +3,13 @@ import { onMounted, ref } from "vue";
 
 // Componentes
 import { DatePicker } from "v-calendar";
-import AccomodationThumbnailItem from '@/components/Accomodation/AccomodationThumbnailItem.vue';
-
+import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
+import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
+// Componentes
+import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
 // Servicios
-import {getAllAccomodations} from '@/services/accomodation/AccomodationService';
+// import {getAllAccomodations} from '@/services/accomodation/AccomodationService';
 
 const selectedDates = {
   checkIn: new Date(),
@@ -20,14 +22,13 @@ const handleChange = () => {
   console.log(datePicker);
 };
 
-onMounted(async () => {
+onMounted(() => {
   // const accomodations = await getAllAccomodations();
   // console.log(accomodations);
 });
 </script>
 
-<template :slot="{inputValue}">
-  <h1>Hello</h1>
+<template>
   <!-- <DatePicker
     ref="datePicker"
     :model="range"
@@ -39,8 +40,32 @@ onMounted(async () => {
     :min-date="new Date()"
     transition="slide-h"
   /> -->
-  <AccomodationThumbnailItem />
+  <section class="home-view">
+    <div class="home-accomodations-list">
+      <AccomodationThumbnailItem />
+      <AccomodationThumbnailItem />
+      <AccomodationThumbnailItem />
+    </div>
+    <BaseAccomodationsMap />
+  </section>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/scss/_variables.scss";
+@import "@/assets/scss/_mixins.scss";
+
+$home-section-margin: 50px;
+
+.home-view {
+  height: calc(100vh - $header-height - $home-section-margin);
+  display: grid;
+  grid-template-columns: 40% 60%;
+  // gap: 20px;
+  margin: $home-section-margin 0 0 $home-section-margin;
+  // Estilos para la lista de alojamientos
+  & > .home-accomodations-list {
+    @include flex-column;
+    gap: 30px;
+  }
+}
 </style>

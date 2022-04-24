@@ -24,22 +24,33 @@ export default {
     </RouterLink>
     <SearchBarItem />
     <MenuDesktopItem />
-    <AccountIcon profileImage="src/assets/img/users/sample_img.png" username="Ralph" />
+    <AccountIcon
+      profileImage="src/assets/img/users/sample_img.png"
+      username="Ralph"
+    />
   </header>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
+
 header {
+  height: $header-height;
   display: grid;
   grid-template-columns: auto 40% auto auto;
+  background-color: #ffffff;
   gap: 10px;
   align-items: center;
   margin: 0;
   padding: 0 30px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: $z-index-header;
 }
 
-.app-logo{
+.app-logo {
   width: 100px;
   height: auto;
 }
