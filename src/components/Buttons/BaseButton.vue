@@ -1,18 +1,14 @@
-<script>
-export default {
-  name: "BaseButton",
-  props: {
-    text: {
-      type: String,
-      required: true,
-    },
-    buttonStyle: {
-      type: String,
-      required: true,
-    },
+<script setup>
+defineProps({
+  text: {
+    type: String,
+    required: true,
   },
-  setup(props) {},
-};
+  buttonStyle: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>
