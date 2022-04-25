@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 defineProps({
   inputType: {
     type: String,
@@ -17,6 +17,8 @@ defineProps({
     default: "base-input",
   },
 });
+
+defineEmits(["handleInput"]);
 </script>
 
 <template>
@@ -26,6 +28,7 @@ defineProps({
       :placeholder="placeholder"
       :class="inputStyleClass"
       :value="inputValue"
+      @input="(e) => (inputValue = e.target.value)"
     />
   </div>
 </template>
