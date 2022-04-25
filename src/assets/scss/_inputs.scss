@@ -1,0 +1,16 @@
+@import "_variables";
+
+@mixin base-input{
+    outline: none;
+    font-size: $input-fontSize;
+}
+
+.base-input{
+    @include base-input;
+    background-color: #FFFFFF;
+    color: $color-dark;
+    border: none;
+    border-radius: $global-border-radius;
+    padding: 5px;
+    height: 30px;
+}
