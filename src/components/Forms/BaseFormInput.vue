@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { useUserStore } from "@/store/user";
+
+const userStore = useUserStore();
+
 defineProps({
   inputType: {
     type: String,
@@ -18,7 +22,7 @@ defineProps({
   },
 });
 
-defineEmits(["handleInput"]);
+//defineEmits(["handleInput"]);
 </script>
 
 <template>
@@ -28,7 +32,7 @@ defineEmits(["handleInput"]);
       :placeholder="placeholder"
       :class="inputStyleClass"
       :value="inputValue"
-      @input="(e) => (inputValue = e.target.value)"
+      @input="$emit('handleInput', $event.target.value)"
     />
   </div>
 </template>

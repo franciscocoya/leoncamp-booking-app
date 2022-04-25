@@ -2,9 +2,13 @@
 import { RouterLink } from "vue-router";
 import { ref } from "vue";
 
+import { useUserStore } from "@/store/user";
+
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
+
+const userStore = useUserStore();
 
 defineProps({
   title: {
@@ -18,7 +22,8 @@ const password = ref("");
 
 const handleLogin = () => {
   //login(email, password);
-  console.log(email, password);
+  //console.log(email, password);
+  console.log(userStore.email);
 };
 
 const show = () => console.log(email.value?.inputValue);
@@ -26,7 +31,7 @@ const show = () => console.log(email.value?.inputValue);
 
 <template>
   <div class="login-form">
-    <h1 @click="show">{{ title }}</h1>
+    <h1 @click="handleLogin">{{ title }}</h1>
     <form id="form-login" @submit="handleLogin">
       <div class="form-group__email">
         <label for="email">Email</label>
@@ -34,11 +39,16 @@ const show = () => console.log(email.value?.inputValue);
           inputType="email"
           inputStyleClass="base-input"
           ref="email"
+          @handleInput="(value) => (userStore.email = value)"
         />
       </div>
       <div class="form-group__password">
         <label for="password">Contraseña</label>
-        <BaseFormInput inputType="password" inputStyleClass="base-input" />
+        <BaseFormInput
+          inputType="password"
+          inputStyleClass="base-input"
+          @handleInput="(value) => (userStore.password = value)"
+        />
       </div>
       <RouterLink to="reset-password">He olvidado mi contraseña</RouterLink>
       <BaseButton
