@@ -7,32 +7,44 @@
  */
 import axios from "axios";
 
+// Rutas alojamientos API: /api/accomodations
+import { ALL_ACCOMODATIONS, ACCOMODATIONS_BASE_PATH } from "./AccomodationsRoutesEnum";
+
 // Ruta alojamientos: /api/accomodations
 
-const baseUri = import.meta.env.VITE_API_URI;
-const apiToken = import.meta.env.VITE_API_TOKEN;
-const accomodationsPath = "/accomodations";
+const baseUri: string = import.meta.env.VITE_API_URI;
+
+const apiJwtToken: string | null = sessionStorage.getItem('token');
 
 /**
  * Lista todos los alojamientos disponibles.
  */
-const getAllAccomodations = async () => {
+export const getAllAccomodations = async(): Promise<any> => {
     const { data } = await axios
-        .get(`${baseUri}${accomodationsPath}/all/limit`, {
+        .get(`${baseUri}${ALL_ACCOMODATIONS}`, {
             params: {
-                max: 3,
+                page: 0,
+                size: 2
             },
             headers: {
-                Authorization: `Bearer ${apiToken}`,
-                ContentType: 'application/json'
-            },
-            timeout: 5000
+                Authorization: `Bearer ${apiJwtToken}`,
+            }
         });
 
-    return data[0];
+    return data;
 };
 
-
-export {
-    getAllAccomodations
-}
+/**
+ * Obtener un alojamiento por su número de registro.
+ * 
+ * @param regNumber 
+ */
+export async function getAccomodationById (regNumber: string): Promise<any>{
+    const { data } = await axios
+        .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${regNumber}`, {
+            headers: {
+                Authorization: `Bearer ${apiJwtToken}`,
+            }
+        });
+    return data;
+};

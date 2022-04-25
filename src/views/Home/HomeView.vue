@@ -4,12 +4,12 @@ import { onMounted, ref } from "vue";
 // Componentes
 import { DatePicker } from "v-calendar";
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
-import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
+// import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
 // Componentes
 import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
 // Servicios
-// import {getAllAccomodations} from '@/services/accomodation/AccomodationService';
+import {getAllAccomodations, getAccomodationById} from '@/services/accomodation/AccomodationService';
 
 const selectedDates = {
   checkIn: new Date(),
@@ -22,9 +22,10 @@ const handleChange = () => {
   console.log(datePicker);
 };
 
-onMounted(() => {
-  // const accomodations = await getAllAccomodations();
-  // console.log(accomodations);
+onMounted(async () => {
+  const accomodations = await getAllAccomodations();
+  const accomodation = await getAccomodationById('0001234A');
+  console.log(accomodation);
 });
 </script>
 
@@ -46,7 +47,7 @@ onMounted(() => {
       <AccomodationThumbnailItem />
       <AccomodationThumbnailItem />
     </div>
-    <BaseAccomodationsMap />
+    <!-- <BaseAccomodationsMap /> -->
   </section>
 </template>
 

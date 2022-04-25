@@ -1,15 +1,7 @@
 
 
-<script lang="ts">
+<script lang="ts" setup>
 import HeaderItem from "./components/Header/HeaderItem.vue";
-
-export default {
-  name: "App",
-  components: {
-    HeaderItem,
-  },
-  setup() {},
-};
 </script>
 
 <template>
