@@ -22,7 +22,6 @@ defineProps({
   },
 });
 
-//defineEmits(["handleInput"]);
 </script>
 
 <template>

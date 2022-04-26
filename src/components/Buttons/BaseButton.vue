@@ -1,4 +1,5 @@
 <script setup>
+
 defineProps({
   text: {
     type: String,
@@ -7,13 +8,14 @@ defineProps({
   buttonStyle: {
     type: String,
     required: true,
-  },
+  }
 });
+
 </script>
 
 <template>
   <div>
-    <button :class="buttonStyle">{{ text }}</button>
+      <button :class="buttonStyle" @click="$emit('click')">{{ text }}</button>
   </div>
 </template>
 

@@ -1,14 +1,15 @@
 <script setup>
-import { RouterLink } from "vue-router";
-import { ref } from "vue";
-
-import { useUserStore } from "@/store/user";
+import { useRouter } from "vue-router";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
 
+// Store
+import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
+
+const router = useRouter();
 
 defineProps({
   title: {
@@ -17,28 +18,25 @@ defineProps({
   },
 });
 
-const email = ref("");
-const password = ref("");
-
-const handleLogin = () => {
-  //login(email, password);
-  //console.log(email, password);
-  console.log(userStore.email);
+/**
+ * Manejador del evento submit del formulario.
+ */
+const handleLogin = (e) => {
+  e.preventDefault();
+  userStore.login();
 };
-
-const show = () => console.log(email.value?.inputValue);
 </script>
 
 <template>
   <div class="login-form">
-    <h1 @click="handleLogin">{{ title }}</h1>
-    <form id="form-login" @submit="handleLogin">
+    <h1>{{ title }}</h1>
+    <form id="form-login">
       <div class="form-group__email">
         <label for="email">Email</label>
         <BaseFormInput
           inputType="email"
           inputStyleClass="base-input"
-          ref="email"
+          :inputValue="userStore.email"
           @handleInput="(value) => (userStore.email = value)"
         />
       </div>
@@ -50,14 +48,16 @@ const show = () => console.log(email.value?.inputValue);
           @handleInput="(value) => (userStore.password = value)"
         />
       </div>
-      <RouterLink to="reset-password">He olvidado mi contraseña</RouterLink>
+      <RouterLink to="/password/reset">He olvidado mi contraseña</RouterLink>
       <BaseButton
         text="Iniciar sesión"
         buttonStyle="baseButton-primary--filled"
+        @click="handleLogin"
       />
       <BaseButton
         text="Crear una cuenta"
         buttonStyle="baseButton-secondary--outlined"
+        @click="router.push('/signup')"
       />
     </form>
   </div>

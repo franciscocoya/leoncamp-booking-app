@@ -3,10 +3,13 @@ import HomeView from '../views/Home/HomeView.vue';
 import AccountView from '../views/Account/AccountView.vue';
 import SavedAccomodationsView from '../views/SavedAccomodations/SavedAccomodationsView.vue';
 import BookingsView from '@/views/Bookings/BookingsView.vue';
-import LoginView from '@/views/Login/LoginView.vue';
+import LoginView from '@/views/Auth/LoginView.vue';
+import RegisterView from '@/views/Auth/RegisterView.vue';
+import ForgotPasswordView from '@/views/Auth/ForgotPasswordView.vue';
 
 // Rutas públicas
-const publicRoutes = ["/signin", "/signup", "/"];
+const authRoutes = ["/signin", "/signup", "/password/reset"];
+const publicRoutes = [...authRoutes, "/"];
 
 
 const router = createRouter({
@@ -17,6 +20,16 @@ const router = createRouter({
       path: '/signin',
       name: 'signin',
       component: LoginView,
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: RegisterView,
+    },
+    {
+      path: '/password/reset',
+      name: 'reset-password',
+      component: ForgotPasswordView,
     },
     {
       path: '/',
@@ -49,7 +62,8 @@ router.beforeEach((to, from, next) => {
   if (authRequired && !isLogged) {
     next('/signin');
   } else {
-    next();
+    // Si el usuario está logeado, no podrá acceder a las rutas de autenticación (signin y signup).
+    authRoutes.includes(to.path) && isLogged ? next('/') : next();
   }
 });
 
