@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+
 defineProps({
   iconWidth: {
     type: Number,
@@ -10,7 +11,7 @@ defineProps({
   },
   iconUrl: {
     type: String,
-    default: "src/assets/img/logo.png",
+    default: "@/assets/img/logo.png",
   },
 });
 </script>

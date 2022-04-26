@@ -1,11 +1,8 @@
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { LOGIN_URL, SIGNUP_URL, RESET_PASSWORD_URL } from "@/helpers/apiRoutes";
 
 const router: any = useRouter();
-
-// Rutas
-const LOGIN_URL: string = import.meta.env.VITE_API_LOGIN_URL;
-const SIGNUP_URL: string = import.meta.env.VITE_API_SIGNUP_URL;
 
 /**
  * Login de la aplicación mediante JWT. 
@@ -25,6 +22,7 @@ const login = async (email: string, password: string, callback?: Function) => {
         .then(data => {
             const { token, email } = data;
             sessionStorage.setItem('token', token);
+            sessionStorage.setItem('email', email);
             window.location.href = `/`;
         }).catch(err => {
             callback(err);
@@ -85,16 +83,14 @@ const signUp = async (name: string, surname: string,
 const resetPassword = async (email: string,
     password: string, newPassword: string,
     repeatedPassword: string, callback: Function) => {
-    await axios.post(SIGNUP_URL, {
+    await axios.post(RESET_PASSWORD_URL, {
         email,
         password,
         newPassword,
         repeatedPassword
     }).then((res) => res.data)
         .then(data => {
-            const { name, surname, email } = data;
-            // sessionStorage.setItem('token', token);
-
+            console.log(data);
         }).catch(err => {
             let errorMsg: string = "Error al restablecer la contraseña";
             callback(errorMsg);
