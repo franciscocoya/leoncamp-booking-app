@@ -1,4 +1,8 @@
 <script setup>
+
+import {IMG_PROFILE_PLACEHOLDER} from "@/helpers/iconConstants";
+
+
 defineProps({
   profileImage: {
     type: String,
@@ -16,12 +20,15 @@ defineProps({
     type: Number,
     default: 24,
   },
+  personalProfilePath: {
+    type: String,
+    default: "/",
+  },
 });
 </script>
 
 <template>
-  <img v-if="!profileImage" src="@/assets/img/icons/profile-image-empty.png" alt="" :width="width" :height="height">
-  <img v-else :src="profileImage" :alt="username" :width="width" :height="height"/>
+  <img :src="profileImage || IMG_PROFILE_PLACEHOLDER" :alt="username" :width="width" :height="height"/>
 </template>
 
 <style lang="scss" scoped>

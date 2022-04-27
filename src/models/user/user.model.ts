@@ -24,4 +24,4 @@ export interface User{
         verified: boolean,
     },
     createdAt: Date
-};
+}

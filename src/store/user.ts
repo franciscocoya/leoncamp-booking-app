@@ -69,6 +69,13 @@ const useUserStore = defineStore({
       });
     },
 
+    logout(){
+      // Eliminar token y datos del usuario.
+      sessionStorage.removeItem('user'); 
+      sessionStorage.removeItem('data');
+      window.location.href = "/";
+    },
+
     /**
      * Restablece la contraseña de un usuario.
      */

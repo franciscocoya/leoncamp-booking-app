@@ -18,8 +18,6 @@ defineProps({
   },
 });
 
-const show = (value) => console.log(value);
-
 /**
  * Manejador del evento submit del formulario.
  */

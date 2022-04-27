@@ -4,6 +4,11 @@ import { useRouter } from "vue-router";
 // Componentes
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 
+// Store usuario
+import {useUserStore} from "@/store/user";
+
+const userStore = useUserStore();
+
 const router = useRouter();
 
 // const accountSidebarMenuItemActive = "";
@@ -51,7 +56,7 @@ const redirectUserProfile = () => {
         <li id="user-bookings">Reservas</li>
         <li id="user-accomodations">Anuncios</li>
         <li id="app-help">Ayuda</li>
-        <li id="user-logout">Cerrar sesión</li>
+        <li id="user-logout" @click="userStore.logout()">Cerrar sesión</li>
       </ul>
     </div>
   </div>

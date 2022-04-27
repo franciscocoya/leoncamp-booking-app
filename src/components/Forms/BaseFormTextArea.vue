@@ -22,6 +22,12 @@ defineProps({
     default: false,
   },
 });
+
+const emit = defineEmits(["handleInput"]);
+
+function updateInputValue(value: string) {
+  emit("handleInput", value);
+}
 </script>
 
 <template>
@@ -32,7 +38,7 @@ defineProps({
       :class="inputStyleClass"
       :value="textAreaContent"
       :placeholder="placeholder"
-      @input="$emit('handleInput', $event.target.value)"
+      @input="(e) => updateInputValue(e.target.value)"
     >
     </textarea>
   </div>
