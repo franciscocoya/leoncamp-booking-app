@@ -1,13 +1,5 @@
-<script>
+<script setup>
 import IconButton from "../../Buttons/IconButton.vue";
-
-export default {
-  name: "SearchBarItem",
-  components: {
-    IconButton,
-  },
-  setup() {},
-};
 </script>
 
 <template>

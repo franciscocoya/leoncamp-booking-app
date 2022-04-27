@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
 
 // Servicios
-import { checkExistsUser } from "@/services/user/userService";
+// import { checkExistsUser } from "@/services/user/userService";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
@@ -13,10 +12,6 @@ import { useUserStore } from "@/store/user";
 
 const userStore = useUserStore();
 
-const router = useRouter();
-
-const userToken: string = sessionStorage.getItem("token");
-
 defineProps({
   title: {
     type: String,
@@ -24,26 +19,18 @@ defineProps({
   },
 });
 
-// Condición para mostrar los campos de contraseña
-let isPasswordFieldsEnable = false;
+const userToken = JSON.parse(localStorage.getItem("token")|| '{}').token;
 
 /**
  * Manejador del evento submit del formulario.
  */
-const handleResetPassword = (e) => {
+const handleResetPassword = (e : Event) => {
   e.preventDefault();
   console.log("handlee....");
 };
 
-const enablePasswordFields = (e) => {
+const enablePasswordFields = (e : Event) => {
   e.preventDefault();
-
-  if (sessionStorage.getItem("email") || userToken) {
-    isPasswordFieldsEnable = true;
-  } else {
-    checkExistsUser(userStore.email);
-  }
-  isPasswordFieldsEnable = true;
 };
 </script>
 
@@ -57,7 +44,7 @@ const enablePasswordFields = (e) => {
         <BaseFormInput
           inputType="email"
           inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.email = value)"
+          @handleInput="(value) => (userStore.email = value || '')"
         />
       </div>
 
@@ -66,7 +53,7 @@ const enablePasswordFields = (e) => {
         <BaseFormInput
           inputType="password"
           inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.password = value)"
+          @handleInput="(value) => (userStore.password = value || '')"
         />
       </div>
       <div v-if="userToken" class="form-group__new-password">
@@ -74,7 +61,7 @@ const enablePasswordFields = (e) => {
         <BaseFormInput
           inputType="password"
           inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.newPassword = value)"
+          @handleInput="(value) => (userStore.newPassword = value || '')"
         />
       </div>
       <div v-if="userToken" class="form-group__new-password-repeated">
@@ -82,7 +69,7 @@ const enablePasswordFields = (e) => {
         <BaseFormInput
           inputType="password"
           inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.newPasswordRepeated = value)"
+          @handleInput="(value) => (userStore.repeatedPassword = value)"
         />
       </div>
       <BaseButton

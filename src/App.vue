@@ -1,17 +1,23 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
+import { useRouter } from "vue-router";
 
 import HeaderItem from "./components/Header/HeaderItem.vue";
 
-// TODO: condición para saber ruta y establecer header si es Home.
-const isLogging = sessionStorage.getItem('token') ;
+// Rutas públicas
+import { authRoutes } from "@/helpers/appRoutes";
 
-const router = useRoute();
-console.log(router.path);
+// Obtener la ruta actual
+const router = useRouter();
+const currentRoute = () => router.currentRoute.value.path;
+
+// Comprobar si la ruta actual pertenece a una ruta pública
+const isCurrentRoutePublic = () => {
+  return !authRoutes.includes(currentRoute());
+};
 </script>
 
 <template>
-  <HeaderItem v-if="isLogging"/>
+  <HeaderItem v-if="isCurrentRoutePublic()" />
   <RouterView />
 </template>
   

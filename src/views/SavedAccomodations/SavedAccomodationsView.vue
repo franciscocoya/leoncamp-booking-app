@@ -1,15 +1,9 @@
-<script>
-export default {
-    name: "SavedAccomodationsView",
-    setup(props) {
-        
-    },
-}
+<script setup>
 </script>
 
 <template>
-    <div>
-        
+    <div class="saved-accomodations-view">
+        <h1>Saved accomodations</h1>
     </div>
 </template>
 

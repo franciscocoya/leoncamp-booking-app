@@ -1,8 +1,4 @@
 <script lang="ts" setup>
-import { useUserStore } from "@/store/user";
-
-const userStore = useUserStore();
-
 defineProps({
   inputType: {
     type: String,
@@ -20,8 +16,17 @@ defineProps({
     type: String,
     default: "base-input",
   },
+  isReadonly: {
+    type: Boolean,
+    default: false,
+  },
 });
 
+const emit = defineEmits(["handleInput"]);
+
+function updateInputValue(value: string) {
+  emit("handleInput", value);
+}
 </script>
 
 <template>
@@ -31,7 +36,8 @@ defineProps({
       :placeholder="placeholder"
       :class="inputStyleClass"
       :value="inputValue"
-      @input="$emit('handleInput', $event.target.value)"
+      :readonly="isReadonly"
+      @input="(e) => updateInputValue(e.target.value)"
     />
   </div>
 </template>

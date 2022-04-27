@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useRouter } from "vue-router";
 import { LOGIN_URL, SIGNUP_URL, RESET_PASSWORD_URL } from "@/helpers/apiRoutes";
 
-const router: any = useRouter();
+// Servicio usuarios
+import { getUserDataById } from "@/services/user/UserService";
 
 /**
  * Login de la aplicación mediante JWT. 
@@ -13,20 +13,36 @@ const router: any = useRouter();
  * @param email 
  * @param password 
  */
-const login = async (email: string, password: string, callback?: Function) => {
+const login = async (email: string, password: string, callback: CallableFunction) => {
     await axios.post(LOGIN_URL, {
         email,
         password
     }
     ).then((res) => res.data)
-        .then(data => {
-            const { token, email } = data;
-            sessionStorage.setItem('token', token);
-            sessionStorage.setItem('email', email);
-            window.location.href = `/`;
+        .then(async data => {
+            const { token, email, id } = data;
+
+            // sessionStorage.setItem('token', token);
+            // sessionStorage.setItem('email', email);
+            sessionStorage.setItem('user', JSON.stringify({
+                token,
+                email,
+                id
+            }));
+            //window.location.href = '/';
         }).catch(err => {
             callback(err);
         });
+
+    // Obtener datos de usuario
+    const { name, surname } = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
+    sessionStorage.setItem('data', JSON.stringify({
+        name,
+        surname
+    }));
+
+    // Redireccionar a su cuenta personal.
+    window.location.href = `/account/${name.toLowerCase()}-${surname.toLowerCase()}`;
 };
 
 /**
@@ -42,7 +58,7 @@ const login = async (email: string, password: string, callback?: Function) => {
  */
 const signUp = async (name: string, surname: string,
     email: string, password: string, repeatedPassword: string,
-    callback: Function) => {
+    callback: CallableFunction) => {
     await axios.post(SIGNUP_URL, {
         name,
         surname,
@@ -50,12 +66,9 @@ const signUp = async (name: string, surname: string,
         password,
         repeatedPassword
     }).then((res) => res.data)
-        .then(data => {
-            const { name, surname, email } = data;
-            // sessionStorage.setItem('token', token);
-            window.location.href = `/signin`;
-        }).catch(err => {
-            let errorMsg: string = "Error al iniciar sesión";
+        .then(() => window.location.href = `/signin`
+        ).catch(err => {
+            let errorMsg = "Error al iniciar sesión";
             if (err.response) {
                 switch (err.response.status) {
                     case 400:
@@ -82,7 +95,7 @@ const signUp = async (name: string, surname: string,
  */
 const resetPassword = async (email: string,
     password: string, newPassword: string,
-    repeatedPassword: string, callback: Function) => {
+    repeatedPassword: string, callback: CallableFunction) => {
     await axios.post(RESET_PASSWORD_URL, {
         email,
         password,
@@ -91,8 +104,8 @@ const resetPassword = async (email: string,
     }).then((res) => res.data)
         .then(data => {
             console.log(data);
-        }).catch(err => {
-            let errorMsg: string = "Error al restablecer la contraseña";
+        }).catch(() => {
+            const errorMsg = "Error al restablecer la contraseña";
             callback(errorMsg);
         });
 };

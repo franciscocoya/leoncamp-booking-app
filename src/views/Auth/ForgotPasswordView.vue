@@ -1,7 +1,6 @@
 <script setup>
 // Componentes
 import ResetPasswordForm from "@/components/Forms/ResetPasswordForm.vue";
-import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";
 </script>
 
 <template>

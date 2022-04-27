@@ -18,6 +18,8 @@ defineProps({
   },
 });
 
+const show = (value) => console.log(value);
+
 /**
  * Manejador del evento submit del formulario.
  */
@@ -37,7 +39,7 @@ const handleLogin = (e) => {
           inputType="email"
           inputStyleClass="base-input"
           :inputValue="userStore.email"
-          @handleInput="(value) => (userStore.email = value)"
+          @handleInput="(value) => userStore.email = value"
         />
       </div>
       <div class="form-group__password">
