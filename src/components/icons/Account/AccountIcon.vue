@@ -1,22 +1,18 @@
-<script>
-export default {
-  name: "AccountIcon",
-  props: {
-    profileImage: {
-      type: String,
-      required: true,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
+<script setup>
+defineProps({
+  profileImage: {
+    type: String,
+    required: true,
   },
-  setup(props) {},
-};
+  username: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>
-  <img :src="profileImage" :alt="username" />
+  <img :src="profileImage" :alt="username" @click.prevent="" />
 </template>
 
 <style lang="scss" scoped>
@@ -26,6 +22,4 @@ img {
   @include flex-column-center;
   border-radius: 25px;
 }
-
-
 </style>

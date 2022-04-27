@@ -82,9 +82,10 @@ const handleLogin = (e) => {
   width: 350px;
   gap: 15px;
   // background-color: $color-tertiary-light;
-  border: 2px solid $color-tertiary-light;
+  //border: 2px solid $color-tertiary-light;
   padding: 20px;
   border-radius: $global-border-radius;
+  box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
 }
 
 hr {
