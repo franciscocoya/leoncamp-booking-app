@@ -1,6 +1,36 @@
 <script setup>
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
+
+defineProps({
+  denomination: {
+    type: String,
+    default: "",
+  },
+  pricePerNight: {
+    type: Number,
+    default: 0,
+  },
+  category: {
+    type: String,
+    default: "",
+  },
+  location: {
+    type: String,
+    default: "",
+  },
+  coords: {
+    type: Object,
+    default: {
+      lat: 0,
+      lng: 0,
+    },
+  },
+  stars: {
+    type: Number,
+    default: 0,
+  },
+});
 </script>
 
 <template>
@@ -18,9 +48,9 @@ import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
       <div class="accomodation-thumbnail-detail-container__header">
         <div>
           <!-- Categoría del alojamiento -->
-          <BaseBadge text="Apartamento" backgroundColor="#F0F0F0" />
+          <BaseBadge :text="category" backgroundColor="#F0F0F0" />
           <!-- Nombre del alojamiento -->
-          <h2>Nombre alojamiento</h2>
+          <h2>{{ denomination }}</h2>
         </div>
         <div>
           <!-- Icono guardar alojamiento -->
@@ -62,7 +92,7 @@ import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
         </div>
       </div>
       <div class="accomodation-thumbnail-detail-container__body">
-        <p>Ubicación</p>
+        <p>{{ location }}</p>
         <div class="accomodation-thumbnail-detail-container__services"></div>
       </div>
       <div class="accomodation-thumbnail-detail-container__footer">
@@ -88,7 +118,7 @@ import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
           <span>4,7</span>
         </div>
         <div class="accomodation-price-per-night">
-          <span>100 €</span>
+          <span>{{ pricePerNight }} €</span>
           <span>&nbsp; / noche</span>
         </div>
       </div>

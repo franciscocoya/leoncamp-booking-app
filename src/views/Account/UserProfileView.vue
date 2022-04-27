@@ -17,10 +17,11 @@ onMounted(() => {
 <template>
   <div class="user-profile-view">
     <main>
-      <h1>Perfil: {{ userStore.name }} {{ userStore.surname }}</h1>
+      <h1>Información personal</h1>
       <div class="user-profile-view__wrapper">
         <form>
           <!-- Sección nombre y apellidos -->
+          <p>Nombre legal</p>
           <div class="user-profile-data__fullname">
             <!-- Nombre -->
             <LabelFormInput
@@ -39,6 +40,7 @@ onMounted(() => {
             />
           </div>
 
+          <p>Datos de contacto</p>
           <!-- Sección teléfono e email -->
           <div class="user-profile-data__contact">
             <!-- Teléfono -->
@@ -63,15 +65,15 @@ onMounted(() => {
             <h2>Datos del host</h2>
             <div class="user-profile-data__host-data__wrapper">
               <LabelFormInput
-              type="text"
-              inputLabel="DNI"
-              :isReadonly="true"
-              :inputValue="userStore.datosHost.dni"
-            />
-            <BaseFormTextArea 
+                type="text"
+                inputLabel="DNI"
+                :isReadonly="true"
+                :inputValue="userStore.datosHost.dni"
+              />
+              <BaseFormTextArea
                 :textAreaContent="userStore.datosHost.bio"
                 inputLabel="Biografía"
-            />
+              />
             </div>
           </div>
         </form>
@@ -100,11 +102,11 @@ form {
   }
 
   // Estilos sección datos del usuario host
-  & > .user-profile-data__host-data{
+  & > .user-profile-data__host-data {
     @include flex-column;
     gap: 20px;
 
-    & > .user-profile-data__host-data__wrapper{
+    & > .user-profile-data__host-data__wrapper {
       @include flex-column;
       gap: 20px;
     }

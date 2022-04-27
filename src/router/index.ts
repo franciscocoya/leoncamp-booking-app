@@ -1,8 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/Home/HomeView.vue';
 
+// -----------------------------------------------------------------------------
+
 import AccountView from '@/views/Account/AccountView.vue';
 import UserProfileView from '@/views/Account/UserProfileView.vue';
+import AccomodationsAdsView from '@/views/Account/AccomodationsAdsView.vue';
+
+// -----------------------------------------------------------------------------
 
 import SavedAccomodationsView from '@/views/SavedAccomodations/SavedAccomodationsView.vue';
 import BookingsView from '@/views/Bookings/BookingsView.vue';
@@ -59,6 +64,11 @@ const router = createRouter({
           path: 'profile',
           name: 'user-profile',
           component: UserProfileView
+        },
+        {
+          path: 'accomodations',
+          name: 'user-ads',
+          component: AccomodationsAdsView
         }
       ]
     },

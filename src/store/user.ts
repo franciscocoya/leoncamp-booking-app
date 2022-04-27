@@ -122,7 +122,7 @@ const useUserStore = defineStore({
      * Listado de todos los alojamientos de un usuario.
      */
     async loadUserAccomodations(){
-      return await getAllUserAccomodations(this.id);
+      return await getAllUserAccomodations(this.id );
     }
   }
 });

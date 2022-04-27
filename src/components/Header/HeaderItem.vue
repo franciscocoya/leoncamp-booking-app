@@ -8,13 +8,12 @@ import AccountIcon from "../icons/Account/AccountIcon.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Placeholder
-import {IMG_PROFILE_PLACEHOLDER, IMG_APP_LOGO} from "@/helpers/iconConstants";
+import { IMG_PROFILE_PLACEHOLDER, IMG_APP_LOGO } from "@/helpers/iconConstants";
 
 const router = useRouter();
 
 // Token de usuario
-const userToken = JSON.parse(sessionStorage.getItem('user') || '{}')?.token;
-
+const userToken = JSON.parse(sessionStorage.getItem("user") || "{}").token;
 </script>
 
 <template>
@@ -22,14 +21,12 @@ const userToken = JSON.parse(sessionStorage.getItem('user') || '{}')?.token;
     <RouterLink to="/">
       <img :src="IMG_APP_LOGO" alt="" class="app-logo" />
     </RouterLink>
+
     <SearchBarItem />
-    <MenuDesktopItem v-if="userToken"/>
+
+    <MenuDesktopItem v-if="userToken" />
     <!-- Si el usuario está logeado -->
-    <AccountIcon
-      v-if="userToken"
-      :profileImage="IMG_PROFILE_PLACEHOLDER"
-      username="Ralph"
-    />
+    <AccountIcon v-if="userToken" username="Ralph" />
     <!-- Si el usuario no está logeado -->
     <BaseButton
       v-else
