@@ -9,10 +9,14 @@ import { login, signUp } from '@/services/auth/AuthService';
 // Servicio de usuarios
 import { getUserDataById } from '@/services/user/UserService';
 
+// Servicio de alojamientos 
+import { getAllUserAccomodations} from '@/services/accomodation/AccomodationService';
+
 
 const useUserStore = defineStore({
   id: 'user',
   state: (): User => ({
+    id: 0,
     name: '',
     surname: '',
     email: '',
@@ -92,12 +96,12 @@ const useUserStore = defineStore({
      */
     async loadUserData() {
       // Nombre y apellidos previamente obtenidos en el login.
+      this.id = JSON.parse(sessionStorage.getItem('user') || '{}').id;
       this.name = JSON.parse(sessionStorage.getItem('data') || '{}').name;
       this.surname = JSON.parse(sessionStorage.getItem('data') || '{}').surname;
       this.email = JSON.parse(sessionStorage.getItem('user') || '{}').email;
 
       const userData = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
-
       this.profileImage = userData.profileImage;
 
       // Si el usuario es host, se mostrarán los siguientes datos.
@@ -112,6 +116,13 @@ const useUserStore = defineStore({
         phoneVerified,
         verified
       }
+    },
+
+    /**
+     * Listado de todos los alojamientos de un usuario.
+     */
+    async loadUserAccomodations(){
+      return await getAllUserAccomodations(this.id);
     }
   }
 });

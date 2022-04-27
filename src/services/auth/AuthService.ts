@@ -42,7 +42,7 @@ const login = async (email: string, password: string, callback: CallableFunction
     }));
 
     // Redireccionar a su cuenta personal.
-    window.location.href = `/account/${name.toLowerCase()}-${surname.toLowerCase()}`;
+    window.location.href = `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`;
 };
 
 /**

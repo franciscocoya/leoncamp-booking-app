@@ -3,6 +3,12 @@ import axios from "axios";
 import { API_USERS } from "@/helpers/apiRoutes";
 
 
+/**
+ * Comprueba si existe el usuario con el email pasado como parámetro.
+ * 
+ * @param emailToCheck 
+ * @returns 
+ */
 const checkExistsUser = async (emailToCheck: string) => {
     return await axios.get(`${API_USERS}/load/${emailToCheck}`, {
         headers: {

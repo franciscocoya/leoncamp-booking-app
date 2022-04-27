@@ -1,7 +1,5 @@
 <script setup>
-
-import {IMG_PROFILE_PLACEHOLDER} from "@/helpers/iconConstants";
-
+import { IMG_PROFILE_PLACEHOLDER } from "@/helpers/iconConstants";
 
 defineProps({
   profileImage: {
@@ -28,7 +26,12 @@ defineProps({
 </script>
 
 <template>
-  <img :src="profileImage || IMG_PROFILE_PLACEHOLDER" :alt="username" :width="width" :height="height"/>
+  <img
+    :src="profileImage || IMG_PROFILE_PLACEHOLDER"
+    :alt="username"
+    :width="width"
+    :height="height"
+  />
 </template>
 
 <style lang="scss" scoped>

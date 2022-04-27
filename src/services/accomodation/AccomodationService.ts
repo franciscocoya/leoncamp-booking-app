@@ -19,7 +19,7 @@ const apiJwtToken: string = JSON.parse(sessionStorage.getItem("user"))?.token ??
 /**
  * Lista todos los alojamientos disponibles.
  */
-export const getAllAccomodations = async() => {
+export const getAllAccomodations = async () => {
     const { data } = await axios
         .get(`${baseUri}${ALL_ACCOMODATIONS}`, {
             params: {
@@ -39,12 +39,25 @@ export const getAllAccomodations = async() => {
  * 
  * @param regNumber 
  */
-export async function getAccomodationById (regNumber: string){
+export async function getAccomodationById(regNumber: string) {
     const { data } = await axios
         .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${regNumber}`, {
             headers: {
                 Authorization: `Bearer ${apiJwtToken}`,
             }
         });
+    return data;
+}
+
+/**
+ * Listado de todos los alojamientos publicados por un usuario.
+ */
+export async function getAllUserAccomodations(idUser: number) {
+    const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/user/${idUser}`, {
+        headers: {
+            Authorization: `Bearer ${apiJwtToken}`,
+        }
+    });
+
     return data;
 }

@@ -11,9 +11,16 @@ const RESET_PASSWORD_URL = `${API_BASE_URL}${import.meta.env.VITE_API_RESET_PASS
 // -- Rutas de usuario
 const API_USERS = `${API_BASE_URL}${import.meta.env.VITE_API_USERS}`;
 
+// -----------------------------------------------------------------------------
+
+// --Rutas de alojamiento
+const API_ACCOMODATIONS = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATIONS}`;
+
+// -----------------------------------------------------------------------------
 export{
     LOGIN_URL,
     SIGNUP_URL,
     RESET_PASSWORD_URL,
-    API_USERS
+    API_USERS,
+    API_ACCOMODATIONS
 }
