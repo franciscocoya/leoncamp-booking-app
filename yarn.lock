@@ -632,6 +632,11 @@
   "resolved" "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   "version" "7.0.11"
 
+"@types/json5@^0.0.29":
+  "integrity" "sha1-7ihweulOEdK4J7y+UnC86n8+ce4="
+  "resolved" "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
+  "version" "0.0.29"
+
 "@types/lodash@^4.14.165":
   "integrity" "sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q=="
   "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.182.tgz"
@@ -4719,11 +4724,6 @@
   "resolved" "https://registry.npmjs.org/node-releases/-/node-releases-2.0.3.tgz"
   "version" "2.0.3"
 
-"nodemailer@^6.7.3":
-  "integrity" "sha512-KUdDsspqx89sD4UUyUKzdlUOper3hRkDVkrKh/89G+d9WKsU5ox51NWS4tB1XR5dPUdR4SP0E3molyEfOvSa3g=="
-  "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.7.3.tgz"
-  "version" "6.7.3"
-
 "nopt@1.0.10":
   "integrity" "sha1-bd0hvSoxQXuScn3Vhfim83YI6+4="
   "resolved" "https://registry.npmjs.org/nopt/-/nopt-1.0.10.tgz"
@@ -6119,6 +6119,11 @@
   dependencies:
     "ansi-regex" "^5.0.1"
 
+"strip-bom@^3.0.0":
+  "integrity" "sha1-IzTBjpx1n3vdVv3vfprj1YjmjtM="
+  "resolved" "https://registry.npmjs.org/strip-bom/-/strip-bom-3.0.0.tgz"
+  "version" "3.0.0"
+
 "strip-final-newline@^2.0.0":
   "integrity" "sha512-BrpvfNAE3dcvq7ll3xVumzjKjZQ5tI1sEUIKr3Uoks0XUl45St3FlatVqef9prk4jRDzhW6WZg+3bk93y6pLjA=="
   "resolved" "https://registry.npmjs.org/strip-final-newline/-/strip-final-newline-2.0.0.tgz"
@@ -6427,6 +6432,16 @@
     "enhanced-resolve" "^5.0.0"
     "micromatch" "^4.0.0"
     "semver" "^7.3.4"
+
+"tsconfig-paths@^3.14.1":
+  "integrity" "sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ=="
+  "resolved" "https://registry.npmjs.org/tsconfig-paths/-/tsconfig-paths-3.14.1.tgz"
+  "version" "3.14.1"
+  dependencies:
+    "@types/json5" "^0.0.29"
+    "json5" "^1.0.1"
+    "minimist" "^1.2.6"
+    "strip-bom" "^3.0.0"
 
 "tslib@^1.8.1":
   "integrity" "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="

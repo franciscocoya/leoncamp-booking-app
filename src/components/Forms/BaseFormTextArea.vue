@@ -1,20 +1,21 @@
 <script lang="ts" setup>
+
 defineProps({
-  inputType: {
-    type: String,
-    default: "text",
-  },
   placeholder: {
     type: String,
     default: "",
   },
-  inputValue: {
+  inputLabel: {
+    type: String,
+    default: "",
+  },
+  textAreaContent: {
     type: String,
     default: "",
   },
   inputStyleClass: {
     type: String,
-    default: "base-input",
+    default: "base-textarea",
   },
   isReadonly: {
     type: Boolean,
@@ -31,16 +32,27 @@ function updateInputValue(value: string) {
 
 <template>
   <div>
-    <input
-      :type="inputType"
-      :placeholder="placeholder"
+    <label :for="inputLabel">{{ inputLabel }}</label>
+    <textarea
+      :id="inputLabel"
       :class="inputStyleClass"
-      :value="inputValue"
-      :readonly="isReadonly"
+      :value="textAreaContent"
+      :placeholder="placeholder"
       @input="(e) => updateInputValue(e.target.value)"
-    />
+    >
+    </textarea>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
+label {
+  font-size: 11px;
+  color: gray;
+}
+
+textarea {
+  @include flex-column;
+}
 </style>

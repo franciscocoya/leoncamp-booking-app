@@ -1,19 +1,17 @@
-<script>
+<script setup>
+
+// Componentes
 import IconButton from "../../Buttons/IconButton.vue";
 
-export default {
-  name: "SearchBarItem",
-  components: {
-    IconButton,
-  },
-  setup() {},
-};
+// Iconos
+import {ICON_MAP_MARKER, ICON_CALENDAR, ICON_SEARCH} from  "@/helpers/iconConstants";
+
 </script>
 
 <template>
   <div class="searchBar--light">
     <img
-      src="@/assets/img/icons/marker-icon.svg"
+      :src="ICON_MAP_MARKER"
       alt=""
       class="marker-search-icon"
     />
@@ -25,19 +23,19 @@ export default {
       <IconButton
         text="check in"
         buttonStyle="iconButton-primary--outlined-small"
-        buttonIcon="src/assets/img/icons/calendar-icon.svg"
+        :buttonIcon="ICON_CALENDAR"
       />
 
       <!-- Boton check out -->
       <IconButton
         text="check out"
         buttonStyle="iconButton-primary--outlined-small"
-        buttonIcon="src/assets/img/icons/calendar-icon.svg"
+        :buttonIcon="ICON_CALENDAR"
       />
     </div>
 
     <img
-      src="@/assets/img/icons/search-icon.svg"
+      :src="ICON_SEARCH"
       alt="Buscar"
       class="search-icon--primary"
     />

@@ -1,7 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/Home/HomeView.vue';
-import AccountView from '../views/Account/AccountView.vue';
-import SavedAccomodationsView from '../views/SavedAccomodations/SavedAccomodationsView.vue';
+import HomeView from '@/views/Home/HomeView.vue';
+
+import AccountView from '@/views/Account/AccountView.vue';
+import UserProfileView from '@/views/Account/UserProfileView.vue';
+
+import SavedAccomodationsView from '@/views/SavedAccomodations/SavedAccomodationsView.vue';
 import BookingsView from '@/views/Bookings/BookingsView.vue';
 import LoginView from '@/views/Auth/LoginView.vue';
 import RegisterView from '@/views/Auth/RegisterView.vue';
@@ -10,6 +13,7 @@ import ForgotPasswordView from '@/views/Auth/ForgotPasswordView.vue';
 // Rutas públicas
 const authRoutes = ["/signin", "/signup", "/password/reset"];
 const publicRoutes = [...authRoutes, "/"];
+
 
 
 const router = createRouter({
@@ -49,7 +53,14 @@ const router = createRouter({
     {
       path: '/account/:username',
       name: 'account',
-      component: AccountView
+      component: AccountView,
+      children: [
+        {
+          path: 'profile',
+          name: 'user-profile',
+          component: UserProfileView
+        }
+      ]
     },
   ]
 });
@@ -57,7 +68,7 @@ const router = createRouter({
 // Middleware autenticación
 router.beforeEach((to, from, next) => {
   const authRequired = !publicRoutes.includes(to.path);
-  const isLogged = sessionStorage.getItem('token');
+  const isLogged = JSON.parse(sessionStorage.getItem('user'))?.token;
 
   if (authRequired && !isLogged) {
     next('/signin');

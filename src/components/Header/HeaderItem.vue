@@ -1,32 +1,41 @@
-<script>
-import { RouterView, RouterLink } from "vue-router";
+<script setup>
+import { useRouter, RouterLink } from "vue-router";
+
+// Componentes
 import SearchBarItem from "./SearchBar/SearchBarItem.vue";
 import MenuDesktopItem from "./Menu/MenuDesktopItem.vue";
 import AccountIcon from "../icons/Account/AccountIcon.vue";
+import BaseButton from "@/components/Buttons/BaseButton.vue";
 
-export default {
-  name: "HeaderItem",
-  components: {
-    RouterView,
-    RouterLink,
-    SearchBarItem,
-    MenuDesktopItem,
-    AccountIcon,
-  },
-  setup(props) {},
-};
+// Placeholder
+import {IMG_PROFILE_PLACEHOLDER, IMG_APP_LOGO} from "@/helpers/iconConstants";
+
+const router = useRouter();
+
+// Token de usuario
+const userToken = JSON.parse(sessionStorage.getItem('user') || '{}')?.token;
+
 </script>
 
 <template>
   <header>
     <RouterLink to="/">
-      <img src="@/assets/img/logo.png" alt="" class="app-logo" />
+      <img :src="IMG_APP_LOGO" alt="" class="app-logo" />
     </RouterLink>
     <SearchBarItem />
-    <MenuDesktopItem />
+    <MenuDesktopItem v-if="userToken"/>
+    <!-- Si el usuario está logeado -->
     <AccountIcon
-      profileImage="src/assets/img/users/sample_img.png"
+      v-if="userToken"
+      :profileImage="IMG_PROFILE_PLACEHOLDER"
       username="Ralph"
+    />
+    <!-- Si el usuario no está logeado -->
+    <BaseButton
+      v-else
+      text="Iniciar sesión"
+      buttonStyle="baseButton-secondary--filled"
+      @click="router.push('/signin')"
     />
   </header>
 </template>

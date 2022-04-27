@@ -1,13 +1,16 @@
 <script setup>
-import { RouterLink } from "vue-router";
 import MenuIcon from "./MenuIcon.vue";
+
+// Iconos 
+import {ICON_CALENDAR, ICON_BOOKMARK} from '@/helpers/iconConstants';
+
 </script>
 
 <template>
   <nav>
     <!-- Icono de alojamientos guardados -->
     <MenuIcon
-      icon="src/assets/img/icons/bookmark-icon.svg"
+      :icon="ICON_BOOKMARK"
       text="Guardados"
       path="/saved"
     />
@@ -16,7 +19,7 @@ import MenuIcon from "./MenuIcon.vue";
 
     <!-- Icono de reservas realizadas -->
     <MenuIcon
-      icon="src/assets/img/icons/calendar-icon.svg"
+      :icon="ICON_CALENDAR"
       text="Reservas"
       path="/bookings"
     />

@@ -1,18 +1,39 @@
 <script setup>
+import { IMG_PROFILE_PLACEHOLDER } from "@/helpers/iconConstants";
+
 defineProps({
   profileImage: {
     type: String,
-    required: true,
+    default: null,
   },
   username: {
     type: String,
-    required: true,
+    default: "",
+  },
+  width: {
+    type: Number,
+    default: 24,
+  },
+  height: {
+    type: Number,
+    default: 24,
+  },
+  personalProfilePath: {
+    type: String,
+    default: "/",
   },
 });
 </script>
 
 <template>
   <img :src="profileImage" :alt="username" @click.prevent="" />
+  =======
+  <img
+    :src="profileImage || IMG_PROFILE_PLACEHOLDER"
+    :alt="username"
+    :width="width"
+    :height="height"
+  />
 </template>
 
 <style lang="scss" scoped>
@@ -20,6 +41,6 @@ defineProps({
 
 img {
   @include flex-column-center;
-  border-radius: 25px;
+  border-radius: 100px;
 }
 </style>

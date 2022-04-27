@@ -1,6 +1,4 @@
 <script setup>
-import { login } from "@/services/auth/AuthService";
-
 // Componentes
 import RegisterForm from "@/components/Forms/RegisterForm.vue";
 import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";

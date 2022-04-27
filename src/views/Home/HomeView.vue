@@ -1,31 +1,31 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 
 // Componentes
-import { DatePicker } from "v-calendar";
+// import { DatePicker } from "v-calendar";
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
 // import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
 // Componentes
-import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
+// import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
 // Servicios
-import {getAllAccomodations, getAccomodationById} from '@/services/accomodation/AccomodationService';
+// import {getAllAccomodations, getAccomodationById} from '@/services/accomodation/AccomodationService';
 
-const selectedDates = {
-  checkIn: new Date(),
-  checkOut: null,
-};
+// const selectedDates = {
+//   checkIn: new Date(),
+//   checkOut: null,
+// };
 
-const datePicker = ref(null);
+// const datePicker = ref(null);
 
-const handleChange = () => {
-  console.log(datePicker);
-};
+// const handleChange = () => {
+//   console.log(datePicker);
+// };
 
 onMounted(async () => {
-  const accomodations = await getAllAccomodations();
-  const accomodation = await getAccomodationById('0001234A');
-  console.log(accomodation);
+  // const accomodations = await getAllAccomodations();
+  // const accomodation = await getAccomodationById('0001234A');
+  // console.log(accomodation);
 });
 </script>
 
