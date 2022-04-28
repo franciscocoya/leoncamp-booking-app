@@ -11,13 +11,26 @@ defineProps({
   }
 });
 
+const emit = defineEmits(['click']);
+
+function handleClick(){
+  emit('click');
+  }
+
 </script>
 
 <template>
-  <div>
-      <button :class="buttonStyle" @click="$emit('click')">{{ text }}</button>
+  <div class="base-button-container">
+      <button :class="buttonStyle" @click.prevent="handleClick">{{ text }}</button>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
+.base-button-container{
+  @include flex-row-center;
+  align-items: center;
+}
+
 </style>

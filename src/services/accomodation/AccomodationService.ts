@@ -13,6 +13,11 @@ import {
   ACCOMODATIONS_BASE_PATH,
 } from './AccomodationsRoutesEnum';
 
+// Rutas de las reservas API: /api/bookings
+import {
+  BOKINGS_BASE_PATH
+} from './BookingRoutesEnum';
+
 // Ruta alojamientos: /api/accomodations
 
 const baseUri: string = import.meta.env.VITE_API_URI;
@@ -24,7 +29,7 @@ const apiJwtToken: string =
  * Lista todos los alojamientos disponibles.
  */
 export const getAllAccomodations = async () => {
-  const { data } = await axios.get(`${baseUri}${ALL_ACCOMODATIONS}`, {
+  const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/all`, {
     params: {
       page: 0,
       size: 2,
@@ -34,7 +39,7 @@ export const getAllAccomodations = async () => {
     },
   });
 
-  return data;
+  return data.content;
 };
 
 /**
@@ -68,4 +73,57 @@ export async function getAllUserAccomodations(idUser: number) {
   );
 
   return data;
+}
+
+/**
+ * Listado de todos los alojamientos reservados por un usuario.
+ */
+export async function getUserBookingsByUserId(userId: number) {
+  const { data } = await axios.get(`${baseUri}${BOKINGS_BASE_PATH}/users/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
+
+  return data;
+}
+
+/**
+ * Listado de alojamientos guardados por un usuario.
+ * 
+ * @param userId 
+ * @returns 
+ */
+export async function getUserSavedAccomodationsByUserId(userId: number){
+  const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/users/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
+
+  return data;
+}
+
+/**
+ * Valoración media (En estrellas) de un alojamiento.
+ */
+export async function getAccomodationStarAverage(regNumber: string){
+ const {data} = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
+
+  return data;
+}
+
+/**
+ * Eliminar un alojamiento por su número de registro.
+ */
+export async function deleteAccomodationByRegisterNumber(regNumber: string): void{
+  await axios.delete(`${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${regNumber}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
 }

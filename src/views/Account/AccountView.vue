@@ -28,6 +28,7 @@ onMounted(() => {
 
 .account-view {
   @include flex-row-center;
+  gap: 50px;
   margin-top: 20px;
 }
 </style>

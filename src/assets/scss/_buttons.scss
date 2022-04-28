@@ -59,6 +59,61 @@
 
 .baseButton-secondary--outlined{
     @include baseButton--outlined($color-secondary, $color-secondary);
+
+    transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:hover{
+        background: $color-secondary;
+        color: #FFF;
+    }
+}
+
+// Boton con fondo oscuro
+.baseButton-dark--filled{
+    @include baseButton--filled($color-dark, #FFF);
+}
+
+.baseButton-dark--filled--small{
+    @include baseButton--filled($color-dark, #FFF);
+    width: 80px;
+    height: 35px;
+    font-size: 12px;
+}
+
+.baseButton-dark--outlined{
+    @include baseButton--outlined($color-dark, $color-dark);
+    transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:hover{
+        background: $color-dark;
+        color: #FFF;
+    }
+}
+
+.baseButton-dark--outlined--small{
+    @include baseButton--outlined($color-dark, $color-dark);
+    width: 80px;
+    height: 35px;
+    font-size: 12px;
+    transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:hover{
+        background: $color-dark;
+        color: #FFF;
+    }
+}
+
+.baseButton-danger--outlined--small{
+    @include baseButton--outlined($color-danger, $color-danger);
+    width: 80px;
+    height: 35px;
+    font-size: 12px;
+    transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:hover{
+        background: $color-danger;
+        color: #FFF;
+    }
 }
 
 // --------------------------------------

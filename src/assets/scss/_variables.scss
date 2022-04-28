@@ -9,6 +9,7 @@ $color-secondary-light: #f9c4ba;
 $color-tertiary-light: #f0f0f0;
 $color-tertiary-dark: rgb(221, 221, 221);
 $color-dark: rgb(34, 34, 34);
+$color-danger: rgb(216, 54, 54);
 
 // Degradados
 $linear-gradient-primary: linear-gradient(
@@ -34,6 +35,7 @@ $input-fontSize: 14px;
 
 // General
 $global-border-radius: 10px;
+$global-box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
 
 // z-index
 $z-index-1: 1;

@@ -1,4 +1,5 @@
 <script setup>
+
 // Componentes
 import LoginForm from "@/components/Forms/LoginForm.vue";
 import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";

@@ -1,4 +1,6 @@
-import type { PromoCode } from './promoCode.model';
+import type { PromoCode } from '@/models/promoCode/promoCode.model';
+import type { Coordinate } from '@/models/accomodation/coordinates.model';
+
 
 export interface Accomodation {
   registerNumber: string;
@@ -10,8 +12,7 @@ export interface Accomodation {
   area?: number;
   category?: string;
   accomodationLocation: {
-    lat: number;
-    lng: number;
+    coords: Coordinate;
     direction: string;
     city: string;
     zip: string;

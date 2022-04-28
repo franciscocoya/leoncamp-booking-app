@@ -1,19 +1,30 @@
 <script setup>
+import { useRouter } from "vue-router";
+
+// Iconos
 import MenuIcon from "./MenuIcon.vue";
+import { ICON_CALENDAR, ICON_BOOKMARK } from "@/helpers/iconConstants";
 
-// Iconos 
-import {ICON_CALENDAR, ICON_BOOKMARK} from '@/helpers/iconConstants';
+// Store
+import { useUserStore } from "@/store/user";
+const userStore = useUserStore();
 
+const router = useRouter();
+
+const redirectToUserBookings = () => {
+  router.push({
+    name: "user-bookings",
+    params: {
+      username: `${userStore.name}-${userStore.surname}`,
+    },
+  });
+};
 </script>
 
 <template>
   <nav>
     <!-- Icono de alojamientos guardados -->
-    <MenuIcon
-      :icon="ICON_BOOKMARK"
-      text="Guardados"
-      path="/saved"
-    />
+    <MenuIcon :icon="ICON_BOOKMARK" text="Guardados" path="/saved" />
 
     <CalendarIcon />
 
@@ -22,6 +33,7 @@ import {ICON_CALENDAR, ICON_BOOKMARK} from '@/helpers/iconConstants';
       :icon="ICON_CALENDAR"
       text="Reservas"
       path="/bookings"
+      @click="redirectToUserBookings()"
     />
   </nav>
 </template>

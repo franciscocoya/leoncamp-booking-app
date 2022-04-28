@@ -6,6 +6,7 @@ import HomeView from '@/views/Home/HomeView.vue';
 import AccountView from '@/views/Account/AccountView.vue';
 import UserProfileView from '@/views/Account/UserProfileView.vue';
 import AccomodationsAdsView from '@/views/Account/AccomodationsAdsView.vue';
+import UserBookingsView from '@/views/Account/UserBookingsView.vue';
 
 // -----------------------------------------------------------------------------
 
@@ -51,24 +52,27 @@ const router = createRouter({
       component: SavedAccomodationsView
     },
     {
-      path: '/bookings',
-      name: 'bookings',
-      component: BookingsView
-    },
-    {
       path: '/account/:username',
       name: 'account',
       component: AccountView,
       children: [
+        // Detalles del perfil personal del usuario.
         {
           path: 'profile',
           name: 'user-profile',
           component: UserProfileView
         },
         {
+          // Alojamientos publicados por el usuario
           path: 'accomodations',
           name: 'user-ads',
           component: AccomodationsAdsView
+        },
+        {
+          // Reservas realizadas por el usuario
+          path: 'bookings',
+          name: 'user-bookings',
+          component: UserBookingsView
         }
       ]
     },

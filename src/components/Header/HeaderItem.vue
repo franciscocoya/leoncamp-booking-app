@@ -7,9 +7,6 @@ import MenuDesktopItem from "./Menu/MenuDesktopItem.vue";
 import AccountIcon from "../icons/Account/AccountIcon.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
-// Placeholder
-import { IMG_PROFILE_PLACEHOLDER, IMG_APP_LOGO } from "@/helpers/iconConstants";
-
 const router = useRouter();
 
 // Token de usuario
@@ -26,7 +23,7 @@ const userToken = JSON.parse(sessionStorage.getItem("user") || "{}").token;
 
     <MenuDesktopItem v-if="userToken" />
     <!-- Si el usuario está logeado -->
-    <AccountIcon v-if="userToken" username="Ralph" />
+    <AccountIcon v-if="userToken" username="Ralph" :isLinked="true" />
     <!-- Si el usuario no está logeado -->
     <BaseButton
       v-else

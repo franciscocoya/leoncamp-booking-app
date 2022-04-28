@@ -1,4 +1,4 @@
-export type PromoCode = {
+export interface PromoCode{
   serialNumber: string,
   percentage; number,
   startDate: Date,

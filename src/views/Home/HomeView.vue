@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 // Componentes
 // import { DatePicker } from "v-calendar";
@@ -9,7 +9,7 @@ import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThu
 // import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
 // Servicios
-// import {getAllAccomodations, getAccomodationById} from '@/services/accomodation/AccomodationService';
+import { getAllAccomodations } from "@/services/accomodation/AccomodationService";
 
 // const selectedDates = {
 //   checkIn: new Date(),
@@ -22,10 +22,10 @@ import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThu
 //   console.log(datePicker);
 // };
 
+let allAccomodations = ref([]);
+
 onMounted(async () => {
-  // const accomodations = await getAllAccomodations();
-  // const accomodation = await getAccomodationById('0001234A');
-  // console.log(accomodation);
+  allAccomodations.value = await getAllAccomodations();
 });
 </script>
 
@@ -43,9 +43,13 @@ onMounted(async () => {
   /> -->
   <section class="home-view">
     <div class="home-accomodations-list">
-      <AccomodationThumbnailItem />
-      <AccomodationThumbnailItem />
-      <AccomodationThumbnailItem />
+      <AccomodationThumbnailItem
+        v-for="accomodation in allAccomodations"
+        :key="accomodation.registerNumber"
+        :accData="accomodation"
+        :isCurrentUserOwner="true"
+        :showDeleteButton="false"
+      />
     </div>
     <!-- <BaseAccomodationsMap /> -->
   </section>

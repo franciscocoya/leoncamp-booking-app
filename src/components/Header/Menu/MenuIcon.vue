@@ -21,10 +21,6 @@ defineProps({
   },
 });
 
-onMounted(() => {
-  console.log("MenuIcon mounted");
-});
-
 defineComponent({
   RouterLink,
 });

@@ -1,5 +1,13 @@
 <script setup>
+import { useRouter } from "vue-router";
+
 import { IMG_PROFILE_PLACEHOLDER } from "@/helpers/iconConstants";
+
+// Store
+import { useUserStore } from "@/store/user";
+const userStore = useUserStore();
+
+const router = useRouter();
 
 defineProps({
   profileImage: {
@@ -18,20 +26,29 @@ defineProps({
     type: Number,
     default: 24,
   },
-  personalProfilePath: {
-    type: String,
-    default: "/",
+  // Indica si la imagen de perfil tendrá un enlace a la página de perfil.
+  isLinked: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const redirectToUserProfile = () => {
+  const { name, surname } = userStore;
+  router.push(
+    `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`
+  );
+};
 </script>
 
 <template>
   <img
     :src="profileImage"
     :alt="username"
-    @click.prevent=""
     :width="width"
     :height="height"
+    @click.prevent="isLinked ? redirectToUserProfile() : 'null'"
+    :style="isLinked ? 'cursor: pointer' : ''"
   />
 </template>
 

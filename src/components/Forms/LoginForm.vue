@@ -30,6 +30,7 @@ const handleLogin = (e) => {
 <template>
   <div class="login-form">
     <h1>{{ title }}</h1>
+
     <form id="form-login">
       <div class="form-group__email">
         <label for="email">Email</label>
@@ -37,7 +38,7 @@ const handleLogin = (e) => {
           inputType="email"
           inputStyleClass="base-input"
           :inputValue="userStore.email"
-          @handleInput="(value) => userStore.email = value"
+          @handleInput="(value) => (userStore.email = value)"
         />
       </div>
       <div class="form-group__password">
@@ -85,7 +86,7 @@ const handleLogin = (e) => {
   //border: 2px solid $color-tertiary-light;
   padding: 20px;
   border-radius: $global-border-radius;
-  box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
+  box-shadow: $global-box-shadow;
 }
 
 hr {

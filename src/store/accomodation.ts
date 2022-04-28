@@ -3,8 +3,18 @@ import { defineStore } from 'pinia';
 // Modelos
 import type { Accomodation } from '@/models/accomodation/accomodation.model';
 
+// Token de usuario
+const currentUserId: number = JSON.parse(sessionStorage.getItem('user'))?.id;
+
 // Servicios
-import { getAllUserAccomodations } from '@/services/accomodation/AccomodationService';
+import {
+  getAllUserAccomodations,
+  getAccomodationByRegNumber,
+  getUserBookingsByUserId,
+  getUserSavedAccomodationsByUserId,
+  getAccomodationStarAverage,
+  deleteAccomodationByRegisterNumber
+} from '@/services/accomodation/AccomodationService';
 
 const useAccomodationStore = defineStore({
   id: 'accomodation',
@@ -18,8 +28,10 @@ const useAccomodationStore = defineStore({
     area: 0,
     category: '',
     accomodationLocation: {
-      lat: 0,
-      lng: 0,
+      coords: {
+        lat: 0,
+        lng: 0
+      },
       direction: '',
       city: '',
       zip: '',
@@ -28,6 +40,13 @@ const useAccomodationStore = defineStore({
     accomodationRules: [],
     accomodationServices: [],
     promoCodes: [],
+    userHost: {
+      id: 0,
+      name: '',
+      surname: '',
+      profileImage: ''
+    },
+    stars: 0,
     createdAt: null,
   }),
 
@@ -39,17 +58,83 @@ const useAccomodationStore = defineStore({
      * @returns
      */
     getAccomodationByRegisterNumber(registerNumber: string) {
-      const accomodation = getAccomodationByRegNumber(registerNumber);
+      const accomodationToReturn = getAccomodationByRegNumber(registerNumber);
+      return accomodationToReturn;
     },
 
     /**
-     * Listado de los alojamientos del usuario.
+     * Listado de los alojamientos del usuario en sesión.
      * @returns
      */
     getAllUserAccomodations() {
-      const idUser = JSON.parse(sessionStorage.getItem('user') || '{}').id;
-      return getAllUserAccomodations(idUser);
+      return getAllUserAccomodations(currentUserId);
     },
+
+    /**
+     * Listado de las reservas realizadas por el usuario en sesión.
+     */
+    getAllUserBookings() {
+      return getUserBookingsByUserId(currentUserId);
+    },
+
+    /**
+     * Listado de los alojamientos guardados por el usuario en sesión.
+     * @returns 
+     */
+    getAllUserSavedAccomodations() {
+      return getUserSavedAccomodationsByUserId(currentUserId);
+    },
+
+    /**
+     * Valoración media (En estrellas) de un alojamiento.
+     */
+    getStarAverage(regNumber: string): number {
+      return getAccomodationStarAverage(regNumber);
+    },
+
+    /**
+     * Eliminar un alojamiento por su número de registro.
+     * 
+     * @param regNumber 
+     */
+    deleteAccomodationByRegNumber(regNumber: string): void {
+      deleteAccomodationByRegisterNumber(regNumber);
+    },
+
+    setAccomodationState(accomodationData: any) {
+
+      this.numOfBeds = accomodationData.numOfBeds;
+      this.numOfBathRooms = accomodationData.numOfBathRooms;
+      this.numOfBedRooms = accomodationData.numOfBedRooms;
+      this.pricePerNight = accomodationData.pricePerNight;
+      this.numOfGuests = accomodationData.numOfGuests;
+      this.area = accomodationData.area;
+      this.category = accomodationData.idAccomodationCategory.accomodationCategory;
+
+      this.accomodationLocation = {
+        coords: {
+          lat: accomodationData.idAccomodationLocation.latitude,
+          lng: accomodationData.idAccomodationLocation.longitude
+        },
+        direction: accomodationData.idAccomodationLocation.direction,
+        city: accomodationData.idAccomodationLocation.city,
+        zip: accomodationData.idAccomodationLocation.zip,
+      };
+
+      this.accomodationImages = accomodationData.accomodationImages;
+      this.accomodationRules = accomodationData.accomodationRules;
+      this.accomodationServices = accomodationData.accomodationServices;
+      this.promoCodes = accomodationData.promoCodes;
+
+      this.userHost = {
+        id: accomodationData.idUserHost.id,
+        name: accomodationData.idUserHost.name,
+        surname: accomodationData.idUserHost.surname,
+        profileImage: accomodationData.idUserHost.profileImage,
+      };
+
+      this.createdAt = accomodationData.createdAt;
+    }
   },
 });
 

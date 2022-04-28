@@ -88,7 +88,6 @@ onMounted(() => {
 
 .user-profile-view {
   @include flex-row;
-  margin-left: 30px;
 }
 
 form {

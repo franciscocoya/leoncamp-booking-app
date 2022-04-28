@@ -1,35 +1,39 @@
-<script setup>
+<script lang="ts" setup>
+import { onMounted, ref, withDefaults } from "vue";
+
+// Componentes
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
+import SavedAccomodationIcon from "@/components/icons/Accomodation/SavedAccomodationIcon.vue";
+import BaseButton from "@/components/Buttons/BaseButton.vue";
 
-defineProps({
-  denomination: {
-    type: String,
-    default: "",
-  },
-  pricePerNight: {
-    type: Number,
-    default: 0,
-  },
-  category: {
-    type: String,
-    default: "",
-  },
-  location: {
-    type: String,
-    default: "",
-  },
-  coords: {
-    type: Object,
-    default: {
-      lat: 0,
-      lng: 0,
-    },
-  },
-  stars: {
-    type: Number,
-    default: 0,
-  },
+// Store
+import { useAccomodationStore } from "@/store/accomodation";
+const accomodationStore = useAccomodationStore();
+
+interface Props {
+  accData: Object;
+  showDeleteButton?: Boolean;
+  isCurrentUserOwner?: Boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  accData: null,
+  showDeleteButton: false,
+  isCurrentUserOwner: false,
+});
+
+const getAccomodationStarAverage = async () => {
+  accomodationStore.stars = await accomodationStore.getStarAverage(accomodationStore.registerNumber);
+};
+
+const handleDeleteAccomodation = async () => {
+  //await accomodationStore.deleteAccomodationByRegNumber(accomodationStore.registerNumber);
+};
+
+onMounted(() => {
+  accomodationStore.registerNumber = props.accData?.registerNumber;
+  getAccomodationStarAverage();
 });
 </script>
 
@@ -48,51 +52,31 @@ defineProps({
       <div class="accomodation-thumbnail-detail-container__header">
         <div>
           <!-- Categoría del alojamiento -->
-          <BaseBadge :text="category" backgroundColor="#F0F0F0" />
+          <BaseBadge
+            :text="accData.idAccomodationCategory.accomodationCategory"
+            backgroundColor="#F0F0F0"
+          />
           <!-- Nombre del alojamiento -->
-          <h2>{{ denomination }}</h2>
+          <h2>
+            {{ accData.idAccomodationCategory.accomodationCategory }} en
+            {{ accData.idAccomodationLocation.direction }}
+          </h2>
         </div>
         <div>
           <!-- Icono guardar alojamiento -->
-          <svg
-            width="30px"
-            height="30px"
-            viewBox="0 0 24 24"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-          >
-            <title>Bookmark</title>
-            <g
-              id="Page-1"
-              stroke="none"
-              stroke-width="1"
-              fill="none"
-              fill-rule="evenodd"
-            >
-              <g id="Bookmark">
-                <rect
-                  id="Rectangle"
-                  fill-rule="nonzero"
-                  x="0"
-                  y="0"
-                  width="24"
-                  height="24"
-                ></rect>
-                <path
-                  d="M17,4 L7,4 C5.89543,4 5,4.89543 5,6 L5,18.7929 C5,19.2383 5.53857,19.4614 5.85355,19.1464 L11.6464,13.3536 C11.8417,13.1583 12.1583,13.1583 12.3536,13.3536 L18.1464,19.1464 C18.4614,19.4614 19,19.2383 19,18.7929 L19,6 C19,4.89543 18.1046,4 17,4 Z"
-                  id="Path"
-                  stroke="#F5562A"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                ></path>
-              </g>
-            </g>
-          </svg>
+          <SavedAccomodationIcon v-if="!accData.idUserHost && !isUserOwner" />
+          <!-- Botón de eliminar -->
+          <BaseButton
+            v-if="showDeleteButton"
+            text="Eliminar"
+            buttonStyle="baseButton-danger--outlined--small"
+            class="bt-delete-accomodation"
+            @click="handleDeleteAccomodation"
+          />
         </div>
       </div>
       <div class="accomodation-thumbnail-detail-container__body">
-        <p>{{ location }}</p>
+        <p>{{ accData.idAccomodationLocation.direction }}</p>
         <div class="accomodation-thumbnail-detail-container__services"></div>
       </div>
       <div class="accomodation-thumbnail-detail-container__footer">
@@ -115,10 +99,10 @@ defineProps({
               stroke-linecap="round"
             />
           </svg>
-          <span>4,7</span>
+          <span >{{ accomodationStore.stars }}</span>
         </div>
         <div class="accomodation-price-per-night">
-          <span>{{ pricePerNight }} €</span>
+          <span>{{ accData.pricePerNight }} €</span>
           <span>&nbsp; / noche</span>
         </div>
       </div>
@@ -192,6 +176,10 @@ defineProps({
         }
       }
     }
+  }
+
+  .bt-delete-accomodation {
+    align-self: flex-end;
   }
 }
 </style>

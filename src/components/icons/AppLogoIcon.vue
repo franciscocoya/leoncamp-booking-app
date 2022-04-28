@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 
+// Iconos
+import {IMG_APP_LOGO} from "@/helpers/iconConstants";
+
 defineProps({
   iconWidth: {
     type: Number,
@@ -11,7 +14,7 @@ defineProps({
   },
   iconUrl: {
     type: String,
-    default: "@/assets/img/logo.png",
+    default: IMG_APP_LOGO,
   },
 });
 </script>
