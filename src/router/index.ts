@@ -11,16 +11,17 @@ import UserBookingsView from '@/views/Account/UserBookingsView.vue';
 // -----------------------------------------------------------------------------
 
 import SavedAccomodationsView from '@/views/SavedAccomodations/SavedAccomodationsView.vue';
+
 import BookingsView from '@/views/Bookings/BookingsView.vue';
+import BookingDetailView from '@/views/Bookings/BookingDetailView.vue';
+
 import LoginView from '@/views/Auth/LoginView.vue';
 import RegisterView from '@/views/Auth/RegisterView.vue';
 import ForgotPasswordView from '@/views/Auth/ForgotPasswordView.vue';
 
 // Rutas públicas
-const authRoutes = ["/signin", "/signup", "/password/reset"];
-const publicRoutes = [...authRoutes, "/"];
-
-
+const authRoutes = ['/signin', '/signup', '/password/reset'];
+const publicRoutes = [...authRoutes, '/'];
 
 const router = createRouter({
   history: createWebHistory(),
@@ -44,12 +45,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/saved',
       name: 'saved',
-      component: SavedAccomodationsView
+      component: SavedAccomodationsView,
     },
     {
       path: '/account/:username',
@@ -60,23 +61,29 @@ const router = createRouter({
         {
           path: 'profile',
           name: 'user-profile',
-          component: UserProfileView
+          component: UserProfileView,
         },
         {
           // Alojamientos publicados por el usuario
           path: 'accomodations',
           name: 'user-ads',
-          component: AccomodationsAdsView
+          component: AccomodationsAdsView,
         },
         {
-          // Reservas realizadas por el usuario
+          // Reservas realizadas por el usuario en sesión
           path: 'bookings',
           name: 'user-bookings',
-          component: UserBookingsView
-        }
-      ]
+          component: UserBookingsView,
+        },
+      ],
     },
-  ]
+    {
+      // Detalle de la reserva de un alojamiento
+      path: '/bookings/:bookingId',
+      name: 'booking-detail',
+      component: BookingDetailView,
+    },
+  ],
 });
 
 // Middleware autenticación

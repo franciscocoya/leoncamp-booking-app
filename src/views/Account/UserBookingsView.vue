@@ -22,6 +22,9 @@ onMounted(async () => {
       <BookingSummaryItem
         v-for="booking in bookings"
         :key="booking.registerNumber"
+        :bookingId="booking.id"
+        :checkIn="booking.checkIn"
+        :checkOut="booking.checkOut"
       />
     </div>
     <h2 v-else>Aún no has realizado ninguna reserva</h2>

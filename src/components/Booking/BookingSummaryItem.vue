@@ -1,5 +1,9 @@
 <script setup>
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
+import { useRouter } from "vue-router";
+
+// Formateador de fecha
+import { formatArrayAsDate, convertArrayToDate } from "@/helpers/utils";
 
 // Tipo de pago
 import { PaymentMethod } from "@/models/payment/payment.enum";
@@ -14,17 +18,23 @@ import {
   ICON_PAYMENT_PAYPAL,
 } from "@/helpers/iconConstants";
 
-defineProps({
+const router = useRouter();
+
+const props = defineProps({
   // Número de registro del alojamiento reservado
   regNumber: {
     type: String,
+    default: "",
+  },
+  bookingId: {
+    type: Number,
     default: "",
   },
   checkIn: {
     type: String,
     default: "",
   },
-  checkout: {
+  checkOut: {
     type: String,
     default: "",
   },
@@ -39,22 +49,37 @@ defineProps({
   },
 });
 
-//const bookingStatus = reactive(checkIn < Date.now() ? "finished" : "active");
+const bookingStatus = reactive(
+  convertArrayToDate(props.checkOut) < new Date() ? "--booking-finished" : ""
+);
+
+const redirectToBookingDetail = () => {
+  router.push({
+    name: "booking-detail",
+    params: {
+      bookingId: props.bookingId,
+    },
+  });
+};
 </script>
 
 <template>
   <div class="booking-summary-item">
     <div class="booking-summary-item__status">
-      <div id="booking-status-icon"></div>
+      <div :class="`booking-status-icon ${bookingStatus}`"></div>
     </div>
     <div class="booking-summary-item__detail">
-        <DateBadgeIcon dateText="20/12/22"/>
-        <DateBadgeIcon dateText="21/12/22"/>
+      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkIn)" />
+      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkOut)" />
       <div class="booking-payment-method-container">
         <img :src="ICON_PAYMENT_PAYPAL" alt="" />
       </div>
-      <p class="booking-total-price">100 €</p>
-      <BaseButton text="VER" buttonStyle="baseButton-dark--outlined--small" />
+      <p class="booking-total-price">{{ totalPrice }} €</p>
+      <BaseButton
+        text="VER"
+        buttonStyle="baseButton-dark--outlined--small"
+        @click="redirectToBookingDetail()"
+      />
     </div>
   </div>
 </template>
@@ -64,18 +89,18 @@ defineProps({
 @import "@/assets/scss/_mixins.scss";
 
 .booking-summary-item {
-    @include flex-row-center;
-    padding: 10px 20px 10px 8px;
-    box-shadow: $global-box-shadow;
-    border: 1px solid $color-tertiary-light;
-    border-radius: $global-border-radius;
+  @include flex-row-center;
+  padding: 10px 20px 10px 8px;
+  box-shadow: $global-box-shadow;
+  border: 1px solid $color-tertiary-light;
+  border-radius: $global-border-radius;
 
   & > .booking-summary-item__status {
-      height: 100%;
-      margin-right: 10px;
-      align-self: flex-start;
-      
-    & > #booking-status-icon {
+    height: 100%;
+    margin-right: 10px;
+    align-self: flex-start;
+
+    & > .booking-status-icon {
       width: 12px;
       height: 12px;
       background-color: $color-secondary;
@@ -87,17 +112,21 @@ defineProps({
     @include flex-row-space-between;
     gap: 10px;
 
-    & > .booking-payment-method-container{
-        @include flex-row-center;
-        & > img{
-            width: 24px;
-            height: 24px;
-        }
+    & > .booking-payment-method-container {
+      @include flex-row-center;
+      & > img {
+        width: 24px;
+        height: 24px;
+      }
     }
 
-    & > .booking-total-price{
-        font-size: 18px;
+    & > .booking-total-price {
+      font-size: 18px;
     }
+  }
+
+  .--booking-finished {
+    background-color: $color-primary;
   }
 } // fin booking-summary-item
 </style>

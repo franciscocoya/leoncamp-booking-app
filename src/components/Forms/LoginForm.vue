@@ -21,8 +21,7 @@ defineProps({
 /**
  * Manejador del evento submit del formulario.
  */
-const handleLogin = (e) => {
-  e.preventDefault();
+const handleLogin = () => {
   userStore.login();
 };
 </script>
