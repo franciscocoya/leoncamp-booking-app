@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { onMounted, ref } from "vue";
 
 // Componentes
@@ -8,7 +8,7 @@ import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThu
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
-let savedAccomodations: any = ref([]);
+let savedAccomodations = ref([]);
 
 
 
@@ -25,6 +25,7 @@ onMounted(async () => {
       <AccomodationThumbnailItem
         v-for="accomodation in savedAccomodations"
         :key="accomodation.idAccomodation.registerNumber"
+        :savedAccId="accomodation.id"
         :accData="accomodation.idAccomodation"
         :isCurrentUserOwner="false"
         :showDeleteButton="true"

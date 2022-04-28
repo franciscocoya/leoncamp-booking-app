@@ -37,7 +37,7 @@ function updateInputValue(value: string) {
       :class="inputStyleClass"
       :value="inputValue"
       :readonly="isReadonly"
-      @input="(e) => updateInputValue(e.target.value)"
+      @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
     />
   </div>
 </template>

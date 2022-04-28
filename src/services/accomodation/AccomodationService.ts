@@ -23,7 +23,7 @@ import {
 const baseUri: string = import.meta.env.VITE_API_URI;
 
 const apiJwtToken: string =
-  JSON.parse(sessionStorage.getItem('user'))?.token ?? '';
+  JSON.parse(sessionStorage?.getItem('user') || '{}')?.token;
 
 /**
  * Lista todos los alojamientos disponibles.
@@ -120,7 +120,7 @@ export async function getAccomodationStarAverage(regNumber: string){
 /**
  * Eliminar un alojamiento por su número de registro.
  */
-export async function deleteAccomodationByRegisterNumber(regNumber: string): void{
+export async function deleteAccomodationBySavedAccomodationId(regNumber: number){
   await axios.delete(`${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${regNumber}`, {
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,

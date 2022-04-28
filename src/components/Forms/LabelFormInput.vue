@@ -22,6 +22,13 @@ defineProps({
     default: false,
   },
 });
+
+const emit = defineEmits(["handleInput"]);
+
+function updateInputValue(value: string) {
+  emit("handleInput", value);
+}
+
 </script>
 
 <template>
@@ -34,7 +41,7 @@ defineProps({
       class="base-input-no-border"
       :value="inputValue"
       :readonly="isReadonly"
-      @input="$emit('handleInput', $event.target.value)"
+      @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
     />
   </div>
 </template>

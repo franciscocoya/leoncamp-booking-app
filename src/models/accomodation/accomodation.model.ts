@@ -18,8 +18,15 @@ export interface Accomodation {
     zip: string;
   };
   accomodationImages: string[];
+  userHost: {
+    id: number,
+    name: string,
+    surname: string,
+    profileImage: string
+  },
   accomodationRules: string[];
   accomodationServices: string[];
   promoCodes?: PromoCode[];
+  stars?: number;
   createdAt: Date;
 }

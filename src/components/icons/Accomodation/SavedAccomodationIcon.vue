@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
   isActive: {
     type: Boolean,
     default: false,
@@ -18,12 +18,14 @@ defineProps({
   },
 });
 
+const isIconActive = ref(props.isActive);
+
 /**
  * Al hacer click se cambia el estado isActive y se añade el alojamiento
  * a la lista de alojamientos guardados del usuario.
  */
 const handleClick = () => {
-  isActive = !isActive;
+  isIconActive = !isIconActive;
 };
 </script>
 
@@ -62,7 +64,7 @@ const handleClick = () => {
             :stroke="iconColor"
             stroke-width="2"
             stroke-linecap="round"
-            :fill="isActive ? iconColor : 'none'"
+            :fill="isIconActive ? iconColor : 'none'"
           ></path>
         </g>
       </g>

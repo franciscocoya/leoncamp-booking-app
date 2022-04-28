@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import type { Accomodation } from '@/models/accomodation/accomodation.model';
 
 // Token de usuario
-const currentUserId: number = JSON.parse(sessionStorage.getItem('user'))?.id;
+const currentUserId: number = JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
 
 // Servicios
 import {
@@ -13,7 +13,7 @@ import {
   getUserBookingsByUserId,
   getUserSavedAccomodationsByUserId,
   getAccomodationStarAverage,
-  deleteAccomodationByRegisterNumber
+  deleteAccomodationBySavedAccomodationId
 } from '@/services/accomodation/AccomodationService';
 
 const useAccomodationStore = defineStore({
@@ -47,7 +47,7 @@ const useAccomodationStore = defineStore({
       profileImage: ''
     },
     stars: 0,
-    createdAt: null,
+    createdAt: new Date(),
   }),
 
   actions: {
@@ -88,7 +88,7 @@ const useAccomodationStore = defineStore({
     /**
      * Valoración media (En estrellas) de un alojamiento.
      */
-    getStarAverage(regNumber: string): number {
+    getStarAverage(regNumber: string): Promise<number> {
       return getAccomodationStarAverage(regNumber);
     },
 
@@ -97,43 +97,8 @@ const useAccomodationStore = defineStore({
      * 
      * @param regNumber 
      */
-    deleteAccomodationByRegNumber(regNumber: string): void {
-      deleteAccomodationByRegisterNumber(regNumber);
-    },
-
-    setAccomodationState(accomodationData: any) {
-
-      this.numOfBeds = accomodationData.numOfBeds;
-      this.numOfBathRooms = accomodationData.numOfBathRooms;
-      this.numOfBedRooms = accomodationData.numOfBedRooms;
-      this.pricePerNight = accomodationData.pricePerNight;
-      this.numOfGuests = accomodationData.numOfGuests;
-      this.area = accomodationData.area;
-      this.category = accomodationData.idAccomodationCategory.accomodationCategory;
-
-      this.accomodationLocation = {
-        coords: {
-          lat: accomodationData.idAccomodationLocation.latitude,
-          lng: accomodationData.idAccomodationLocation.longitude
-        },
-        direction: accomodationData.idAccomodationLocation.direction,
-        city: accomodationData.idAccomodationLocation.city,
-        zip: accomodationData.idAccomodationLocation.zip,
-      };
-
-      this.accomodationImages = accomodationData.accomodationImages;
-      this.accomodationRules = accomodationData.accomodationRules;
-      this.accomodationServices = accomodationData.accomodationServices;
-      this.promoCodes = accomodationData.promoCodes;
-
-      this.userHost = {
-        id: accomodationData.idUserHost.id,
-        name: accomodationData.idUserHost.name,
-        surname: accomodationData.idUserHost.surname,
-        profileImage: accomodationData.idUserHost.profileImage,
-      };
-
-      this.createdAt = accomodationData.createdAt;
+    deleteAccomodationBySavedAccId(savedAccId: number): void {
+      deleteAccomodationBySavedAccomodationId(savedAccId);
     }
   },
 });

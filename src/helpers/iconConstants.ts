@@ -1,17 +1,17 @@
 /**
  * Constantes de los iconos de los componentes.
  */
-const IMG_PATH = '/src/assets/img/';
+const IMG_PATH = './src/assets/img/';
 
 
-const ICON_CALENDAR = `${IMG_PATH}/icons/calendar-icon.svg`;
-const ICON_CALENDAR_FILLED = `${IMG_PATH}/icons/calendar-icon-filled.png`;
-const ICON_BOOKMARK = `${IMG_PATH}/icons/bookmark-icon.svg`;
-const ICON_MAP_MARKER = `${IMG_PATH}/icons/marker-icon.svg`;
-const ICON_SEARCH = `${IMG_PATH}/icons/search-icon.svg`;
-const ICON_VERIFIED_USER = `${IMG_PATH}/icons/user-verified-icon.png`;
-const ICON_PAYMENT_CREDIT_CARD = `${IMG_PATH}/icons/icon-credit-card.svg`;
-const ICON_PAYMENT_PAYPAL = `${IMG_PATH}/icons/icon-paypal.svg`;
+const ICON_CALENDAR = `${IMG_PATH}icons/calendar-icon.svg`;
+const ICON_CALENDAR_FILLED = `${IMG_PATH}icons/calendar-icon-filled.png`;
+const ICON_BOOKMARK = `${IMG_PATH}icons/bookmark-icon.svg`;
+const ICON_MAP_MARKER = `${IMG_PATH}icons/marker-icon.svg`;
+const ICON_SEARCH = `${IMG_PATH}icons/search-icon.svg`;
+const ICON_VERIFIED_USER = `${IMG_PATH}icons/user-verified-icon.png`;
+const ICON_PAYMENT_CREDIT_CARD = `${IMG_PATH}icons/icon-credit-card.svg`;
+const ICON_PAYMENT_PAYPAL = `${IMG_PATH}icons/icon-paypal.svg`;
 
 /**
  * Placeholder de imágenes.

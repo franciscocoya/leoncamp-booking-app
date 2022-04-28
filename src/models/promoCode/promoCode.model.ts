@@ -1,6 +1,6 @@
 export interface PromoCode{
   serialNumber: string,
-  percentage; number,
+  percentage: number,
   startDate: Date,
   expirationDate: Date,
 }

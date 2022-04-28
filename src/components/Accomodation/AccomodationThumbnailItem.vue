@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, withDefaults } from "vue";
+import { onMounted, withDefaults } from "vue";
 
 // Componentes
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
@@ -12,15 +12,17 @@ import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
 interface Props {
-  accData: Object;
-  showDeleteButton?: Boolean;
-  isCurrentUserOwner?: Boolean;
+  accData: any;
+  showDeleteButton?: boolean;
+  isCurrentUserOwner?: boolean;
+  savedAccId?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   accData: null,
   showDeleteButton: false,
   isCurrentUserOwner: false,
+  savedAccId: -1
 });
 
 const getAccomodationStarAverage = async () => {
@@ -28,7 +30,7 @@ const getAccomodationStarAverage = async () => {
 };
 
 const handleDeleteAccomodation = async () => {
-  //await accomodationStore.deleteAccomodationByRegNumber(accomodationStore.registerNumber);
+  await accomodationStore.deleteAccomodationBySavedAccId(props.savedAccId);
 };
 
 onMounted(() => {
@@ -64,7 +66,7 @@ onMounted(() => {
         </div>
         <div>
           <!-- Icono guardar alojamiento -->
-          <SavedAccomodationIcon v-if="!accData.idUserHost && !isUserOwner" />
+          <SavedAccomodationIcon v-if="!accData.idUserHost && !isCurrentUserOwner" />
           <!-- Botón de eliminar -->
           <BaseButton
             v-if="showDeleteButton"

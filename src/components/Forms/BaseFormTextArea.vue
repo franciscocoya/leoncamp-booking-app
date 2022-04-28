@@ -38,7 +38,7 @@ function updateInputValue(value: string) {
       :class="inputStyleClass"
       :value="textAreaContent"
       :placeholder="placeholder"
-      @input="(e) => updateInputValue(e.target.value)"
+      @input="(e) => updateInputValue((e.target as HTMLOutputElement).value)"
     >
     </textarea>
   </div>
