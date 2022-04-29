@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import { onMounted, ref } from "vue";
 
-defineProps({
+const props = defineProps({
   inputType: {
     type: String,
     default: "text",
@@ -23,16 +24,32 @@ defineProps({
   },
 });
 
+let disableField: boolean = ref(false);
+
 const emit = defineEmits(["handleInput"]);
 
 function updateInputValue(value: string) {
+  console.log("click");
+  disableField.value = false;
   emit("handleInput", value);
 }
 
+const disableInput = (disable: boolean) => {
+  disableField.value = disable;
+};
+
+onMounted(() => {
+  disableField.value = props.isReadonly;
+});
 </script>
 
 <template>
-  <div class="label-input-container">
+  <div
+    class="label-input-container"
+    @click.prevent="disableInput(false)"
+    
+    @mouseout="disableInput(true)"
+  >
     <label :for="inputLabel">{{ inputLabel }}</label>
     <input
       :id="inputLabel"
@@ -40,7 +57,7 @@ function updateInputValue(value: string) {
       :placeholder="placeholder"
       class="base-input-no-border"
       :value="inputValue"
-      :readonly="isReadonly"
+      :readonly="disableField"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
     />
   </div>
@@ -49,23 +66,26 @@ function updateInputValue(value: string) {
 <style lang="scss" scoped>
 @import "@/assets/scss/_variables.scss";
 
-.label-input-container{
-    position: relative;
-    border: 2px solid $color-tertiary-light;
-    border-radius: $global-border-radius;
+.label-input-container {
+  position: relative;
+  border: 2px solid $color-tertiary-light;
+  border-radius: $global-border-radius;
 
-    & > label{
-        position: absolute;
-        top: 2px;
-        left: 8px;
-        font-size: 11px;
-        color: grey;
-    }
+  & > label {
+    position: absolute;
+    top: 2px;
+    left: 8px;
+    font-size: 11px;
+    color: grey;
+  }
 
-    & > input{
-        font-size: 14px;
-        font-weight: 500;
-    }
+  & > input {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  & > input:read-only {
+    color: gray;
+  }
 }
-
 </style>

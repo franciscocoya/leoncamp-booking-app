@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 
-import { Booking } from '@/models/booking/booking.model';
+import type { Booking } from '@/models/booking/booking.model';
+
+// Servicio
+import {getBookingDataByBookingId} from '@/services/booking/BookingService';
 
 const useBookingStore = defineStore({
   id: 'booking',
@@ -52,6 +55,24 @@ const useBookingStore = defineStore({
     totalPrice: 0,
     createdAt: new Date(),
   }),
+
+  actions : {
+
+    /**
+     * Carga los datos de una reserva.
+     * @param bookingId 
+     */
+    async loadBookingDataById(bookingId: string){
+      const bookingData = await getBookingDataByBookingId(bookingId);
+      const {id, name, surname, profileImage} = bookingData.idUser;
+      this.userHost = {
+        id,
+        name,
+        surname,
+        profileImage,
+      };
+    }
+  }
 });
 
 export { useBookingStore };

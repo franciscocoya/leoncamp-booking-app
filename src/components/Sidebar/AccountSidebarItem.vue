@@ -63,7 +63,12 @@ onMounted(() => {
   <div class="account-sidebar">
     <!-- Imagen de perfil -->
     <div class="account-sidebar__profile-image">
-      <AccountIcon width="120" height="120" />
+      <AccountIcon 
+      width="120" 
+      height="120"
+      :profileImage="userStore.profileImage"
+      :isUploading="true"
+      />
 
       <!-- Icono de verficación de un usuario host -->
       <div v-if="isUserHostVerified" class="user-verified-icon-container">

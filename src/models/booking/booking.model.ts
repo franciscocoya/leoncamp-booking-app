@@ -1,5 +1,5 @@
-import { User } from '../user/user.model';
-import { Accomodation } from '../accomodation/accomodation.model';
+import type { User } from '../user/user.model';
+import type { Accomodation } from '../accomodation/accomodation.model';
 
 export interface Booking {
   id: number;

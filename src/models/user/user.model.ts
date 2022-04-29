@@ -14,7 +14,7 @@ export interface User{
             code: string,
         }
     },
-    profileImage?: string,
+    profileImage?: Blob,
     datosHost?: {
         dni: string,
         bio: string,

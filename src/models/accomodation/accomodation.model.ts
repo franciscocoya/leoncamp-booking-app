@@ -1,7 +1,6 @@
 import type { PromoCode } from '@/models/promoCode/promoCode.model';
 import type { Coordinate } from '@/models/accomodation/coordinates.model';
 
-
 export interface Accomodation {
   registerNumber: string;
   numOfBeds: number;

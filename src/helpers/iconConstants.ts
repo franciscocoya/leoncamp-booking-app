@@ -11,6 +11,7 @@ const ICON_SEARCH = `${IMG_PATH}icons/search-icon.svg`;
 const ICON_VERIFIED_USER = `${IMG_PATH}icons/user-verified-icon.png`;
 const ICON_PAYMENT_CREDIT_CARD = `${IMG_PATH}icons/icon-credit-card.svg`;
 const ICON_PAYMENT_PAYPAL = `${IMG_PATH}icons/icon-paypal.svg`;
+const ICON_UPLOAD_IMAGE = `${IMG_PATH}icons/upload-icon.svg`;
 
 /**
  * Placeholder de imágenes.
@@ -27,6 +28,8 @@ export {
   ICON_VERIFIED_USER,
   ICON_PAYMENT_CREDIT_CARD,
   ICON_PAYMENT_PAYPAL,
+  ICON_UPLOAD_IMAGE,
+
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
 };

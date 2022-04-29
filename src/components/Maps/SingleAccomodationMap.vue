@@ -14,6 +14,14 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  mapWidth: {
+    type: String,
+    default: "100%",
+  },
+  mapHeight: {
+    type: String,
+    default: "90vh",
+  },
 });
 
 // Componentes
@@ -35,15 +43,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="map"></div>
+  <div id="map" :style="`width: ${mapWidth}; height: ${mapHeight};`"></div>
 </template>
 
 <style lang="scss" scoped>
-#map {
-  width: 100%;
-  height: 100%;
-  position: sticky;
-}
+// #map {
+//   position: sticky;
+// }
 
 .marker {
   background-color: #ff0000 !important;

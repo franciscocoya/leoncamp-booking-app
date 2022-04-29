@@ -103,6 +103,24 @@
     }
 }
 
+// Boton danger
+
+.baseButton-danger--filled{
+    @include baseButton--filled($color-danger, #FFF);
+    transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:hover{
+        background: $color-danger;
+        color: #FFF;
+    }
+
+    &:disabled{
+        background: $color-tertiary-dark;
+        color: gray;
+        cursor: not-allowed;
+    }
+}
+
 .baseButton-danger--outlined--small{
     @include baseButton--outlined($color-danger, $color-danger);
     width: 80px;

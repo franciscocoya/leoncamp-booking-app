@@ -1,13 +1,24 @@
 <script setup>
 import { useUserStore } from "@/store/user";
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, ref } from "@vue/runtime-core";
 
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseFormTextArea from "@/components/Forms/BaseFormTextArea.vue";
+import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Store
 const userStore = useUserStore();
+
+const enableEditButton = ref(false);
+
+// Actualizar datos de la store.
+// userStore.loadUserData();
+
+const updateFieldValue = (callback) => {
+  callback();
+  enableEditButton.value = true;
+};
 
 onMounted(() => {
   userStore.loadUserData();
@@ -25,10 +36,12 @@ onMounted(() => {
           <div class="user-profile-data__fullname">
             <!-- Nombre -->
             <LabelFormInput
+              ref="name"
               type="text"
               inputLabel="Nombre"
               :isReadonly="true"
               :inputValue="userStore.name"
+              @handleInput="(value) => updateFieldValue(() => userStore.name = value)"
             />
 
             <!-- Apellidos -->
@@ -37,6 +50,7 @@ onMounted(() => {
               inputLabel="Apellidos"
               :isReadonly="true"
               :inputValue="userStore.surname"
+              @handleInput="(value) => updateFieldValue(() => userStore.surname = value)"
             />
           </div>
 
@@ -49,6 +63,7 @@ onMounted(() => {
               inputLabel="Teléfono"
               :isReadonly="true"
               :inputValue="userStore.phone"
+              @handleInput="(value) => updateFieldValue(() => userStore.phone = value)"
             />
 
             <!-- Email -->
@@ -57,6 +72,7 @@ onMounted(() => {
               inputLabel="Correo electrónico"
               :isReadonly="true"
               :inputValue="userStore.email"
+              @handleInput="(value) => updateFieldValue(() => userStore.email = value)"
             />
           </div>
 
@@ -69,13 +85,22 @@ onMounted(() => {
                 inputLabel="DNI"
                 :isReadonly="true"
                 :inputValue="userStore.datosHost.dni"
+                @handleInput="(value) => updateFieldValue(() => userStore.datosHost.dni = value)"
               />
               <BaseFormTextArea
                 :textAreaContent="userStore.datosHost.bio"
                 inputLabel="Biografía"
+                @handleInput="(value) => updateFieldValue(() => userStore.datosHost.bio = value)"
               />
             </div>
           </div>
+          <BaseButton
+            text="Editar"
+            buttonStyle="baseButton-danger--filled"
+            class="btEditar-perfil-usuario"
+            :isDisabled="!enableEditButton"
+            @click="handleEditUserProfile"
+          />
         </form>
       </div>
     </main>
@@ -109,6 +134,11 @@ form {
       @include flex-column;
       gap: 20px;
     }
+  }
+
+  & > .btEditar-perfil-usuario {
+    margin-top: 20px;
+    align-self: flex-start;
   }
 }
 </style>

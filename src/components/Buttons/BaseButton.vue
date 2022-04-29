@@ -8,6 +8,10 @@ defineProps({
   buttonStyle: {
     type: String,
     required: true,
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false,
   }
 });
 
@@ -21,16 +25,17 @@ function handleClick(){
 
 <template>
   <div class="base-button-container">
-      <button :class="buttonStyle" @click.prevent="handleClick">{{ text }}</button>
+    <button :class="buttonStyle" @click.prevent="handleClick" :disabled="isDisabled">
+      {{ text }}
+    </button>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
 
-.base-button-container{
+.base-button-container {
   @include flex-row-center;
   align-items: center;
 }
-
 </style>

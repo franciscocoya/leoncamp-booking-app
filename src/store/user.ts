@@ -7,7 +7,7 @@ import type { User } from '@/models/user/user.model';
 import { login, signUp } from '@/services/auth/AuthService';
 
 // Servicio de usuarios
-import { getUserDataById } from '@/services/user/UserService';
+import { getUserDataById, updateUserData } from '@/services/user/UserService';
 
 // Servicio de alojamientos 
 import { getAllUserAccomodations} from '@/services/accomodation/AccomodationService';
@@ -102,7 +102,7 @@ const useUserStore = defineStore({
       this.email = JSON.parse(sessionStorage.getItem('user') || '{}').email;
 
       const userData = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
-      this.profileImage = userData.profileImage;
+      this.profileImage = decodeURI(userData.profileImage);
 
       // Si el usuario es host, se mostrarán los siguientes datos.
       const { dni, bio, direction, emailVerified, dniVerified, phoneVerified, verified } = userData;
@@ -116,6 +116,18 @@ const useUserStore = defineStore({
         phoneVerified,
         verified
       }
+    },
+
+    /**
+     * Actualizar los datos del usuario
+     * @returns 
+     */
+    async updateUserProfile(){
+      const userData = await updateUserData(this.id, this.name, this.surname, this.email, this.phone);
+      // this.name = userData.name;
+      // this.surname = userData.surname;
+      // this.email = userData.email;
+      // this.phone = userData.phone;
     },
 
     /**

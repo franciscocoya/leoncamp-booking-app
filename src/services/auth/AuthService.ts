@@ -36,13 +36,15 @@ const login = async (email: string, password: string, callback: CallableFunction
 
     // Obtener datos de usuario
     const { name, surname } = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
-    sessionStorage.setItem('data', JSON.stringify({
+    await sessionStorage.setItem('data', JSON.stringify({
         name,
         surname
     }));
 
     // Redireccionar a su cuenta personal.
-    window.location.href = `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`;
+    if (name && surname) {
+        window.location.href = `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`;
+    }
 };
 
 /**
@@ -114,7 +116,7 @@ const resetPassword = async (email: string,
  * Realiza el logout de la aplicación.
  */
 const logout = () => {
-    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
 };
 
 export {
