@@ -1,12 +1,15 @@
 <script lang="ts" setup>
+import { useRouter } from "vue-router";
 
 // Iconos
-import {IMG_APP_LOGO} from "@/helpers/iconConstants";
+import { IMG_APP_LOGO } from "@/helpers/iconConstants";
+
+const router = useRouter();
 
 defineProps({
   iconWidth: {
     type: Number,
-    default: 200,
+    default: 250,
   },
   iconHeight: {
     type: Number,
@@ -26,6 +29,7 @@ defineProps({
       alt="LeonCamp alquiler de alojamientos turísticos"
       :width="iconWidth"
       :height="iconHeight"
+      @click.prevent="router.push('/')"
     />
   </div>
 </template>

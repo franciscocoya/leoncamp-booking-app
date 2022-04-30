@@ -83,6 +83,12 @@ const router = createRouter({
       name: 'booking-detail',
       component: BookingDetailView,
     },
+    {
+      path: '/accomodation/:registerNumber',
+      name: 'accomodation-detail',
+      component: () =>
+        import('@/views/Accomodations/AccomodationDetailView.vue'),
+    },
   ],
 });
 

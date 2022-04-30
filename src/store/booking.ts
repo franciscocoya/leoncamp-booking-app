@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { Booking } from '@/models/booking/booking.model';
+import type { Booking } from '@/models/booking/booking.model';
 
 const useBookingStore = defineStore({
   id: 'booking',

@@ -13,6 +13,26 @@ defineProps({
     type: Array,
     default: () => [],
   },
+  slidesPerView: {
+    type: Number,
+    default: 1,
+  },
+  spaceBetween: {
+    type: Number,
+    default: 0,
+  },
+  sliderWidth: {
+    type: Number,
+    default: 300,
+  },
+  sliderHeight: {
+    type: Number,
+    default: 200,
+  },
+  slideWidth: {
+    type: Number,
+    default: 300,
+  },
 });
 </script>
 
@@ -28,10 +48,18 @@ defineProps({
       }"
       :navigation="true"
       :modules="modules"
-      class="mySwiper"
+      :slidesPerView="slidesPerView"
+      :spaceBetween="spaceBetween"
+      :autoHeight="false"
+      :style="`width: ${sliderWidth}px; height: ${sliderHeight}px;`"
+      class="myswiper"
     >
-      <swiper-slide v-for="(img, index) in images" :key="index">
-        <img :src="img" alt="" class="swiper-lazy" />
+      <swiper-slide
+        v-for="(img, index) in images"
+        :key="index"
+        :style="`width: ${slideWidth}px`"
+      >
+        <img :src="img" alt="" />
       </swiper-slide>
     </swiper>
   </div>
@@ -41,11 +69,10 @@ defineProps({
 @import "@/assets/scss/_variables.scss";
 
 .swiper {
-  width: 300px;
-  height: 200px;
   border-radius: 10px;
 }
 .swiper-slide {
+  height: auto;
   text-align: center;
   font-size: 18px;
   background: #fff;
@@ -64,9 +91,8 @@ defineProps({
 
   & img {
     display: block;
-    width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 
