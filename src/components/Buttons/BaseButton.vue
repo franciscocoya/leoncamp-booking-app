@@ -1,5 +1,4 @@
 <script setup>
-
 defineProps({
   text: {
     type: String,
@@ -8,29 +7,40 @@ defineProps({
   buttonStyle: {
     type: String,
     required: true,
-  }
+  },
+  buttonWidth: {
+    type: String,
+  },
+  buttonId: {
+    type: String,
+  },
 });
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(["click"]);
 
-function handleClick(){
-  emit('click');
-  }
-
+function handleClick() {
+  emit("click");
+}
 </script>
 
 <template>
   <div class="base-button-container">
-      <button :class="buttonStyle" @click.prevent="handleClick">{{ text }}</button>
+    <button
+      :class="buttonStyle"
+      @click.prevent="handleClick"
+      :style="`${buttonWidth ? `width: ${buttonWidth}` : ''}`"
+      :id="buttonId && buttonId"
+    >
+      {{ text }}
+    </button>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
 
-.base-button-container{
+.base-button-container {
   @include flex-row-center;
   align-items: center;
 }
-
 </style>

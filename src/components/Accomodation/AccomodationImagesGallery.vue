@@ -1,7 +1,4 @@
-<script setup>
-// Componentes
-import BaseButton from "@/components/Buttons/BaseButton.vue";
-
+<script lang="ts" setup>
 const props = defineProps({
   images: {
     type: Array,
@@ -26,13 +23,16 @@ const props = defineProps({
           :id="`${props.regNumber}_image${index}`"
         />
       </div>
-      <!-- Botón para mostrar todas las imágenes. Si hay más de 5 imágenes -->
-      <div class="button-all-images-container">
-        <BaseButton text="Ver todas" buttonStyle="baseButton-dark--filled" />
-      </div>
     </div>
+    <!-- Botón para mostrar todas las imágenes. Si hay más de 5 imágenes -->
+    <BaseButton
+      text="Ver todas"
+      buttonStyle="baseButton-dark--filled"
+      buttonId="bt-show-all-accomodation-images"
+    />
   </div>
 </template>
+
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
@@ -40,13 +40,12 @@ const props = defineProps({
 .accomodation-image-gallery {
   display: block;
   width: 100%;
+  position: relative;
   border-radius: $global-border-radius;
 
   & > .accomodation-image-gallery__wrapper {
-    height: 600px;
-    position: relative;
+    height: 500px;
     & > .accomodation-image-gallery__images {
-      width: 80%;
       height: 100%;
       display: grid;
       grid-template-columns: repeat(8, 1fr);
@@ -93,18 +92,12 @@ const props = defineProps({
         }
       } // fin img
     } // fin accomodation-image-gallery__images
-
-    & > .button-all-images-container {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: flex-end;
-      position: absolute;
-      margin: 0 auto;
-      bottom: 5%;
-      right: 12%;
-    }
   } // fin accomodation-image-gallery__wrapper
+
+  & #bt-show-all-accomodation-images {
+    bottom: 5%;
+    right: 12%;
+    z-index: $z-index-1;
+  }
 }
 </style>

@@ -22,6 +22,7 @@ const useAccomodationStore = defineStore({
   id: 'accomodation',
   state: (): Accomodation => ({
     registerNumber: '',
+    description: '',
     numOfBeds: 0,
     numOfBathRooms: 0,
     numOfBedRooms: 0,
@@ -65,6 +66,7 @@ const useAccomodationStore = defineStore({
       );
 
       this.registerNumber = accomodationToReturn.registerNumber;
+      this.description = accomodationToReturn.description;
       this.numOfBeds = accomodationToReturn.numOfBeds;
       this.numOfBathRooms = accomodationToReturn.numOfBathRooms;
       this.numOfBedRooms = accomodationToReturn.numOfBedRooms;

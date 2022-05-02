@@ -14,16 +14,15 @@ import {
 } from './AccomodationsRoutesEnum';
 
 // Rutas de las reservas API: /api/bookings
-import {
-  BOKINGS_BASE_PATH
-} from './BookingRoutesEnum';
+import { BOKINGS_BASE_PATH } from './BookingRoutesEnum';
 
 // Ruta alojamientos: /api/accomodations
 
 const baseUri: string = import.meta.env.VITE_API_URI;
 
-const apiJwtToken: string =
-  JSON.parse(sessionStorage?.getItem('user') || '{}')?.token;
+const apiJwtToken: string = JSON.parse(
+  sessionStorage?.getItem('user') || '{}'
+)?.token;
 
 /**
  * Lista todos los alojamientos disponibles.
@@ -79,27 +78,33 @@ export async function getAllUserAccomodations(idUser: number) {
  * Listado de todos los alojamientos reservados por un usuario.
  */
 export async function getUserBookingsByUserId(userId: number) {
-  const { data } = await axios.get(`${baseUri}${BOKINGS_BASE_PATH}/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-  });
+  const { data } = await axios.get(
+    `${baseUri}${BOKINGS_BASE_PATH}/users/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
 
   return data;
 }
 
 /**
  * Listado de alojamientos guardados por un usuario.
- * 
- * @param userId 
- * @returns 
+ *
+ * @param userId
+ * @returns
  */
-export async function getUserSavedAccomodationsByUserId(userId: number){
-  const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-  });
+export async function getUserSavedAccomodationsByUserId(userId: number) {
+  const { data } = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/users/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
 
   return data;
 }
@@ -107,12 +112,37 @@ export async function getUserSavedAccomodationsByUserId(userId: number){
 /**
  * Valoración media (En estrellas) de un alojamiento.
  */
-export async function getAccomodationStarAverage(regNumber: string){
- const {data} = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`, {
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-  });
+export async function getAccomodationStarAverage(regNumber: string) {
+  const { data } = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
+
+  return data;
+}
+
+/**
+ *
+ * Listado de las valoraciones del alojamiento con el número de registro pasado como parámetro.
+ *
+ * @param regNumber
+ * @returns
+ */
+export async function getLatestAccomodationReviewsByRegisterNumber(
+  regNumber: string
+) {
+  const { data } = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/latest`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
 
   return data;
 }
@@ -120,10 +150,15 @@ export async function getAccomodationStarAverage(regNumber: string){
 /**
  * Eliminar un alojamiento por su número de registro.
  */
-export async function deleteAccomodationBySavedAccomodationId(regNumber: number){
-  await axios.delete(`${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${regNumber}`, {
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-  });
+export async function deleteAccomodationBySavedAccomodationId(
+  regNumber: number
+) {
+  await axios.delete(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${regNumber}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
 }

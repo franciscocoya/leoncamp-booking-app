@@ -1,9 +1,9 @@
 import type { PromoCode } from '@/models/promoCode/promoCode.model';
 import type { Coordinate } from '@/models/accomodation/coordinates.model';
 
-
 export interface Accomodation {
   registerNumber: string;
+  description: string;
   numOfBeds: number;
   numOfBathRooms: number;
   numOfBedRooms: number;
@@ -19,11 +19,11 @@ export interface Accomodation {
   };
   accomodationImages: string[];
   userHost: {
-    id: number,
-    name: string,
-    surname: string,
-    profileImage: string
-  },
+    id: number;
+    name: string;
+    surname: string;
+    profileImage: string;
+  };
   accomodationRules: string[];
   accomodationServices: string[];
   promoCodes?: PromoCode[];
