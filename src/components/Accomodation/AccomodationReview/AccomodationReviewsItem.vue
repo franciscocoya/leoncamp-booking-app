@@ -59,4 +59,9 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
+ul {
+  list-style: none;
+  margin-top: 50px;
+  padding: 0;
+}
 </style>
