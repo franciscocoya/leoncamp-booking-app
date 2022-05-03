@@ -1,11 +1,19 @@
 <script setup>
-import { defineEmits } from "vue";
+import { defineEmits, onMounted } from "vue";
+
+// Store
+import { useSearchStore } from "@/store/search";
+const searchStore = useSearchStore();
 
 const emit = defineEmits(["hide-search-results"]);
 
 const handleHideSearchResults = () => {
   emit("hide-search-results");
 };
+
+onMounted(() => {
+  searchStore.setSearchResults(searchStore.searchQuery);
+});
 </script>
 
 <template>
@@ -16,7 +24,7 @@ const handleHideSearchResults = () => {
     ></div>
     <div class="search-results-container__wrapper">
       <ul>
-        <li>
+        <li v-for="(result, index) in searchStore.searchResults" :key="index">
           <svg
             width="30"
             height="30"
@@ -39,7 +47,7 @@ const handleHideSearchResults = () => {
               stroke-linecap="round"
             />
           </svg>
-          <p>León, España</p>
+          <p>{{result}}</p>
         </li>
       </ul>
     </div>

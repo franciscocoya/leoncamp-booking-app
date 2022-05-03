@@ -37,7 +37,13 @@ const showAllReviews = () => {
 <template>
   <div class="accomodation-reviews-container">
     <h2>Valoraciones</h2>
-    <div v-if="reviews.length > 0" class="accomodation-star-average-container">
+    <div
+      v-if="reviews.length > 0"
+      class="accomodation-star-average-container"
+      :title="`El alojamiento tiene una valoración media de ${
+        reviews.length
+      } ${reviews.length > 1 ? ' estrellas' : 'estrella'}`"
+    >
       <span>Valoración media: </span>
       <svg
         width="24"
@@ -45,7 +51,7 @@ const showAllReviews = () => {
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        v-for="(star, index) in  accomodationStore.stars"
+        v-for="(star, index) in accomodationStore.stars"
         :key="index"
       >
         <path
@@ -58,7 +64,7 @@ const showAllReviews = () => {
           stroke-linecap="round"
         />
       </svg>
-      <span :title="`El alojamiento tiene de media una valoración de ${reviews.length} estrellas`" class="star-average-count">({{reviews.length}})</span>
+      <span class="star-average-count">({{ reviews.length }})</span>
     </div>
     <h3 v-if="reviews.length == 0">No hay valoraciones</h3>
     <ul v-else>
@@ -84,12 +90,12 @@ const showAllReviews = () => {
 .accomodation-reviews-container {
   margin: 40px 0;
 
-  & > .accomodation-star-average-container{
+  & > .accomodation-star-average-container {
     @include flex-row;
     gap: 10px;
     margin-top: 20px;
 
-    & > .star-average-count{
+    & > .star-average-count {
       font-size: 1.1rem;
       font-weight: 300;
     }

@@ -184,3 +184,11 @@ export async function deleteAccomodationBySavedAccomodationId(
     }
   );
 }
+
+/**
+ * Listado de todas las ciudades
+ */
+export async function getAllCities() {
+    const accomodations = await getAllAccomodations();
+    return [...new Set(accomodations.map((accomodation) => accomodation.idAccomodationLocation.city))]
+}

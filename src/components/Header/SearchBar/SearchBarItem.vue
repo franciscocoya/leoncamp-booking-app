@@ -7,6 +7,10 @@ import IconButton from "../../Buttons/IconButton.vue";
 // Iconos
 import {ICON_MAP_MARKER, ICON_CALENDAR, ICON_SEARCH} from  "@/helpers/iconConstants";
 
+// Store
+import {useSearchStore} from '@/store/search';
+const searchStore = useSearchStore();
+
 const emit = defineEmits(['show-search-results', 'hide-search-results']);
 
 const showSearchResults = () => {
@@ -16,6 +20,11 @@ const showSearchResults = () => {
 const hideSearchResults = () => {
   emit('hide-search-results');
 }
+
+const handleSearchInput = (e) => {
+  e.target.value.length > 0 ? showSearchResults() : hideSearchResults();
+  searchStore.setSearchWord(e.target.value.length > 0 ? e.target.value : '');
+};
 
 </script>
 
@@ -27,7 +36,7 @@ const hideSearchResults = () => {
       class="marker-search-icon"
     />
 
-    <input type="text" placeholder="León" @input.prevent="(e) => e.target.value.length > 0 ? showSearchResults() : hideSearchResults()"/>
+    <input type="text" placeholder="León" @input.prevent="(e) => handleSearchInput(e)"/>
 
     <div class="search-filter-button-group">
       <!-- Boton checkIn -->

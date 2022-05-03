@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { onMounted, withDefaults } from "vue";
 import { useRouter } from "vue-router";
 
@@ -12,20 +12,13 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
-const router: any = useRouter();
+const router = useRouter();
 
-interface Props {
-  accData: any;
-  showDeleteButton?: boolean;
-  isCurrentUserOwner?: boolean;
-  savedAccId?: number;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  accData: null,
-  showDeleteButton: false,
-  isCurrentUserOwner: false,
-  savedAccId: -1,
+const props = defineProps({
+  accData: Object,
+  showDeleteButton: Boolean,
+  isCurrentUserOwner: Boolean,
+  savedAccId: Number
 });
 
 const getAccomodationStarAverage = async () => {
