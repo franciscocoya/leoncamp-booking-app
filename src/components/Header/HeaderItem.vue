@@ -1,10 +1,14 @@
 <script setup>
 import { useRouter, RouterLink } from "vue-router";
 
+// Iconos
+import { IMG_APP_LOGO } from "@/helpers/iconConstants";
+import AccountIcon from "../icons/Account/AccountIcon.vue";
+import AppLogoIcon from "../icons/AppLogoIcon.vue";
+
 // Componentes
 import SearchBarItem from "./SearchBar/SearchBarItem.vue";
 import MenuDesktopItem from "./Menu/MenuDesktopItem.vue";
-import AccountIcon from "../icons/Account/AccountIcon.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 const router = useRouter();
@@ -15,9 +19,7 @@ const userToken = JSON.parse(sessionStorage.getItem("user") || "{}").token;
 
 <template>
   <header>
-    <RouterLink to="/">
-      <img :src="IMG_APP_LOGO" alt="" class="app-logo" />
-    </RouterLink>
+    <AppLogoIcon />
 
     <SearchBarItem />
 
@@ -51,10 +53,5 @@ header {
   top: 0;
   left: 0;
   z-index: $z-index-header;
-}
-
-.app-logo {
-  width: 100px;
-  height: auto;
 }
 </style>

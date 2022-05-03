@@ -1,5 +1,4 @@
 <script setup>
-
 defineProps({
   text: {
     type: String,
@@ -12,20 +11,31 @@ defineProps({
   isDisabled: {
     type: Boolean,
     default: false,
-  }
+  },
+  buttonWidth: {
+    type: String,
+  },
+  buttonId: {
+    type: String,
+  },
 });
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(["click"]);
 
-function handleClick(){
-  emit('click');
-  }
-
+function handleClick() {
+  emit("click");
+}
 </script>
 
 <template>
   <div class="base-button-container">
-    <button :class="buttonStyle" @click.prevent="handleClick" :disabled="isDisabled">
+    <button
+      :class="buttonStyle"
+      @click.prevent="handleClick"
+      :style="`${buttonWidth ? `width: ${buttonWidth}` : ''}`"
+      :id="buttonId && buttonId"
+      :disabled="isDisabled"
+    >
       {{ text }}
     </button>
   </div>

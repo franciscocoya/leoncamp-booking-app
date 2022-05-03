@@ -4,7 +4,9 @@ import { defineStore } from 'pinia';
 import type { Accomodation } from '@/models/accomodation/accomodation.model';
 
 // Token de usuario
-const currentUserId: number = JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
+const currentUserId: number = JSON.parse(
+  sessionStorage.getItem('user') || '{}'
+)?.id;
 
 // Servicios
 import {
@@ -13,13 +15,14 @@ import {
   getUserBookingsByUserId,
   getUserSavedAccomodationsByUserId,
   getAccomodationStarAverage,
-  deleteAccomodationBySavedAccomodationId
+  deleteAccomodationBySavedAccomodationId,
 } from '@/services/accomodation/AccomodationService';
 
 const useAccomodationStore = defineStore({
   id: 'accomodation',
   state: (): Accomodation => ({
     registerNumber: '',
+    description: '',
     numOfBeds: 0,
     numOfBathRooms: 0,
     numOfBedRooms: 0,
@@ -30,7 +33,7 @@ const useAccomodationStore = defineStore({
     accomodationLocation: {
       coords: {
         lat: 0,
-        lng: 0
+        lng: 0,
       },
       direction: '',
       city: '',
@@ -44,7 +47,7 @@ const useAccomodationStore = defineStore({
       id: 0,
       name: '',
       surname: '',
-      profileImage: ''
+      profileImage: '',
     },
     stars: 0,
     createdAt: new Date(),
@@ -57,8 +60,33 @@ const useAccomodationStore = defineStore({
      * @param registerNumber
      * @returns
      */
-    getAccomodationByRegisterNumber(registerNumber: string) {
-      const accomodationToReturn = getAccomodationByRegNumber(registerNumber);
+    async getAccomodationByRegisterNumber(registerNumber: string) {
+      const accomodationToReturn = await getAccomodationByRegNumber(
+        registerNumber
+      );
+
+      this.registerNumber = accomodationToReturn.registerNumber;
+      this.description = accomodationToReturn.description;
+      this.numOfBeds = accomodationToReturn.numOfBeds;
+      this.numOfBathRooms = accomodationToReturn.numOfBathRooms;
+      this.numOfBedRooms = accomodationToReturn.numOfBedRooms;
+      this.pricePerNight = accomodationToReturn.pricePerNight;
+      this.numOfGuests = accomodationToReturn.numOfGuests;
+      this.area = accomodationToReturn.area;
+      this.category = accomodationToReturn.idAccomodationCategory;
+      this.accomodationLocation = accomodationToReturn.idAccomodationLocation;
+      this.accomodationImages = accomodationToReturn.accomodationImages.map(
+        (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl
+      );
+      this.accomodationRules = accomodationToReturn.accomodationRules;
+      this.accomodationServices = accomodationToReturn.accomodationServices;
+      this.promoCodes = accomodationToReturn.promoCodes;
+      this.userHost = accomodationToReturn.idUserHost;
+      this.stars = await this.getStarAverage(
+        accomodationToReturn.registerNumber
+      );
+      this.createdAt = accomodationToReturn.createdAt;
+
       return accomodationToReturn;
     },
 
@@ -79,7 +107,7 @@ const useAccomodationStore = defineStore({
 
     /**
      * Listado de los alojamientos guardados por el usuario en sesión.
-     * @returns 
+     * @returns
      */
     getAllUserSavedAccomodations() {
       return getUserSavedAccomodationsByUserId(currentUserId);
@@ -88,18 +116,18 @@ const useAccomodationStore = defineStore({
     /**
      * Valoración media (En estrellas) de un alojamiento.
      */
-    getStarAverage(regNumber: string): Promise<number> {
-      return getAccomodationStarAverage(regNumber);
+    async getStarAverage(regNumber: string): Promise<number> {
+      return await getAccomodationStarAverage(regNumber);
     },
 
     /**
      * Eliminar un alojamiento por su número de registro.
-     * 
-     * @param regNumber 
+     *
+     * @param regNumber
      */
     deleteAccomodationBySavedAccId(savedAccId: number): void {
       deleteAccomodationBySavedAccomodationId(savedAccId);
-    }
+    },
   },
 });
 

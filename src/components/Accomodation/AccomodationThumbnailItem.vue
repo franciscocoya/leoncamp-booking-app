@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, withDefaults } from "vue";
+import { useRouter } from "vue-router";
 
 // Componentes
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
@@ -11,22 +12,26 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
+const router: any = useRouter();
+
 interface Props {
   accData: any;
   showDeleteButton?: boolean;
   isCurrentUserOwner?: boolean;
-  savedAccId?: number
+  savedAccId?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   accData: null,
   showDeleteButton: false,
   isCurrentUserOwner: false,
-  savedAccId: -1
+  savedAccId: -1,
 });
 
 const getAccomodationStarAverage = async () => {
-  accomodationStore.stars = await accomodationStore.getStarAverage(accomodationStore.registerNumber);
+  accomodationStore.stars = await accomodationStore.getStarAverage(
+    accomodationStore.registerNumber
+  );
 };
 
 const handleDeleteAccomodation = async () => {
@@ -50,7 +55,10 @@ onMounted(() => {
     />
 
     <!-- Detalles del alojamiento -->
-    <div class="accomodation-thumbnail-detail-container">
+    <div
+      class="accomodation-thumbnail-detail-container"
+      @click.prevent="router.push(`/accomodation/${accData.registerNumber}`)"
+    >
       <div class="accomodation-thumbnail-detail-container__header">
         <div>
           <!-- Categoría del alojamiento -->
@@ -66,7 +74,9 @@ onMounted(() => {
         </div>
         <div>
           <!-- Icono guardar alojamiento -->
-          <SavedAccomodationIcon v-if="!accData.idUserHost && !isCurrentUserOwner" />
+          <SavedAccomodationIcon
+            v-if="!accData.idUserHost && !isCurrentUserOwner"
+          />
           <!-- Botón de eliminar -->
           <BaseButton
             v-if="showDeleteButton"
@@ -101,7 +111,7 @@ onMounted(() => {
               stroke-linecap="round"
             />
           </svg>
-          <span >{{ accomodationStore.stars }}</span>
+          <span>{{ accomodationStore.stars }}</span>
         </div>
         <div class="accomodation-price-per-night">
           <span>{{ accData.pricePerNight }} €</span>
@@ -122,7 +132,7 @@ onMounted(() => {
   // Estilos parte derecha (Detalles del alojamiento)
   & > .accomodation-thumbnail-detail-container {
     @include flex-column-between;
-
+    cursor: pointer;
     // Estilos header
     & > .accomodation-thumbnail-detail-container__header {
       @include flex-row-space-between;

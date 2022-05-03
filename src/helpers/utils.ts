@@ -1,7 +1,24 @@
+import { accomodationServices } from '@/helpers/accomodationServicesIcons';
+
 /**
  * Obtención del token de usuario
  */
 const getUserToken = () => sessionStorage.getItem('user')?.token;
+
+const months = [
+  'enero',
+  'febrero',
+  'marzo',
+  'abril',
+  'mayo',
+  'junio',
+  'julio',
+  'agosto',
+  'septiembre',
+  'octubre',
+  'noviembre',
+  'diciembre',
+];
 
 /**
  * Formatea un fecha de un array a una cadena de texto en formato dd/mm/yy
@@ -28,6 +45,7 @@ const convertArrayToDate = (dateArr: number[]): Date => {
 };
 
 /**
+ *
  * Lee una imagen en formato base64 y devuelve una imagen en URL.
  */
  const convertImageToBase64 = async (file: File): Promise<string> => {
@@ -39,4 +57,38 @@ const convertArrayToDate = (dateArr: number[]): Date => {
   });
 }
 
-export { getUserToken, formatArrayAsDate, convertArrayToDate, convertImageToBase64 };
+ * Devuelve el mes en formato texto.
+ * @param month
+ * @returns
+ */
+const getMonthNameByNumber = (month: number): string => {
+  return months[month];
+};
+
+/**
+ * Recibe una fecha en formato array [yyyy, mm, dd] y devuelve una cadena de texto con
+el formato dd de MMMM . Por ejemplo, octubre de 2020
+ * @param date
+ * @returns
+ */
+const formatArrayAsSimpleStringDate = (date: number[]): string => {
+  return getMonthNameByNumber(date[1]) + ' de ' + date[0];
+};
+
+/**
+ * Obtiene el icono asociado al servicio de alojamiento pasado como parámetro.
+
+ * @param id
+ * @returns
+ */
+const getAccomodationServiceImageById = (id: number): string => {
+  return accomodationServices.find((service) => service.id === id)?.icon;
+};
+
+export {
+  getUserToken,
+  formatArrayAsDate,
+  convertArrayToDate,
+  getAccomodationServiceImageById,
+  formatArrayAsSimpleStringDate,
+};
