@@ -23,7 +23,7 @@ onMounted(() => {
       @click.prevent="handleHideSearchResults"
     ></div>
     <div class="search-results-container__wrapper">
-      <ul>
+      <ul v-if="searchStore.searchResults.length > 0">
         <li v-for="(result, index) in searchStore.searchResults" :key="index">
           <svg
             width="30"
@@ -47,9 +47,10 @@ onMounted(() => {
               stroke-linecap="round"
             />
           </svg>
-          <p>{{result}}</p>
+          <p>{{ result }}</p>
         </li>
       </ul>
+      <p v-else>No hay resultados</p>
     </div>
   </div>
 </template>
@@ -77,7 +78,7 @@ onMounted(() => {
 
   & > .search-results-container__wrapper {
     width: 400px;
-    height: 300px;
+    // height: 300px;
     margin-top: 20px;
     padding: 50px;
     background-color: #fff;

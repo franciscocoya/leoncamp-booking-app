@@ -7,12 +7,16 @@ import AccomodationImagesGallery from "@/components/Accomodation/AccomodationIma
 import AccomodationServicesItem from "@/components/Accomodation/AccomodationServicesItem.vue";
 import AccomodationReviewsItem from "@/components/Accomodation/AccomodationReview/AccomodationReviewsItem.vue";
 import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
+import AccountIcon from "@/components/Icons/Account/AccountIcon.vue";
 
 // Utils
-import { cropTextByWordCount } from "@/helpers/utils";
+import {
+  cropTextByWordCount,
+  formatArrayAsSimpleStringDate,
+} from "@/helpers/utils";
 
 // Iconos
-import { ICON_MAP_MARKER } from "@/helpers/iconConstants";
+import { ICON_MAP_MARKER, ICON_VERIFIED_USER } from "@/helpers/iconConstants";
 
 // Modales
 import AccomodationServicesModal from "@/components/Modals/AccomodationServicesModal.vue";
@@ -29,6 +33,8 @@ import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
+const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+
 const router = useRouter();
 
 const isLoading = ref(true);
@@ -37,6 +43,15 @@ const showAllDescription = ref(false);
 // Variables condicionales para mostrar dialogos modales.
 const showServiceModal = ref(false);
 const showReviewsModal = ref(false);
+
+const handleUserProfileButtonClick = () => {
+  const { id } = currentUser;
+  router.push(
+    id === accomodationStore.userHost.id
+      ? `/account/${accomodationStore.userHost.name.toLowerCase()}-${accomodationStore.userHost.surname.toLowerCase()}/profile`
+      : `/u/${accomodationStore.userHost.name}-${accomodationStore.userHost.surname}`
+  );
+};
 
 onBeforeMount(() => {
   isLoading.value = true;
@@ -173,6 +188,52 @@ onMounted(async () => {
           /> -->
         </section>
 
+        <!-- Sección detalles anfitrión -->
+        <section class="accomodation-host">
+          <h2>Detalles del anfitrión</h2>
+          <div class="accomodation-host-summary">
+            <div class="accomodation-host__info">
+              <div class="accomodation-host_info__details">
+                <AccountIcon
+                  :profileImage="accomodationStore.userHost.profileImage"
+                  :width="80"
+                  :height="80"
+                />
+                <div class="accomodation-host_details__fullname">
+                  <p>
+                    {{ accomodationStore.userHost.name }}
+                    {{ accomodationStore.userHost.surname }}
+                  </p>
+                  <span
+                    >Usuario desde
+                    {{
+                      formatArrayAsSimpleStringDate(
+                        accomodationStore.userHost.createdAt
+                      )
+                    }}</span
+                  >
+                </div>
+              </div>
+              <div
+                v-if="accomodationStore.userHost.verified"
+                class="accomodation-host_info__verified"
+              >
+                <img :src="ICON_VERIFIED_USER" alt="" />
+                <p>Identidad verificada</p>
+              </div>
+            </div>
+            <BaseButton
+              :text="`${
+                accomodationStore.userHost.id === currentUser.id
+                  ? 'Ir a tu perfil'
+                  : 'Ver perfil'
+              }`"
+              buttonStyle="baseButton-primary--outlined"
+              @click="handleUserProfileButtonClick"
+            />
+          </div>
+        </section>
+
         <!-- Sección valoraciones -->
         <section class="accomodation-detail__reviews">
           <AccomodationReviewsItem
@@ -258,6 +319,67 @@ onMounted(async () => {
         }
       }
     } // Fin estilos accomodation-detail__location
+
+    // Estilos sección detalles anfitrión
+    & > .accomodation-host {
+      @include flex-column;
+      align-content: flex-start;
+
+      & > .accomodation-host-summary {
+        @include flex-row;
+        width: 60%;
+        justify-content: space-between;
+        gap: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: $global-border-radius;
+        border: 1px solid $color-tertiary-dark;
+
+        & > .accomodation-host__info {
+          @include flex-column;
+          align-items: flex-start;
+          gap: 20px;
+
+          & > .accomodation-host_info__details {
+            @include flex-row;
+            align-items: center;
+            gap: 20px;
+
+            // Estilos nombre y apellidos del usuario host
+            & > .accomodation-host_details__fullname {
+              @include flex-column;
+              gap: 5px;
+
+              // Estilos nombre y apellido
+              & > p {
+                margin: 0;
+                font-size: 1.1rem;
+                font-weight: 600;
+              }
+
+              // Estilos fecha registro
+              & > span {
+                color: gray;
+              } // fin estilos span
+            } // Fin estilos accomodation-host_details__fullname
+          } // Fin estilos accomodation-host_info__details
+
+          & > .accomodation-host_info__verified {
+            @include flex-row;
+            gap: 5px;
+
+            & > img {
+              object-fit: contain;
+            }
+
+            & > p {
+              font-size: 1rem;
+              font-weight: 300;
+            }
+          }
+        } // Fin estilos accomodation-host__info
+      }
+    } // FIn estilos accomodation-host
   }
 }
 
@@ -285,6 +407,4 @@ onMounted(async () => {
   transform: translateX(20px);
   opacity: 0;
 }
-
-
 </style>

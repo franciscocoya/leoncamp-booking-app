@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import HeaderItem from "./components/Header/HeaderItem.vue";
+import FooterItem from "./components/Footer/FooterItem.vue";
 
 import SearchResultsItem from "./components/Header/SearchBar/SearchResultsItem.vue";
 
@@ -35,6 +36,7 @@ const showSearchResults = ref(false);
   </Transition>
 
   <RouterView />
+  <FooterItem />
 </template>
   
 <style lang="scss">

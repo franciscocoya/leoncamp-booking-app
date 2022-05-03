@@ -28,31 +28,37 @@ const router = createRouter({
   base: import.meta.env.BASE_URL,
   routes: [
     {
+      // Inicio de sesión
       path: '/signin',
       name: 'signin',
       component: LoginView,
     },
     {
+      // Registro
       path: '/signup',
       name: 'signup',
       component: RegisterView,
     },
     {
+      // Restablecer contraseña
       path: '/password/reset',
       name: 'reset-password',
       component: ForgotPasswordView,
     },
     {
+      // Inicio
       path: '/',
       name: 'home',
       component: HomeView,
     },
     {
+      // Alojamientos guardados por el usuario en sesión
       path: '/saved',
       name: 'saved',
       component: SavedAccomodationsView,
     },
     {
+      // Perfil del usuario en sesión
       path: '/account/:username',
       name: 'account',
       component: AccountView,
@@ -84,10 +90,18 @@ const router = createRouter({
       component: BookingDetailView,
     },
     {
+      // Detalle de un alojamiento
       path: '/accomodation/:registerNumber',
       name: 'accomodation-detail',
       component: () =>
         import('@/views/Accomodations/AccomodationDetailView.vue'),
+    },
+
+    {
+      // Perfil de un usuario
+      path: '/u/:username',
+      name: 'user-profile',
+      component: () => import('@/views/UserProfile/UserProfileView.vue'),
     },
   ],
 });
