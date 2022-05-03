@@ -1,15 +1,24 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, h, render } from "vue";
 import mapboxgl from "mapbox-gl";
+
+import { useAccomodationStore } from "@/store/accomodation";
+const accomodationStore = useAccomodationStore();
+
+// Iconos
+import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
+
+// Componentes
+// import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
 const props = defineProps({
   lat: {
     type: Number,
-    default: 0,
+    required: true
   },
   lng: {
     type: Number,
-    default: 0,
+    required: true
   },
   mapWidth: {
     type: Number,
@@ -21,31 +30,51 @@ const props = defineProps({
   },
 });
 
-// Componentes
-
 onMounted(() => {
   const map = new mapboxgl.Map({
     accessToken: import.meta.env.VITE_MAPBOX_API_TOKEN,
     container: "map", // container ID
     style: "mapbox://styles/mapbox/streets-v11", // style URL
-    center: [props.lng, props.lat], // starting position [lng, lat]
+    // starting position [lng, lat]
+    center: [
+      props.lng,
+      props.lat,
+    ],
     minzoom: 1.3,
     zoom: 14, // starting zoom
-  }).addControl(new mapboxgl.NavigationControl(), "top-right");
+  });
 
-  //const myMark = document.createElement("div");
+  // Marcador
+  const myMark = document.createElement("div");
+  myMark.style.backgroundImage = `url(${ICON_MAP_MARKER_TENTH})`;
+  myMark.style.backgroundRepeat = "no-repeat";
+  myMark.style.backgroundPosition = "center center";
+  myMark.style.backgroundColor = "rgba(245, 86, 42, 0.5)";
+  myMark.style.borderRadius = "50%";
+  myMark.style.padding = "8px";
+  myMark.style.width = "50px";
+  myMark.style.height = "50px";
 
-  new mapboxgl.Marker().setLngLat([props.lng, props.lat]).addTo(map);
+  new mapboxgl.Marker(myMark)
+    .setLngLat([
+      props.lng,
+      props.lat,
+    ])
+    .addTo(map);
 });
 </script>
 
 <template>
-  <div id="map"></div>
+  <div>
+    <div id="map" :style="`width: ${mapWidth}; height: ${mapHeight}`"></div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_variables.scss";
 #map {
   width: 100%;
-  height: 500px;
+  height: 450px;
+  border-radius: $global-border-radius;
 }
 </style>

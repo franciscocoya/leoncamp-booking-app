@@ -7,6 +7,7 @@ const ICON_CALENDAR = `${IMG_PATH}icons/calendar-icon.svg`;
 const ICON_CALENDAR_FILLED = `${IMG_PATH}icons/calendar-icon-filled.png`;
 const ICON_BOOKMARK = `${IMG_PATH}icons/bookmark-icon.svg`;
 const ICON_MAP_MARKER = `${IMG_PATH}icons/marker-icon.svg`;
+const ICON_MAP_MARKER_TENTH = `${IMG_PATH}icons/tenth-marker-icon.png`;
 const ICON_SEARCH = `${IMG_PATH}icons/search-icon.svg`;
 const ICON_VERIFIED_USER = `${IMG_PATH}icons/user-verified-icon.png`;
 const ICON_PAYMENT_CREDIT_CARD = `${IMG_PATH}icons/icon-credit-card.svg`;
@@ -24,6 +25,7 @@ export {
   ICON_CALENDAR_FILLED,
   ICON_BOOKMARK,
   ICON_MAP_MARKER,
+  ICON_MAP_MARKER_TENTH,
   ICON_SEARCH,
   ICON_VERIFIED_USER,
   ICON_PAYMENT_CREDIT_CARD,

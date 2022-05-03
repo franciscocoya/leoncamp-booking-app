@@ -10,6 +10,7 @@ import { getLatestAccomodationReviewsByRegisterNumber } from "@/services/accomod
 
 // Componentes
 import SingleAccomodationReviewItem from "@/components/Accomodation/AccomodationReview/SingleAccomodationReviewItem.vue";
+import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 const props = defineProps({
   registerNumber: {
@@ -25,17 +26,27 @@ onMounted(async () => {
     props.registerNumber
   );
 });
+
+const emit = defineEmits("show-reviews-modal");
+
+const showAllReviews = () => {
+  emit("show-reviews-modal");
+};
 </script>
 
 <template>
   <div class="accomodation-reviews-container">
-    <div>
+    <h2>Valoraciones</h2>
+    <div v-if="reviews.length > 0" class="accomodation-star-average-container">
+      <span>Valoración media: </span>
       <svg
         width="24"
         height="24"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        v-for="(star, index) in  accomodationStore.stars"
+        :key="index"
       >
         <path
           fill-rule="evenodd"
@@ -47,18 +58,44 @@ onMounted(async () => {
           stroke-linecap="round"
         />
       </svg>
-      <span>{{ accomodationStore.stars }}</span>
+      <span :title="`El alojamiento tiene de media una valoración de ${reviews.length} estrellas`" class="star-average-count">({{reviews.length}})</span>
     </div>
-    <h2>Valoraciones ({{ reviews.length }})</h2>
-    <ul>
+    <h3 v-if="reviews.length == 0">No hay valoraciones</h3>
+    <ul v-else>
       <li v-for="(review, index) in reviews" :key="index">
         <SingleAccomodationReviewItem :review="review" />
       </li>
     </ul>
+    <!-- Botón mostrar todas las valoraciones -->
+    <BaseButton
+      v-if="reviews.length > 3"
+      :text="`Mostrar las ${reviews.length} valoraciones`"
+      buttonStyle="baseButton-dark--outlined"
+      buttonWidth="250px"
+      id="bt-show-all-reviews"
+      @click="showAllReviews"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
+.accomodation-reviews-container {
+  margin: 40px 0;
+
+  & > .accomodation-star-average-container{
+    @include flex-row;
+    gap: 10px;
+    margin-top: 20px;
+
+    & > .star-average-count{
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+  }
+}
+
 ul {
   list-style: none;
   margin-top: 50px;

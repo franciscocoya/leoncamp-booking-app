@@ -1,7 +1,10 @@
 <script lang="ts" setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import HeaderItem from "./components/Header/HeaderItem.vue";
+
+import SearchResultsItem from "./components/Header/SearchBar/SearchResultsItem.vue";
 
 // Rutas públicas
 import { authRoutes } from "@/helpers/appRoutes";
@@ -14,13 +17,40 @@ const currentRoute = () => router.currentRoute.value.path;
 const isCurrentRoutePublic = () => {
   return !authRoutes.includes(currentRoute());
 };
+
+const showSearchResults = ref(false);
 </script>
 
-<template>
-  <HeaderItem v-if="isCurrentRoutePublic()" />
+<template class="app-root">
+  <HeaderItem
+    v-if="isCurrentRoutePublic()"
+    @show-search-results="showSearchResults = true"
+    @hide-search-results="showSearchResults = false"
+  />
+  <Transition>
+    <SearchResultsItem
+      v-if="showSearchResults"
+      @hide-search-results="showSearchResults = false"
+    />
+  </Transition>
+
   <RouterView />
 </template>
   
 <style lang="scss">
 @import "./assets/scss/main.scss";
+.app-root {
+  position: relative;
+}
+
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>

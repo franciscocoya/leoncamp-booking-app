@@ -12,12 +12,22 @@ defineProps({
     type: String,
     default: "#000",
   },
+
+  badgeWidth: {
+    type: String,
+  },
+  badgeHeight: {
+    type: String,
+  },
+  badgePadding: {
+    type: String,
+  }
 });
 </script>
 
 <template>
   <span
-    :style="`background: ${backgroundColor}; color: ${color};`"
+    :style="`background: ${backgroundColor}; color: ${color}; width: ${badgeWidth}; height: ${badgeHeight}; padding: ${badgePadding} 0`"
     class="base-badge"
   >
     {{ text }}
@@ -30,5 +40,6 @@ defineProps({
 .base-badge {
   padding: 2px 8px;
   border-radius: $global-border-radius;
+  text-align: center;
 }
 </style>

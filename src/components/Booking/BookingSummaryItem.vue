@@ -69,12 +69,12 @@ const redirectToBookingDetail = () => {
       <div :class="`booking-status-icon ${bookingStatus}`"></div>
     </div>
     <div class="booking-summary-item__detail">
-      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkIn)" />
-      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkOut)" />
-      <div class="booking-payment-method-container">
+      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkIn)" dateTitle="Fecha check-in"/>
+      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkOut)" dateTitle="Fecha check-out"/>
+      <div class="booking-payment-method-container" title="Método de pago utilizado">
         <img :src="ICON_PAYMENT_PAYPAL" alt="" />
       </div>
-      <p class="booking-total-price">{{ totalPrice }} €</p>
+      <p class="booking-total-price" title="Precio total de la reserva">{{ totalPrice }} €</p>
       <BaseButton
         text="VER"
         buttonStyle="baseButton-dark--outlined--small"

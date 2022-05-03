@@ -16,6 +16,7 @@ import {
   getUserSavedAccomodationsByUserId,
   getAccomodationStarAverage,
   deleteAccomodationBySavedAccomodationId,
+  getAllAccomodationReviewsByRegisterNumber
 } from '@/services/accomodation/AccomodationService';
 
 const useAccomodationStore = defineStore({
@@ -43,6 +44,7 @@ const useAccomodationStore = defineStore({
     accomodationRules: [],
     accomodationServices: [],
     promoCodes: [],
+    accomodationReviews: [],
     userHost: {
       id: 0,
       name: '',
@@ -82,9 +84,15 @@ const useAccomodationStore = defineStore({
       this.accomodationServices = accomodationToReturn.accomodationServices;
       this.promoCodes = accomodationToReturn.promoCodes;
       this.userHost = accomodationToReturn.idUserHost;
+
+      // Valoracion media
       this.stars = await this.getStarAverage(
         accomodationToReturn.registerNumber
       );
+
+      // Valoraciones del alojamiento
+      this.accomodationReviews = await getAllAccomodationReviewsByRegisterNumber(accomodationToReturn.registerNumber);
+
       this.createdAt = accomodationToReturn.createdAt;
 
       return accomodationToReturn;

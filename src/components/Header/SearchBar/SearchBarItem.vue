@@ -1,10 +1,21 @@
 <script setup>
+import { defineEmits} from 'vue';
 
 // Componentes
 import IconButton from "../../Buttons/IconButton.vue";
 
 // Iconos
 import {ICON_MAP_MARKER, ICON_CALENDAR, ICON_SEARCH} from  "@/helpers/iconConstants";
+
+const emit = defineEmits(['show-search-results', 'hide-search-results']);
+
+const showSearchResults = () => {
+  emit('show-search-results');
+}
+
+const hideSearchResults = () => {
+  emit('hide-search-results');
+}
 
 </script>
 
@@ -16,7 +27,7 @@ import {ICON_MAP_MARKER, ICON_CALENDAR, ICON_SEARCH} from  "@/helpers/iconConsta
       class="marker-search-icon"
     />
 
-    <input type="text" placeholder="León" />
+    <input type="text" placeholder="León" @input.prevent="(e) => e.target.value.length > 0 ? showSearchResults() : hideSearchResults()"/>
 
     <div class="search-filter-button-group">
       <!-- Boton checkIn -->
@@ -37,18 +48,13 @@ import {ICON_MAP_MARKER, ICON_CALENDAR, ICON_SEARCH} from  "@/helpers/iconConsta
     <img
       :src="ICON_SEARCH"
       alt="Buscar"
-      class="search-icon--primary"
-    />
+      class="search-icon--primary"/>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_variables.scss";
 @import "@/assets/scss/_mixins.scss";
-
-p {
-  color: $color;
-}
 
 .search-filter-button-group {
   @include flex-row-center;
@@ -62,6 +68,10 @@ p {
   background: $color-tertiary-light;
   border-radius: 10px;
   padding: 0 10px;
+
+  & > img{
+    @include flex-row;
+  }
 }
 
 input[type="text"] {
@@ -81,5 +91,6 @@ input[type="text"] {
   padding: 5px;
   background-color: $color-primary;
   border-radius: 25px;
+  align-self: center;
 }
 </style>

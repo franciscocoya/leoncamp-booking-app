@@ -53,51 +53,51 @@
 }
 
 // Botones con fondo transparente y borde de color.
-.baseButton-primary--outlined{
+.baseButton-primary--outlined {
     @include baseButton--outlined($color-primary, $color-primary);
 }
 
-.baseButton-secondary--outlined{
+.baseButton-secondary--outlined {
     @include baseButton--outlined($color-secondary, $color-secondary);
 
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
 
-    &:hover{
+    &:hover {
         background: $color-secondary;
         color: #FFF;
     }
 }
 
 // Boton con fondo oscuro
-.baseButton-dark--filled{
+.baseButton-dark--filled {
     @include baseButton--filled($color-dark, #FFF);
 }
 
-.baseButton-dark--filled--small{
+.baseButton-dark--filled--small {
     @include baseButton--filled($color-dark, #FFF);
     width: 80px;
     height: 35px;
     font-size: 12px;
 }
 
-.baseButton-dark--outlined{
+.baseButton-dark--outlined {
     @include baseButton--outlined($color-dark, $color-dark);
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
 
-    &:hover{
+    &:hover {
         background: $color-dark;
         color: #FFF;
     }
 }
 
-.baseButton-dark--outlined--small{
+.baseButton-dark--outlined--small {
     @include baseButton--outlined($color-dark, $color-dark);
     width: 80px;
     height: 35px;
     font-size: 12px;
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
 
-    &:hover{
+    &:hover {
         background: $color-dark;
         color: #FFF;
     }
@@ -105,32 +105,45 @@
 
 // Boton danger
 
-.baseButton-danger--filled{
+.baseButton-danger--filled {
     @include baseButton--filled($color-danger, #FFF);
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
 
-    &:hover{
+    &:hover {
         background: $color-danger;
         color: #FFF;
     }
 
-    &:disabled{
+    &:disabled {
         background: $color-tertiary-dark;
         color: gray;
         cursor: not-allowed;
     }
 }
 
-.baseButton-danger--outlined--small{
+.baseButton-danger--outlined--small {
     @include baseButton--outlined($color-danger, $color-danger);
     width: 80px;
     height: 35px;
     font-size: 12px;
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
 
-    &:hover{
+    &:hover {
         background: $color-danger;
         color: #FFF;
+    }
+}
+
+// Estilos botón cerrar diálogos modales.
+.baseButton-close--filled {
+    padding: 10px;
+    border: 1px solid $color-tertiary-dark;
+    transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+    border-radius: 20px;
+
+    &:hover {
+        background: $color-tertiary-dark;
+        color: $color-dark;
     }
 }
 
@@ -167,15 +180,10 @@
     margin: 0;
 }
 
-.iconButton-primary--outlined{
+.iconButton-primary--outlined {
     @include iconButton--rounded--outlined($color-primary, $color-primary);
 }
 
-.iconButton-primary--outlined-small{
+.iconButton-primary--outlined-small {
     @include iconButton--rounded--outlined-small;
 }
-
-
-
-
-

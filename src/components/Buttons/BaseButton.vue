@@ -18,6 +18,9 @@ defineProps({
   buttonId: {
     type: String,
   },
+  title: {
+    type: String,
+  }
 });
 
 const emit = defineEmits(["click"]);
@@ -35,6 +38,7 @@ function handleClick() {
       :style="`${buttonWidth ? `width: ${buttonWidth}` : ''}`"
       :id="buttonId && buttonId"
       :disabled="isDisabled"
+      :title="title"
     >
       {{ text }}
     </button>

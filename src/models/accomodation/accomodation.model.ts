@@ -1,5 +1,7 @@
 import type { PromoCode } from '@/models/promoCode/promoCode.model';
 import type { Coordinate } from '@/models/accomodation/coordinates.model';
+import type { AccomodationReview } from '@/models/accomodation/accomodationReview.model';
+
 
 export interface Accomodation {
   registerNumber: string;
@@ -26,6 +28,7 @@ export interface Accomodation {
   };
   accomodationRules: string[];
   accomodationServices: string[];
+  accomodationReviews: AccomodationReview[];
   promoCodes?: PromoCode[];
   stars?: number;
   createdAt: Date;

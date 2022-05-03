@@ -60,18 +60,16 @@ const handleUpdateImage = async (img) => {
   userStore.profileImage = decodeURI(newImg);
 };
 
-onMounted(() => {
-  props.profileImage;
-});
 </script>
 
 <template>
   <div class="profile-image-container">
     <img
-      :src="userStore.profileImage"
+      :src="props.profileImage || IMG_PROFILE_PLACEHOLDER"
       :alt="props.username"
       :width="props.width"
       :height="props.height"
+      :title="props.username"
       @click.prevent="props.isLinked ? redirectToUserProfile() : 'null'"
       :style="props.isLinked ? 'cursor: pointer' : ''"
     />

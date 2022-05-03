@@ -7,11 +7,16 @@ defineProps({
     type: String,
     default: "",
   },
+
+  dateTitle: {
+    type: String,
+    default: "",
+  }
 });
 </script>
 
 <template>
-  <div class="date-formatted-item">
+  <div class="date-formatted-item" :title="dateTitle">
     <span>{{ dateText }}</span>
     <img :src="ICON_CALENDAR_FILLED" alt="" />
   </div>

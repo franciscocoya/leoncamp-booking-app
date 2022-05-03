@@ -1,4 +1,6 @@
 <script setup>
+import { defineEmits} from 'vue';
+
 import { useRouter, RouterLink } from "vue-router";
 
 // Iconos
@@ -14,18 +16,33 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 const router = useRouter();
 
 // Token de usuario
-const userToken = JSON.parse(sessionStorage.getItem("user") || "{}").token;
+const userToken = JSON.parse(sessionStorage.getItem("user") || "{}")?.token;
+
+// Nombre y apellidos del usuario
+const userData = JSON.parse(sessionStorage.getItem("data") || "{}");
+
+const emit = defineEmits(['show-search-results', 'hide-search-results']);
+
+const showSearchResults = () => {
+  emit('show-search-results');
+}
+
+const hideSearchResults = () => {
+  emit('hide-search-results');
+}
+
 </script>
 
 <template>
   <header>
     <AppLogoIcon />
 
-    <SearchBarItem />
+    <SearchBarItem @show-search-results="showSearchResults" @hide-search-results="hideSearchResults"/>
 
     <MenuDesktopItem v-if="userToken" />
     <!-- Si el usuario está logeado -->
-    <AccountIcon v-if="userToken" username="Ralph" :isLinked="true" />
+    <AccountIcon v-if="userToken" :username="`${userData?.name} ${userData?.surname}`" :isLinked="true" :width="50" :height="50"/>
+    
     <!-- Si el usuario no está logeado -->
     <BaseButton
       v-else

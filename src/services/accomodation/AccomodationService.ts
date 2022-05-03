@@ -148,6 +148,28 @@ export async function getLatestAccomodationReviewsByRegisterNumber(
 }
 
 /**
+ * Listado de todas las valoraciones del alojamiento con el número de registro pasado como parámetro.
+ * 
+ * @param regNumber
+ * 
+ * @returns
+ */
+export async function getAllAccomodationReviewsByRegisterNumber(
+  regNumber: string
+) {
+  const { data } = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
+
+  return data;
+}
+
+/**
  * Eliminar un alojamiento por su número de registro.
  */
 export async function deleteAccomodationBySavedAccomodationId(

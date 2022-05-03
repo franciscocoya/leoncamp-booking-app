@@ -48,7 +48,7 @@ const convertArrayToDate = (dateArr: number[]): Date => {
  *
  * Lee una imagen en formato base64 y devuelve una imagen en URL.
  */
- const convertImageToBase64 = async (file: File): Promise<string> => {
+const convertImageToBase64 = async (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -57,6 +57,7 @@ const convertArrayToDate = (dateArr: number[]): Date => {
   });
 }
 
+/*
  * Devuelve el mes en formato texto.
  * @param month
  * @returns
@@ -85,10 +86,27 @@ const getAccomodationServiceImageById = (id: number): string => {
   return accomodationServices.find((service) => service.id === id)?.icon;
 };
 
+/**
+ * Recibe un texto y devuelve el texto con el número de palabras pasado como parámetro.
+ * 
+ * @param text 
+ * @param wordCount 
+ * @returns 
+ */
+const cropTextByWordCount = (text: string, wordCount: number): string => {
+  const words = text.split(' ');
+  if (words.length > wordCount) {
+    return words.slice(0, wordCount).join(' ') + '...';
+  }
+  return text;
+};
+
 export {
   getUserToken,
   formatArrayAsDate,
   convertArrayToDate,
+  convertImageToBase64,
   getAccomodationServiceImageById,
   formatArrayAsSimpleStringDate,
+  cropTextByWordCount
 };
