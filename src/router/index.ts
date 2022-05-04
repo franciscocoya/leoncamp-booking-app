@@ -21,7 +21,7 @@ import ForgotPasswordView from '@/views/Auth/ForgotPasswordView.vue';
 
 // Rutas públicas
 const authRoutes = ['/signin', '/signup', '/password/reset'];
-const publicRoutes = [...authRoutes, '/'];
+const publicRoutes = [...authRoutes, '/', 'accomodation/:registerNumber'];
 
 const router = createRouter({
   history: createWebHistory(),
@@ -113,6 +113,18 @@ const router = createRouter({
       path: '/help',
       name: 'app-help',
       component: () => import('@/views/Help/HelpView.vue'),
+    },
+    {
+      // Ruta para la página de error
+      path: '/404',
+      name: 'error-404',
+      component: () => import('@/views/Error/404View.vue'),
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: {
+        name: 'error-404',
+      }
     }
   ],
 });

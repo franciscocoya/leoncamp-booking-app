@@ -1,9 +1,13 @@
 <script setup>
+import { useRouter } from "vue-router";
+
 // Componentes
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 
 // Utils
 import { formatArrayAsSimpleStringDate } from "@/helpers/utils";
+
+const router = useRouter();
 
 const props = defineProps({
   review: {
@@ -15,7 +19,11 @@ const props = defineProps({
 
 <template>
   <div class="accomodation-review-item-container">
-    <div class="accomodation_review__profileImage">
+    <div
+      class="accomodation_review__profileImage"
+      @click.prevent="router.push(`/u/${review.idUser.id}`)"
+      :title="`Ver el perfil de ${review.idUser.name} ${review.idUser.surname}`"
+    >
       <AccountIcon
         :profileImage="review.profileImage"
         :username="review.idUser.name"
@@ -68,6 +76,7 @@ const props = defineProps({
     @include flex-row;
     align-items: center;
     gap: 15px;
+    cursor: pointer;
 
     & > .accomodation_review__profileImage__userDetails {
       @include flex-column;

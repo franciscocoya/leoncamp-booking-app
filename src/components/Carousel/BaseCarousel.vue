@@ -39,6 +39,7 @@ defineProps({
 <template>
   <div>
     <swiper
+      v-if="images.length > 0"
       :pagination="{
         dynamicBullets: true,
         clickable: true,
@@ -62,11 +63,15 @@ defineProps({
         <img :src="img" alt="" />
       </swiper-slide>
     </swiper>
+    <div v-else :style="`width: ${slideWidth}px`" class="carousel-no-images">
+      No hay imágenes
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_variables.scss";
+@import "@/assets/scss/_mixins.scss";
 
 .swiper {
   border-radius: 10px;
@@ -91,9 +96,18 @@ defineProps({
 
   & img {
     display: block;
+    width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
   }
+}
+
+.carousel-no-images{
+  @include flex-column-center;
+  height: 200px;
+  background-color: $color-tertiary-light;
+  border-radius: $global-border-radius;
+  font-size: 1.1rem;
 }
 
 // Estilos para Swiper

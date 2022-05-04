@@ -7,7 +7,7 @@ import type { User } from '@/models/user/user.model';
 import { login, signUp } from '@/services/auth/AuthService';
 
 // Servicio de usuarios
-import { getUserDataById, updateUserData, getUserConfigurationByUserId } from '@/services/user/UserService';
+import { getUserDataById, updateUserData, getUserConfigurationByUserId, uploadUserProfileImage } from '@/services/user/UserService';
 
 // Servicio de alojamientos 
 import { getAllUserAccomodations } from '@/services/accomodation/AccomodationService';
@@ -102,7 +102,7 @@ const useUserStore = defineStore({
       this.email = JSON.parse(sessionStorage.getItem('user') || '{}').email;
 
       const userData = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
-      this.profileImage = decodeURI(userData.profileImage);
+      this.profileImage = await decodeURI(userData.profileImage);
 
       // Si el usuario es host, se mostrarán los siguientes datos.
       const { dni, bio, direction, emailVerified, dniVerified, phoneVerified, verified } = userData;
@@ -144,12 +144,20 @@ const useUserStore = defineStore({
      * @returns 
      */
     async updateUserProfile() {
-      const userData = await updateUserData(this.id, this.name, this.surname, this.email, this.phone);
-      // this.name = userData.name;
-      // this.surname = userData.surname;
-      // this.email = userData.email;
-      // this.phone = userData.phone;
+      const updatedUserData = await updateUserData(this.id, this.name, this.surname, this.email, this.phone);
+      this.name = updatedUserData.name;
+      this.surname = updatedUserData.surname;
+      this.email = updatedUserData.email;
+      this.phone = updatedUserData.phone;
     },
+
+    /**
+     * Actualiza la imagen de perfil del usuario.
+     */
+    // async updateProfileImage(img: string) {
+    //   const updatedUserData = await uploadUserProfileImage(this.id, img);
+    //   this.profileImage = updatedUserData.profileImage;
+    // },
 
     /**
      * Listado de todos los alojamientos de un usuario.

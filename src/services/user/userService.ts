@@ -2,6 +2,10 @@ import axios from "axios";
 
 import { API_USERS, API_USER_CONFIG } from "@/helpers/apiRoutes";
 
+const apiJwtToken: string = JSON.parse(
+    sessionStorage?.getItem('user') || '{}'
+)?.token;
+
 /**
  * Comprueba si existe el usuario con el email pasado como parámetro.
  * 
@@ -71,7 +75,16 @@ const getUserConfigurationByUserId = async (userId: number) => {
  * @returns 
  */
 const updateUserData = async (userId: number, name: string, surname: string, email: string, phone: string) => {
-    return await axios.put(`${API_USERS}/${userId}`, {
+
+    // let payload: FormData = new FormData();
+    // payload.append('name', name);
+    // payload.append('surname', surname);
+    // payload.append('email', email);
+    // payload.append('phone', phone);
+
+    return await axios({
+        url: `${API_USERS}/${userId}`,
+        method: 'put',
         data: {
             name,
             surname,
@@ -79,9 +92,13 @@ const updateUserData = async (userId: number, name: string, surname: string, ema
             phone
         },
         headers: {
-            "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+            "Authorization": `Bearer ${apiJwtToken}`
         }
-    });
+    }).then(res => res.data)
+        .then(data => { return data })
+        .catch(err => {
+            return err;
+        });
 };
 
 /**
@@ -98,7 +115,7 @@ const uploadUserProfileImage = async (userId: number, newImage: File) => {
             url: `${API_USERS}/profileImage`,
             method: 'patch',
             headers: {
-                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+                "Authorization": `Bearer ${apiJwtToken}`
             },
             withCredentials: true,
             params: {

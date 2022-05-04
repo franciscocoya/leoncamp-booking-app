@@ -104,14 +104,14 @@ onMounted(() => {
           Reservas
         </li>
         <li
-          v-if="userStore.bio !== undefined && userStore.verfied !== undefined"
+          v-if="userStore.datosHost != null"
           id="user-ads"
           @click="redirectAccountChildrenView('user-ads')"
         >
           Anuncios
         </li>
         <li id="app-help" @click.prevent="router.push('/help')">Ayuda</li>
-        <li v-if="userStore.bio == undefined && userStore.verfied == undefined">
+        <li v-if="userStore.datosHost == null">
           Actualizar plan
         </li>
         <li id="user-logout" @click="userStore.logout()">Cerrar sesión</li>

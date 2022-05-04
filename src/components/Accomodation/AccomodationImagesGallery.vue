@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="accomodation-image-gallery">
+  <div class="accomodation-image-gallery" v-if="images.length > 0">
     <div class="accomodation-image-gallery__wrapper">
       <!-- Galería con algunas de las imágenes del alojamiento -->
       <div class="accomodation-image-gallery__images">
@@ -30,6 +30,9 @@ const props = defineProps({
       buttonStyle="baseButton-dark--filled"
       buttonId="bt-show-all-accomodation-images"
     />
+  </div>
+  <div v-else>
+    No hay imágenes
   </div>
 </template>
 

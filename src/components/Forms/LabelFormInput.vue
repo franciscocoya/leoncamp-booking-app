@@ -29,7 +29,6 @@ let disableField: boolean = ref(false);
 const emit = defineEmits(["handleInput"]);
 
 function updateInputValue(value: string) {
-  console.log("click");
   disableField.value = false;
   emit("handleInput", value);
 }

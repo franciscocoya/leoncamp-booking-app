@@ -58,6 +58,7 @@ const handleUpdateImage = async (img) => {
   const imgEncoded = await convertImageToBase64(img);
   const newImg = await uploadUserProfileImage(userStore.id, imgEncoded);
   userStore.profileImage = decodeURI(newImg);
+  window.location.reload();
 };
 
 </script>

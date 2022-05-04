@@ -61,11 +61,8 @@ const handleMouseLeave = () => {
     @mouseleave="handleMouseLeave"
   >
     <BaseCarousel
-      :images="[
-        'https://images.unsplash.com/photo-1553444836-bc6c8d340ba7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80',
-        'https://images.unsplash.com/photo-1553444836-bc6c8d340ba7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80',
-        'https://images.unsplash.com/photo-1553444836-bc6c8d340ba7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80',
-      ]"
+      :images="accData.accomodationImages.map(
+        (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl)"
     />
 
     <!-- Detalles del alojamiento -->
