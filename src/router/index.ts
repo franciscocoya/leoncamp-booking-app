@@ -58,6 +58,11 @@ const router = createRouter({
       component: SavedAccomodationsView,
     },
     {
+      path: '/account/:accUser/accomodation/:registerNumber/edit',
+      name: 'accomodation-edit',
+      component: () => import('@/views/Accomodations/AccomodationEditView.vue'),
+    },
+    {
       // Perfil del usuario en sesión
       path: '/account/:username',
       name: 'account',
@@ -101,7 +106,6 @@ const router = createRouter({
       component: () =>
         import('@/views/Accomodations/AccomodationDetailView.vue'),
     },
-
     {
       // Perfil de un usuario
       path: '/u/:userId',

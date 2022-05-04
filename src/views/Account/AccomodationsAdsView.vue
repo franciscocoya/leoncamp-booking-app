@@ -4,6 +4,7 @@ import { onMounted, ref } from "vue";
 // Componentes
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
 
+
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
@@ -26,6 +27,7 @@ onMounted(async () => {
         :accData="accomodation"
         :isCurrentUserOwner="true"
         :showDeleteButton="false"
+        :showEditButton="true"
       />
     </div>
     <h2 v-else>No tienes alojamientos publicados</h2>

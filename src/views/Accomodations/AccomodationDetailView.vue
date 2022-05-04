@@ -234,6 +234,18 @@ onMounted(async () => {
           </div>
         </section>
 
+        <!-- Sección normas del alojamiento -->
+        <section class="accomodation-detail__rules">
+          <h2>Normas del alojamiento</h2>
+          <div class="accomodation-detail_rules__details">
+            <ul>
+              <li v-for="(rule, index) in accomodationStore.accomodationRules" :key="index">
+                {{rule.accomodationAccRuleId.idAccomodationRule.rule}}
+              </li>
+            </ul>
+          </div>
+        </section>
+
         <!-- Sección valoraciones -->
         <section class="accomodation-detail__reviews">
           <AccomodationReviewsItem
@@ -380,6 +392,18 @@ onMounted(async () => {
         } // Fin estilos accomodation-host__info
       }
     } // FIn estilos accomodation-host
+  
+    // Estilos sección normas del alojamiento
+    & > .accomodation-detail__rules {
+      @include flex-column;
+      
+      & ul{
+        @include flex-column;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+      }
+    }
   }
 }
 

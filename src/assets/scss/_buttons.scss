@@ -56,6 +56,7 @@
 .baseButton-primary--outlined {
   @include baseButton--outlined($color-primary, $color-primary);
   transition: background-color 0.2s ease;
+
   &:hover {
     background: $color-primary;
     color: #fff;
@@ -173,7 +174,6 @@
   color: $foregorund-color;
 }
 
-// TODO: Revisar estiloss
 @mixin iconButton--rounded--outlined-small {
   @include iconButton--rounded--outlined($color-primary, $color-primary);
   width: 120px;
@@ -191,4 +191,23 @@
 
 .iconButton-primary--outlined-small {
   @include iconButton--rounded--outlined-small;
+}
+
+// Estilos para los botones con icono de las acciones de editar, eliminar... de un alojamiento
+.iconButton-accomodation-action {
+  outline: none;
+  border: none;
+  background-color: $color-tertiary-light;
+  padding: 5px;
+  border-radius: 10px 5px 5px 20px;
+  transition: all .1s cubic-bezier(0.215, 0.610, 0.355, 1);
+
+  & > img{
+    filter: invert(20%);
+  }
+
+  &:hover{
+    background-color: $color-tertiary-dark;
+    box-shadow: $global-box-shadow;
+  }
 }

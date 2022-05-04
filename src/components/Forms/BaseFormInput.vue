@@ -4,6 +4,10 @@ defineProps({
     type: String,
     default: "text",
   },
+  inputId: {
+    type: String,
+    default: "",
+  },
   placeholder: {
     type: String,
     default: "",
@@ -33,6 +37,7 @@ function updateInputValue(value: string) {
   <div>
     <input
       :type="inputType"
+      :id="inputId"
       :placeholder="placeholder"
       :class="inputStyleClass"
       :value="inputValue"

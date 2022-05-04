@@ -2,11 +2,15 @@
 import { onMounted, withDefaults } from "vue";
 import { useRouter } from "vue-router";
 
+// Iconos
+import { ICON_EDIT, ICON_DELETE } from "@/helpers/iconConstants";
+
 // Componentes
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
 import SavedAccomodationIcon from "@/components/icons/Accomodation/SavedAccomodationIcon.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
+import IconButton from "@/components/Buttons/IconButton.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
@@ -16,7 +20,14 @@ const router = useRouter();
 
 const props = defineProps({
   accData: Object,
-  showDeleteButton: Boolean,
+  showDeleteButton: {
+    type: Boolean,
+    default: false,
+  },
+  showEditButton: {
+    type: Boolean,
+    default: false,
+  },
   isCurrentUserOwner: Boolean,
   savedAccId: Number,
   isMarkerMapSelectionEnable: {
@@ -40,16 +51,15 @@ onMounted(() => {
   getAccomodationStarAverage();
 });
 
-const emit = defineEmits(['highlightMarker', 'deselectMarker']);
+const emit = defineEmits(["highlightMarker", "deselectMarker"]);
 
 const handleMouseEnter = () => {
-  emit('highlightMarker', props.accData.registerNumber);
+  emit("highlightMarker", props.accData.registerNumber);
 };
 
 const handleMouseLeave = () => {
-  emit('deselectMarker', props.accData.registerNumber);
+  emit("deselectMarker", props.accData.registerNumber);
 };
-
 </script>
 
 <template>
@@ -61,14 +71,17 @@ const handleMouseLeave = () => {
     @mouseleave="handleMouseLeave"
   >
     <BaseCarousel
-      :images="accData.accomodationImages.map(
-        (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl)"
+      :images="
+        accData.accomodationImages.map(
+          (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl
+        )
+      "
     />
 
     <!-- Detalles del alojamiento -->
     <div
       class="accomodation-thumbnail-detail-container"
-      @click.prevent="router.push(`/accomodation/${accData.registerNumber}`)"
+      @click.prevent="!showEditButton && router.push(`/accomodation/${accData.registerNumber}`)"
       title="Haz click para el alojamiento"
     >
       <div class="accomodation-thumbnail-detail-container__header">
@@ -89,14 +102,37 @@ const handleMouseLeave = () => {
           <SavedAccomodationIcon
             v-if="!accData.idUserHost && !isCurrentUserOwner"
           />
-          <!-- Botón de eliminar -->
-          <BaseButton
-            v-if="showDeleteButton"
-            text="Eliminar"
-            buttonStyle="baseButton-danger--outlined--small"
-            class="bt-delete-accomodation"
-            @click="handleDeleteAccomodation"
-          />
+          <div class="accomodation-icons">
+            <!-- Botón de eliminar -->
+            <IconButton
+              v-if="showDeleteButton"
+              :buttonIcon="ICON_DELETE"
+              buttonStyle="iconButton-accomodation-action"
+              class="bt-delete-accomodation"
+              title="Haz click aquí para eliminar el alojamiento"
+              @click="handleDeleteAccomodation"
+            />
+
+            <!-- Botón de editar -->
+            <IconButton
+              v-if="showEditButton && isCurrentUserOwner"
+              :buttonIcon="ICON_EDIT"
+              buttonStyle="iconButton-accomodation-action"
+              class="bt-edit-accomodation"
+              title="Haz click aquí para editar el alojamiento"
+              @click="
+                router.push({
+                  name: 'accomodation-edit',
+                  params: {
+                    accUser: `${encodeURI(accData.idUserHost.name)}-${encodeURI(
+                      accData.idUserHost.surname
+                    )}`,
+                    registerNumber: accData.registerNumber,
+                  },
+                })
+              "
+            />
+          </div>
         </div>
       </div>
       <div class="accomodation-thumbnail-detail-container__body">

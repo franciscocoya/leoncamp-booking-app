@@ -2,7 +2,7 @@
 defineProps({
   text: {
     type: String,
-    required: true,
+    default: "",
   },
   buttonStyle: {
     type: String,
@@ -16,15 +16,40 @@ defineProps({
     type: String,
     required: false,
   },
+  isDisabled: {
+    type: Boolean,
+    default: false,
+  },
+  buttonWidth: {
+    type: String,
+  },
+  buttonId: {
+    type: String,
+  },
+  title: {
+    type: String,
+  },
 });
+
+const emit = defineEmits(["click"]);
+
+function handleClick() {
+  emit("click");
+}
 </script>
 
 <template>
   <div>
-    <button :class="buttonStyle">
-      <!-- {{iconDirection === 'left' && <img src='buttonIcon' alt=""/>}} -->
+    <button
+      :class="buttonStyle"
+      @click.prevent="handleClick"
+      :style="`${buttonWidth ? `width: ${buttonWidth}` : ''};`"
+      :id="buttonId && buttonId"
+      :disabled="isDisabled"
+      :title="title"
+    >
       <img :src="buttonIcon" alt="" />
-      {{ text }}
+      {{ test && text }}
     </button>
   </div>
 </template>
