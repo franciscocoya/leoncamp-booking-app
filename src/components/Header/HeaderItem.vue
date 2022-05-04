@@ -1,7 +1,7 @@
 <script setup>
-import { defineEmits} from 'vue';
+import { defineEmits, onMounted } from "vue";
 
-import { useRouter, RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
 
 // Iconos
 import { IMG_APP_LOGO } from "@/helpers/iconConstants";
@@ -15,21 +15,29 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 const router = useRouter();
 
+// Store usuario
+import { useUserStore } from "@/store/user";
+const userStore = useUserStore();
+
 // Token de usuario
 const userToken = JSON.parse(sessionStorage.getItem("user") || "{}")?.token;
 
 // Nombre y apellidos del usuario
 const userData = JSON.parse(sessionStorage.getItem("data") || "{}");
 
-const emit = defineEmits(['show-search-results', 'hide-search-results']);
+const emit = defineEmits(["show-search-results", "hide-search-results"]);
 
 const showSearchResults = () => {
-  emit('show-search-results');
-}
+  emit("show-search-results");
+};
 
 const hideSearchResults = () => {
-  emit('hide-search-results');
-}
+  emit("hide-search-results");
+};
+
+onMounted(() => {
+  userStore.loadUserData(userData.id);
+});
 
 </script>
 
@@ -37,12 +45,26 @@ const hideSearchResults = () => {
   <header>
     <AppLogoIcon />
 
-    <SearchBarItem @show-search-results="showSearchResults" @hide-search-results="hideSearchResults"/>
+    <SearchBarItem
+      @show-search-results="showSearchResults"
+      @hide-search-results="hideSearchResults"
+    />
 
     <MenuDesktopItem v-if="userToken" />
     <!-- Si el usuario está logeado -->
-    <AccountIcon v-if="userToken" :username="`${userData?.name} ${userData?.surname}`" :isLinked="true" :width="50" :height="50"/>
-    
+    <AccountIcon
+      v-if="userToken"
+      width="54"
+      height="54"
+      :username="`${userData?.name} ${userData?.surname}`"
+      :profileImage="`${
+        userStore.profileImage == 'null'
+          ? IMG_PROFILE_PLACEHOLDER
+          : userStore.profileImage
+      }`"
+      :isLinked="true"
+    />
+
     <!-- Si el usuario no está logeado -->
     <BaseButton
       v-else

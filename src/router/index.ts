@@ -61,6 +61,11 @@ const router = createRouter({
       // Perfil del usuario en sesión
       path: '/account/:username',
       name: 'account',
+      redirect: to => {
+        return {
+          name: 'user-profile',
+        }
+      },
       component: AccountView,
       children: [
         // Detalles del perfil personal del usuario.
@@ -99,10 +104,16 @@ const router = createRouter({
 
     {
       // Perfil de un usuario
-      path: '/u/:username',
-      name: 'user-profile',
-      component: () => import('@/views/UserProfile/UserProfileView.vue'),
+      path: '/u/:userId',
+      name: 'user-profile-public',
+      component: () => import('@/views/UserProfile/UserProfilePublicView.vue'),
     },
+    {
+      // Ayuda de la aplicacion
+      path: '/help',
+      name: 'app-help',
+      component: () => import('@/views/Help/HelpView.vue'),
+    }
   ],
 });
 

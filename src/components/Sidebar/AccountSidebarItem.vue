@@ -6,7 +6,10 @@ import { useRouter } from "vue-router";
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 
 // Iconos
-import { ICON_VERIFIED_USER } from "@/helpers/iconConstants";
+import {
+  ICON_VERIFIED_USER,
+  IMG_PROFILE_PLACEHOLDER,
+} from "@/helpers/iconConstants";
 
 // Store usuario
 import { useUserStore } from "@/store/user";
@@ -54,20 +57,23 @@ const redirectAccountChildrenView = (viewName: string) => {
 
 onMounted(() => {
   const currentRouteName: string = router.currentRoute.value.name;
-  redirectAccountChildrenView(currentRouteName)
+  redirectAccountChildrenView(currentRouteName);
 });
-
 </script>
 
 <template>
   <div class="account-sidebar">
     <!-- Imagen de perfil -->
     <div class="account-sidebar__profile-image">
-      <AccountIcon 
-      width="120" 
-      height="120"
-      :profileImage="userStore.profileImage"
-      :isUploading="true"
+      <AccountIcon
+        width="120"
+        height="120"
+        :profileImage="`${
+          userStore.profileImage == 'null'
+            ? IMG_PROFILE_PLACEHOLDER
+            : userStore.profileImage
+        }`"
+        :isUploading="true"
       />
 
       <!-- Icono de verficación de un usuario host -->
@@ -91,12 +97,23 @@ onMounted(() => {
           Perfil
         </li>
         <li id="user-security-privacity">Seguridad y privacidad</li>
-        <li id="user-bookings" @click="redirectAccountChildrenView('user-bookings')">Reservas</li>
-        <li id="user-ads" @click="redirectAccountChildrenView('user-ads')">
+        <li
+          id="user-bookings"
+          @click="redirectAccountChildrenView('user-bookings')"
+        >
+          Reservas
+        </li>
+        <li
+          v-if="userStore.bio !== undefined && userStore.verfied !== undefined"
+          id="user-ads"
+          @click="redirectAccountChildrenView('user-ads')"
+        >
           Anuncios
         </li>
-        <li id="app-help">Ayuda</li>
-        <hr />
+        <li id="app-help" @click.prevent="router.push('/help')">Ayuda</li>
+        <li v-if="userStore.bio == undefined && userStore.verfied == undefined">
+          Actualizar plan
+        </li>
         <li id="user-logout" @click="userStore.logout()">Cerrar sesión</li>
       </ul>
     </div>

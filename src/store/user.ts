@@ -7,10 +7,10 @@ import type { User } from '@/models/user/user.model';
 import { login, signUp } from '@/services/auth/AuthService';
 
 // Servicio de usuarios
-import { getUserDataById, updateUserData } from '@/services/user/UserService';
+import { getUserDataById, updateUserData, getUserConfigurationByUserId } from '@/services/user/UserService';
 
 // Servicio de alojamientos 
-import { getAllUserAccomodations} from '@/services/accomodation/AccomodationService';
+import { getAllUserAccomodations } from '@/services/accomodation/AccomodationService';
 
 
 const useUserStore = defineStore({
@@ -73,9 +73,9 @@ const useUserStore = defineStore({
       });
     },
 
-    logout(){
+    logout() {
       // Eliminar token y datos del usuario.
-      sessionStorage.removeItem('user'); 
+      sessionStorage.removeItem('user');
       sessionStorage.removeItem('data');
       window.location.href = "/";
     },
@@ -119,10 +119,31 @@ const useUserStore = defineStore({
     },
 
     /**
+     * Datos del usuario con el id especificado.
+     * 
+     * @param userId 
+     */
+    async getUserDataById(userId: number) {
+      const userData = await getUserDataById(userId);
+      return userData;
+    },
+
+    /**
+     * Idioma del usuario con el id especificado.
+     * 
+     * @param userId 
+     * @returns 
+     */
+    async getUserLanguageById(userId: number) {
+      const { idLanguage } = await getUserConfigurationByUserId(userId);
+      return idLanguage.language;
+    },
+
+    /**
      * Actualizar los datos del usuario
      * @returns 
      */
-    async updateUserProfile(){
+    async updateUserProfile() {
       const userData = await updateUserData(this.id, this.name, this.surname, this.email, this.phone);
       // this.name = userData.name;
       // this.surname = userData.surname;
@@ -133,8 +154,18 @@ const useUserStore = defineStore({
     /**
      * Listado de todos los alojamientos de un usuario.
      */
-    async loadUserAccomodations(){
-      return await getAllUserAccomodations(this.id );
+    async loadUserAccomodations() {
+      return await getAllUserAccomodations(this.id);
+    },
+
+    /**
+     * Listado de todos los alojamientos del usuario con el id especificado.
+     * 
+     * @param userId 
+     * @returns 
+     */
+    async getAllAccomodationsByUserdId(userId: number) {
+      return await getAllUserAccomodations(userId);
     }
   }
 });

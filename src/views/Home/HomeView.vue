@@ -4,7 +4,7 @@ import { onMounted, ref } from "vue";
 // Componentes
 // import { DatePicker } from "v-calendar";
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
-// import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
+import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
 // Componentes
 // import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
@@ -24,9 +24,35 @@ import { getAllAccomodations } from "@/services/accomodation/AccomodationService
 
 let allAccomodations = ref([]);
 
+let accomodationMarkers = ref([]);
+
+let selectedMarkerRegNumber = ref("");
+
 onMounted(async () => {
   allAccomodations.value = await getAllAccomodations();
+
+  // Markers de los alojamientos del listado.
+  accomodationMarkers.value = await allAccomodations.value.map((acc) => {
+    const { latitude, longitude } = acc.idAccomodationLocation;
+    return {
+      coords: {
+        lat: latitude,
+        lng: longitude,
+      },
+      price: acc.pricePerNight,
+      registerNumber: acc.registerNumber,
+    };
+  });
 });
+
+const highLightSelectedMarker = (val) => {
+  selectedMarkerRegNumber.value = val;
+};
+
+const deselectMarker = () => {
+  selectedMarkerRegNumber.value = "";
+};
+
 </script>
 
 <template>
@@ -49,9 +75,16 @@ onMounted(async () => {
         :accData="accomodation"
         :isCurrentUserOwner="true"
         :showDeleteButton="false"
+        @highlightMarker="(value) => highLightSelectedMarker(value)"
+        @deselectMarker="(value) => deselectMarker(value)"
       />
     </div>
-    <!-- <BaseAccomodationsMap /> -->
+    <!-- <BaseAccomodationsMap
+      :markers="accomodationMarkers"
+      @show-selected-marker="(value) => highLightSelectedMarker(value)"
+      @hide-selected-marker="(value) => deselectMarker(value)"
+      :selectedMarker="selectedMarkerRegNumber"
+    /> -->
   </section>
 </template>
 
@@ -64,7 +97,8 @@ $home-section-margin: 50px;
 .home-view {
   height: calc(100vh - $header-height - $home-section-margin);
   display: grid;
-  grid-template-columns: 40% 60%;
+  grid-template-columns: auto 60%;
+  grid-gap: 20px;
   // gap: 20px;
   margin: $home-section-margin 0 0 $home-section-margin;
   // Estilos para la lista de alojamientos

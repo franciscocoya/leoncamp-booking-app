@@ -10,6 +10,7 @@ const RESET_PASSWORD_URL = `${API_BASE_URL}${import.meta.env.VITE_API_RESET_PASS
 
 // -- Rutas de usuario
 const API_USERS = `${API_BASE_URL}${import.meta.env.VITE_API_USERS}`;
+const API_USER_CONFIG = `${API_BASE_URL}${import.meta.env.VITE_API_USER_CONFIG}`;
 
 // -----------------------------------------------------------------------------
 
@@ -26,6 +27,7 @@ export{
     SIGNUP_URL,
     RESET_PASSWORD_URL,
     API_USERS,
+    API_USER_CONFIG,
     API_ACCOMODATIONS,
     API_BOOKINGS
 }

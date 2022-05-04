@@ -49,7 +49,7 @@ const handleUserProfileButtonClick = () => {
   router.push(
     id === accomodationStore.userHost.id
       ? `/account/${accomodationStore.userHost.name.toLowerCase()}-${accomodationStore.userHost.surname.toLowerCase()}/profile`
-      : `/u/${accomodationStore.userHost.name}-${accomodationStore.userHost.surname}`
+      : `/u/${accomodationStore.userHost.id}`
   );
 };
 

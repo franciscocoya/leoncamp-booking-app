@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { API_USERS } from "@/helpers/apiRoutes";
+import { API_USERS, API_USER_CONFIG } from "@/helpers/apiRoutes";
 
 /**
  * Comprueba si existe el usuario con el email pasado como parámetro.
@@ -8,7 +8,7 @@ import { API_USERS } from "@/helpers/apiRoutes";
  * @param emailToCheck 
  * @returns 
  */
- const checkExistsUser = async (emailToCheck: string) => {
+const checkExistsUser = async (emailToCheck: string) => {
     return await axios.get(`${API_USERS}/load/${emailToCheck}`, {
         headers: {
             "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
@@ -31,7 +31,7 @@ import { API_USERS } from "@/helpers/apiRoutes";
  * 
  * @returns 
  */
- const getUserDataById = async (id: number) => {
+const getUserDataById = async (id: number) => {
     return await axios.get(`${API_USERS}/${id}`, {
         headers: {
             "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
@@ -43,6 +43,25 @@ import { API_USERS } from "@/helpers/apiRoutes";
         }).catch((err) => {
             return err;
         });
+};
+
+/**
+ * Idioma del usuario con el id pasado como parámetro.
+ */
+const getUserConfigurationByUserId = async (userId: number) => {
+    const { data } = await axios.get(`${API_USER_CONFIG}/${userId}`, {
+        headers: {
+            "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+        }
+    })
+        .then((res) => res.data)
+        .then((data) => {
+            return data;
+        }).catch((err) => {
+            return err;
+        }
+        );
+    return data;
 };
 
 /**
@@ -62,9 +81,8 @@ const updateUserData = async (userId: number, name: string, surname: string, ema
         headers: {
             "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
         }
-
     });
-}
+};
 
 /**
  * Actualiza la imagen de perfil del usuario con id <code>userId</code>.
@@ -94,10 +112,27 @@ const uploadUserProfileImage = async (userId: number, newImage: File) => {
     return data;
 };
 
+const getUserReviewsById = async (userId: number) => {
+    const { data } = await axios.get(`${API_USERS}/reviews/${userId}`, {
+        headers: {
+            "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+        }
+    })
+        .then((res) => res.data)
+        .then((data) => {
+            return data;
+        }).catch((err) => {
+            return err;
+        });
+    return data;
+};
+
 
 export {
     checkExistsUser,
     getUserDataById,
     updateUserData,
-    uploadUserProfileImage
+    getUserConfigurationByUserId,
+    uploadUserProfileImage,
+    getUserReviewsById
 };

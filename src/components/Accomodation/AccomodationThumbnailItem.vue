@@ -18,7 +18,11 @@ const props = defineProps({
   accData: Object,
   showDeleteButton: Boolean,
   isCurrentUserOwner: Boolean,
-  savedAccId: Number
+  savedAccId: Number,
+  isMarkerMapSelectionEnable: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const getAccomodationStarAverage = async () => {
@@ -35,10 +39,27 @@ onMounted(() => {
   accomodationStore.registerNumber = props.accData?.registerNumber;
   getAccomodationStarAverage();
 });
+
+const emit = defineEmits(['highlightMarker', 'deselectMarker']);
+
+const handleMouseEnter = () => {
+  emit('highlightMarker', props.accData.registerNumber);
+};
+
+const handleMouseLeave = () => {
+  emit('deselectMarker', props.accData.registerNumber);
+};
+
 </script>
 
 <template>
-  <article class="accomodation-thumbnail-base">
+  <article
+    :class="`accomodation-thumbnail-base ${
+      isMarkerMapSelectionEnable && 'highlightActive'
+    }`"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+  >
     <BaseCarousel
       :images="[
         'https://images.unsplash.com/photo-1553444836-bc6c8d340ba7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80',
@@ -51,6 +72,7 @@ onMounted(() => {
     <div
       class="accomodation-thumbnail-detail-container"
       @click.prevent="router.push(`/accomodation/${accData.registerNumber}`)"
+      title="Haz click para el alojamiento"
     >
       <div class="accomodation-thumbnail-detail-container__header">
         <div>
@@ -116,7 +138,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/mixins.scss";
+@import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
 
 .accomodation-thumbnail-base {
   @include flex-row;
@@ -186,5 +209,12 @@ onMounted(() => {
   .bt-delete-accomodation {
     align-self: flex-end;
   }
+}
+
+// Estilos si se selecciona un marker de un mapa
+.highlightActive {
+  background-color: $color-tertiary-light;
+  border-radius: $global-border-radius;
+  padding: 10px;
 }
 </style>

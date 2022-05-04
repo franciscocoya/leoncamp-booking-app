@@ -38,6 +38,8 @@ export const getAllAccomodations = async () => {
     },
   });
 
+  console.log(data);
+
   return data.content;
 };
 

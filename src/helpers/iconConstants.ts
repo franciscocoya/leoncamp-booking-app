@@ -10,9 +10,12 @@ const ICON_MAP_MARKER = `${IMG_PATH}icons/marker-icon.svg`;
 const ICON_MAP_MARKER_TENTH = `${IMG_PATH}icons/tenth-marker-icon.png`;
 const ICON_SEARCH = `${IMG_PATH}icons/search-icon.svg`;
 const ICON_VERIFIED_USER = `${IMG_PATH}icons/user-verified-icon.png`;
+const ICON_VERIFIED_USER_ITEM = `${IMG_PATH}icons/verified-user-item-icon.svg`;
+const ICON_FULL_VERIFIED = `${IMG_PATH}icons/full-verified-icon.png`;
 const ICON_PAYMENT_CREDIT_CARD = `${IMG_PATH}icons/icon-credit-card.svg`;
 const ICON_PAYMENT_PAYPAL = `${IMG_PATH}icons/icon-paypal.svg`;
 const ICON_UPLOAD_IMAGE = `${IMG_PATH}icons/upload-icon.svg`;
+const ICON_USER_LANGUAGE = `${IMG_PATH}icons/language-icon.png`;
 
 /**
  * Placeholder de imágenes.
@@ -28,9 +31,12 @@ export {
   ICON_MAP_MARKER_TENTH,
   ICON_SEARCH,
   ICON_VERIFIED_USER,
+  ICON_VERIFIED_USER_ITEM,
+  ICON_FULL_VERIFIED,
   ICON_PAYMENT_CREDIT_CARD,
   ICON_PAYMENT_PAYPAL,
   ICON_UPLOAD_IMAGE,
+  ICON_USER_LANGUAGE,
 
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
