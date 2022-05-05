@@ -85,11 +85,20 @@ const handleLogin = () => {
   //border: 2px solid $color-tertiary-light;
   padding: 20px;
   border-radius: $global-border-radius;
-  box-shadow: $global-box-shadow;
 }
 
 hr {
   width: 90%;
   border: 1px solid rgb(199, 199, 199);
 }
+
+// ------------------------------------------------------------
+// -- Responsive design
+// ------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .login-form{
+    height: auto;
+  }
+}
+
 </style>

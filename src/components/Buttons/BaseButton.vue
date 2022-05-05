@@ -20,7 +20,11 @@ defineProps({
   },
   title: {
     type: String,
-  }
+  },
+  fullWidth: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["click"]);
@@ -35,7 +39,7 @@ function handleClick() {
     <button
       :class="buttonStyle"
       @click.prevent="handleClick"
-      :style="`${buttonWidth ? `width: ${buttonWidth}` : ''}`"
+      :style="`${buttonWidth ? `width: ${fullWidth ? '100%' : buttonWidth}` : ''}`"
       :id="buttonId && buttonId"
       :disabled="isDisabled"
       :title="title"

@@ -118,9 +118,18 @@ const handleRegister = (e) => {
   @include flex-column-center;
   width: 350px;
   gap: 15px;
-  // background-color: $color-tertiary-light;
-  border: 2px solid $color-tertiary-light;
   padding: 20px;
   border-radius: $global-border-radius;
 }
+
+// ------------------------------------------------------------
+// -- Responsive design
+// ------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .register-form-container{
+    height: auto;
+  }
+}
+
+
 </style>
