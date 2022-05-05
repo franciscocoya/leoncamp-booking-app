@@ -1,6 +1,6 @@
 <script setup>
 // Icono calendario
-import { ICON_CALENDAR_FILLED } from "@/helpers/iconConstants";
+import { ICON_MENU_CALENDAR_OUTLINE,  ICON_CALENDAR  } from "@/helpers/iconConstants";
 
 defineProps({
   dateText: {
@@ -18,7 +18,7 @@ defineProps({
 <template>
   <div class="date-formatted-item" :title="dateTitle">
     <span>{{ dateText }}</span>
-    <img :src="ICON_CALENDAR_FILLED" alt="" />
+    <img :src=" ICON_CALENDAR" alt="" />
   </div>
 </template>
 
@@ -41,9 +41,8 @@ defineProps({
 
   // Estilos icono de calendario
   & > img {
-    width: 13px;
-    height: 13px;
-    filter: invert(1);
+    width: 20px;
+    height: 20px;
     padding: 3px;
     border-radius: 5px;
     background-color: #fff;

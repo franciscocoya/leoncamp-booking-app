@@ -1,7 +1,11 @@
 <script setup>
+import { ref, onMounted, onUpdated } from "vue";
+import { useRouter } from "vue-router";
+
 // Componentes
 import MenuIcon from "@/components/Header/Menu/MenuIcon.vue";
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
+import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Iconos
 import {
@@ -11,12 +15,25 @@ import {
   ICON_ADD,
 } from "@/helpers/iconConstants";
 
-const emit = defineEmits(['showMenuMobile']);
+const router = useRouter();
+
+const emit = defineEmits(["showMenuMobile"]);
 
 const handleShowMenuMobile = () => {
-  emit('showMenuMobile');
-}
+  emit("showMenuMobile");
+};
 
+const isLogged = ref(false);
+
+onMounted(() => {
+  isLogged.value =
+    JSON.parse(localStorage.getItem("user"))?.token !== undefined;
+});
+
+onUpdated(() => {
+  isLogged.value =
+    JSON.parse(localStorage.getItem("user"))?.token !== undefined;
+});
 </script>
 
 <template>
@@ -24,15 +41,27 @@ const handleShowMenuMobile = () => {
     <div class="header-mobile-wrapper">
       <ul>
         <!-- Icono Inicio -->
-        <li class="menu-mobile-item--active"><MenuIcon :icon="ICON_MENU_HOME" :iconSize="40" title="Inicio" path="/" /></li>
+        <li class="menu-mobile-item--active">
+          <MenuIcon
+            :icon="ICON_MENU_HOME"
+            :iconSize="40"
+            title="Inicio"
+            path="/"
+          />
+        </li>
 
         <!-- Icono guardados -->
-        <li>
-          <MenuIcon :icon="ICON_BOOKMARK" :iconSize="26" title="Guardados" path="/saved"/>
+        <li v-if="isLogged == true">
+          <MenuIcon
+            :icon="ICON_BOOKMARK"
+            :iconSize="26"
+            title="Guardados"
+            path="/saved"
+          />
         </li>
 
         <!-- Icono subir alojamiento -->
-        <li>
+        <li v-if="isLogged == true">
           <MenuIcon
             :icon="ICON_ADD"
             path="/bookings"
@@ -42,18 +71,42 @@ const handleShowMenuMobile = () => {
         </li>
 
         <!-- Icono reservas -->
-        <li>
-          <MenuIcon :icon="ICON_MENU_CALENDAR_OUTLINE" :iconSize="40" title="Reservas" path="/bookings"/>
+        <li v-if="isLogged == true">
+          <MenuIcon
+            :icon="ICON_MENU_CALENDAR_OUTLINE"
+            :iconSize="40"
+            title="Reservas"
+            path="/bookings"
+          />
         </li>
 
         <!-- Icono cuenta personal -->
         <li>
           <AccountIcon
+            v-if="isLogged == true"
             :width="50"
             :height="50"
             username="Cuenta"
             :isOnMenuMobile="true"
             @showMenu="handleShowMenuMobile"
+          />
+        </li>
+        <li v-if="isLogged == false">
+          <!-- Botón Registro -->
+          <BaseButton
+            text="Crear cuenta"
+            buttonWidth="140px"
+            buttonStyle="baseButton-secondary--filled"
+            @click="router.push('/signup')"
+          />
+        </li>
+        <li v-if="isLogged == false">
+          <!-- Botón Iniciar sesión -->
+          <BaseButton
+            text="Iniciar sesión"
+            buttonWidth="140px"
+            buttonStyle="baseButton-primary--outlined"
+            @click="router.push('/signin')"
           />
         </li>
       </ul>
@@ -94,16 +147,16 @@ const handleShowMenuMobile = () => {
       margin: 0;
       padding: 0;
 
-      & > li{
-          & img {
-              fill: red;
-          }
+      & > li {
+        & img {
+          fill: red;
+        }
       }
 
-      & > .menu-mobile-item--active{
-          background-color: $color-tertiary-dark;
-          padding: 10px;
-          border-radius: $global-border-radius;
+      & > .menu-mobile-item--active {
+        background-color: $color-tertiary-dark;
+        padding: 10px;
+        border-radius: $global-border-radius;
       }
     }
   }

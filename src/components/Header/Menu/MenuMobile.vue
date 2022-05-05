@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const userStore = useUserStore();
+
 </script>
 
 <template>
@@ -12,7 +13,7 @@ const userStore = useUserStore();
     <div class="menu-mobile-responsive__overlay"></div>
     <div class="menu-mobile-responsive__wrapper">
       <ul>
-        <li id="menu-mobile-username">Hola, Javier</li>
+        <li id="menu-mobile-username">Hola, {{userStore.name}}</li>
         <li id="user-profile" @click.prevent="router.push('')">Perfil</li>
         <li id="user-security-privacity">Seguridad y privacidad</li>
         <li id="user-bookings" @click.prevent="router.push('')">Reservas</li>

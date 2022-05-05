@@ -107,7 +107,7 @@ const handleMouseLeave = () => {
             <IconButton
               v-if="showDeleteButton"
               :buttonIcon="ICON_DELETE"
-              buttonStyle="iconButton-accomodation-action"
+              buttonStyle="iconButton-accomodation-action--delete"
               class="bt-delete-accomodation"
               title="Haz click aquí para eliminar el alojamiento"
               @click="handleDeleteAccomodation"

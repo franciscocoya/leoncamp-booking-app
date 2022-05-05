@@ -4,7 +4,6 @@
 const IMG_PATH = '/src/assets/img/';
 
 const ICON_CALENDAR = `${IMG_PATH}icons/calendar-icon.svg`;
-const ICON_CALENDAR_FILLED = `${IMG_PATH}icons/calendar-icon-filled.png`;
 const ICON_BOOKMARK = `${IMG_PATH}icons/bookmark-icon.svg`;
 const ICON_MAP_MARKER = `${IMG_PATH}icons/marker-icon.svg`;
 const ICON_MAP_MARKER_TENTH = `${IMG_PATH}icons/tenth-marker-icon.png`;
