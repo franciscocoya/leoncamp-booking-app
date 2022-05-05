@@ -1,0 +1,101 @@
+<script setup>
+import { useUserStore } from "@/store/user";
+
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const userStore = useUserStore();
+</script>
+
+<template>
+  <div class="menu-mobile-responsive">
+    <div class="menu-mobile-responsive__overlay"></div>
+    <div class="menu-mobile-responsive__wrapper">
+      <ul>
+        <li id="menu-mobile-username">Hola, Javier</li>
+        <li id="user-profile" @click.prevent="router.push('')">Perfil</li>
+        <li id="user-security-privacity">Seguridad y privacidad</li>
+        <li id="user-bookings" @click.prevent="router.push('')">Reservas</li>
+        <li
+          v-if="userStore.datosHost != null"
+          id="user-ads"
+          @click.prevent="router.push('')"
+        >
+          Anuncios
+        </li>
+        <li id="user-logout" @click.prevent="userStore.logout()">
+          Cerrar sesión
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "@/assets/scss/_variables.scss";
+@import "@/assets/scss/_mixins.scss";
+
+.menu-mobile-responsive {
+  @include flex-column-center;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $z-index-3;
+
+  & > .menu-mobile-responsive__overlay{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      z-index: $z-index-3;
+  }
+
+  & > .menu-mobile-responsive__wrapper {
+    width: 90%;
+    height: 70%;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid $color-tertiary-light;
+    border-radius: $global-border-radius;
+    box-shadow: $global-box-shadow;
+    z-index: $z-index-4;
+
+    & > ul {
+      @include flex-column-center;
+      height: 100%;
+      justify-content: space-evenly;
+      list-style: none;
+      padding: 20px;
+      margin: 0 auto;
+
+      & > #menu-mobile-username{
+          font-size: 1.7rem;
+          font-weight: 600;
+          color: $color-primary;
+      }
+
+      & > li {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        border-radius: $global-border-radius;
+
+        &:not(#menu-mobile-username):hover {
+          background-color: $color-tertiary-light;
+        }
+
+        &:last-child {
+          background: none;
+          border: 1px solid #000;
+
+          &:hover {
+            background-color: $color-dark;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

@@ -128,7 +128,7 @@ onMounted(() => {
 @import "@/assets/scss/_variables.scss";
 
 .user-profile-view {
-  @include flex-row;
+  @include flex-column;
 }
 
 form {
@@ -139,6 +139,7 @@ form {
   & > .user-profile-data__contact {
     @include flex-row;
     gap: 20px;
+    flex-wrap: wrap;
   }
 
   // Estilos sección datos del usuario host
@@ -157,4 +158,23 @@ form {
     align-self: flex-start;
   }
 }
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .account-view {
+    @include flex-column;
+  }
+
+  .user-profile-data__host-data__wrapper{
+   margin: 0 auto;
+   padding: 10px;
+  }
+
+  .btEditar-perfil-usuario{
+    align-self: center;
+  }
+}
+
 </style>

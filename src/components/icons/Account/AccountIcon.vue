@@ -45,13 +45,27 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isOnMenuMobile: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const emit = defineEmits(["showMenu"]);
+
+const showMenuMobile = () => {
+  emit("showMenu");
+};
 
 const redirectToUserProfile = () => {
   const { name, surname } = userStore;
-  router.push(
-    `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`
-  );
+  if (props.isOnMenuMobile) {
+    showMenuMobile();
+  } else {
+    router.push(
+      `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`
+    );
+  }
 };
 
 const handleUpdateImage = async (img) => {
@@ -60,7 +74,6 @@ const handleUpdateImage = async (img) => {
   userStore.profileImage = decodeURI(newImg);
   window.location.reload();
 };
-
 </script>
 
 <template>
@@ -71,7 +84,8 @@ const handleUpdateImage = async (img) => {
       :width="props.width"
       :height="props.height"
       :title="props.username"
-      @click.prevent="props.isLinked ? redirectToUserProfile() : 'null'"
+      @click.prevent="props.isLinked == true || props.isOnMenuMobile == true
+       ? redirectToUserProfile() : 'null'"
       :style="props.isLinked ? 'cursor: pointer' : ''"
     />
 

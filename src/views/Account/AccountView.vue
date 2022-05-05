@@ -13,11 +13,13 @@ const userStore = useUserStore();
 onMounted(() => {
   userStore.loadUserData();
 });
+
+const isMobile = window.innerWidth < 768;
 </script>
 
 <template>
   <div class="account-view">
-    <AccountSidebarItem :isUserHost="userStore.datosHost" />
+    <AccountSidebarItem :isUserHost="userStore.datosHost" v-if="isMobile == false"/>
     <RouterView />
   </div>
 </template>
@@ -30,5 +32,14 @@ onMounted(() => {
   @include flex-row-center;
   gap: 50px;
   margin-top: 20px;
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .account-view {
+    @include flex-column;
+  }
 }
 </style>

@@ -10,6 +10,13 @@ import {
   ICON_MENU_HOME,
   ICON_ADD,
 } from "@/helpers/iconConstants";
+
+const emit = defineEmits(['showMenuMobile']);
+
+const handleShowMenuMobile = () => {
+  emit('showMenuMobile');
+}
+
 </script>
 
 <template>
@@ -45,7 +52,8 @@ import {
             :width="50"
             :height="50"
             username="Cuenta"
-            :isLinked="true"
+            :isOnMenuMobile="true"
+            @showMenu="handleShowMenuMobile"
           />
         </li>
       </ul>
@@ -59,11 +67,10 @@ import {
 
 .header-mobile {
   position: fixed;
-  height: 90px;
+  height: 100%;
   width: 100%;
   margin: 0 auto;
-  bottom: 10px;
-  left: 0;
+  top: 87%;
   background: transparent;
   z-index: $z-index-header;
 
