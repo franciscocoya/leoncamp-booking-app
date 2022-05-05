@@ -63,7 +63,7 @@ defineProps({
         <img :src="img" alt="" />
       </swiper-slide>
     </swiper>
-    <div v-else :style="`width: ${slideWidth}px`" class="carousel-no-images">
+    <div v-else class="carousel-no-images">
       No hay imágenes
     </div>
   </div>
@@ -102,8 +102,9 @@ defineProps({
   }
 }
 
-.carousel-no-images{
+.carousel-no-images {
   @include flex-column-center;
+  width: 300px;
   height: 200px;
   background-color: $color-tertiary-light;
   border-radius: $global-border-radius;
@@ -149,5 +150,16 @@ defineProps({
 
 :global(.swiper-button-disabled) {
   display: none;
+}
+
+// -------------------------------
+// -- Responsive design
+// -------------------------------
+@media (max-width: $breakpoint-sm) {
+  .carousel-no-images {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 }
 </style>

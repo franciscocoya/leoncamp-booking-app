@@ -107,4 +107,15 @@ $home-section-margin: 50px;
     gap: 30px;
   }
 }
+
+// --------------------------------------------------------------
+// Responsive design
+// --------------------------------------------------------------
+
+@media (max-width: $breakpoint-sm) {
+  .home-view{
+    @include flex-column;
+    margin: 20px;
+  }
+}
 </style>

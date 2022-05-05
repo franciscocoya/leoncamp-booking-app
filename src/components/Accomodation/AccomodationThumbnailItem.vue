@@ -250,4 +250,16 @@ const handleMouseLeave = () => {
   border-radius: $global-border-radius;
   padding: 10px;
 }
+
+// ---------------------------------------------------------------
+// Responsive design
+// ---------------------------------------------------------------
+
+  @media (max-width: $breakpoint-sm) {
+    .accomodation-thumbnail-base{
+      @include flex-column;
+    }
+  }
+
+
 </style>

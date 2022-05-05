@@ -9,7 +9,7 @@ defineProps({
   },
   text: {
     type: String,
-    required: true,
+    default: "",
   },
   iconStyle: {
     type: String,
@@ -19,6 +19,15 @@ defineProps({
     type: String,
     required: true,
   },
+  title: {
+    type: String,
+    default: "Haz click aquí para ir al contenido",
+  },
+
+  iconSize: {
+    type: Number,
+    default: 24,
+  },
 });
 
 defineComponent({
@@ -27,9 +36,14 @@ defineComponent({
 </script>
 
 <template>
-  <div>
+  <div :title="title">
     <RouterLink :to="path" class="menu-icon">
-      <img :src="icon" :alt="text" :width="iconSize" class="icon-color" />
+      <img
+        :src="icon"
+        :alt="text"
+        :style="`width: ${iconSize}px;`"
+        class="icon-color"
+      />
       <span>{{ text }}</span>
     </RouterLink>
   </div>
