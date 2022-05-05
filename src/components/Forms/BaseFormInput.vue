@@ -42,6 +42,7 @@ function updateInputValue(value: string) {
       :class="inputStyleClass"
       :value="inputValue"
       :readonly="isReadonly"
+      autocomplete="on"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
     />
   </div>

@@ -5,6 +5,9 @@ import { getAccomodationServiceImageById } from "@/helpers/utils";
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
+// Iconos
+import {ICON_CLOSE} from '@/helpers/iconConstants'
+
 const props = defineProps({
   services: {
     type: Array,
@@ -27,13 +30,14 @@ const closeModal = () => {
 <template>
   <div class="base-modal">
     <div class="base-modal-window">
-      <BaseButton
+      <!-- <BaseButton
         text="x"
         buttonStyle="baseButton-close--filled"
         id="bt-close-modal"
         title="Cerrar la ventana"
         @click="closeModal"
-      />
+      /> -->
+      <img :src="ICON_CLOSE" alt="" @click.prevent="closeModal" class="close-modal-button">
       <h2>Servicios del alojamiento</h2>
       <ul>
         <li
@@ -74,9 +78,19 @@ const closeModal = () => {
   background-color: #fff;
   border-radius: $global-border-radius;
   overflow: hidden;
+  position: relative;
 
-  & > #bt-close-modal {
+  & > .close-modal-button {
+    width: 15px;
+    height: auto;
+    background-color: $color-tertiary-light;
+    border-radius: 100%;
+    padding: 10px;
     align-self: flex-start;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
   }
 
   & > h2{

@@ -5,7 +5,7 @@
   font-size: $input-fontSize;
 }
 
-.base-input-no-border{
+.base-input-no-border {
   @include base-input;
   background-color: #ffffff;
   color: $color-dark;
@@ -17,16 +17,17 @@
 
 .base-input {
   @include base-input;
+  height: 30px;
+  width: fit-content;
   background-color: #ffffff;
   color: $color-dark;
   border: 2px solid $color-tertiary-light;
   border-radius: $global-border-radius;
   padding: 5px;
-  height: 30px;
 }
 
 // Estilos textareas
-.base-textarea{
+.base-textarea {
   font-family: 'Inter', sans-serif;
   background-color: #ffffff;
   color: $color-dark;
@@ -35,4 +36,10 @@
   padding: 5px;
   height: 30px;
   font-size: $input-fontSize;
+}
+
+textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }

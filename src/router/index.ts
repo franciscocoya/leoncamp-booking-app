@@ -20,8 +20,9 @@ import RegisterView from '@/views/Auth/RegisterView.vue';
 import ForgotPasswordView from '@/views/Auth/ForgotPasswordView.vue';
 
 // Rutas públicas
-const authRoutes = ['/signin', '/signup', '/password/reset'];
-const publicRoutes = [...authRoutes, '/', 'accomodation/:registerNumber'];
+const authRoutes: string[] = ['/signin', '/signup', '/password/reset'];
+const publicRoutes: string[] = [...authRoutes, '/'];
+const publicRoutesNames: string[] = ['accomodation-detail', 'user-profile-public', 'app-help', 'error-404', 'home'];
 
 const router = createRouter({
   history: createWebHistory(),
@@ -137,12 +138,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authRequired = !publicRoutes.includes(to.path);
   const isLogged = JSON.parse(sessionStorage.getItem('user'))?.token;
-
-  if (authRequired && !isLogged) {
+  console.log(to.name);
+  if (!publicRoutesNames.includes(to.name) && (authRequired && !isLogged)) {
     next('/signin');
   } else {
     // Si el usuario está logeado, no podrá acceder a las rutas de autenticación (signin y signup).
-    authRoutes.includes(to.path) && isLogged ? next('/') : next();
+    // authRoutes.includes(to.path) && isLogged ? next('/') : next();
+    next();
   }
 });
 

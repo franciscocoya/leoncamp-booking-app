@@ -18,12 +18,14 @@ const ICON_UPLOAD_IMAGE = `${IMG_PATH}icons/upload-icon.svg`;
 const ICON_USER_LANGUAGE = `${IMG_PATH}icons/language-icon.png`;
 const ICON_EDIT = `${IMG_PATH}icons/edit-icon.svg`;
 const ICON_DELETE = `${IMG_PATH}icons/delete-icon.svg`;
+const ICON_CLOSE = `${IMG_PATH}icons/close-icon.svg`;
 
 /**
  * Placeholder de imágenes.
  */
 const IMG_PROFILE_PLACEHOLDER = `${IMG_PATH}/icons/profile-image-empty.png`;
-const IMG_APP_LOGO = `${IMG_PATH}/logo.png`;
+const IMG_NOT_FOUND_PLACEHOLDER = `${IMG_PATH}image-placeholder.jpg`;
+const IMG_APP_LOGO = `${IMG_PATH}logo.png`;
 
 export {
   ICON_CALENDAR,
@@ -41,7 +43,9 @@ export {
   ICON_USER_LANGUAGE,
   ICON_EDIT,
   ICON_DELETE,
+  ICON_CLOSE,
 
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
+  IMG_NOT_FOUND_PLACEHOLDER
 };

@@ -187,6 +187,16 @@ export async function deleteAccomodationBySavedAccomodationId(
   );
 }
 
+export async function getAllAvaibleServices(){
+  const { data } = await axios.get(`${baseUri}${ALL_ACCOMODATIONS}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
+
+  return data;
+};
+
 /**
  * Listado de todas las ciudades
  */

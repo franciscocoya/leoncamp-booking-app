@@ -142,10 +142,13 @@
 
 // Estilos botón cerrar diálogos modales.
 .baseButton-close--filled {
-  padding: 10px;
-  border: 1px solid $color-tertiary-dark;
+  @include flex-row-center;
+  width: 30px;
+  height: 30px;
+  padding: 25px;
+  border: none;
   transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
-  border-radius: 20px;
+  border-radius: 100%;
 
   &:hover {
     background: $color-tertiary-dark;

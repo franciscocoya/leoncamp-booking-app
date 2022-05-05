@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 defineProps({
   placeholder: {
     type: String,
@@ -21,6 +20,14 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  textAreaColums: {
+    type: Number,
+    default: 20,
+  },
+  textAreaRows: {
+    type: Number,
+    default: 5,
+  },
 });
 
 const emit = defineEmits(["handleInput"]);
@@ -31,13 +38,16 @@ function updateInputValue(value: string) {
 </script>
 
 <template>
-  <div>
+  <div class="base-textarea-item">
     <label :for="inputLabel">{{ inputLabel }}</label>
     <textarea
       :id="inputLabel"
       :class="inputStyleClass"
       :value="textAreaContent"
       :placeholder="placeholder"
+      :cols="textAreaColums"
+      :rows="textAreaRows"
+      autocomplete="on"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement).value)"
     >
     </textarea>
@@ -47,12 +57,23 @@ function updateInputValue(value: string) {
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
 
-label {
-  font-size: 11px;
-  color: gray;
-}
+.base-textarea-item {
+  position: relative;
 
-textarea {
-  @include flex-column;
+  & > label {
+    font-size: 11px;
+    color: gray;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+  }
+
+  & > textarea {
+    @include flex-column;
+    box-sizing: content-box;
+    width: 100%;
+    height: 100px;
+    padding-top: 20px;
+  }
 }
 </style>
