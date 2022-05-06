@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-  <div>
+  <div v-once>
     <img
       :src="iconUrl"
       alt="LeonCamp alquiler de alojamientos turísticos"

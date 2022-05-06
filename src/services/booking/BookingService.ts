@@ -6,7 +6,6 @@ axios.defaults.headers.common = {
     'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
 };
 
-
 /**
  * Obtención de la reserva con el id pasado como parámetro.
  * 
@@ -14,7 +13,7 @@ axios.defaults.headers.common = {
  * 
  * @returns
  */
-const getBookingDataByBookingId = async (bookingId: string): Promise<any> => {
+const getBookingDataByBookingId = async (bookingId: string) => {
     const { data } = await axios.get(`${API_BOOKINGS}/${bookingId}`, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`

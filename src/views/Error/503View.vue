@@ -5,11 +5,13 @@ import BaseError from "@/views/Error/BaseError.vue";
 
 
 <template>
-  <div class="error-404" v-once>
-    <BaseError id="error-404__base_error">
-      <h1>404</h1>
-      <h2>Página no encontrada</h2>
-      <p>La página que estás buscando no existe.</p>
+  <div class="error-503" v-once>
+    <BaseError id="error-503__base_error">
+      <h1>503</h1>
+      <h2>Servicio no disponible</h2>
+      <p>
+        En estos momentos, el servidor está sobrecargado. Inténtelo de nuevo más tarde.
+      </p>
     </BaseError>
   </div>
 </template>
@@ -17,7 +19,7 @@ import BaseError from "@/views/Error/BaseError.vue";
 <style lang="scss" scoped>
 @import "@/assets/scss/_variables.scss";
 
-.error-404 > #error-404__base_error {
+.error-503 > #error-503__base_error {
   & > h1,
   & > h2,
   & > p {

@@ -1,21 +1,20 @@
 <script setup>
-import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import {
   IMG_PROFILE_PLACEHOLDER,
-  ICON_UPLOAD_IMAGE,
 } from "@/helpers/iconConstants";
-
-// Store
-import { useUserStore } from "@/store/user";
-const userStore = useUserStore();
 
 // Utils
 import { convertImageToBase64 } from "@/helpers/utils";
 
 // Servicios
 import { uploadUserProfileImage } from "@/services/User/userService";
+
+// Store
+import { useUserStore } from "@/store/user";
+const userStore = useUserStore();
+
 
 const router = useRouter();
 
@@ -98,6 +97,7 @@ const handleUpdateImage = async (img) => {
     >
       <img :src="ICON_UPLOAD_IMAGE" alt="" />
       <input
+        v-once
         type="file"
         accept=".png, .jpg, .jpeg, .gif, .webp"
         @input="handleUpdateImage($event.target.files[0])"

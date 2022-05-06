@@ -1,6 +1,6 @@
-import axios from "axios";
+// import axios from "axios";
 
-import { API_USERS } from "@/helpers/apiRoutes";
+// import { API_USERS } from "@/helpers/apiRoutes";
 
 import { getAllCities } from "@/services/accomodation/AccomodationService";
 

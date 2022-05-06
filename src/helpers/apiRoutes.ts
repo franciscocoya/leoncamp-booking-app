@@ -14,13 +14,18 @@ const API_USER_CONFIG = `${API_BASE_URL}${import.meta.env.VITE_API_USER_CONFIG}`
 
 // -----------------------------------------------------------------------------
 
-// --Rutas de alojamiento
+// -- Rutas de alojamiento
 const API_ACCOMODATIONS = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATIONS}`;
+
+// -- Rutas servicios de un alojamiento
+const API_ACCOMODATION_SERVICES = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATION_SERVICES}`;
+
 // -----------------------------------------------------------------------------
+
 
 // -- Rutas de reservas
 const API_BOOKINGS = `${API_BASE_URL}${import.meta.env.VITE_API_BOOKINGS}`;
-
+// -----------------------------------------------------------------------------
 
 export{
     LOGIN_URL,
@@ -29,5 +34,6 @@ export{
     API_USERS,
     API_USER_CONFIG,
     API_ACCOMODATIONS,
+    API_ACCOMODATION_SERVICES,
     API_BOOKINGS
 }

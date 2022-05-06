@@ -1,11 +1,13 @@
 <script setup>
+import { defineAsyncComponent, onMounted } from "vue";
 import { useUserStore } from "@/store/user";
-import { onMounted } from "@vue/runtime-core";
-
-import { RouterView } from "vue-router";
 
 // Componentes
-import AccountSidebarItem from "@/components/Sidebar/AccountSidebarItem.vue";
+//import AccountSidebarItem from "@/components/Sidebar/AccountSidebarItem.vue";
+
+const AccountSidebarItem = defineAsyncComponent(() =>
+  import("@/components/Sidebar/AccountSidebarItem.vue")
+);
 
 // Store
 const userStore = useUserStore();
@@ -19,8 +21,16 @@ const isMobile = window.innerWidth < 768;
 
 <template>
   <div class="account-view">
-    <AccountSidebarItem :isUserHost="userStore.datosHost" v-if="isMobile == false"/>
-    <RouterView />
+    <AccountSidebarItem
+      :isUserHost="userStore.datosHost"
+      v-if="isMobile == false"
+    />
+
+    <Suspense>
+      <Transition name="fade">
+        <RouterView />
+      </Transition>
+    </Suspense>
   </div>
 </template>
 
@@ -32,6 +42,20 @@ const isMobile = window.innerWidth < 768;
   @include flex-row-center;
   gap: 50px;
   margin-top: 20px;
+}
+
+/*
+  Enter and leave animations can use different
+  durations and timing functions.
+*/
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 // ---------------------------------------------------------------

@@ -1,9 +1,6 @@
 <script setup>
-import { onMounted, h, render } from "vue";
+import { onMounted  } from "vue";
 import mapboxgl from "mapbox-gl";
-
-import { useAccomodationStore } from "@/store/accomodation";
-const accomodationStore = useAccomodationStore();
 
 // Iconos
 import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
@@ -66,7 +63,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div id="map" :style="`width: ${mapWidth}; height: ${mapHeight}`"></div>
+    <div id="map" :style="`width: ${mapWidth}; height: ${mapHeight}`" v-once></div>
   </div>
 </template>
 

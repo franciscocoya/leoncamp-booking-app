@@ -6,7 +6,7 @@ import { useRouter } from "vue-router";
 import AccomodationImagesGallery from "@/components/Accomodation/AccomodationImagesGallery.vue";
 import AccomodationServicesItem from "@/components/Accomodation/AccomodationServicesItem.vue";
 import AccomodationReviewsItem from "@/components/Accomodation/AccomodationReview/AccomodationReviewsItem.vue";
-import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
+// import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
 import AccountIcon from "@/components/Icons/Account/AccountIcon.vue";
 
 // Utils
@@ -157,13 +157,14 @@ onMounted(async () => {
             <BaseButton
               text="Reservar"
               buttonStyle="baseButton-primary-gradient--filled"
+              v-once
             />
           </div>
         </section>
 
         <!-- Seccion servicios -->
         <section class="accomodation-detail__services">
-          <h2>Servicios que ofrece</h2>
+          <h2 v-once>Servicios que ofrece</h2>
           <AccomodationServicesItem
             :services="accomodationStore.accomodationServices"
             @show-modal="showServiceModal = true"
@@ -190,11 +191,12 @@ onMounted(async () => {
 
         <!-- Sección detalles anfitrión -->
         <section class="accomodation-host">
-          <h2>Detalles del anfitrión</h2>
+          <h2 v-once>Detalles del anfitrión</h2>
           <div class="accomodation-host-summary">
             <div class="accomodation-host__info">
               <div class="accomodation-host_info__details">
                 <AccountIcon
+                  v-once
                   :profileImage="accomodationStore.userHost.profileImage"
                   :width="80"
                   :height="80"
@@ -223,6 +225,7 @@ onMounted(async () => {
               </div>
             </div>
             <BaseButton
+              v-once
               :text="`${
                 accomodationStore.userHost.id === currentUser.id
                   ? 'Ir a tu perfil'
@@ -239,8 +242,11 @@ onMounted(async () => {
           <h2>Normas del alojamiento</h2>
           <div class="accomodation-detail_rules__details">
             <ul>
-              <li v-for="(rule, index) in accomodationStore.accomodationRules" :key="index">
-                {{rule.accomodationAccRuleId.idAccomodationRule.rule}}
+              <li
+                v-for="(rule, index) in accomodationStore.accomodationRules"
+                :key="index"
+              >
+                {{ rule.accomodationAccRuleId.idAccomodationRule.rule }}
               </li>
             </ul>
           </div>
@@ -392,12 +398,12 @@ onMounted(async () => {
         } // Fin estilos accomodation-host__info
       }
     } // FIn estilos accomodation-host
-  
+
     // Estilos sección normas del alojamiento
     & > .accomodation-detail__rules {
       @include flex-column;
-      
-      & ul{
+
+      & ul {
         @include flex-column;
         gap: 10px;
         padding: 0;

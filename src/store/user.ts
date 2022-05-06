@@ -7,7 +7,7 @@ import type { User } from '@/models/user/user.model';
 import { login, signUp } from '@/services/auth/AuthService';
 
 // Servicio de usuarios
-import { getUserDataById, updateUserData, getUserConfigurationByUserId, uploadUserProfileImage } from '@/services/user/UserService';
+import { getUserDataById, updateUserData, getUserConfigurationByUserId } from '@/services/user/UserService';
 
 // Servicio de alojamientos 
 import { getAllUserAccomodations } from '@/services/accomodation/AccomodationService';
@@ -20,6 +20,7 @@ const useUserStore = defineStore({
     name: '',
     surname: '',
     email: '',
+    phone: '',
     password: '',
     newPassword: '',
     repeatedPassword: '',
@@ -102,7 +103,9 @@ const useUserStore = defineStore({
       this.email = JSON.parse(sessionStorage.getItem('user') || '{}').email;
 
       const userData = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
-      this.profileImage = await decodeURI(userData.profileImage);
+      if (userData.profileImage) {
+        this.profileImage = await decodeURI(userData.profileImage);
+      }
 
       // Si el usuario es host, se mostrarán los siguientes datos.
       const { dni, bio, direction, emailVerified, dniVerified, phoneVerified, verified } = userData;
@@ -135,8 +138,9 @@ const useUserStore = defineStore({
      * @returns 
      */
     async getUserLanguageById(userId: number) {
-      const { idLanguage } = await getUserConfigurationByUserId(userId);
-      return idLanguage.language;
+      const userConfig = await getUserConfigurationByUserId(userId);
+      console.log(userConfig);
+      return userConfig;
     },
 
     /**

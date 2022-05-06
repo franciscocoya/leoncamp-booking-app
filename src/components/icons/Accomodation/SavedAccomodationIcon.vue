@@ -1,4 +1,6 @@
 <script setup>
+import {ref} from 'vue';
+
 const props = defineProps({
   isActive: {
     type: Boolean,
@@ -18,14 +20,14 @@ const props = defineProps({
   },
 });
 
-const isIconActive = ref(props.isActive);
+let isIconActive = ref(props.isActive);
 
 /**
  * Al hacer click se cambia el estado isActive y se añade el alojamiento
  * a la lista de alojamientos guardados del usuario.
  */
 const handleClick = () => {
-  isIconActive = !isIconActive;
+  isIconActive = !isIconActive.value;
 };
 </script>
 
@@ -41,7 +43,7 @@ const handleClick = () => {
       class="icon-save-accomodation"
       @click.prevent="handleClick"
     >
-      <title>Alojamiento guardado</title>
+      <title v-once>Alojamiento guardado</title>
       <g
         id="Page-1"
         stroke="none"

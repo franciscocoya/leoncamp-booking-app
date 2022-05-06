@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, Ref, ref } from "vue";
 
 const props = defineProps({
   inputType: {
@@ -20,21 +20,21 @@ const props = defineProps({
   },
 });
 
-let disableField: boolean = ref(false);
+let disableField: boolean = ref(false).value;
 
 const emit = defineEmits(["handleInput"]);
 
 function updateInputValue(value: string) {
-  disableField.value = false;
+  disableField = false;
   emit("handleInput", value);
 }
 
 const disableInput = (disable: boolean) => {
-  disableField.value = disable;
+  disableField = disable;
 };
 
 onMounted(() => {
-  disableField.value = props.isReadonly;
+  disableField = props.isReadonly;
 });
 </script>
 

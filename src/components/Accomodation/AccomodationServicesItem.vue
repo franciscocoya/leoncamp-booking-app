@@ -1,6 +1,4 @@
 <script setup>
-import { onMounted } from "@vue/runtime-core";
-
 import { getAccomodationServiceImageById } from "@/helpers/utils";
 
 // Componentes

@@ -1,9 +1,10 @@
 <script setup>
 import { IMG_NOT_FOUND_PLACEHOLDER } from "@/helpers/iconConstants";
-import { onMounted } from "@vue/runtime-core";
+
+import {deleteImageFromAccomodation} from "@/services/accomodation/AccomodationService";
 
 const props = defineProps({
-  imageUrl: {
+  imageData: {
     type: String,
     default: IMG_NOT_FOUND_PLACEHOLDER,
   },
@@ -16,12 +17,28 @@ const props = defineProps({
     default: "Haz click aquí para eliminar",
   },
 });
+
+/**
+ * Manejador de click del icono de borrar imagen.
+ */
+const handleDeleteCurrentImage = async () => {
+  const confirmDelete = window.confirm(
+    "¿Estás seguro de que quieres eliminar esta imagen?"
+  );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  await deleteImageFromAccomodation(props.regNumber, props.imageData.id);
+};
 </script>
 
 <template>
   <div class="image-chip-edit" :title="props.chipTitle">
-    <img :src="props.imageUrl" />
-    <span class="close-chip">x</span>
+    <img
+    :src="props.imageData.imageUrl" />
+    <span class="close-chip" @click.prevent="handleDeleteCurrentImage"> x </span>
   </div>
 </template>
 
@@ -48,7 +65,7 @@ const props = defineProps({
     height: 100%;
     border-radius: $global-border-radius;
     object-fit: cover;
-    transition: all .2s ease-in
+    transition: all 0.2s ease-in;
   }
 
   // Estilos icono eliminar el alojamiento

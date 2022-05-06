@@ -1,6 +1,6 @@
 const SERVICES_IMG_BASE = '/src/assets/img/icons/services/';
 
-const accomodationServices: any = [
+const accomodationServices = [
   {
     id: 1,
     icon: `${SERVICES_IMG_BASE}wifi-icon.svg`,
@@ -111,7 +111,7 @@ const accomodationServices: any = [
   },
   {
     id: 28,
-    icon: `${SERVICES_IMG_BASE}bañera-hidromasaje-icon.svg`,
+    icon: `${SERVICES_IMG_BASE}banera-hidromasaje-icon.svg`,
   },
   {
     id: 29,

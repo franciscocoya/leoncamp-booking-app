@@ -1,16 +1,16 @@
 <script setup>
 import { onMounted, ref } from "vue";
 
-// Store
-import { useAccomodationStore } from "@/store/accomodation";
-const accomodationStore = useAccomodationStore();
-
 // Servicios
 import { getLatestAccomodationReviewsByRegisterNumber } from "@/services/accomodation/AccomodationService";
 
 // Componentes
 import SingleAccomodationReviewItem from "@/components/Accomodation/AccomodationReview/SingleAccomodationReviewItem.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
+
+// Store
+import { useAccomodationStore } from "@/store/accomodation";
+const accomodationStore = useAccomodationStore();
 
 const props = defineProps({
   registerNumber: {

@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { onMounted, onRenderTriggered } from "vue";
+<script  setup>
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 // Componentes
@@ -13,9 +13,9 @@ import {
 
 // Store usuario
 import { useUserStore } from "@/store/user";
-const userStore: any = useUserStore();
+const userStore = useUserStore();
 
-const router: any = useRouter();
+const router = useRouter();
 
 // const accountSidebarMenuItemActive = "";
 defineProps({
@@ -32,7 +32,7 @@ defineProps({
 /**
  * Resalta el item del menú de la barra lateral cuando se está en la página.
  */
-const highlightActiveAccountSidebarMenuItem = (id: string): void => {
+const highlightActiveAccountSidebarMenuItem = (id) => {
   // Eliminar la clase activa de todos los elementos del menú que la tengan.
   Array.from(
     document.getElementsByClassName("sidebar-menu-item--active")
@@ -48,7 +48,7 @@ const highlightActiveAccountSidebarMenuItem = (id: string): void => {
 /**
  * Redirecciona a la vista anidada indicada como parámetro.
  */
-const redirectAccountChildrenView = (viewName: string) => {
+const redirectAccountChildrenView = (viewName) => {
   highlightActiveAccountSidebarMenuItem(viewName);
   router.push({
     name: viewName,
@@ -56,7 +56,7 @@ const redirectAccountChildrenView = (viewName: string) => {
 };
 
 onMounted(() => {
-  const currentRouteName: string = router.currentRoute.value.name;
+  const currentRouteName = router.currentRoute.value.name;
   redirectAccountChildrenView(currentRouteName);
 });
 </script>

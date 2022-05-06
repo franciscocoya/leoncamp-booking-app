@@ -1,21 +1,16 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { useRouter } from "vue-router";
 
 // Iconos
 import {
-  IMG_PROFILE_PLACEHOLDER,
   ICON_USER_LANGUAGE,
   ICON_FULL_VERIFIED,
 } from "@/helpers/iconConstants";
 
 // Componentes
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
-import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
 import VerifiedListItem from "@/components/User/VerifiedListItem.vue";
-
-// Utils
-import { formatArrayAsSimpleStringDate } from "@/helpers/utils";
 
 // Store
 import { useUserStore } from "@/store/user";
@@ -26,17 +21,17 @@ const router = useRouter();
 // Datos del usuario a cargar.
 const userData = ref(null);
 const userLang = ref(null);
-const userAccomodationAds = ref([]);
+// const userAccomodationAds = ref([]);
 const isHostUser = ref(false);
 
 onBeforeMount(async () => {
   const userIdFromPath = router.currentRoute.value.params.userId;
 
-// Datos del usuario
+  // Datos del usuario
   userData.value = await userStore.getUserDataById(userIdFromPath);
 
   // Idioma
-  // userLang.value = await userStore.getUserLanguageById(userIdFromPath);
+  userLang.value = await userStore.getUserLanguageById(userIdFromPath);
 
   // Alojamientos publicados
   //userAccomodationAds.value = await userStore.getAllAccomodationsByUserdId(userIdFromPath);
@@ -60,8 +55,8 @@ onBeforeMount(async () => {
 
       <!-- User Host detalles -->
       <div class="user_profile_sidebar__details">
-        <p v-if="isHostUser">Usuario Host</p>
-        <div class="user_profile_sidebar_details__stars">
+        <p v-if="isHostUser" v-once>Usuario Host</p>
+        <div class="user_profile_sidebar_details__stars" v-once>
           <svg
             width="24"
             height="24"
@@ -79,23 +74,40 @@ onBeforeMount(async () => {
               stroke-linecap="round"
             />
           </svg>
-          <p>40 valoraciones</p>
+          <p v-once>40 valoraciones</p>
         </div>
-        <div v-if="userData.verified" class="user_profile_sidebar_details__fullVerified">
+        <div
+          v-if="userData.verified"
+          class="user_profile_sidebar_details__fullVerified"
+        >
           <img
+            v-once
             :src="ICON_FULL_VERIFIED"
             alt="El usuario ha verificado DNI, correo electrónico y teléfono"
           />
-          <p>Identidad verificada</p>
+          <p v-once>Identidad verificada</p>
         </div>
 
         <!-- Verificaciones del usuario -->
-        <div v-if="userData.dniVerified || userData.emailVerified || userData.phoneVerified" class="user_profile_sidebar_details__verified">
-          <h2>Nombre Apellidos ha confirmado</h2>
+        <div
+          v-if="
+            userData.dniVerified == true ||
+            userData.emailVerified == true ||
+            userData.phoneVerified == true
+          "
+          class="user_profile_sidebar_details__verified"
+        >
+          <h2 >{{userData.name}} {{userData.surname}} ha confirmado</h2>
           <ul>
-            <li v-if="userData.dniVerified"><VerifiedListItem verifiedText="DNI" /></li>
-            <li v-if="userData.emailVerified"><VerifiedListItem verifiedText="Correo electrónico" /></li>
-            <li v-if="userData.phoneVerified"><VerifiedListItem verifiedText="Teléfono" /></li>
+            <li v-if="userData.dniVerified">
+              <VerifiedListItem verifiedText="DNI" />
+            </li>
+            <li v-if="userData.emailVerified">
+              <VerifiedListItem verifiedText="Correo electrónico" />
+            </li>
+            <li v-if="userData.phoneVerified">
+              <VerifiedListItem verifiedText="Teléfono" />
+            </li>
           </ul>
         </div>
       </div>
@@ -103,20 +115,24 @@ onBeforeMount(async () => {
 
     <div class="user-profile__data">
       <!-- Nombre completo del usuario -->
-      <h2>Hola: Soy <span>{{userData.name}} {{userData.surname}}</span></h2>
+      <h2>
+        Hola: Soy <span>{{ userData.name }} {{ userData.surname }}</span>
+      </h2>
       <!-- Fecha de registro -->
-      <span></span>
+      <span>
+
+      </span>
 
       <!-- Acerca del usuario -->
       <section v-if="isHostUser" class="user-profile-data__biography">
         <h3>Acerca de</h3>
         <p v-if="userData.bio">
-         {{userData.bio}}
+          {{ userData.bio }}
         </p>
         <!-- Idiomas -->
         <div class="user-profile-data_biography__lang">
           <img :src="ICON_USER_LANGUAGE" alt="" />
-          <p>Habla: {{userLang}}</p>
+          <p>Habla: {{ userLang }}</p>
         </div>
       </section>
 

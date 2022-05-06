@@ -1,5 +1,5 @@
 <script setup>
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { RouterLink } from "vue-router";
 
 defineProps({
@@ -36,7 +36,7 @@ defineComponent({
 </script>
 
 <template>
-  <div :title="title">
+  <div :title="title" v-once>
     <RouterLink :to="path" class="menu-icon">
       <img
         :src="icon"

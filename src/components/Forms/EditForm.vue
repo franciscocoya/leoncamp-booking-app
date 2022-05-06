@@ -1,6 +1,4 @@
 <script setup>
-import { useRouter } from "vue-router";
-
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
@@ -13,6 +11,13 @@ import TextEditChip from "@/components/Chips/TextEditChip.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
+
+defineProps({
+  allServices: {
+    type: Array,
+    default: () => [],
+  },
+});
 </script>
 
 <template>
@@ -22,15 +27,15 @@ const accomodationStore = useAccomodationStore();
       <div class="form-edit-main-features">
         <!-- Sección imágenes -->
         <section class="form-edit-main-features__images">
-          <h2>Imágenes</h2>
+          <h2 v-once>Imágenes</h2>
           <p>{{ accomodationStore.accomodationImages.length }} imágenes</p>
           <div class="form-edit-main-features-images__container">
             <div>
               <ImageEditChip
                 v-for="(accImg, index) in accomodationStore.accomodationImages"
                 :regNumber="accomodationStore.registerNumber"
-                :imageUrl="accImg"
-                :chipTitle="`Imagen ${accImage}`"
+                :imageData="accImg.accomodationAccImageId.idAccomodationImage"
+                :chipTitle="`Imagen ${accImage.accomodationAccImageId.idAccomodationImage.id}`"
                 :key="index"
               />
             </div>
@@ -45,7 +50,7 @@ const accomodationStore = useAccomodationStore();
 
         <!-- Sección características -->
         <section class="form-edit-main-features__properties">
-          <h2>Características</h2>
+          <h2 v-once>Características</h2>
           <!-- Descripción -->
           <fieldset class="form-edit-main-features_properties__description">
             <BaseFormTextArea
@@ -114,7 +119,10 @@ const accomodationStore = useAccomodationStore();
               inputId="accomodation-guests"
               placeholder="Introduce el número de huéspedes"
               :inputValue="accomodationStore.category.accomodationCategory"
-              @handleInput="(value) => (accomodationStore.category.accomodationCategory = value)"
+              @handleInput="
+                (value) =>
+                  (accomodationStore.category.accomodationCategory = value)
+              "
             />
           </fieldset>
 
@@ -146,43 +154,48 @@ const accomodationStore = useAccomodationStore();
 
       <!-- Servicios -->
       <div class="form-edit-services">
-        <h3>Servicios</h3>
-        <p>El alojamiento dispone de {{accomodationStore.accomodationServices.length}} servicios</p>
+        <h3 v-once>Servicios</h3>
+        <p>
+          El alojamiento dispone de
+          {{ accomodationStore.accomodationServices.length }} servicios
+        </p>
         <div class="form-edit-services__container">
           <TextEditChip
-            v-for="(service, index) in accomodationStore.accomodationServices"
+            v-for="(service, index) in allServices"
             :key="index"
-            :chipTitle="`Haz click apra eliminar el servicio ${service.accomodationAccServiceId.idAccomodationService.denomination}`"
-            :chipText="
-              service.accomodationAccServiceId.idAccomodationService
-                .denomination
-            "
-            :serviceId="
-              service.accomodationAccServiceId.idAccomodationService.id
-            "
+            :chipTitle="`Haz click apra eliminar el servicio ${service.denomination}`"
+            :chipText="service.denomination"
+            :serviceId="service.id"
             :showIcon="true"
-            :isActiveService="true"
+            :accServices="accomodationStore.accomodationServices"
           />
         </div>
       </div>
 
       <!-- Normas -->
       <div class="form-edit-rules">
-        <h3>Normas</h3>
-        <p>El alojamiento tiene {{accomodationStore.accomodationRules.length}} normas</p>
+        <h3 v-once>Normas</h3>
+        <p v-once>
+          El alojamiento tiene
+          {{ accomodationStore.accomodationRules.length }} normas
+        </p>
         <div class="form-edit-rules__container">
-          <TextEditChip v-for="(rule, index) in accomodationStore.accomodationRules"
+          <TextEditChip
+            v-for="(rule, index) in accomodationStore.accomodationRules"
             :key="index"
             :chipTitle="`Haz click apra eliminar el servicio ${rule.accomodationAccRuleId.idAccomodationRule.rule}`"
-            :chipText="
-              rule.accomodationAccRuleId.idAccomodationRule.rule
-            "
-            :isActiveService="true" />
+            :chipText="rule.accomodationAccRuleId.idAccomodationRule.rule"
+            :isActiveService="true"
+          />
         </div>
       </div>
 
       <!-- Botón editar alojamiento -->
-      <BaseButton text="Editar" buttonStyle="baseButton-primary--filled" />
+      <BaseButton
+        v-once
+        text="Editar"
+        buttonStyle="baseButton-primary--filled"
+      />
     </form>
   </div>
 </template>

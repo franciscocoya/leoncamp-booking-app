@@ -1,9 +1,9 @@
 <script setup>
-import { onMounted, reactive } from "vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
 // Formateador de fecha
-import { formatArrayAsDate, convertArrayToDate } from "@/helpers/utils";
+import { convertArrayToDate } from "@/helpers/utils";
 
 // Tipo de pago
 import { PaymentMethod } from "@/models/payment/payment.enum";
@@ -14,7 +14,7 @@ import DateBadgeIcon from "@/components/icons/DateBadgeIcon.vue";
 
 // Iconos
 import {
-  ICON_PAYMENT_CREDIT_CARD,
+  // ICON_PAYMENT_CREDIT_CARD,
   ICON_PAYMENT_PAYPAL,
 } from "@/helpers/iconConstants";
 
@@ -28,7 +28,7 @@ const props = defineProps({
   },
   bookingId: {
     type: Number,
-    default: "",
+    default: null,
   },
   checkIn: {
     type: String,

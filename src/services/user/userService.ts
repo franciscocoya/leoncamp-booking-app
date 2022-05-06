@@ -2,6 +2,9 @@ import axios from "axios";
 
 import { API_USERS, API_USER_CONFIG } from "@/helpers/apiRoutes";
 
+import { handleError } from "../errorHandler";
+
+
 const apiJwtToken: string = JSON.parse(
     sessionStorage?.getItem('user') || '{}'
 )?.token;
@@ -15,15 +18,13 @@ const apiJwtToken: string = JSON.parse(
 const checkExistsUser = async (emailToCheck: string) => {
     return await axios.get(`${API_USERS}/load/${emailToCheck}`, {
         headers: {
-            "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+            Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`,
         }
     })
         .then((res) => res.data)
         .then((data) => {
-            console.log(data);
-        }).catch((err) => {
-            return err;
-        });
+            return data;
+        }).catch((err) => handleError(err));
 };
 
 
@@ -38,34 +39,29 @@ const checkExistsUser = async (emailToCheck: string) => {
 const getUserDataById = async (id: number) => {
     return await axios.get(`${API_USERS}/${id}`, {
         headers: {
-            "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
-        }
+            Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+        },
+        timeout: 5000,
     })
         .then((res) => res.data)
         .then((data) => {
             return data;
-        }).catch((err) => {
-            return err;
-        });
+        }).catch((err) => handleError(err));
 };
 
 /**
  * Idioma del usuario con el id pasado como parámetro.
  */
 const getUserConfigurationByUserId = async (userId: number) => {
-    const { data } = await axios.get(`${API_USER_CONFIG}/${userId}`, {
+    return await axios.get(`${API_USER_CONFIG}/${userId}`, {
         headers: {
-            "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+            Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
         }
     })
         .then((res) => res.data)
         .then((data) => {
             return data;
-        }).catch((err) => {
-            return err;
-        }
-        );
-    return data;
+        }).catch((err) => handleError(err));
 };
 
 /**
@@ -75,13 +71,6 @@ const getUserConfigurationByUserId = async (userId: number) => {
  * @returns 
  */
 const updateUserData = async (userId: number, name: string, surname: string, email: string, phone: string) => {
-
-    // let payload: FormData = new FormData();
-    // payload.append('name', name);
-    // payload.append('surname', surname);
-    // payload.append('email', email);
-    // payload.append('phone', phone);
-
     return await axios({
         url: `${API_USERS}/${userId}`,
         method: 'put',

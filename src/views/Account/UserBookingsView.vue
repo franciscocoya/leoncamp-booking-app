@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { onMounted, ref } from "vue";
 
 // Componentes
@@ -8,7 +8,7 @@ import BookingSummaryItem from "@/components/Booking/BookingSummaryItem.vue";
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
-let bookings: any = ref([]);
+const bookings = ref([]);
 
 onMounted(async () => {
   bookings.value = await accomodationStore.getAllUserBookings();
@@ -17,7 +17,7 @@ onMounted(async () => {
 
 <template>
   <div class="user-bookings-view">
-    <h1>Mis Reservas</h1>
+    <h1 v-once>Mis Reservas</h1>
     <div class="user-bookings-container" v-if="bookings.length > 0">
       <BookingSummaryItem
         v-for="booking in bookings"
@@ -27,7 +27,7 @@ onMounted(async () => {
         :checkOut="booking.checkOut"
       />
     </div>
-    <h2 v-else>Aún no has realizado ninguna reserva</h2>
+    <h2 v-else v-once>Aún no has realizado ninguna reserva</h2>
   </div>
 </template>
 

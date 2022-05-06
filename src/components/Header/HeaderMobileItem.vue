@@ -43,6 +43,7 @@ onUpdated(() => {
         <!-- Icono Inicio -->
         <li class="menu-mobile-item--active">
           <MenuIcon
+            v-once
             :icon="ICON_MENU_HOME"
             :iconSize="40"
             title="Inicio"
@@ -53,6 +54,7 @@ onUpdated(() => {
         <!-- Icono guardados -->
         <li v-if="isLogged == true">
           <MenuIcon
+            v-once
             :icon="ICON_BOOKMARK"
             :iconSize="26"
             title="Guardados"
@@ -63,6 +65,7 @@ onUpdated(() => {
         <!-- Icono subir alojamiento -->
         <li v-if="isLogged == true">
           <MenuIcon
+            v-once
             :icon="ICON_ADD"
             path="/bookings"
             :iconSize="50"
@@ -73,6 +76,7 @@ onUpdated(() => {
         <!-- Icono reservas -->
         <li v-if="isLogged == true">
           <MenuIcon
+            v-once
             :icon="ICON_MENU_CALENDAR_OUTLINE"
             :iconSize="40"
             title="Reservas"

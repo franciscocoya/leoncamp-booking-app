@@ -1,5 +1,5 @@
 <template>
-  <div class="app-preloader">
+  <div class="app-preloader" functional>
     <div class="loader-icon"></div>
   </div>
 </template>

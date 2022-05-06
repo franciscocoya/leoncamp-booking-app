@@ -1,28 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/views/Home/HomeView.vue';
-
-// -----------------------------------------------------------------------------
-
-import AccountView from '@/views/Account/AccountView.vue';
-import UserProfileView from '@/views/Account/UserProfileView.vue';
-import AccomodationsAdsView from '@/views/Account/AccomodationsAdsView.vue';
-import UserBookingsView from '@/views/Account/UserBookingsView.vue';
-
-// -----------------------------------------------------------------------------
-
-import SavedAccomodationsView from '@/views/SavedAccomodations/SavedAccomodationsView.vue';
-
-import BookingsView from '@/views/Bookings/BookingsView.vue';
-import BookingDetailView from '@/views/Bookings/BookingDetailView.vue';
-
-import LoginView from '@/views/Auth/LoginView.vue';
-import RegisterView from '@/views/Auth/RegisterView.vue';
-import ForgotPasswordView from '@/views/Auth/ForgotPasswordView.vue';
 
 // Rutas públicas
 const authRoutes: string[] = ['/signin', '/signup', '/password/reset'];
 const publicRoutes: string[] = [...authRoutes, '/'];
-const publicRoutesNames: string[] = ['accomodation-detail', 'user-profile-public', 'app-help', 'error-404', 'home'];
+const publicRoutesNames: string[] = ['accomodation-detail', 'user-profile-public', 'app-help', 'error-404', 'error-500', 'home'];
 
 const router = createRouter({
   history: createWebHistory(),
@@ -32,31 +13,31 @@ const router = createRouter({
       // Inicio de sesión
       path: '/signin',
       name: 'signin',
-      component: LoginView,
+      component: () => import('@/views/Auth/LoginView.vue'),
     },
     {
       // Registro
       path: '/signup',
       name: 'signup',
-      component: RegisterView,
+      component: () => import('@/views/Auth/RegisterView.vue'),
     },
     {
       // Restablecer contraseña
       path: '/password/reset',
       name: 'reset-password',
-      component: ForgotPasswordView,
+      component: () => import('@/views/Auth/ForgotPasswordView.vue'),
     },
     {
       // Inicio
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: () => import('@/views/Home/HomeView.vue'),
     },
     {
       // Alojamientos guardados por el usuario en sesión
       path: '/saved',
       name: 'saved',
-      component: SavedAccomodationsView,
+      component: () => import('@/views/SavedAccomodations/SavedAccomodationsView.vue'),
     },
     {
       path: '/account/:accUser/accomodation/:registerNumber/edit',
@@ -67,30 +48,30 @@ const router = createRouter({
       // Perfil del usuario en sesión
       path: '/account/:username',
       name: 'account',
-      redirect: to => {
+      redirect: () => {
         return {
           name: 'user-profile',
         }
       },
-      component: AccountView,
+      component: () => import('@/views/Account/AccountView.vue'),
       children: [
         // Detalles del perfil personal del usuario.
         {
           path: 'profile',
           name: 'user-profile',
-          component: UserProfileView,
+          component: () => import('@/views/Account/UserProfileView.vue'),
         },
         {
           // Alojamientos publicados por el usuario
           path: 'accomodations',
           name: 'user-ads',
-          component: AccomodationsAdsView,
+          component: () => import('@/views/Account/AccomodationsAdsView.vue'),
         },
         {
           // Reservas realizadas por el usuario en sesión
           path: 'bookings',
           name: 'user-bookings',
-          component: UserBookingsView,
+          component: () => import('@/views/Account/UserBookingsView.vue'),
         },
       ],
     },
@@ -98,7 +79,7 @@ const router = createRouter({
       // Detalle de la reserva de un alojamiento
       path: '/bookings/:bookingId',
       name: 'booking-detail',
-      component: BookingDetailView,
+      component: () => import('@/views/Bookings/BookingDetailView.vue'),
     },
     {
       // Detalle de un alojamiento
@@ -120,10 +101,28 @@ const router = createRouter({
       component: () => import('@/views/Help/HelpView.vue'),
     },
     {
-      // Ruta para la página de error
+      // Ruta para la página de error 404
+      path: '/401',
+      name: 'error-401',
+      component: () => import('@/views/Error/401View.vue'),
+    },
+    {
+      // Ruta para la página de error 404
       path: '/404',
       name: 'error-404',
       component: () => import('@/views/Error/404View.vue'),
+    },
+    {
+      // Ruta para la página de error 500
+      path: '/500',
+      name: 'error-500',
+      component: () => import('@/views/Error/500View.vue'),
+    },
+    {
+      // Ruta para la página de error 503
+      path: '/503',
+      name: 'error-503',
+      component: () => import('@/views/Error/503View.vue'),
     },
     {
       path: '/:catchAll(.*)',
@@ -138,7 +137,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authRequired = !publicRoutes.includes(to.path);
   const isLogged = JSON.parse(sessionStorage.getItem('user'))?.token;
-  console.log(to.name);
   if (!publicRoutesNames.includes(to.name) && (authRequired && !isLogged)) {
     next('/signin');
   } else {

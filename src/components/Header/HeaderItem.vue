@@ -4,7 +4,6 @@ import { defineEmits, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 // Iconos
-import { IMG_APP_LOGO } from "@/helpers/iconConstants";
 import AccountIcon from "../icons/Account/AccountIcon.vue";
 import AppLogoIcon from "../icons/AppLogoIcon.vue";
 
@@ -13,10 +12,11 @@ import SearchBarItem from "./SearchBar/SearchBarItem.vue";
 import MenuDesktopItem from "./Menu/MenuDesktopItem.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
+import { useUserStore } from "@/store/user";
+
 const router = useRouter();
 
 // Store usuario
-import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 
 // Token de usuario
@@ -38,19 +38,19 @@ const hideSearchResults = () => {
 onMounted(() => {
   userStore.loadUserData(userData.id);
 });
-
 </script>
 
 <template>
   <header>
-    <AppLogoIcon />
+    <AppLogoIcon v-once />
 
     <SearchBarItem
+      v-once
       @show-search-results="showSearchResults"
       @hide-search-results="hideSearchResults"
     />
 
-    <MenuDesktopItem v-if="userToken" />
+    <MenuDesktopItem v-if="userToken" v-once />
     <!-- Si el usuario está logeado -->
     <AccountIcon
       v-if="userToken"
@@ -68,6 +68,7 @@ onMounted(() => {
     <!-- Si el usuario no está logeado -->
     <BaseButton
       v-else
+      v-once
       text="Iniciar sesión"
       buttonStyle="baseButton-secondary--filled"
       @click="router.push('/signin')"

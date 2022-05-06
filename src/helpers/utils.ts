@@ -27,7 +27,10 @@ const months = [
  * @param dateArr
  * @returns
  */
-const formatArrayAsDate = (dateArr: Number[]): string => {
+const formatArrayAsDate = (dateArr: number[]): string => {
+  if(!dateArr || DataTransfer.length == 0){
+    return null;
+  }
   const day = dateArr[2] < 10 ? `0${dateArr[2]}` : dateArr[2];
   const month = dateArr[1] < 10 ? `0${dateArr[1]}` : dateArr[1];
   const year = dateArr[0].toString().substring(2); //2022 -> 22
@@ -73,7 +76,7 @@ el formato dd de MMMM . Por ejemplo, octubre de 2020
  * @returns
  */
 const formatArrayAsSimpleStringDate = (date: number[]): string => {
-  return getMonthNameByNumber(date[1]) + ' de ' + date[0];
+  return date ? getMonthNameByNumber(date[1]) + ' de ' + date[0] : null;
 };
 
 /**

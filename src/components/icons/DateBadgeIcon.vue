@@ -1,6 +1,6 @@
 <script setup>
 // Icono calendario
-import { ICON_MENU_CALENDAR_OUTLINE,  ICON_CALENDAR  } from "@/helpers/iconConstants";
+import { ICON_CALENDAR  } from "@/helpers/iconConstants";
 
 defineProps({
   dateText: {

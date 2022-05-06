@@ -3,7 +3,7 @@ import { onMounted } from "vue";
 
 import mapboxgl from "mapbox-gl";
 
-import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
+// import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
 const props = defineProps({
   lat: {

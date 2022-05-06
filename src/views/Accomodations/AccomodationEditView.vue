@@ -1,9 +1,8 @@
 <script setup>
-import { onBeforeMount } from "vue";
-import { useRouter } from "vue-router";
+import { onBeforeMount, ref } from "vue";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
 
 // Componentes
-import BaseButton from "@/components/Buttons/BaseButton.vue";
 import EditForm from "@/components/Forms/EditForm.vue";
 
 // Store
@@ -12,10 +11,26 @@ const accomodationStore = useAccomodationStore();
 
 const router = useRouter();
 
-onBeforeMount(() => {
+const allAvaibleServices = ref([]);
+
+onBeforeMount(async () => {
   const registerNumberAccToEdit =
     router.currentRoute.value.params.registerNumber;
-  accomodationStore.getAccomodationByRegisterNumber(registerNumberAccToEdit);
+  await accomodationStore.getAccomodationByRegisterNumber(
+    registerNumberAccToEdit
+  );
+
+  allAvaibleServices.value = await accomodationStore.getAllServices();
+});
+
+onBeforeRouteLeave(() => {
+  const confirmExitWindow = window.confirm(
+    "¿Estás seguro de que quieres salir?"
+  );
+
+  if (!confirmExitWindow) {
+    return false;
+  }
 });
 </script>
 
@@ -30,7 +45,7 @@ onBeforeMount(() => {
       >
     </h1>
     <div class="accomodation-edit__wrapper">
-      <EditForm />
+        <EditForm :allServices="allAvaibleServices" />
     </div>
   </div>
 </template>
@@ -47,7 +62,7 @@ onBeforeMount(() => {
     // Estilos número de registro
     @include flex-row-center;
     gap: 20px;
-    
+
     & > .form-edit-main-features_properties__regNumber {
       width: fit-content;
       background-color: $color-primary;

@@ -1,17 +1,27 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
+import { authRoutes } from "@/helpers/appRoutes";
 
-import HeaderItem from "./components/Header/HeaderItem.vue";
-import HeaderMobileItem from "./components/Header/HeaderMobileItem.vue";
-import FooterItem from "./components/Footer/FooterItem.vue";
+//import HeaderItem from "./components/Header/HeaderItem.vue";
+
+const HeaderItem = defineAsyncComponent(
+  () => import("@/components/Header/HeaderItem.vue")
+);
+
+const HeaderMobileItem = defineAsyncComponent(
+  () => import("@/components/Header/HeaderMobileItem.vue")
+);
 
 // Diálogos modales
-import SearchResultsItem from "./components/Header/SearchBar/SearchResultsItem.vue";
+const SearchResultsItem = defineAsyncComponent(
+  () => import("@/components/Header/SearchBar/SearchResultsItem.vue")
+);
+//import SearchResultsItem from "./components/Header/SearchBar/SearchResultsItem.vue";
 import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
 
+import FooterItem from "./components/Footer/FooterItem.vue";
 // Rutas públicas
-import { authRoutes } from "@/helpers/appRoutes";
 
 // Obtener la ruta actual
 const router = useRouter();
@@ -68,6 +78,7 @@ onMounted(() => {
   </Transition>
 
   <RouterView />
+
   <FooterItem />
 </template>
   
@@ -77,7 +88,6 @@ onMounted(() => {
   position: relative;
 }
 
-/* we will explain what these classes do next! */
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;

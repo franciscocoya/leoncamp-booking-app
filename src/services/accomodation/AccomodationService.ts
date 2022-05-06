@@ -6,12 +6,16 @@
  *
  */
 import axios from 'axios';
+import { handleError } from "../errorHandler";
 
 // Rutas alojamientos API: /api/accomodations
 import {
-  ALL_ACCOMODATIONS,
-  ACCOMODATIONS_BASE_PATH,
+  ACCOMODATIONS_BASE_PATH
 } from './AccomodationsRoutesEnum';
+
+import {
+  API_ACCOMODATION_SERVICES
+} from '@/helpers/apiRoutes';
 
 // Rutas de las reservas API: /api/bookings
 import { BOKINGS_BASE_PATH } from './BookingRoutesEnum';
@@ -36,9 +40,7 @@ export const getAllAccomodations = async () => {
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
-  });
-
-  console.log(data);
+  }).catch((err) => handleError(err));
 
   return data.content;
 };
@@ -49,15 +51,21 @@ export const getAllAccomodations = async () => {
  * @param regNumber
  */
 export async function getAccomodationByRegNumber(regNumber: string) {
-  const { data } = await axios.get(
+  return await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/${regNumber}`,
     {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
       },
+      timeout: 5000,
     }
-  );
-  return data;
+  ).then(res => res.data)
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      handleError(err);
+    });
 }
 
 /**
@@ -71,7 +79,7 @@ export async function getAllUserAccomodations(idUser: number) {
         Authorization: `Bearer ${apiJwtToken}`,
       },
     }
-  );
+  ).catch(err => handleError(err));
 
   return data;
 }
@@ -187,20 +195,63 @@ export async function deleteAccomodationBySavedAccomodationId(
   );
 }
 
-export async function getAllAvaibleServices(){
-  const { data } = await axios.get(`${baseUri}${ALL_ACCOMODATIONS}`, {
+/**
+ * Listado de todos los servicios disponibles en la aplicación.
+ * 
+ * @returns 
+ */
+export async function getAllAvaibleServices() {
+  const { data } = await axios.get(`${API_ACCOMODATION_SERVICES}/all`, {
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
   });
 
   return data;
-};
+}
 
 /**
  * Listado de todas las ciudades
  */
 export async function getAllCities() {
-    const accomodations = await getAllAccomodations();
-    return [...new Set(accomodations.map((accomodation) => accomodation.idAccomodationLocation.city))]
+  const accomodations = await getAllAccomodations();
+  return [...new Set(accomodations.map((accomodation) => accomodation.idAccomodationLocation.city))]
+}
+
+// ---------------------------------------------------------------
+// -- Imágenes de alojamientos
+// ---------------------------------------------------------------
+
+/**
+ * Añade una nueva imagen al alojamiento con número de registro <code>regNumber</code>.
+ * 
+ * @param regNumber 
+ * @param imgUrl 
+ * @returns 
+ */
+export async function addNewImageToAccomodation(regNumber: string, imgUrl: string) {
+  const { data } = await axios.post(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${regNumber}/images/new`, {
+    imageUrl: imgUrl,
+  }, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  }).catch(err => handleError(err));
+
+  return data;
+}
+
+/**
+ * Elimina una imagen del alojamiento con número de registro <code>regNumber</code>.
+ * 
+ * @param regNumber 
+ * @param imageId 
+ */
+export async function deleteImageFromAccomodation(regNumber: string, imageId: number) {
+  await axios.delete(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${regNumber}/images/${imageId}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  }).catch(err => console.log(err));
+
 }

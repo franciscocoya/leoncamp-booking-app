@@ -11,7 +11,7 @@ const useSearchStore = defineStore({
     }),
 
     actions: {
-        async setSearchResults(searchWord: String[]) {
+        async setSearchResults(searchWord: string[]) {
             const results = await getCitiesMatchWithSearchWord(searchWord);
             this.searchResults = this.searchQuery && results ? results : [];
         },
@@ -20,7 +20,7 @@ const useSearchStore = defineStore({
             return this.searchResults;
         },
 
-        setSearchWord(searchWord: String) {
+        setSearchWord(searchWord: string) {
             this.searchQuery = searchWord;
         },
     }

@@ -1,16 +1,17 @@
-<script lang="ts" setup>
-import { onMounted, ref } from "vue";
+<script setup>
+import { defineAsyncComponent, onMounted, ref } from "vue";
+import { useAccomodationStore } from "@/store/accomodation";
 
-// Componentes
-import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
-
+const AccomodationThumbnailItem = defineAsyncComponent({
+  loader: () =>
+    import("@/components/Accomodation/AccomodationThumbnailItem.vue"),
+});
 
 // Store
-import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
 // Alojamientos publicados por el usuario en sesión
-let accomodations: any = ref([]);
+let accomodations = ref([]);
 
 onMounted(async () => {
   accomodations.value = await accomodationStore.getAllUserAccomodations();
@@ -19,16 +20,20 @@ onMounted(async () => {
 
 <template>
   <div class="accomodations-ads-view">
-    <h1>Mis alojamientos</h1>
+    <h1 v-once>Mis alojamientos</h1>
     <div class="grid-user-accomodation-ads" v-if="accomodations.length > 0">
-      <AccomodationThumbnailItem
-        v-for="accomodation in accomodations"
-        :key="accomodation.registerNumber"
-        :accData="accomodation"
-        :isCurrentUserOwner="true"
-        :showDeleteButton="false"
-        :showEditButton="true"
-      />
+      <Suspense>
+        <AccomodationThumbnailItem
+          v-for="accomodation in accomodations"
+          :key="accomodation.registerNumber"
+          :accData="accomodation"
+          :isCurrentUserOwner="true"
+          :showDeleteButton="false"
+          :showEditButton="true"
+        />
+
+        <template #fallback>Cargando... </template>
+      </Suspense>
     </div>
     <h2 v-else>No tienes alojamientos publicados</h2>
   </div>

@@ -16,7 +16,9 @@ import {
   getUserSavedAccomodationsByUserId,
   getAccomodationStarAverage,
   deleteAccomodationBySavedAccomodationId,
-  getAllAccomodationReviewsByRegisterNumber
+  getAllAccomodationReviewsByRegisterNumber,
+  getAllAvaibleServices,
+  deleteImageFromAccomodation
 } from '@/services/accomodation/AccomodationService';
 
 const useAccomodationStore = defineStore({
@@ -67,31 +69,34 @@ const useAccomodationStore = defineStore({
         registerNumber
       );
 
-      this.registerNumber = accomodationToReturn.registerNumber;
-      this.description = accomodationToReturn.description;
-      this.numOfBeds = accomodationToReturn.numOfBeds;
-      this.numOfBathRooms = accomodationToReturn.numOfBathRooms;
-      this.numOfBedRooms = accomodationToReturn.numOfBedRooms;
-      this.pricePerNight = accomodationToReturn.pricePerNight;
-      this.numOfGuests = accomodationToReturn.numOfGuests;
-      this.area = accomodationToReturn.area;
-      this.category = accomodationToReturn.idAccomodationCategory;
-      this.accomodationLocation = accomodationToReturn.idAccomodationLocation;
-      this.accomodationImages = accomodationToReturn.accomodationImages.map(
-        (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl
-      );
-      this.accomodationRules = accomodationToReturn.accomodationRules;
-      this.accomodationServices = accomodationToReturn.accomodationServices;
-      this.promoCodes = accomodationToReturn.promoCodes;
-      this.userHost = accomodationToReturn.idUserHost;
+      if (accomodationToReturn) {
+        this.registerNumber = accomodationToReturn.registerNumber;
+        this.description = accomodationToReturn.description;
+        this.numOfBeds = accomodationToReturn.numOfBeds;
+        this.numOfBathRooms = accomodationToReturn.numOfBathRooms;
+        this.numOfBedRooms = accomodationToReturn.numOfBedRooms;
+        this.pricePerNight = accomodationToReturn.pricePerNight;
+        this.numOfGuests = accomodationToReturn.numOfGuests;
+        this.area = accomodationToReturn.area;
+        this.category = accomodationToReturn.idAccomodationCategory;
+        this.accomodationLocation = accomodationToReturn.idAccomodationLocation;
+        // this.accomodationImages = accomodationToReturn.accomodationImages.map(
+        //   (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl
+        // );
+        this.accomodationImages = accomodationToReturn.accomodationImages;
+        this.accomodationRules = accomodationToReturn.accomodationRules;
+        this.accomodationServices = accomodationToReturn.accomodationServices;
+        this.promoCodes = accomodationToReturn.promoCodes;
+        this.userHost = accomodationToReturn.idUserHost;
 
-      // Valoracion media
-      this.stars = await this.getStarAverage(
-        accomodationToReturn.registerNumber
-      );
+        // Valoracion media
+        this.stars = await this.getStarAverage(
+          accomodationToReturn.registerNumber
+        );
+        // Valoraciones del alojamiento
+        this.accomodationReviews = await getAllAccomodationReviewsByRegisterNumber(accomodationToReturn.registerNumber);
+      }
 
-      // Valoraciones del alojamiento
-      this.accomodationReviews = await getAllAccomodationReviewsByRegisterNumber(accomodationToReturn.registerNumber);
 
       this.createdAt = accomodationToReturn.createdAt;
 
@@ -136,6 +141,25 @@ const useAccomodationStore = defineStore({
     deleteAccomodationBySavedAccId(savedAccId: number): void {
       deleteAccomodationBySavedAccomodationId(savedAccId);
     },
+
+    /**
+     * Listado de todos los servicios disponibles.
+     * 
+     * @returns 
+     */
+    async getAllServices(): Promise<string[]> {
+      return await getAllAvaibleServices();
+    },
+
+    /**
+     * Borrado de una imagen del alojamiento.
+     * 
+     * @param regNumber 
+     * @param imageId 
+     */
+    async deleteAccomodationImage(regNumber: string, imageId: number): Promise<void> {
+      await deleteImageFromAccomodation(regNumber, imageId);
+    }
   },
 });
 

@@ -2,9 +2,6 @@
 // Utils
 import { getAccomodationServiceImageById } from "@/helpers/utils";
 
-// Componentes
-import BaseButton from "@/components/Buttons/BaseButton.vue";
-
 // Iconos
 import {ICON_CLOSE} from '@/helpers/iconConstants'
 

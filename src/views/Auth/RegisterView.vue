@@ -7,7 +7,7 @@ import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";
 <template>
   <div class="login-view">
     <div class="login-view-wrapper">
-      <AppLogoIcon />
+      <AppLogoIcon v-once/>
       <RegisterForm title="Crear una cuenta" />
     </div>
   </div>

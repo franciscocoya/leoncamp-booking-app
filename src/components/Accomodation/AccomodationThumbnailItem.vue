@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, withDefaults } from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 // Iconos
@@ -9,7 +9,6 @@ import { ICON_EDIT, ICON_DELETE } from "@/helpers/iconConstants";
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
 import SavedAccomodationIcon from "@/components/icons/Accomodation/SavedAccomodationIcon.vue";
-import BaseButton from "@/components/Buttons/BaseButton.vue";
 import IconButton from "@/components/Buttons/IconButton.vue";
 
 // Store

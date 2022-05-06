@@ -9,10 +9,10 @@ import { formatArrayAsSimpleStringDate } from "@/helpers/utils";
 
 const router = useRouter();
 
-const props = defineProps({
+defineProps({
   review: {
     type: Object,
-    default: {},
+    default: () => ({}),
   },
 });
 </script>

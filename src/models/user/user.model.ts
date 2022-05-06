@@ -3,6 +3,7 @@ export interface User{
     name: string,
     surname: string,
     email: string,
+    phone: string,
     password: string,
     newPassword?: string,
     repeatedPassword?: string,
@@ -14,7 +15,7 @@ export interface User{
             code: string,
         }
     },
-    profileImage?: Blob,
+    profileImage?: string,
     datosHost?: {
         dni: string,
         bio: string,

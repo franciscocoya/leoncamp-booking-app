@@ -1,5 +1,9 @@
 <script setup>
+import { onMounted, ref } from "vue";
 import { getAccomodationServiceImageById } from "@/helpers/utils";
+
+import { useAccomodationStore } from "@/store/accomodation";
+const accomodationStore = useAccomodationStore();
 
 const props = defineProps({
   chipText: {
@@ -7,14 +11,14 @@ const props = defineProps({
     default: "",
   },
   regNumber: {
-    type: Number,
-    required: true,
+    type: String,
+    default: ""
   },
   chipTitle: {
     type: String,
     default: "Haz click aquí para eliminar",
   },
-  showIcon : {
+  showIcon: {
     type: Boolean,
     default: false,
   },
@@ -22,20 +26,68 @@ const props = defineProps({
     type: Number,
     default: null,
   },
-  isActiveService: {
-    type: Boolean,
-    default: false,
+  accServices: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const isServiceEnabled = ref(false);
+
+/**
+ * Manejador del evento de cambio de estado del checkbox del servicio.
+ * Si el servicio está seleccionado, se añade a la lista de servicios de la store del alojamiento actual.
+ * Si no lo está, se elimina de la lista.
+ */
+const handleCheckBoxChange = (e) => {
+  console.log(e.target.checked);
+  isServiceEnabled.value = e.target.checked;
+  // Si se selecciona, añadir a la lista de servicios existentes
+  if (e.target.checked) {
+    accomodationStore.accomodationServices.push({
+      accomodationAccServiceId: {
+        idAccomodation: accomodationStore.registerNumber,
+        idAccomodationService: {
+          denomination: props.chipText,
+          id: props.serviceId,
+        },
+      },
+    });
+  }else{
+    // Si no, eliminar de la lista
+    accomodationStore.accomodationServices.filter((service) => {
+      return service.accomodationAccServiceId.idAccomodationService.id !== props.serviceId;
+    });
   }
+};
+
+onMounted(() => {
+  props.accServices.forEach((accService) => {
+    if (
+      accService.accomodationAccServiceId.idAccomodationService.id ===
+      props.serviceId
+    ) {
+      isServiceEnabled.value = true;
+    }
+  });
 });
 </script>
 
 <template>
   <div class="text-chip-edit" :title="chipTitle">
     <div class="text-chip-edit__denomination">
-      <img v-if="showIcon == true" :src="`${getAccomodationServiceImageById(props.serviceId)}`" alt="" />
-      <p>{{props.chipText}}</p>
+      <img
+        v-if="showIcon == true"
+        :src="`${getAccomodationServiceImageById(props.serviceId)}`"
+        alt=""
+      />
+      <p v-once>{{ props.chipText }}</p>
     </div>
-    <input type="checkbox" :checked="isActiveService" />
+    <input
+      type="checkbox"
+      :checked="isServiceEnabled"
+      @change.prevent="(e) => handleCheckBoxChange(e)"
+    />
   </div>
 </template>
 

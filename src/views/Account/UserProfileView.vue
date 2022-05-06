@@ -1,6 +1,6 @@
 <script setup>
 import { useUserStore } from "@/store/user";
-import { onMounted, onUnmounted, onUpdated, ref } from "@vue/runtime-core";
+import { onMounted, ref } from "@vue/runtime-core";
 
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
@@ -15,7 +15,7 @@ const enableEditButton = ref(false);
 // Actualizar datos de la store.
 // userStore.loadUserData();
 
-const updateFieldValue = (callback, value) => {
+const updateFieldValue = (callback) => {
   callback();
   enableEditButton.value = true;
 };
@@ -28,11 +28,11 @@ onMounted(() => {
 <template>
   <div class="user-profile-view">
     <main>
-      <h1>Información personal</h1>
+      <h1 v-once>Información personal</h1>
       <div class="user-profile-view__wrapper">
         <form>
           <!-- Sección nombre y apellidos -->
-          <p>Nombre legal</p>
+          <p v-once>Nombre legal</p>
           <div class="user-profile-data__fullname">
             <!-- Nombre -->
             <LabelFormInput
@@ -60,7 +60,7 @@ onMounted(() => {
             />
           </div>
 
-          <p>Datos de contacto</p>
+          <p v-once>Datos de contacto</p>
           <!-- Sección teléfono e email -->
           <div class="user-profile-data__contact">
             <!-- Teléfono -->
@@ -88,7 +88,7 @@ onMounted(() => {
 
           <!-- Sección datos del usuario host -->
           <div v-if="userStore.datosHost" class="user-profile-data__host-data">
-            <h2>Datos del host</h2>
+            <h2 v-once>Datos del host</h2>
             <div class="user-profile-data__host-data__wrapper">
               <LabelFormInput
                 type="text"

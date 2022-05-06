@@ -1,12 +1,10 @@
 <script setup>
-// Utils
-import { getAccomodationServiceImageById } from "@/helpers/utils";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import SingleAccomodationReviewItem from "@/components/Accomodation/AccomodationReview/SingleAccomodationReviewItem.vue";
 
-const props = defineProps({
+defineProps({
   reviews: {
     type: Array,
     default: () => [],

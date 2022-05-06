@@ -7,4 +7,4 @@ export interface AccomodationReview {
         surname: string;
     }
     createdAt: Date;
-};
+}

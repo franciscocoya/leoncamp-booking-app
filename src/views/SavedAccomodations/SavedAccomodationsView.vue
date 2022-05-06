@@ -20,7 +20,7 @@ onMounted(async () => {
 
 <template>
   <div class="saved-accomodations-view">
-    <h1>Alojamientos guardados</h1>
+    <h1 v-once>Alojamientos guardados</h1>
     <div v-if="savedAccomodations.length > 0">
       <AccomodationThumbnailItem
         v-for="accomodation in savedAccomodations"
@@ -31,7 +31,7 @@ onMounted(async () => {
         :showDeleteButton="true"
       />
     </div>
-    <h2 v-else>No tienes alojamientos guardados</h2>
+    <h2 v-else v-once>No tienes alojamientos guardados</h2>
   </div>
 </template>
 
