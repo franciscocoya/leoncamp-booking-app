@@ -20,13 +20,21 @@ import {
   getAllAvaibleServices,
   deleteImageFromAccomodation,
   addNewImageToAccomodation,
-  updateAccomodationData
+  updateAccomodationData,
+  getAllAvailableRules,
 } from '@/services/accomodation/AccomodationService';
 
-import {  addServiceToExistingAccomodation,
-  deleteServiceFromExistingAccomodation} from '@/services/accomodation/AccomodationServiceService';
+import {
+  addServiceToExistingAccomodation,
+  deleteServiceFromExistingAccomodation,
+} from '@/services/accomodation/AccomodationServiceService';
 
-import {updateAccomodationCategory} from '@/services/accomodation/AccomodationCategoryService';
+import {
+  addRuleToExistingAccomodation,
+  deleteRuleFromAccomodation,
+} from '@/services/accomodation/AccomodationRuleService';
+
+import { updateAccomodationCategory } from '@/services/accomodation/AccomodationCategoryService';
 
 const useAccomodationStore = defineStore({
   id: 'accomodation',
@@ -99,9 +107,11 @@ const useAccomodationStore = defineStore({
           accomodationToReturn.registerNumber
         );
         // Valoraciones del alojamiento
-        this.accomodationReviews = await getAllAccomodationReviewsByRegisterNumber(accomodationToReturn.registerNumber);
+        this.accomodationReviews =
+          await getAllAccomodationReviewsByRegisterNumber(
+            accomodationToReturn.registerNumber
+          );
       }
-
 
       this.createdAt = accomodationToReturn.createdAt;
 
@@ -144,39 +154,51 @@ const useAccomodationStore = defineStore({
      * @param regNumber
      */
     async deleteAccomodationBySavedAccId(savedAccId: number): void {
-     await deleteAccomodationBySavedAccomodationId(savedAccId);
+      await deleteAccomodationBySavedAccomodationId(savedAccId);
     },
 
     /**
      * Añadir una una imagen a un alojamiento.
      */
-    async addNewAccomodationImage(regNumber: string, imageUrl: string){
+    async addNewAccomodationImage(regNumber: string, imageUrl: string) {
       await addNewImageToAccomodation(regNumber, imageUrl);
     },
 
     /**
      * Listado de todos los servicios disponibles.
-     * 
-     * @returns 
+     *
+     * @returns
      */
     async getAllServices(): Promise<string[]> {
       return await getAllAvaibleServices();
     },
 
     /**
-     * Borrado de una imagen del alojamiento.
-     * 
-     * @param regNumber 
-     * @param imageId 
+     * Listado de todos los normas disponibles.
+     *
+     * @returns
      */
-    async deleteAccomodationImage(regNumber: string, imageId: number): Promise<void> {
+    async getAllRules(): Promise<string[]> {
+      return await getAllAvailableRules();
+    },
+
+    /**
+     * Borrado de una imagen del alojamiento.
+     *
+     * @param regNumber
+     * @param imageId
+     */
+    async deleteAccomodationImage(
+      regNumber: string,
+      imageId: number
+    ): Promise<void> {
       await deleteImageFromAccomodation(regNumber, imageId);
     },
 
     /**
      * Actualización de los datos de un alojamiento
      */
-    async updateAccomodation(){
+    async updateAccomodation() {
       await updateAccomodationData(this);
       // window.location.reload();
     },
@@ -184,23 +206,44 @@ const useAccomodationStore = defineStore({
     /**
      * Actualización de la categoría de un alojamiento.
      */
-    async updateAccomodationCategory(){
+    async updateAccomodationCategory() {
       await updateAccomodationCategory(this.registerNumber, this.category);
     },
 
     /**
      * Añade un servicio al alojamiento.
      */
-    async addNewService(newService: any){
+    async addNewService(newService: any) {
       await addServiceToExistingAccomodation(this.registerNumber, newService);
     },
 
     /**
      * Elimina un servicio del alojamiento.
      */
-     async deleteService(serviceId: number): Promise<void>{
-      await deleteServiceFromExistingAccomodation(this.registerNumber, serviceId);
-    }
+    async deleteService(serviceId: number): Promise<void> {
+      await deleteServiceFromExistingAccomodation(
+        this.registerNumber,
+        serviceId
+      );
+    },
+
+    /**
+     * Añade una nueva regla al alojamiento.
+     * @param newRule
+     */
+    async addNewRule(accomodationRuleId: number) {
+      await addRuleToExistingAccomodation(
+        this.registerNumber,
+        accomodationRuleId
+      );
+    },
+
+    /**
+     * Elimina una norma de un alojamiento
+     */
+    async deleteAccomodationRule(accomodationRuleId: number) {
+      await deleteRuleFromAccomodation(this.registerNumber, accomodationRuleId);
+    },
   },
 });
 

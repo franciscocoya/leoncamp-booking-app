@@ -19,8 +19,11 @@ import { useAccomodationStore } from "@/store/accomodation";
 // Utils
 import { convertImageToBase64 } from "@/helpers/utils";
 
-// Servicio
-import { getAllAccomodationCategories, updateAccomodationCategory } from "@/services/accomodation/AccomodationCategoryService";
+// Servicios
+import {
+  getAllAccomodationCategories,
+  updateAccomodationCategory,
+} from "@/services/accomodation/AccomodationCategoryService";
 
 const router = useRouter();
 
@@ -30,6 +33,10 @@ const MAX_ACCOMODATION_IMAGES = 8;
 
 defineProps({
   allServices: {
+    type: Array,
+    default: () => [],
+  },
+  allRules: {
     type: Array,
     default: () => [],
   },
@@ -54,7 +61,10 @@ const handleAddImage = async (val) => {
  * Manejador de click para editar las características principales del alojamiento.
  */
 const handleApplyAccomodationChanges = async () => {
-  await updateAccomodationCategory(accomodationStore.registerNumber, accomodationStore.category);
+  await updateAccomodationCategory(
+    accomodationStore.registerNumber,
+    accomodationStore.category
+  );
 };
 
 /**
@@ -62,6 +72,45 @@ const handleApplyAccomodationChanges = async () => {
  */
 const handleEditAccomodationCategory = async () => {
   await accomodationStore.updateAccomodationCategory();
+};
+
+/**
+ * Manejador de cambio de estado de los checkbox de los textchip de los servicios.
+ * Utilizado para añadir o eliminar un servicio del alojamiento a editar.
+ */
+const handleServiceChipChange = async (e, serviceId) => {
+  // Si se selecciona, añadir a la lista de servicios existentes
+  const existsService = accomodationStore.accomodationServices.some(
+    (serv) =>
+      serv.accomodationAccServiceId.idAccomodationService.id === serviceId
+  );
+
+  // Si se selecciona el servicio, añadir a la lista de servicios existentes
+  if (e.target.checked && !existsService) {
+    await accomodationStore.addNewService(serviceId);
+  } else {
+    // Si no se selcciona el servicio, eliminar de la lista
+    await accomodationStore.deleteService(serviceId);
+  }
+};
+
+/**
+ * Manejador de cambio de estado de los checkbox de los textchip de las normas.
+ * Utilizado para añadir o eliminar una norma del alojamiento a editar.
+ */
+const handleRuleChipChange = async (e, ruleId) => {
+  // Si se selecciona, añadir a la lista de servicios existentes
+  const existsService = accomodationStore.accomodationServices.some(
+    (serv) => serv.accomodationAccServiceId.idAccomodationService.id === ruleId
+  );
+
+  // Si se selecciona el servicio, añadir a la lista de servicios existentes
+  if (e.target.checked && !existsService) {
+    await accomodationStore.addNewRule(ruleId);
+  } else {
+    // Si no se selcciona el servicio, eliminar de la lista
+    await accomodationStore.deleteAccomodationRule(ruleId);
+  }
 };
 
 onMounted(async () => {
@@ -206,7 +255,7 @@ onMounted(async () => {
         </section>
       </div>
 
-<!-- Categoría del alojamiento -->
+      <!-- Categoría del alojamiento -->
       <section class="form-edit-accomodation-category">
         <h3 v-once>Categoría</h3>
         <div class="form-edit-accomodation-category__wrapper">
@@ -215,10 +264,7 @@ onMounted(async () => {
             inputLabel="Categoría"
             selectId="accomodation-category-select"
             :options="categories"
-            @handleChange="
-              (value) =>
-                (accomodationStore.category = value)
-            "
+            @handleChange="(value) => (accomodationStore.category = value)"
           />
           <BaseButton
             text="Editar"
@@ -235,17 +281,26 @@ onMounted(async () => {
         <h3 v-once>Servicios</h3>
         <p>
           El alojamiento dispone de
-          {{ accomodationStore.accomodationServices.length }} servicios
+          {{ accomodationStore.accomodationServices.length }} servicios.
         </p>
         <div class="form-edit-services__container">
           <TextEditChip
-            v-for="(service, index) in allServices"
-            :key="index"
-            :chipTitle="`Haz click apra eliminar el servicio ${service.denomination}`"
+            v-for="service in allServices"
+            :key="`service-${service.id}`"
+            :chipTitle="`Haz click para eliminar el servicio ${service.denomination}`"
             :chipText="service.denomination"
             :serviceData="service"
             :showIcon="true"
-            :accServices="accomodationStore.accomodationServices"
+            :isServiceEnabled="
+              accomodationStore.accomodationServices.some(
+                (serv) =>
+                  serv.accomodationAccServiceId.idAccomodationService.id ===
+                  service.id
+              )
+            "
+            @handleCheckBoxChange="
+              (e) => handleServiceChipChange(e, service.id)
+            "
           />
         </div>
       </div>
@@ -253,27 +308,32 @@ onMounted(async () => {
       <!-- Normas -->
       <div class="form-edit-rules">
         <h3 v-once>Normas</h3>
-        <p v-once>
+        <p>
           El alojamiento tiene
           {{ accomodationStore.accomodationRules.length }} normas
         </p>
         <div class="form-edit-rules__container">
           <TextEditChip
-            v-for="(rule, index) in accomodationStore.accomodationRules"
-            :key="index"
-            :chipTitle="`Haz click apra eliminar el servicio ${rule.accomodationAccRuleId.idAccomodationRule.rule}`"
-            :chipText="rule.accomodationAccRuleId.idAccomodationRule.rule"
-            :isActiveService="true"
+            v-for="rule in allRules"
+            :key="`rule-${rule.id}`"
+            :chipTitle="`Haz click apra eliminar el servicio ${rule.id}`"
+            :chipText="rule.rule"
+            :isServiceEnabled="
+              accomodationStore.accomodationRules.some(
+                (r) => r.accomodationAccRuleId.idAccomodationRule.id === rule.id
+              )
+            "
+            @handleCheckBoxChange="(e) => handleRuleChipChange(e, rule.id)"
           />
         </div>
       </div>
 
-      <!-- Contenedor botones editar y cancelar -->
+      <!-- Contenedor boton volver -->
       <div class="form-edit-buttons">
         <!-- Botón cancelar cambios -->
         <BaseButton
           v-once
-          text="Cancelar"
+          text="Volver"
           buttonStyle="baseButton-danger--filled"
           buttonTitle="Haz click aquí para cancelar los cambios realizados en el alojamiento"
           @click="router.go(-1)"
@@ -409,5 +469,34 @@ onMounted(async () => {
       margin-top: 30px;
     }
   } // Fin form-edit-container
+}
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-sm) {
+  // Estilos sección características principales e imágenes.
+  .edit-form > #form-edit-container > .form-edit-main-features {
+    @include flex-column;
+
+    & > .form-edit-main-features__images {
+      & > .form-edit-main-features-images__container {
+        align-self: center;
+      }
+    }
+  }
+
+  // Estilos sección categoría
+  .edit-form
+    > #form-edit-container
+    > .form-edit-accomodation-category
+    > .form-edit-accomodation-category__wrapper {
+    @include flex-column;
+
+    // Estilos selector de categoría
+    & > div:first-child {
+      width: 100%;
+    }
+  }
 }
 </style>

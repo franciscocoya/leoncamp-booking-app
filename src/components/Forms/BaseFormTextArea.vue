@@ -56,6 +56,7 @@ function updateInputValue(value: string) {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
 
 .base-textarea-item {
   position: relative;
@@ -74,6 +75,16 @@ function updateInputValue(value: string) {
     width: 100%;
     height: 100px;
     padding-top: 20px;
+  }
+}
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-sm) {
+  .base-textarea-item > textarea {
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 </style>

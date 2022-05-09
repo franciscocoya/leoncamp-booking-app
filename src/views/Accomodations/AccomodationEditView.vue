@@ -11,7 +11,8 @@ const accomodationStore = useAccomodationStore();
 
 const router = useRouter();
 
-const allAvaibleServices = ref([]);
+const allAvailableServices = ref([]);
+const allAvailableRules = ref([]);
 
 onBeforeMount(async () => {
   const registerNumberAccToEdit =
@@ -20,7 +21,9 @@ onBeforeMount(async () => {
     registerNumberAccToEdit
   );
 
-  allAvaibleServices.value = await accomodationStore.getAllServices();
+  allAvailableServices.value = await accomodationStore.getAllServices();
+
+  allAvailableRules.value = await accomodationStore.getAllRules();
 });
 
 onBeforeRouteLeave(() => {
@@ -45,7 +48,10 @@ onBeforeRouteLeave(() => {
       >
     </h1>
     <div class="accomodation-edit__wrapper">
-        <EditForm :allServices="allAvaibleServices" />
+      <EditForm
+        :allServices="allAvailableServices"
+        :allRules="allAvailableRules"
+      />
     </div>
   </div>
 </template>

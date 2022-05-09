@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useAccomodationStore} from "@/store/accomodation";
+import { useAccomodationStore } from "@/store/accomodation";
 
 const accomodationStore = useAccomodationStore();
 
@@ -10,35 +10,41 @@ const props = defineProps({
   },
   options: {
     type: String,
-    default: () => {[]},
+    default: () => {
+      [];
+    },
   },
   selectId: {
     type: String,
     default: "",
-  }
+  },
 });
 
 const emit = defineEmits(["handleChange"]);
 
 function updateInputValue(value: string) {
-  const selectedOption = props.options.filter(opt => opt.accomodationCategory === value).shift();
+  const selectedOption = props.options
+    .filter((opt) => opt.accomodationCategory === value)
+    .shift();
   emit("handleChange", selectedOption);
 }
-
-
 </script>
 
 <template>
-  <div
-    class="label-select-container"
-  >
+  <div class="label-select-container">
     <label :for="inputLabel">{{ inputLabel }}</label>
-    <select name="accomodation-edit-category" :id="selectId"
-    @change="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)">
+    <select
+      name="accomodation-edit-category"
+      :id="selectId"
+      @change="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
+    >
       <option
-        v-for="(opt) in options"
+        v-for="opt in options"
         :key="opt.id"
-        :selected="opt.accomodationCategory === accomodationStore.category.accomodationCategory"
+        :selected="
+          opt.accomodationCategory ===
+          accomodationStore.category.accomodationCategory
+        "
         :value="opt.accomodationCategory"
       >
         {{ opt.accomodationCategory }}
@@ -75,8 +81,19 @@ function updateInputValue(value: string) {
     outline: none;
     cursor: pointer;
 
-    & > option{
+    & > option {
       padding: 10px 0;
+    }
+  }
+}
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-sm) {
+  .label-select-container {
+    & > select {
+      width: 100%;
     }
   }
 }

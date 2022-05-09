@@ -26,47 +26,18 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
-  accServices: {
-    type: Array,
-    default: () => [],
+
+  isServiceEnabled: {
+    type: Boolean,
+    default: false,
   },
 });
 
-const isServiceEnabled = ref(false);
+const emit = defineEmits(["handleCheckBoxChange"]);
 
-/**
- * Manejador del evento de cambio de estado del checkbox del servicio.
- * Si el servicio está seleccionado, se añade a la lista de servicios de la store del alojamiento actual.
- * Si no lo está, se elimina de la lista.
- */
-const handleCheckBoxChange = async (e) => {
-  isServiceEnabled.value = e.target.checked;
-  // Si se selecciona, añadir a la lista de servicios existentes
-  const existsService = accomodationStore.accomodationServices.some(
-    (serv) =>
-      serv.accomodationAccServiceId.idAccomodationService.id === props.serviceId
-  );
-
-  // Si se selecciona el servicio, añadir a la lista de servicios existentes
-  if (e.target.checked && !existsService) {
-    await accomodationStore.addNewService(props.serviceData.id);
-    
-  } else {
-    // Si no se selcciona el servicio, eliminar de la lista
-    await accomodationStore.deleteService(props.serviceData.id);
-  }
+const handleCheckBoxChange = (e) => {
+  emit("handleCheckBoxChange", e);
 };
-
-onMounted(() => {
-  props.accServices.forEach((accService) => {
-    if (
-      accService.accomodationAccServiceId.idAccomodationService.id ===
-      props.serviceData.id
-    ) {
-      isServiceEnabled.value = true;
-    }
-  });
-});
 </script>
 
 <template>

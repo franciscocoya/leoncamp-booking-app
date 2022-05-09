@@ -95,4 +95,14 @@ const handleDeleteCurrentImage = async () => {
     }
   }
 }
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-sm) {
+  .image-chip-edit {
+    width: 45%;
+    height: 150px;
+  }
+}
 </style>
