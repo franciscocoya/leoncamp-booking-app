@@ -39,7 +39,9 @@ function handleClick() {
     <button
       :class="buttonStyle"
       @click.prevent="handleClick"
-      :style="`${buttonWidth ? `width: ${fullWidth ? '100%' : buttonWidth}` : ''}`"
+      :style="`${
+        buttonWidth ? `width: ${fullWidth ? '100%' : buttonWidth}` : ''
+      }`"
       :id="buttonId && buttonId"
       :disabled="isDisabled"
       :title="title"
@@ -48,6 +50,8 @@ function handleClick() {
     </button>
   </div>
 </template>
+
+// changes
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
