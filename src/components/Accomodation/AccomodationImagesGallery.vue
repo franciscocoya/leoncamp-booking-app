@@ -19,7 +19,7 @@ const props = defineProps({
         <img
           v-for="(img, index) in props.images"
           :key="index"
-          :src="img"
+          :src="img.imageUrl"
           :id="`${props.regNumber}_image${index}`"
         />
       </div>

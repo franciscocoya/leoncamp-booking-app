@@ -1,6 +1,7 @@
 import type { PromoCode } from '@/models/promoCode/promoCode.model';
 import type { Coordinate } from '@/models/accomodation/coordinates.model';
 import type { AccomodationReview } from '@/models/accomodation/accomodationReview.model';
+import type { AccomodationImage } from '../models/accomodation/accomodation-image.model';
 
 
 export interface Accomodation {
@@ -19,7 +20,7 @@ export interface Accomodation {
     city: string;
     zip: string;
   };
-  accomodationImages: string[];
+  accomodationImages: AccomodationImage[];
   userHost: {
     id: number;
     name: string;

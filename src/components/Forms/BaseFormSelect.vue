@@ -1,70 +1,57 @@
 <script lang="ts" setup>
-import { onMounted, Ref, ref } from "vue";
+import {useAccomodationStore} from "@/store/accomodation";
+
+const accomodationStore = useAccomodationStore();
 
 const props = defineProps({
-  inputType: {
-    type: String,
-    default: "text",
-  },
   inputLabel: {
     type: String,
     default: "",
   },
-  inputValue: {
+  options: {
+    type: String,
+    default: () => {[]},
+  },
+  selectId: {
     type: String,
     default: "",
-  },
-  isReadonly: {
-    type: Boolean,
-    default: false,
-  },
+  }
 });
 
-let disableField: boolean = ref(false).value;
-
-const emit = defineEmits(["handleInput"]);
+const emit = defineEmits(["handleChange"]);
 
 function updateInputValue(value: string) {
-  disableField = false;
-  emit("handleInput", value);
+  const selectedOption = props.options.filter(opt => opt.accomodationCategory === value).shift();
+  emit("handleChange", selectedOption);
 }
 
-const disableInput = (disable: boolean) => {
-  disableField = disable;
-};
 
-onMounted(() => {
-  disableField = props.isReadonly;
-});
 </script>
 
 <template>
   <div
-    class="label-input-container"
-    @click.prevent="disableInput(false)"
-    
-    @mouseout="disableInput(true)"
+    class="label-select-container"
   >
     <label :for="inputLabel">{{ inputLabel }}</label>
-    <input
-      :id="inputLabel"
-      :type="inputType"
-      :placeholder="placeholder"
-      class="base-input-no-border"
-      :value="inputValue"
-      :readonly="disableField"
-      @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
-    />
+    <select name="accomodation-edit-category" :id="selectId"
+    @change="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)">
+      <option
+        v-for="(opt) in options"
+        :key="opt.id"
+        :selected="opt.accomodationCategory === accomodationStore.category.accomodationCategory"
+        :value="opt.accomodationCategory"
+      >
+        {{ opt.accomodationCategory }}
+      </option>
+    </select>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_variables.scss";
 
-.label-input-container {
+.label-select-container {
   position: relative;
-  border: 2px solid $color-tertiary-light;
-  border-radius: $global-border-radius;
 
   & > label {
     position: absolute;
@@ -74,13 +61,23 @@ onMounted(() => {
     color: grey;
   }
 
-  & > input {
+  & > select {
+    min-width: max-content;
+    width: 100%;
+    max-width: 100%;
+    height: 45px;
     font-size: 14px;
     font-weight: 500;
-  }
+    padding: 5px 0 0 5px;
+    border: 2px solid $color-tertiary-light;
+    border-radius: $global-border-radius;
+    color: $color-dark;
+    outline: none;
+    cursor: pointer;
 
-  & > input:read-only {
-    color: gray;
+    & > option{
+      padding: 10px 0;
+    }
   }
 }
 </style>

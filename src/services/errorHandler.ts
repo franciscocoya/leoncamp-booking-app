@@ -10,11 +10,11 @@ const handleError = (err) => {
 
             // Servidor sobrecargado
             if(err.response.status == 503){
-                window.location.href = "/503";
+                // window.location.href = "/503";
             }
 
             // Servidor no disponible
-            window.location.href = "/500";
+            // window.location.href = "/500";
         }
 
         // Errores 4xx
@@ -22,12 +22,14 @@ const handleError = (err) => {
 
             // Acceso no autorizado
             if(err.response.status == 401){
-                window.location.href = "/401";
+                // window.location.href = "/401";
             }
 
             // Página no encontrada
-            window.location.href = "/404";
+            // window.location.href = "/404";
         }
+
+        console.log("-- ERROR --");
     }
 }
 

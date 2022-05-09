@@ -28,7 +28,7 @@ const months = [
  * @returns
  */
 const formatArrayAsDate = (dateArr: number[]): string => {
-  if(!dateArr || DataTransfer.length == 0){
+  if(!dateArr || dateArr.length == 0){
     return null;
   }
   const day = dateArr[2] < 10 ? `0${dateArr[2]}` : dateArr[2];

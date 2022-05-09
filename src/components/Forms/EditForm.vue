@@ -1,8 +1,13 @@
 <script setup>
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseFormTextArea from "@/components/Forms/BaseFormTextArea.vue";
+import BaseFormSelect from "@/components/Forms/BaseFormSelect.vue";
+import UploadImageInputButton from "@/components/Buttons/UploadImageInputButton.vue";
 
 // Chips
 import ImageEditChip from "@/components/Chips/ImageEditChip.vue";
@@ -10,13 +15,57 @@ import TextEditChip from "@/components/Chips/TextEditChip.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+
+// Utils
+import { convertImageToBase64 } from "@/helpers/utils";
+
+// Servicio
+import { getAllAccomodationCategories, updateAccomodationCategory } from "@/services/accomodation/AccomodationCategoryService";
+
+const router = useRouter();
+
 const accomodationStore = useAccomodationStore();
+
+const MAX_ACCOMODATION_IMAGES = 8;
 
 defineProps({
   allServices: {
     type: Array,
     default: () => [],
   },
+});
+
+const categories = ref([]);
+
+/**
+ * Manejador de click de botón añadir imagen.
+ */
+const handleAddImage = async (val) => {
+  //await addNewAccomodationImage();
+  const newImageEncoded = await convertImageToBase64(val);
+  await accomodationStore.addNewAccomodationImage(
+    accomodationStore.registerNumber,
+    newImageEncoded
+  );
+  window.location.reload();
+};
+
+/**
+ * Manejador de click para editar las características principales del alojamiento.
+ */
+const handleApplyAccomodationChanges = async () => {
+  await updateAccomodationCategory(accomodationStore.registerNumber, accomodationStore.category);
+};
+
+/**
+ * Manejador de click para editar la categoría del alojamiento.
+ */
+const handleEditAccomodationCategory = async () => {
+  await accomodationStore.updateAccomodationCategory();
+};
+
+onMounted(async () => {
+  categories.value = await getAllAccomodationCategories();
 });
 </script>
 
@@ -32,18 +81,27 @@ defineProps({
           <div class="form-edit-main-features-images__container">
             <div>
               <ImageEditChip
-                v-for="(accImg, index) in accomodationStore.accomodationImages"
+                v-for="(
+                  accImg, index
+                ) in accomodationStore.accomodationImages.map(
+                  (img) => img.accomodationAccImageId.idAccomodationImage
+                )"
                 :regNumber="accomodationStore.registerNumber"
-                :imageData="accImg.accomodationAccImageId.idAccomodationImage"
-                :chipTitle="`Imagen ${accImage.accomodationAccImageId.idAccomodationImage.id}`"
+                :imageData="accImg"
+                :chipTitle="`Imagen ${accImg.id}`"
                 :key="index"
               />
             </div>
-            <BaseButton
-              :isDisabled="accomodationStore.accomodationImages.length > 10"
+            <!-- Botón subir nueva imagen al alojamiento -->
+            <UploadImageInputButton
+              :isDisabled="
+                accomodationStore.accomodationImages.length >
+                MAX_ACCOMODATION_IMAGES
+              "
               text="Añadir"
-              title="Haz click aquí para añadir una nueva imagen, hasta un máximo de 10 imágenes."
+              :title="`Haz click aquí para añadir una nueva imagen, hasta un máximo de ${MAX_ACCOMODATION_IMAGES} imágenes.`"
               buttonStyle="baseButton-dark--outlined"
+              @input="handleAddImage"
             />
           </div>
         </section>
@@ -111,19 +169,6 @@ defineProps({
               :inputValue="accomodationStore.numOfGuests"
               @handleInput="(value) => (accomodationStore.numOfGuests = value)"
             />
-
-            <!-- Categoría -->
-            <LabelFormInput
-              inputType="select"
-              inputLabel="Categoría"
-              inputId="accomodation-guests"
-              placeholder="Introduce el número de huéspedes"
-              :inputValue="accomodationStore.category.accomodationCategory"
-              @handleInput="
-                (value) =>
-                  (accomodationStore.category.accomodationCategory = value)
-              "
-            />
           </fieldset>
 
           <fieldset class="form-edit-main-features_properties__area-price">
@@ -149,8 +194,41 @@ defineProps({
               "
             />
           </fieldset>
+          <!-- Botón editar alojamiento -->
+          <BaseButton
+            v-once
+            text="Editar"
+            buttonStyle="baseButton-primary--filled"
+            id="button-edit-accomodation-main-properties"
+            buttonTitle="Haz click aquí para editar los características del alojamiento."
+            @click="handleApplyAccomodationChanges"
+          />
         </section>
       </div>
+
+<!-- Categoría del alojamiento -->
+      <section class="form-edit-accomodation-category">
+        <h3 v-once>Categoría</h3>
+        <div class="form-edit-accomodation-category__wrapper">
+          <!-- Categoría -->
+          <BaseFormSelect
+            inputLabel="Categoría"
+            selectId="accomodation-category-select"
+            :options="categories"
+            @handleChange="
+              (value) =>
+                (accomodationStore.category = value)
+            "
+          />
+          <BaseButton
+            text="Editar"
+            buttonStyle="baseButton-dark--filled--small"
+            title="Haz click aquí para editar la categoría del alojamiento."
+            id="button-edit-accomodation-category"
+            @click="handleEditAccomodationCategory"
+          />
+        </div>
+      </section>
 
       <!-- Servicios -->
       <div class="form-edit-services">
@@ -165,7 +243,7 @@ defineProps({
             :key="index"
             :chipTitle="`Haz click apra eliminar el servicio ${service.denomination}`"
             :chipText="service.denomination"
-            :serviceId="service.id"
+            :serviceData="service"
             :showIcon="true"
             :accServices="accomodationStore.accomodationServices"
           />
@@ -190,12 +268,17 @@ defineProps({
         </div>
       </div>
 
-      <!-- Botón editar alojamiento -->
-      <BaseButton
-        v-once
-        text="Editar"
-        buttonStyle="baseButton-primary--filled"
-      />
+      <!-- Contenedor botones editar y cancelar -->
+      <div class="form-edit-buttons">
+        <!-- Botón cancelar cambios -->
+        <BaseButton
+          v-once
+          text="Cancelar"
+          buttonStyle="baseButton-danger--filled"
+          buttonTitle="Haz click aquí para cancelar los cambios realizados en el alojamiento"
+          @click="router.go(-1)"
+        />
+      </div>
     </form>
   </div>
 </template>
@@ -272,8 +355,38 @@ defineProps({
         & > .form-edit-main-features_properties__guest-category {
           @include flex-row;
         }
+
+        & > #button-edit-accomodation-main-properties {
+          justify-content: flex-start;
+          margin-left: 15px;
+        }
       } // Fin .form-edit-main-features__properties
     } // Fin form-edit-main-features
+
+    // Estilos sección categoría
+    & > .form-edit-accomodation-category {
+      @include flex-column;
+
+      &:hover > .form-edit-accomodation-category__wrapper > div:nth-child(2) {
+        display: block;
+      }
+
+      & > .form-edit-accomodation-category__wrapper {
+        @include flex-row;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        // Estilos selector de categoría
+        & > div:first-child {
+          width: 20%;
+        }
+
+        // Estilos boton editar
+        & > div:nth-child(2) {
+          display: none;
+        }
+      } // Fin estilos .form-edit-accomodation-category__wrapper
+    } // Fin estilos form-edit-accomodation-category
 
     // Estilos compartidos secciones servicios y normas
     & > .form-edit-services,
@@ -286,6 +399,14 @@ defineProps({
         gap: 10px;
         flex-wrap: wrap;
       }
+    }
+
+    // Estilos botones editar y cancelar
+    & > .form-edit-buttons {
+      @include flex-row;
+      gap: 10px;
+      align-self: center;
+      margin-top: 30px;
     }
   } // Fin form-edit-container
 }

@@ -93,7 +93,7 @@ onMounted(async () => {
           </h1>
 
           <AccomodationImagesGallery
-            :images="accomodationStore.accomodationImages"
+            :images="accomodationStore.accomodationImages.map(img => img.accomodationAccImageId.idAccomodationImage)"
             :regNumber="accomodationStore.registerNumber"
           />
         </section>

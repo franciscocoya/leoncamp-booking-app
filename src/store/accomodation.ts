@@ -18,8 +18,15 @@ import {
   deleteAccomodationBySavedAccomodationId,
   getAllAccomodationReviewsByRegisterNumber,
   getAllAvaibleServices,
-  deleteImageFromAccomodation
+  deleteImageFromAccomodation,
+  addNewImageToAccomodation,
+  updateAccomodationData
 } from '@/services/accomodation/AccomodationService';
+
+import {  addServiceToExistingAccomodation,
+  deleteServiceFromExistingAccomodation} from '@/services/accomodation/AccomodationServiceService';
+
+import {updateAccomodationCategory} from '@/services/accomodation/AccomodationCategoryService';
 
 const useAccomodationStore = defineStore({
   id: 'accomodation',
@@ -80,9 +87,7 @@ const useAccomodationStore = defineStore({
         this.area = accomodationToReturn.area;
         this.category = accomodationToReturn.idAccomodationCategory;
         this.accomodationLocation = accomodationToReturn.idAccomodationLocation;
-        // this.accomodationImages = accomodationToReturn.accomodationImages.map(
-        //   (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl
-        // );
+        this.accomodationImages = accomodationToReturn.accomodationImages;
         this.accomodationImages = accomodationToReturn.accomodationImages;
         this.accomodationRules = accomodationToReturn.accomodationRules;
         this.accomodationServices = accomodationToReturn.accomodationServices;
@@ -138,8 +143,15 @@ const useAccomodationStore = defineStore({
      *
      * @param regNumber
      */
-    deleteAccomodationBySavedAccId(savedAccId: number): void {
-      deleteAccomodationBySavedAccomodationId(savedAccId);
+    async deleteAccomodationBySavedAccId(savedAccId: number): void {
+     await deleteAccomodationBySavedAccomodationId(savedAccId);
+    },
+
+    /**
+     * Añadir una una imagen a un alojamiento.
+     */
+    async addNewAccomodationImage(regNumber: string, imageUrl: string){
+      await addNewImageToAccomodation(regNumber, imageUrl);
     },
 
     /**
@@ -159,6 +171,35 @@ const useAccomodationStore = defineStore({
      */
     async deleteAccomodationImage(regNumber: string, imageId: number): Promise<void> {
       await deleteImageFromAccomodation(regNumber, imageId);
+    },
+
+    /**
+     * Actualización de los datos de un alojamiento
+     */
+    async updateAccomodation(){
+      await updateAccomodationData(this);
+      // window.location.reload();
+    },
+
+    /**
+     * Actualización de la categoría de un alojamiento.
+     */
+    async updateAccomodationCategory(){
+      await updateAccomodationCategory(this.registerNumber, this.category);
+    },
+
+    /**
+     * Añade un servicio al alojamiento.
+     */
+    async addNewService(newService: any){
+      await addServiceToExistingAccomodation(this.registerNumber, newService);
+    },
+
+    /**
+     * Elimina un servicio del alojamiento.
+     */
+     async deleteService(serviceId: number): Promise<void>{
+      await deleteServiceFromExistingAccomodation(this.registerNumber, serviceId);
     }
   },
 });

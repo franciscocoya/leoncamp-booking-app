@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, Ref, ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const props = defineProps({
   inputType: {

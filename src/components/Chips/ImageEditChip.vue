@@ -1,7 +1,7 @@
 <script setup>
 import { IMG_NOT_FOUND_PLACEHOLDER } from "@/helpers/iconConstants";
 
-import {deleteImageFromAccomodation} from "@/services/accomodation/AccomodationService";
+import { deleteImageFromAccomodation } from "@/services/accomodation/AccomodationService";
 
 const props = defineProps({
   imageData: {
@@ -23,22 +23,26 @@ const props = defineProps({
  */
 const handleDeleteCurrentImage = async () => {
   const confirmDelete = window.confirm(
-    "¿Estás seguro de que quieres eliminar esta imagen?"
+    "¿Estás seguro de que quieres eliminar esta imagen del alojamiento?"
   );
 
+  // Si cancelar el borrado de la imagen, salir de la operación.
   if (!confirmDelete) {
     return;
   }
 
+  // Eliminar la imagen
   await deleteImageFromAccomodation(props.regNumber, props.imageData.id);
+  window.location.reload();
 };
 </script>
 
 <template>
-  <div class="image-chip-edit" :title="props.chipTitle">
-    <img
-    :src="props.imageData.imageUrl" />
-    <span class="close-chip" @click.prevent="handleDeleteCurrentImage"> x </span>
+  <div class="image-chip-edit" title="Haz click aquí para eliminar la imagen">
+    <img :src="props.imageData.imageUrl" />
+    <span class="close-chip" @click.prevent="handleDeleteCurrentImage">
+      x
+    </span>
   </div>
 </template>
 

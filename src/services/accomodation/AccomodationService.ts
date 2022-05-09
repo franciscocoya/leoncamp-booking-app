@@ -8,6 +8,8 @@
 import axios from 'axios';
 import { handleError } from "../errorHandler";
 
+import type { Accomodation } from '@/models/accomodation/accomodation.model';
+
 // Rutas alojamientos API: /api/accomodations
 import {
   ACCOMODATIONS_BASE_PATH
@@ -21,12 +23,13 @@ import {
 import { BOKINGS_BASE_PATH } from './BookingRoutesEnum';
 
 // Ruta alojamientos: /api/accomodations
-
 const baseUri: string = import.meta.env.VITE_API_URI;
 
 const apiJwtToken: string = JSON.parse(
   sessionStorage?.getItem('user') || '{}'
 )?.token;
+
+
 
 /**
  * Lista todos los alojamientos disponibles.
@@ -236,10 +239,10 @@ export async function addNewImageToAccomodation(regNumber: string, imgUrl: strin
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
-  }).catch(err => handleError(err));
+  }).catch(err => console.log(err));
 
   return data;
-}
+};
 
 /**
  * Elimina una imagen del alojamiento con número de registro <code>regNumber</code>.
@@ -253,5 +256,46 @@ export async function deleteImageFromAccomodation(regNumber: string, imageId: nu
       Authorization: `Bearer ${apiJwtToken}`,
     },
   }).catch(err => console.log(err));
+};
 
-}
+/**
+ * Actualización de los datos del alojamiento pasado como parámetro.
+ * 
+ * Las imágenes no se actualizan, ya que se actualizan a la hora de subir o eliminar
+ * con los botones de Añadir imagen o el icono de eliminar de ésta.
+ * 
+ * El número de registro y ubicación no se actualizan ya que son inmutables.
+ * Para actualizar estos datos, se debe eliminar el alojamiento y volver a crearlo.
+ * 
+ * @param accomodationData 
+ */
+export async function updateAccomodationData(accomodationData: Accomodation) {
+
+  const accData = new FormData();
+
+  const { registerNumber, description, numOfBeds, numOfBathRooms, numOfGuests, numOfBedRooms, pricePerNight, area } = accomodationData;
+
+  accData.append('description', description);
+  accData.append('numOfBeds', numOfBeds);
+  accData.append('numOfBathRooms', numOfBathRooms);
+  accData.append('numOfBedRooms', numOfBedRooms);
+  accData.append('numOfGuests', numOfGuests);
+  accData.append('pricePerNight', pricePerNight);
+  accData.append('area', area);
+
+  await axios.patch(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`,
+    {
+      description,
+      numOfBeds,
+      numOfBathRooms,
+      numOfBedRooms,
+      numOfGuests,
+      pricePerNight,
+      area,
+    } 
+  , {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`
+    },
+  }).catch(err => console.log(err));
+};

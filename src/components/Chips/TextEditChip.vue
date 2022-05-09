@@ -12,7 +12,7 @@ const props = defineProps({
   },
   regNumber: {
     type: String,
-    default: ""
+    default: "",
   },
   chipTitle: {
     type: String,
@@ -22,9 +22,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  serviceId: {
-    type: Number,
-    default: null,
+  serviceData: {
+    type: Object,
+    default: () => ({}),
   },
   accServices: {
     type: Array,
@@ -39,25 +39,21 @@ const isServiceEnabled = ref(false);
  * Si el servicio está seleccionado, se añade a la lista de servicios de la store del alojamiento actual.
  * Si no lo está, se elimina de la lista.
  */
-const handleCheckBoxChange = (e) => {
-  console.log(e.target.checked);
+const handleCheckBoxChange = async (e) => {
   isServiceEnabled.value = e.target.checked;
   // Si se selecciona, añadir a la lista de servicios existentes
-  if (e.target.checked) {
-    accomodationStore.accomodationServices.push({
-      accomodationAccServiceId: {
-        idAccomodation: accomodationStore.registerNumber,
-        idAccomodationService: {
-          denomination: props.chipText,
-          id: props.serviceId,
-        },
-      },
-    });
-  }else{
-    // Si no, eliminar de la lista
-    accomodationStore.accomodationServices.filter((service) => {
-      return service.accomodationAccServiceId.idAccomodationService.id !== props.serviceId;
-    });
+  const existsService = accomodationStore.accomodationServices.some(
+    (serv) =>
+      serv.accomodationAccServiceId.idAccomodationService.id === props.serviceId
+  );
+
+  // Si se selecciona el servicio, añadir a la lista de servicios existentes
+  if (e.target.checked && !existsService) {
+    await accomodationStore.addNewService(props.serviceData.id);
+    
+  } else {
+    // Si no se selcciona el servicio, eliminar de la lista
+    await accomodationStore.deleteService(props.serviceData.id);
   }
 };
 
@@ -65,7 +61,7 @@ onMounted(() => {
   props.accServices.forEach((accService) => {
     if (
       accService.accomodationAccServiceId.idAccomodationService.id ===
-      props.serviceId
+      props.serviceData.id
     ) {
       isServiceEnabled.value = true;
     }
@@ -78,7 +74,7 @@ onMounted(() => {
     <div class="text-chip-edit__denomination">
       <img
         v-if="showIcon == true"
-        :src="`${getAccomodationServiceImageById(props.serviceId)}`"
+        :src="`${getAccomodationServiceImageById(props.serviceData.id)}`"
         alt=""
       />
       <p v-once>{{ props.chipText }}</p>

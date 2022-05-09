@@ -3,7 +3,7 @@ import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
 // Formateador de fecha
-import { convertArrayToDate } from "@/helpers/utils";
+import { convertArrayToDate, formatArrayAsDate } from "@/helpers/utils";
 
 // Tipo de pago
 import { PaymentMethod } from "@/models/payment/payment.enum";

@@ -20,6 +20,9 @@ const API_ACCOMODATIONS = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATIO
 // -- Rutas servicios de un alojamiento
 const API_ACCOMODATION_SERVICES = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATION_SERVICES}`;
 
+// -- Rutas de las categorías de alojamiento
+const API_ACCOMODATION_CATEGORIES = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATION_CATEGORIES}`;
+
 // -----------------------------------------------------------------------------
 
 
@@ -35,5 +38,6 @@ export{
     API_USER_CONFIG,
     API_ACCOMODATIONS,
     API_ACCOMODATION_SERVICES,
+    API_ACCOMODATION_CATEGORIES,
     API_BOOKINGS
 }
