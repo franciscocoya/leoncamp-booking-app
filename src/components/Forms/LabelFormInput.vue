@@ -10,7 +10,7 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  placeholder: {
+  inputPlaceholder: {
     type: String,
     default: "",
   },
@@ -26,7 +26,11 @@ const props = defineProps({
   isPriceInput: {
     type: Boolean,
     default: false,
-  }
+  },
+  inputTitle : {
+    type: String,
+    default: "",
+  },
 });
 
 let disableField: boolean = ref(false).value;
@@ -35,15 +39,6 @@ const emit = defineEmits(["handleInput"]);
 
 function updateInputValue(value: string) {
   disableField = false;
-  // if (
-  //   (props.inputType == "number" && Number(value) < 0) ||
-  //   isNaN(Number(value)) ||
-  //   value.includes("-")
-  // ) {
-  //   value = "";
-  //   props.inputValue = "";
-  // } else {
-  //   }
     emit("handleInput", value);
 }
 
@@ -61,13 +56,14 @@ onMounted(() => {
     class="label-input-container"
     @click.prevent="disableInput(false)"
     @mouseout="disableInput(true)"
+    :title="inputTitle"
   >
     <label :for="inputLabel">{{ inputLabel }}</label>
     <input
       v-if="inputType !== 'number'"
       :id="inputLabel"
       :type="inputType"
-      :placeholder="placeholder"
+      :placeholder="inputPlaceholder"
       class="base-input-no-border"
       :value="inputValue"
       :readonly="disableField"
@@ -78,7 +74,7 @@ onMounted(() => {
       v-else
       :id="inputLabel"
       :type="inputType"
-      :placeholder="placeholder"
+      :placeholder="inputPlaceholder"
       class="base-input-no-border"
       :value="inputValue"
       :readonly="disableField"
@@ -112,8 +108,13 @@ onMounted(() => {
   }
 
   & > input {
+    width: 90%;
     font-size: 14px;
     font-weight: 500;
+
+    &::placeholder{
+      color: gray;
+    }
   }
 
   & > input:read-only {

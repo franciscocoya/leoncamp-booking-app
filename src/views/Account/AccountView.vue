@@ -2,9 +2,6 @@
 import { defineAsyncComponent, onMounted } from "vue";
 import { useUserStore } from "@/store/user";
 
-// Componentes
-//import AccountSidebarItem from "@/components/Sidebar/AccountSidebarItem.vue";
-
 const AccountSidebarItem = defineAsyncComponent(() =>
   import("@/components/Sidebar/AccountSidebarItem.vue")
 );
@@ -12,8 +9,8 @@ const AccountSidebarItem = defineAsyncComponent(() =>
 // Store
 const userStore = useUserStore();
 
-onMounted(() => {
-  userStore.loadUserData();
+onMounted(async () => {
+  await userStore.loadUserData();
 });
 
 const isMobile = window.innerWidth < 768;
@@ -39,7 +36,8 @@ const isMobile = window.innerWidth < 768;
 @import "@/assets/scss/_variables.scss";
 
 .account-view {
-  @include flex-row-center;
+  @include flex-row;
+  justify-content: center;
   gap: 50px;
   margin-top: 20px;
 }

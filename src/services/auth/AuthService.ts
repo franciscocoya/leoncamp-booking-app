@@ -14,36 +14,40 @@ import { getUserDataById } from "@/services/user/UserService";
  * @param password 
  */
 const login = async (email: string, password: string, callback: CallableFunction) => {
-    await axios.post(LOGIN_URL, {
-        email,
-        password
+    try {
+        await axios.post(LOGIN_URL, {
+            email,
+            password
+        }
+        ).then(res => {
+            console.log(res);
+            return res.data;
+        })
+            .then(async data => {
+                const { token, email, id } = data;
+                sessionStorage.setItem('user', JSON.stringify({
+                    token,
+                    email,
+                    id
+                }));
+                window.location.href = '/';
+            });
+    } catch (err) {
+        callback(err.response.data.message);
     }
-    ).then((res) => res.data)
-        .then(async data => {
-            const { token, email, id } = data;
 
-            // sessionStorage.setItem('token', token);
-            // sessionStorage.setItem('email', email);
-            sessionStorage.setItem('user', JSON.stringify({
-                token,
-                email,
-                id
-            }));
-            //window.location.href = '/';
-        }).catch(err => {
-            callback(err);
-        });
+    if (JSON.parse(sessionStorage.getItem('user')).id) {
+        // Obtener datos de usuario
+        const { name, surname } = getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
+        sessionStorage.setItem('data', JSON.stringify({
+            name,
+            surname
+        }));
 
-    // Obtener datos de usuario
-    const { name, surname } = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
-    await sessionStorage.setItem('data', JSON.stringify({
-        name,
-        surname
-    }));
-
-    // Redireccionar a su cuenta personal.
-    if (name && surname) {
-        window.location.href = `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`;
+        // Redireccionar a su cuenta personal.
+        if (name && surname) {
+            window.location.href = `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`;
+        }
     }
 };
 

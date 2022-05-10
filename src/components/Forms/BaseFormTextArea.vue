@@ -8,6 +8,10 @@ defineProps({
     type: String,
     default: "",
   },
+  inputTitle: {
+    type: String,
+    default: "",
+  },
   textAreaContent: {
     type: String,
     default: "",
@@ -38,7 +42,7 @@ function updateInputValue(value: string) {
 </script>
 
 <template>
-  <div class="base-textarea-item">
+  <div class="base-textarea-item" :title="inputTitle">
     <label :for="inputLabel">{{ inputLabel }}</label>
     <textarea
       :id="inputLabel"
@@ -75,6 +79,7 @@ function updateInputValue(value: string) {
     width: 100%;
     height: 100px;
     padding-top: 20px;
+    outline: none;
   }
 }
 
