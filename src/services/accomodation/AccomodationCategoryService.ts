@@ -7,44 +7,53 @@
  *
  */
 import axios from 'axios';
-import { handleError } from "../errorHandler";
+import { handleError } from '../errorHandler';
 
 // Ruta alojamientos: /api/accomodations
-import { API_ACCOMODATION_CATEGORIES, API_ACCOMODATIONS } from '@/helpers/apiRoutes';
+import {
+  API_ACCOMODATION_CATEGORIES,
+  API_ACCOMODATIONS,
+} from '@/helpers/apiRoutes';
 
 const apiJwtToken: string = JSON.parse(
-    sessionStorage?.getItem('user') || '{}'
+  sessionStorage?.getItem('user') || '{}'
 )?.token;
-
 
 /**
  * Listado de todas las categorías de alojamiento disponibles en la aplicación.
- * 
- * @returns 
+ *
+ * @returns
  */
-export const getAllAccomodationCategories = async () => {
-    const { data } = await axios.get(`${API_ACCOMODATION_CATEGORIES}/all`)
-        .catch(err => handleError(err));
+export const getAllAccomodationCategories = async (): Promise<any> => {
+  const { data } = (await axios
+    .get(`${API_ACCOMODATION_CATEGORIES}/all`)
+    .catch((err) => handleError(err))) as any;
 
-    return data;
+  return data;
 };
 
 /**
  * Actualiza la categoría del alojamiento.
- * @param category 
+ * @param category
  */
-export const updateAccomodationCategory = async (regNumber: string, category: any) => {
+export const updateAccomodationCategory = async (
+  regNumber: string,
+  category: any
+) => {
+  const { accomodationCategory, id } = category;
 
-    const { accomodationCategory, id } = category;
-
-    await axios.patch(`${API_ACCOMODATIONS}/${regNumber}/category/edit`,
-        {
-            accomodationCategory,
-            id
+  await axios
+    .patch(
+      `${API_ACCOMODATIONS}/${regNumber}/category/edit`,
+      {
+        accomodationCategory,
+        id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${apiJwtToken}`,
         },
-        {
-            headers: {
-                Authorization: `Bearer ${apiJwtToken}`
-            }
-        }).catch(err => console.log(err));
+      }
+    )
+    .catch((err) => console.log(err));
 };

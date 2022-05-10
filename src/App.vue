@@ -1,9 +1,13 @@
-<script lang="ts" setup>
+<script setup>
 import { ref, onMounted, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 import { authRoutes } from "@/helpers/appRoutes";
 
 //import HeaderItem from "./components/Header/HeaderItem.vue";
+//import SearchResultsItem from "./components/Header/SearchBar/SearchResultsItem.vue";
+import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
+
+import FooterItem from "./components/Footer/FooterItem.vue";
 
 const HeaderItem = defineAsyncComponent(
   () => import("@/components/Header/HeaderItem.vue")
@@ -17,10 +21,6 @@ const HeaderMobileItem = defineAsyncComponent(
 const SearchResultsItem = defineAsyncComponent(
   () => import("@/components/Header/SearchBar/SearchResultsItem.vue")
 );
-//import SearchResultsItem from "./components/Header/SearchBar/SearchResultsItem.vue";
-import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
-
-import FooterItem from "./components/Footer/FooterItem.vue";
 // Rutas públicas
 
 // Obtener la ruta actual
@@ -45,7 +45,7 @@ const screenBreakpoints = {
 
 let enableHeaderMobile = ref(false);
 
-// // Mostrar header mobile
+// Mostrar header mobile
 window.addEventListener("resize", () => {
   enableHeaderMobile.value = document.body.clientWidth < screenBreakpoints.sm;
 });

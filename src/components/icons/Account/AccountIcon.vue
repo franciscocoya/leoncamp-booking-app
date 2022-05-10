@@ -1,20 +1,17 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-import {
-  IMG_PROFILE_PLACEHOLDER,
-} from "@/helpers/iconConstants";
+import { IMG_PROFILE_PLACEHOLDER } from "@/helpers/iconConstants";
 
 // Utils
 import { convertImageToBase64 } from "@/helpers/utils";
 
 // Servicios
-import { uploadUserProfileImage } from "@/services/User/userService";
+import { uploadUserProfileImage } from "@/services/user/userService";
 
 // Store
 import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
-
 
 const router = useRouter();
 
@@ -83,8 +80,11 @@ const handleUpdateImage = async (img) => {
       :width="props.width"
       :height="props.height"
       :title="props.username"
-      @click.prevent="props.isLinked == true || props.isOnMenuMobile == true
-       ? redirectToUserProfile() : 'null'"
+      @click.prevent="
+        props.isLinked == true || props.isOnMenuMobile == true
+          ? redirectToUserProfile()
+          : 'null'
+      "
       :style="props.isLinked ? 'cursor: pointer' : ''"
     />
 

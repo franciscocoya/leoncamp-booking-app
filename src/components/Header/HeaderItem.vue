@@ -4,8 +4,8 @@ import { defineEmits, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 // Iconos
-import AccountIcon from "../icons/Account/AccountIcon.vue";
-import AppLogoIcon from "../icons/AppLogoIcon.vue";
+import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
+import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";
 
 // Componentes
 import SearchBarItem from "./SearchBar/SearchBarItem.vue";
@@ -36,7 +36,7 @@ const hideSearchResults = () => {
 };
 
 onMounted(() => {
-  if(userData.id){
+  if (userData.id) {
     userStore.loadUserData(userData.id);
   }
 });

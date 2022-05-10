@@ -27,7 +27,7 @@ export const addRuleToExistingAccomodation = async (
   regNumber: string,
   rule: number
 ) => {
-  const { data } = await axios({
+  const { data } = (await axios({
     url: `${API_ACCOMODATION_RULES}/${regNumber}`,
     method: 'POST',
     headers: {
@@ -36,7 +36,7 @@ export const addRuleToExistingAccomodation = async (
     params: {
       rule,
     },
-  }).catch((err) => console.log(err));
+  }).catch((err) => console.log(err))) as any;
 
   return data;
 };

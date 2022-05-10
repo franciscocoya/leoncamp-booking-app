@@ -1,7 +1,7 @@
 /**
  * Constantes de los iconos de los componentes.
  */
-const IMG_PATH = '/src/assets/img/';
+const IMG_PATH = '/images/';
 
 const ICON_CALENDAR = `${IMG_PATH}icons/calendar-icon.svg`;
 const ICON_BOOKMARK = `${IMG_PATH}icons/bookmark-icon.svg`;
@@ -59,7 +59,6 @@ export {
   ICON_CLOSE,
   ICON_ADD_SECONDARY,
   ICON_HOME,
-
   // Iconos menú mobile
   ICON_MENU_HOME,
   ICON_MENU_BOOKMARK_OUTLINE,
@@ -67,11 +66,8 @@ export {
   ICON_MENU_CALENDAR_SOLID,
   ICON_ADD,
   ICON_MENU_PROFILE_IMAGE,
-
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
   IMG_NOT_FOUND_PLACEHOLDER,
-
-
-  IMG_UPLOAD_ACCOMODATION_STEP_1
+  IMG_UPLOAD_ACCOMODATION_STEP_1,
 };

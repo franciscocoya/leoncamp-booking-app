@@ -3,7 +3,7 @@ import { onMounted } from "vue";
 import mapboxgl from "mapbox-gl";
 
 // Store
-import {useAccomodationStore} from "@/store/accomodation";
+import { useAccomodationStore } from "@/store/accomodation";
 
 // Iconos
 import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
@@ -47,8 +47,6 @@ onMounted(() => {
     zoom: 14, // starting zoom
   });
 
-  // https://docs.mapbox.com/mapbox-gl-js/example/drag-a-point/
-
   // Marcador
   const myMark = document.createElement("div");
   myMark.style.backgroundImage = `url(${ICON_MAP_MARKER_TENTH})`;
@@ -61,10 +59,12 @@ onMounted(() => {
   myMark.style.height = "50px";
 
   const marker = new mapboxgl.Marker(myMark, {
-    draggable: props.isMarkerDraggable
-  }).setLngLat([props.lng, props.lat]).addTo(map);
+    draggable: props.isMarkerDraggable,
+  })
+    .setLngLat([props.lng, props.lat])
+    .addTo(map);
 
-  marker.on('dragend', onDragEnd);
+  marker.on("dragend", onDragEnd);
 
   function onDragEnd() {
     const lngLat = marker.getLngLat();
@@ -72,7 +72,6 @@ onMounted(() => {
     accomodationStore.accomodationLocation.coords.lng = lngLat.lng;
   }
 });
-
 </script>
 
 <template>

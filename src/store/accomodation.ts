@@ -153,7 +153,7 @@ const useAccomodationStore = defineStore({
      *
      * @param regNumber
      */
-    async deleteAccomodationBySavedAccId(savedAccId: number): void {
+    async deleteAccomodationBySavedAccId(savedAccId: number): Promise<void> {
       await deleteAccomodationBySavedAccomodationId(savedAccId);
     },
 
@@ -241,7 +241,7 @@ const useAccomodationStore = defineStore({
     /**
      * Elimina una norma de un alojamiento
      */
-    async deleteAccomodationRule(accomodationRuleId: number) {
+    async deleteAccomodationRule(accomodationRuleId: number): Promise<void> {
       await deleteRuleFromAccomodation(this.registerNumber, accomodationRuleId);
     },
   },

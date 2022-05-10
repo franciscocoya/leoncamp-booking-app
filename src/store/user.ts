@@ -7,9 +7,13 @@ import type { User } from '@/models/user/user.model';
 import { login, signUp } from '@/services/auth/AuthService';
 
 // Servicio de usuarios
-import { getUserDataById, updateUserData, getUserConfigurationByUserId } from '@/services/user/UserService';
+import {
+  getUserDataById,
+  updateUserData,
+  getUserConfigurationByUserId,
+} from '@/services/user/userService';
 
-// Servicio de alojamientos 
+// Servicio de alojamientos
 import { getAllUserAccomodations } from '@/services/accomodation/AccomodationService';
 
 const useUserStore = defineStore({
@@ -46,11 +50,11 @@ const useUserStore = defineStore({
 
   getters: {
     /**
-         * Comprueba que las contraseñas coincidan.
-         */
+     * Comprueba que las contraseñas coincidan.
+     */
     isPasswordsMatch(state): boolean {
       return state.password === state.repeatedPassword;
-    }
+    },
   },
 
   actions: {
@@ -72,9 +76,16 @@ const useUserStore = defineStore({
     signUp() {
       let signUpError = '';
 
-      signUp(this.name, this.surname, this.email, this.password, this.repeatedPassword || '', (err: string) => {
-        signUpError = err;
-      });
+      signUp(
+        this.name,
+        this.surname,
+        this.email,
+        this.password,
+        this.repeatedPassword || '',
+        (err: string) => {
+          signUpError = err;
+        }
+      );
 
       return signUpError;
     },
@@ -83,7 +94,7 @@ const useUserStore = defineStore({
       // Eliminar token y datos del usuario.
       sessionStorage.removeItem('user');
       sessionStorage.removeItem('data');
-      window.location.href = "/";
+      window.location.href = '/';
     },
 
     /**
@@ -97,14 +108,18 @@ const useUserStore = defineStore({
 
     /**
      * Obtención de los datos del usuario en sesión
-     * 
-     * @param email 
+     *
+     * @param email
      */
     async loadUserData() {
       // Nombre y apellidos previamente obtenidos en el login.
       if (JSON.parse(sessionStorage.getItem('data') || '{}')) {
-        const { id, email } = JSON.parse(sessionStorage.getItem('user') || '{}');
-        const { name, surname} = JSON.parse(sessionStorage.getItem('data') || '{}');
+        const { id, email } = JSON.parse(
+          sessionStorage.getItem('user') || '{}'
+        );
+        const { name, surname } = JSON.parse(
+          sessionStorage.getItem('data') || '{}'
+        );
 
         this.id = id;
         this.name = name;
@@ -117,7 +132,15 @@ const useUserStore = defineStore({
         }
 
         // Si el usuario es host, se mostrarán los siguientes datos.
-        const { dni, bio, direction, emailVerified, dniVerified, phoneVerified, verified } = userData;
+        const {
+          dni,
+          bio,
+          direction,
+          emailVerified,
+          dniVerified,
+          phoneVerified,
+          verified,
+        } = userData;
 
         this.datosHost = {
           dni,
@@ -126,15 +149,15 @@ const useUserStore = defineStore({
           emailVerified,
           dniVerified,
           phoneVerified,
-          verified
-        }
+          verified,
+        };
       }
     },
 
     /**
      * Datos del usuario con el id especificado.
-     * 
-     * @param userId 
+     *
+     * @param userId
      */
     async getUserDataById(userId: number) {
       const userData = await getUserDataById(userId);
@@ -143,9 +166,9 @@ const useUserStore = defineStore({
 
     /**
      * Idioma del usuario con el id especificado.
-     * 
-     * @param userId 
-     * @returns 
+     *
+     * @param userId
+     * @returns
      */
     async getUserLanguageById(userId: number) {
       const userConfig = await getUserConfigurationByUserId(userId);
@@ -155,10 +178,16 @@ const useUserStore = defineStore({
 
     /**
      * Actualizar los datos del usuario
-     * @returns 
+     * @returns
      */
     async updateUserProfile() {
-      const updatedUserData = await updateUserData(this.id, this.name, this.surname, this.email, this.phone);
+      const updatedUserData = await updateUserData(
+        this.id,
+        this.name,
+        this.surname,
+        this.email,
+        this.phone
+      );
       this.name = updatedUserData.name;
       this.surname = updatedUserData.surname;
       this.email = updatedUserData.email;
@@ -182,14 +211,14 @@ const useUserStore = defineStore({
 
     /**
      * Listado de todos los alojamientos del usuario con el id especificado.
-     * 
-     * @param userId 
-     * @returns 
+     *
+     * @param userId
+     * @returns
      */
     async getAllAccomodationsByUserdId(userId: number) {
       return await getAllUserAccomodations(userId);
-    }
-  }
+    },
+  },
 });
 
 export { useUserStore };

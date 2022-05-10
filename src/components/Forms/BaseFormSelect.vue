@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { useAccomodationStore } from "@/store/accomodation";
 
 const accomodationStore = useAccomodationStore();
@@ -9,10 +9,8 @@ const props = defineProps({
     default: "",
   },
   options: {
-    type: String,
-    default: () => {
-      [];
-    },
+    type: Array,
+    default: () => [],
   },
   selectId: {
     type: String,
@@ -22,7 +20,10 @@ const props = defineProps({
 
 const emit = defineEmits(["handleChange"]);
 
-function updateInputValue(value: string) {
+/**
+ * Envia al emit la opción de categoría seleccionada.
+ */
+function updateInputValue(value) {
   const selectedOption = props.options
     .filter((opt) => opt.accomodationCategory === value)
     .shift();
@@ -36,7 +37,7 @@ function updateInputValue(value: string) {
     <select
       name="accomodation-edit-category"
       :id="selectId"
-      @change="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
+      @change="(e) => updateInputValue(e.target.value)"
     >
       <option
         v-for="opt in options"

@@ -3,7 +3,12 @@ import type { Accomodation } from '../accomodation/accomodation.model';
 
 export interface Booking {
   id: number;
-  userHost: User;
+  userHost: {
+    id: number;
+    name: string;
+    surname: string;
+    profileImage: string;
+  };
   accomodation: Accomodation;
   checkInDate: Date;
   checkOutDate: Date;

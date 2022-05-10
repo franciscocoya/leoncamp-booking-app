@@ -1,8 +1,7 @@
 import type { PromoCode } from '@/models/promoCode/promoCode.model';
 import type { Coordinate } from '@/models/accomodation/coordinates.model';
 import type { AccomodationReview } from '@/models/accomodation/accomodationReview.model';
-import type { AccomodationImage } from '../models/accomodation/accomodation-image.model';
-
+import type { AccomodationImage } from '@/models/accomodation/accomodation-image.model';
 
 export interface Accomodation {
   registerNumber: string;

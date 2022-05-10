@@ -32,7 +32,7 @@ const apiJwtToken: string = JSON.parse(
  * Lista todos los alojamientos disponibles.
  */
 export const getAllAccomodations = async () => {
-  const { data } = await axios
+  const { data } = (await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/all`, {
       params: {
         page: 0,
@@ -42,7 +42,7 @@ export const getAllAccomodations = async () => {
         Authorization: `Bearer ${apiJwtToken}`,
       },
     })
-    .catch((err) => handleError(err));
+    .catch((err) => handleError(err))) as any;
 
   return data.content;
 };
@@ -73,13 +73,13 @@ export async function getAccomodationByRegNumber(regNumber: string) {
  * Listado de todos los alojamientos publicados por un usuario.
  */
 export async function getAllUserAccomodations(idUser: number) {
-  const { data } = await axios
+  const { data } = (await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/user/${idUser}`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
       },
     })
-    .catch((err) => handleError(err));
+    .catch((err) => handleError(err))) as any;
 
   return data;
 }
@@ -228,15 +228,15 @@ export async function getAllAvailableRules() {
 /**
  * Listado de todas las ciudades
  */
-export async function getAllCities() {
+export async function getAllCities(): Promise<string[]> {
   const accomodations = await getAllAccomodations();
   return [
     ...new Set(
       accomodations.map(
-        (accomodation) => accomodation.idAccomodationLocation.city
+        (accomodation: any) => accomodation.idAccomodationLocation.city
       )
     ),
-  ];
+  ] as string[];
 }
 
 // ---------------------------------------------------------------
@@ -254,7 +254,7 @@ export async function addNewImageToAccomodation(
   regNumber: string,
   imgUrl: string
 ) {
-  const { data } = await axios
+  const { data } = (await axios
     .post(
       `${baseUri}${ACCOMODATIONS_BASE_PATH}/${regNumber}/images/new`,
       {
@@ -266,7 +266,7 @@ export async function addNewImageToAccomodation(
         },
       }
     )
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))) as any;
 
   return data;
 }
@@ -304,7 +304,7 @@ export async function deleteImageFromAccomodation(
  *
  * @param accomodationData
  */
-export async function updateAccomodationData(accomodationData: Accomodation) {
+export async function updateAccomodationData(accomodationData: any) {
   const accData = new FormData();
 
   const {
@@ -316,6 +316,15 @@ export async function updateAccomodationData(accomodationData: Accomodation) {
     numOfBedRooms,
     pricePerNight,
     area,
+  }: {
+    registerNumber: string;
+    description: string;
+    numOfBeds: string;
+    numOfBathRooms: string;
+    numOfGuests: string;
+    numOfBedRooms: string;
+    pricePerNight: string;
+    area: string;
   } = accomodationData;
 
   accData.append('description', description);

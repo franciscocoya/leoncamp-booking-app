@@ -2,8 +2,10 @@ import { defineStore } from 'pinia';
 
 import type { Booking } from '@/models/booking/booking.model';
 
+import type { Accomodation } from '@/models/accomodation/accomodation.model';
+
 // Servicio
-import {getBookingDataByBookingId} from '@/services/booking/BookingService';
+import { getBookingDataByBookingId } from '@/services/booking/BookingService';
 
 const useBookingStore = defineStore({
   id: 'booking',
@@ -15,37 +17,7 @@ const useBookingStore = defineStore({
       surname: '',
       profileImage: '',
     },
-    accomodation: {
-      registerNumber: '',
-      numOfBeds: 0,
-      numOfBathRooms: 0,
-      numOfBedRooms: 0,
-      pricePerNight: 0,
-      numOfGuests: 0,
-      area: 0,
-      category: '',
-      accomodationLocation: {
-        coords: {
-          lat: 0,
-          lng: 0,
-        },
-        direction: '',
-        city: '',
-        zip: '',
-      },
-      accomodationImages: [],
-      accomodationRules: [],
-      accomodationServices: [],
-      promoCodes: [],
-      userHost: {
-        id: 0,
-        name: '',
-        surname: '',
-        profileImage: '',
-      },
-      stars: 0,
-      createdAt: new Date(),
-    },
+    accomodation: {} as Accomodation,
     checkInDate: new Date(),
     checkOutDate: new Date(),
     numOfGuests: 0,
@@ -56,23 +28,28 @@ const useBookingStore = defineStore({
     createdAt: new Date(),
   }),
 
-  actions : {
-
+  actions: {
     /**
      * Carga los datos de una reserva.
-     * @param bookingId 
+     * @param bookingId
      */
-    async loadBookingDataById(bookingId: string){
+    async loadBookingDataById(bookingId: string): Promise<void> {
       const bookingData = await getBookingDataByBookingId(bookingId);
-      const {id, name, surname, profileImage} = bookingData.idUser;
+      const {
+        id,
+        name,
+        surname,
+        profileImage,
+      }: { id: number; name: string; surname: string; profileImage: string } =
+        bookingData.idUser;
       this.userHost = {
         id,
         name,
         surname,
         profileImage,
       };
-    }
-  }
+    },
+  },
 });
 
 export { useBookingStore };

@@ -7,7 +7,7 @@ import AccomodationImagesGallery from "@/components/Accomodation/AccomodationIma
 import AccomodationServicesItem from "@/components/Accomodation/AccomodationServicesItem.vue";
 import AccomodationReviewsItem from "@/components/Accomodation/AccomodationReview/AccomodationReviewsItem.vue";
 // import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
-import AccountIcon from "@/components/Icons/Account/AccountIcon.vue";
+import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 
 // Utils
 import {
@@ -93,7 +93,11 @@ onMounted(async () => {
           </h1>
 
           <AccomodationImagesGallery
-            :images="accomodationStore.accomodationImages.map(img => img.accomodationAccImageId.idAccomodationImage)"
+            :images="
+              accomodationStore.accomodationImages.map(
+                (img) => img.accomodationAccImageId.idAccomodationImage
+              )
+            "
             :regNumber="accomodationStore.registerNumber"
           />
         </section>

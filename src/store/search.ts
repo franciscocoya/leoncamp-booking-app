@@ -4,26 +4,33 @@ import { defineStore } from 'pinia';
 import { getCitiesMatchWithSearchWord } from '@/services/search/searchService';
 
 const useSearchStore = defineStore({
-    id: 'search',
-    state: () => ({
-        searchResults: [],
-        searchQuery: '',
-    }),
+  id: 'search',
+  state: () => ({
+    searchResults: [],
+    searchQuery: '',
+  }),
 
-    actions: {
-        async setSearchResults(searchWord: string[]) {
-            const results = await getCitiesMatchWithSearchWord(searchWord);
-            this.searchResults = this.searchQuery && results ? results : [];
-        },
+  actions: {
+    /**
+     * Obtiene las ciudades que contienen el término de búsqueda.
+     *
+     * @param searchWord
+     */
+    async setSearchResults(searchWord: string): Promise<void> {
+      const results: any = await getCitiesMatchWithSearchWord(searchWord);
+      if (this.searchQuery && results.length > 0) {
+        this.searchResults = results;
+      }
+    },
 
-        getSearchResults() {
-            return this.searchResults;
-        },
+    getSearchResults(): string[] {
+      return this.searchResults;
+    },
 
-        setSearchWord(searchWord: string) {
-            this.searchQuery = searchWord;
-        },
-    }
+    setSearchWord(searchWord: string): void {
+      this.searchQuery = searchWord;
+    },
+  },
 });
 
 export { useSearchStore };

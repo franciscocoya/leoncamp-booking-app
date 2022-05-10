@@ -3,7 +3,8 @@ import { accomodationServices } from '@/helpers/accomodationServicesIcons';
 /**
  * Obtención del token de usuario
  */
-const getUserToken = () => sessionStorage.getItem('user')?.token;
+const getUserToken = () =>
+  JSON.parse(sessionStorage.getItem('user') || '{}')?.token;
 
 const months = [
   'enero',
@@ -28,8 +29,8 @@ const months = [
  * @returns
  */
 const formatArrayAsDate = (dateArr: number[]): string => {
-  if(!dateArr || dateArr.length == 0){
-    return null;
+  if (!dateArr || dateArr.length == 0) {
+    return '';
   }
   const day = dateArr[2] < 10 ? `0${dateArr[2]}` : dateArr[2];
   const month = dateArr[1] < 10 ? `0${dateArr[1]}` : dateArr[1];
@@ -39,9 +40,9 @@ const formatArrayAsDate = (dateArr: number[]): string => {
 
 /**
  * Convierte una fecha en formato array [yyyy, mm, dd] a una fecha en formato Date [dd/mm/yyyy]
- * 
- * @param dateArr 
- * @returns 
+ *
+ * @param dateArr
+ * @returns
  */
 const convertArrayToDate = (dateArr: number[]): Date => {
   return new Date(dateArr[0], dateArr[1], dateArr[2]);
@@ -53,12 +54,12 @@ const convertArrayToDate = (dateArr: number[]): Date => {
  */
 const convertImageToBase64 = async (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+    let reader: FileReader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
   });
-}
+};
 
 /*
  * Devuelve el mes en formato texto.
@@ -75,7 +76,7 @@ el formato dd de MMMM . Por ejemplo, octubre de 2020
  * @param date
  * @returns
  */
-const formatArrayAsSimpleStringDate = (date: number[]): string => {
+const formatArrayAsSimpleStringDate = (date: number[]): string | null => {
   return date ? getMonthNameByNumber(date[1]) + ' de ' + date[0] : null;
 };
 
@@ -86,15 +87,16 @@ const formatArrayAsSimpleStringDate = (date: number[]): string => {
  * @returns
  */
 const getAccomodationServiceImageById = (id: number): string => {
-  return accomodationServices.find((service) => service.id === id)?.icon;
+  return accomodationServices.find((service) => (service.id as number) === id)
+    ?.icon as string;
 };
 
 /**
  * Recibe un texto y devuelve el texto con el número de palabras pasado como parámetro.
- * 
- * @param text 
- * @param wordCount 
- * @returns 
+ *
+ * @param text
+ * @param wordCount
+ * @returns
  */
 const cropTextByWordCount = (text: string, wordCount: number): string => {
   const words = text.split(' ');
@@ -111,5 +113,5 @@ export {
   convertImageToBase64,
   getAccomodationServiceImageById,
   formatArrayAsSimpleStringDate,
-  cropTextByWordCount
+  cropTextByWordCount,
 };
