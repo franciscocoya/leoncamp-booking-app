@@ -1,9 +1,14 @@
 <script setup>
-import { onMounted  } from "vue";
+import { onMounted } from "vue";
 import mapboxgl from "mapbox-gl";
+
+// Store
+import {useAccomodationStore} from "@/store/accomodation";
 
 // Iconos
 import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
+
+const accomodationStore = useAccomodationStore();
 
 // Componentes
 // import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
@@ -11,19 +16,23 @@ import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
 const props = defineProps({
   lat: {
     type: Number,
-    required: true
+    required: true,
   },
   lng: {
     type: Number,
-    required: true
+    required: true,
   },
   mapWidth: {
-    type: Number,
-    default: 600,
+    type: String,
+    default: "100%",
   },
   mapHeight: {
-    type: Number,
-    default: 400,
+    type: String,
+    default: "100%",
+  },
+  isMarkerDraggable: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -33,13 +42,12 @@ onMounted(() => {
     container: "map", // container ID
     style: "mapbox://styles/mapbox/streets-v11", // style URL
     // starting position [lng, lat]
-    center: [
-      props.lng,
-      props.lat,
-    ],
+    center: [props.lng, props.lat],
     minzoom: 1.3,
     zoom: 14, // starting zoom
   });
+
+  // https://docs.mapbox.com/mapbox-gl-js/example/drag-a-point/
 
   // Marcador
   const myMark = document.createElement("div");
@@ -52,26 +60,37 @@ onMounted(() => {
   myMark.style.width = "50px";
   myMark.style.height = "50px";
 
-  new mapboxgl.Marker(myMark)
-    .setLngLat([
-      props.lng,
-      props.lat,
-    ])
-    .addTo(map);
+  const marker = new mapboxgl.Marker(myMark, {
+    draggable: props.isMarkerDraggable
+  }).setLngLat([props.lng, props.lat]).addTo(map);
+
+  marker.on('dragend', onDragEnd);
+
+  function onDragEnd() {
+    const lngLat = marker.getLngLat();
+    accomodationStore.accomodationLocation.coords.lat = lngLat.lat;
+    accomodationStore.accomodationLocation.coords.lng = lngLat.lng;
+  }
 });
+
 </script>
 
 <template>
-  <div>
-    <div id="map" :style="`width: ${mapWidth}; height: ${mapHeight}`" v-once></div>
+  <div class="map-container">
+    <div id="map" :style="`width: ${mapWidth}; height: ${mapHeight}`"></div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_variables.scss";
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
 #map {
   width: 100%;
-  height: 450px;
+  height: 100%;
   border-radius: $global-border-radius;
 }
 </style>
