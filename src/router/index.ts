@@ -1,5 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+import {
+  USER_SIGNIN_ROUTE,
+  USER_SIGNUP_ROUTE,
+  RESET_PASSWORD_ROUTE,
+  SAVED_ACCOMODATIONS_ROUTE,
+  UPLOAD_ACCOMODATION_ROUTE,
+  HELP_ROUTE,
+  ERROR_401_ROUTE,
+  ERROR_404_ROUTE,
+  ERROR_500_ROUTE,
+  ERROR_503_ROUTE,
+
+  UPLOAD_ACCOMODATION_BASIC_DATA,
+  UPLOAD_ACCOMODATION_LOCATION,
+} from '@/helpers/appRoutes';
+
 // Rutas públicas
 const authRoutes: string[] = ['/signin', '/signup', '/password/reset'];
 const publicRoutes: string[] = [...authRoutes, '/'];
@@ -11,19 +27,19 @@ const router = createRouter({
   routes: [
     {
       // Inicio de sesión
-      path: '/signin',
+      path: USER_SIGNIN_ROUTE,
       name: 'signin',
       component: () => import('@/views/Auth/LoginView.vue'),
     },
     {
       // Registro
-      path: '/signup',
+      path: USER_SIGNUP_ROUTE,
       name: 'signup',
       component: () => import('@/views/Auth/RegisterView.vue'),
     },
     {
       // Restablecer contraseña
-      path: '/password/reset',
+      path: RESET_PASSWORD_ROUTE,
       name: 'reset-password',
       component: () => import('@/views/Auth/ForgotPasswordView.vue'),
     },
@@ -35,7 +51,7 @@ const router = createRouter({
     },
     {
       // Alojamientos guardados por el usuario en sesión
-      path: '/saved',
+      path: SAVED_ACCOMODATIONS_ROUTE,
       name: 'saved',
       component: () => import('@/views/SavedAccomodations/SavedAccomodationsView.vue'),
     },
@@ -76,6 +92,31 @@ const router = createRouter({
       ],
     },
     {
+      // Publicación de un alojamiento
+      path: `/account/:username${UPLOAD_ACCOMODATION_ROUTE}`,
+      name: 'account-accomodation-upload',
+      redirect: () => {
+        return {
+          name: 'accomodation-upload-basic-data',
+        }
+      },
+      component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadView.vue'),
+      children: [
+        {
+          // Subida alojamiento - Paso 1: Datos básicos
+          path: UPLOAD_ACCOMODATION_BASIC_DATA,
+          name: 'accomodation-upload-basic-data',
+          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadBasicDataView.vue'),
+        },
+        {
+          // Subida alojamiento - Paso 2: Ubicación
+          path: UPLOAD_ACCOMODATION_LOCATION,
+          name: 'accomodation-upload-location',
+          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadLocationView.vue'),
+        }
+      ],
+    },
+    {
       // Detalle de la reserva de un alojamiento
       path: '/bookings/:bookingId',
       name: 'booking-detail',
@@ -96,31 +137,31 @@ const router = createRouter({
     },
     {
       // Ayuda de la aplicacion
-      path: '/help',
+      path: HELP_ROUTE,
       name: 'app-help',
       component: () => import('@/views/Help/HelpView.vue'),
     },
     {
       // Ruta para la página de error 404
-      path: '/401',
+      path: ERROR_401_ROUTE,
       name: 'error-401',
       component: () => import('@/views/Error/401View.vue'),
     },
     {
       // Ruta para la página de error 404
-      path: '/404',
+      path: ERROR_404_ROUTE,
       name: 'error-404',
       component: () => import('@/views/Error/404View.vue'),
     },
     {
       // Ruta para la página de error 500
-      path: '/500',
+      path: ERROR_500_ROUTE,
       name: 'error-500',
       component: () => import('@/views/Error/500View.vue'),
     },
     {
       // Ruta para la página de error 503
-      path: '/503',
+      path: ERROR_503_ROUTE,
       name: 'error-503',
       component: () => import('@/views/Error/503View.vue'),
     },

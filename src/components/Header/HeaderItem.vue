@@ -36,7 +36,9 @@ const hideSearchResults = () => {
 };
 
 onMounted(() => {
-  userStore.loadUserData(userData.id);
+  if(userData.id){
+    userStore.loadUserData(userData.id);
+  }
 });
 </script>
 

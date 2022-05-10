@@ -1,10 +1,20 @@
 <script setup>
+import {ref} from "vue";
 import { useRouter } from "vue-router";
+
+// Store
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
+
+// Rutas
+import {USER_SIGNIN_ROUTE} from '@/helpers/appRoutes'
+
+// Validacion formularios
+import { checkFieldNotBlank, checkValidEmail } from "@/helpers/formValidator";
 
 // Store
 const userStore = useUserStore();
@@ -18,11 +28,12 @@ defineProps({
   },
 });
 
+const showErrors = ref(false);
+
 /**
  * Manejador del evento submit del formulario.
  */
-const handleRegister = (e) => {
-  e.preventDefault();
+const handleRegister = () => {
   userStore.signUp();
 };
 </script>
@@ -94,7 +105,7 @@ const handleRegister = (e) => {
       <BaseButton
         text="Iniciar sesión"
         buttonStyle="baseButton-secondary--outlined"
-        @click="router.push('/signin')"
+        @click="router.push(USER_SIGNIN_ROUTE)"
       />
     </form>
   </div>
@@ -130,6 +141,5 @@ const handleRegister = (e) => {
     height: auto;
   }
 }
-
 
 </style>

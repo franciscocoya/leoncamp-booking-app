@@ -12,7 +12,6 @@ import { getUserDataById, updateUserData, getUserConfigurationByUserId } from '@
 // Servicio de alojamientos 
 import { getAllUserAccomodations } from '@/services/accomodation/AccomodationService';
 
-
 const useUserStore = defineStore({
   id: 'user',
   state: (): User => ({
@@ -58,20 +57,26 @@ const useUserStore = defineStore({
     /**
      * Realiza el login de la aplicación con los datos de email y password.
      */
-    login() {
-      login(this.email, this.password, (err: Error) => {
-        console.clear();
-        console.log(`Se produjo un error al iniciar sesión: ${err}`);
+    async login() {
+      let loginError = '';
+      await login(this.email, this.password, (err: string) => {
+        loginError = err;
       });
+
+      return loginError;
     },
 
     /**
      * Realiza el registro de la aplicación con los datos del formulario.
      */
     signUp() {
-      signUp(this.name, this.surname, this.email, this.password, this.repeatedPassword || '', (err: Error) => {
-        console.error(err);
+      let signUpError = '';
+
+      signUp(this.name, this.surname, this.email, this.password, this.repeatedPassword || '', (err: string) => {
+        signUpError = err;
       });
+
+      return signUpError;
     },
 
     logout() {
@@ -97,27 +102,32 @@ const useUserStore = defineStore({
      */
     async loadUserData() {
       // Nombre y apellidos previamente obtenidos en el login.
-      this.id = JSON.parse(sessionStorage.getItem('user') || '{}').id;
-      this.name = JSON.parse(sessionStorage.getItem('data') || '{}').name;
-      this.surname = JSON.parse(sessionStorage.getItem('data') || '{}').surname;
-      this.email = JSON.parse(sessionStorage.getItem('user') || '{}').email;
+      if (JSON.parse(sessionStorage.getItem('data') || '{}')) {
+        const { id, email } = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const { name, surname} = JSON.parse(sessionStorage.getItem('data') || '{}');
 
-      const userData = await getUserDataById(JSON.parse(sessionStorage.getItem('user') || '{}').id);
-      if (userData.profileImage) {
-        this.profileImage = await decodeURI(userData.profileImage);
-      }
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
 
-      // Si el usuario es host, se mostrarán los siguientes datos.
-      const { dni, bio, direction, emailVerified, dniVerified, phoneVerified, verified } = userData;
+        const userData = await getUserDataById(id);
+        if (userData.profileImage) {
+          this.profileImage = await decodeURI(userData.profileImage);
+        }
 
-      this.datosHost = {
-        dni,
-        bio,
-        direction,
-        emailVerified,
-        dniVerified,
-        phoneVerified,
-        verified
+        // Si el usuario es host, se mostrarán los siguientes datos.
+        const { dni, bio, direction, emailVerified, dniVerified, phoneVerified, verified } = userData;
+
+        this.datosHost = {
+          dni,
+          bio,
+          direction,
+          emailVerified,
+          dniVerified,
+          phoneVerified,
+          verified
+        }
       }
     },
 

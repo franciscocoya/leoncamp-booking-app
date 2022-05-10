@@ -1,13 +1,24 @@
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
+import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // Store
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
+
+// Routes
+import { USER_SIGNUP_ROUTE } from "@/helpers/appRoutes";
+
+// Validacion formularios
+import { checkFieldNotBlank, checkValidEmail } from "@/helpers/formValidator";
+
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -19,10 +30,48 @@ defineProps({
 });
 
 /**
+ * Realizar las comprobaciones del formulario
+ */
+const formCheck = () => {
+  let isValid = true;
+  // Comprobar que los campos no estén vacíos
+  if (!checkFieldNotBlank(userStore.email)) {
+    authStore.errors.push("El email es obligatorio");
+    isValid = false;
+  }
+
+  if (!checkFieldNotBlank(userStore.password)) {
+    authStore.errors.push("La contraseña es obligatoria");
+    isValid = false;
+  }
+
+  if (!checkValidEmail(userStore.email)) {
+    authStore.errors.push("El email no es válido");
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const showErrors = ref(false);
+
+/**
  * Manejador del evento submit del formulario.
  */
-const handleLogin = () => {
-  userStore.login();
+const handleLogin = async () => {
+  if (formCheck()) {
+    const err = await userStore.login();
+    if (err !== null) {
+      authStore.errors.push(err);
+    }
+  }
+  showErrors.value = true;
+
+  // Cerrar automáticamente los mensajes de error transcurridos 6 segundos.
+  setTimeout(() => {
+    showErrors.value = false;
+    authStore.errors = [];
+  }, 6000);
 };
 </script>
 
@@ -48,7 +97,18 @@ const handleLogin = () => {
           @handleInput="(value) => (userStore.password = value)"
         />
       </div>
-      <RouterLink to="/password/reset">He olvidado mi contraseña</RouterLink>
+      <Transition name="slide-fade">
+        <div v-if="showErrors == true">
+          <BaseMessageItem
+            v-for="(err, index) in authStore.errors"
+            :key="index"
+            :msg="err"
+            msgType="error"
+            :autoClose="true"
+          />
+        </div>
+      </Transition>
+      <!-- <RouterLink to="/password/reset">He olvidado mi contraseña</RouterLink> -->
       <BaseButton
         text="Iniciar sesión"
         buttonStyle="baseButton-primary--filled"
@@ -57,7 +117,7 @@ const handleLogin = () => {
       <BaseButton
         text="Crear una cuenta"
         buttonStyle="baseButton-secondary--outlined"
-        @click="router.push('/signup')"
+        @click="router.push(USER_SIGNUP_ROUTE)"
       />
     </form>
   </div>
@@ -96,9 +156,8 @@ hr {
 // -- Responsive design
 // ------------------------------------------------------------
 @media (max-width: $breakpoint-sm) {
-  .login-form{
+  .login-form {
     height: auto;
   }
 }
-
 </style>

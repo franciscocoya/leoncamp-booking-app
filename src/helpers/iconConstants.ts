@@ -36,6 +36,11 @@ const IMG_PROFILE_PLACEHOLDER = `${IMG_PATH}icons/profile-image-empty.png`;
 const IMG_NOT_FOUND_PLACEHOLDER = `${IMG_PATH}image-placeholder.jpg`;
 const IMG_APP_LOGO = `${IMG_PATH}logo.png`;
 
+/**
+ * Imágenes pasos subida alojamiento.
+ */
+const IMG_UPLOAD_ACCOMODATION_STEP_1 = `${IMG_PATH}image-placeholder.jpg`;
+
 export {
   ICON_CALENDAR,
   ICON_BOOKMARK,
@@ -65,5 +70,8 @@ export {
 
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
-  IMG_NOT_FOUND_PLACEHOLDER
+  IMG_NOT_FOUND_PLACEHOLDER,
+
+
+  IMG_UPLOAD_ACCOMODATION_STEP_1
 };
