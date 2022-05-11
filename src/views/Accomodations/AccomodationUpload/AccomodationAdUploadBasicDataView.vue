@@ -1,4 +1,6 @@
 <script setup>
+import { onMounted, ref } from "vue";
+
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
@@ -6,12 +8,23 @@ import BaseFormTextArea from "@/components/Forms/BaseFormTextArea.vue";
 import BaseFormSelect from "@/components/Forms/BaseFormSelect.vue";
 
 // Store
-import { useAccomodationStore } from "@/store/accomodation";
+import { getAllAccomodationCategories } from "@/services/accomodation/AccomodationCategoryService";
 
+import { useAccomodationStore } from "@/store/accomodation";
 // Imágenes
-import { IMG_UPLOAD_ACCOMODATION_STEP_1 } from "@/helpers/iconConstants";
+import {
+  IMG_UPLOAD_ACCOMODATION_STEP_1_A,
+  IMG_UPLOAD_ACCOMODATION_STEP_1_B,
+} from "@/helpers/iconConstants";
 
 const accomodationStore = useAccomodationStore();
+
+const allAvailableAccomodationCategories = ref([]);
+
+onMounted(async () => {
+  allAvailableAccomodationCategories.value =
+    await getAllAccomodationCategories();
+});
 </script>
 
 <template>
@@ -41,6 +54,8 @@ const accomodationStore = useAccomodationStore();
             inputLabel="Categoría"
             inputTitle="Selecciona una de las opciones disponibles"
             :inputValue="accomodationStore.category"
+            :options="allAvailableAccomodationCategories"
+            @handleChange="(value) => (accomodationStore.category = value)"
           />
 
           <!-- Superficie -->
@@ -58,8 +73,8 @@ const accomodationStore = useAccomodationStore();
           <LabelFormInput
             inputLabel="Camas"
             inputType="number"
-            :inputValue="accomodationStore.beds"
-            @handleInput="(value) => (accomodationStore.beds = value)"
+            :inputValue="accomodationStore.numOfBeds"
+            @handleInput="(value) => (accomodationStore.numOfBeds = value)"
           />
 
           <!-- Baños -->
@@ -100,7 +115,8 @@ const accomodationStore = useAccomodationStore();
         </div>
       </div>
       <div>
-        <img :src="IMG_UPLOAD_ACCOMODATION_STEP_1" alt="" />
+        <img :src="IMG_UPLOAD_ACCOMODATION_STEP_1_A" alt="" />
+        <img :src="IMG_UPLOAD_ACCOMODATION_STEP_1_B" alt="" />
       </div>
     </div>
   </div>
@@ -116,20 +132,19 @@ const accomodationStore = useAccomodationStore();
   & > .accomodation-upload-basic-data__wrapper {
     @include flex-row;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 30px;
 
     // Estilos columna izquierda - formulario
     & > div:first-child {
       @include flex-column;
-      gap: 10px;
-      width: 50%;
+      gap: 40px;
+      flex: 1;
 
-      & > te
-
-// Estilos fila categoria, superficie
+      // Estilos fila categoria, superficie
       & > .accomodation-upload-basic-data_wrapper__row3 {
-        @include flex-row;
-        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
       }
       // Estilso ficha camas, habitaciones, baños
       & > .accomodation-upload-basic-data_wrapper__row4 {
@@ -147,10 +162,37 @@ const accomodationStore = useAccomodationStore();
 
     // Estilos columna derecha - imagen decorativa
     & > div:last-child {
-      @include flex-row-center;
+      @include flex-row;
+      flex-wrap: wrap;
+      position: relative;
+      flex: 0 40%;
       & > img {
-        width: 500px;
+        width: 350px;
         border-radius: $global-border-radius;
+
+        &:first-child {
+          z-index: $z-index-2;
+        }
+        &:last-child {
+          position: absolute;
+          left: 175px;
+          top: 75px;
+          box-shadow: $global-box-shadow;
+          z-index: $z-index-1;
+        }
+      }
+    }
+  }
+}
+
+// ------------------------------------------------------------
+// -- Responsive design
+// ------------------------------------------------------------
+@media (max-width: $breakpoint-md) {
+  .accomodation-upload-basic-data-view {
+    & > .accomodation-upload-basic-data__wrapper {
+      & > div:last-child {
+        display: none;
       }
     }
   }

@@ -69,7 +69,7 @@ const handleCheckBoxChange = (e) => {
   gap: 20px;
   align-items: center;
   width: max-content;
-  height: 20px;
+  height: 50px;
   padding: 10px;
   border: 1px solid $color-dark;
   border-radius: $global-border-radius;

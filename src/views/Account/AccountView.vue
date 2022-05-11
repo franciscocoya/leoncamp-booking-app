@@ -39,7 +39,7 @@ const isMobile = window.innerWidth < 768;
   @include flex-row;
   justify-content: center;
   gap: 50px;
-  margin-top: 20px;
+  margin: 40px 20px;
 }
 
 /*

@@ -40,7 +40,8 @@ const IMG_APP_LOGO = `${IMG_PATH}logo.png`;
 /**
  * Imágenes pasos subida alojamiento.
  */
-const IMG_UPLOAD_ACCOMODATION_STEP_1 = `${IMG_PATH}image-placeholder.jpg`;
+const IMG_UPLOAD_ACCOMODATION_STEP_1_A = `${IMG_PATH}accomodation_upload_basic_data_1.jpg`;
+const IMG_UPLOAD_ACCOMODATION_STEP_1_B = `${IMG_PATH}accomodation_upload_basic_data_2.jpg`;
 
 export {
   ICON_CALENDAR,
@@ -61,7 +62,6 @@ export {
   ICON_ADD_SECONDARY,
   ICON_HOME,
   ICON_INFO,
-  
   // Iconos menú mobile
   ICON_MENU_HOME,
   ICON_MENU_BOOKMARK_OUTLINE,
@@ -72,5 +72,6 @@ export {
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
   IMG_NOT_FOUND_PLACEHOLDER,
-  IMG_UPLOAD_ACCOMODATION_STEP_1,
+  IMG_UPLOAD_ACCOMODATION_STEP_1_A,
+  IMG_UPLOAD_ACCOMODATION_STEP_1_B,
 };

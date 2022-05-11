@@ -76,7 +76,7 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="login-form">
+  <div class="login-form-container">
     <h1>{{ title }}</h1>
 
     <form id="form-login">
@@ -113,11 +113,13 @@ const handleLogin = async () => {
         text="Iniciar sesión"
         buttonStyle="baseButton-primary--filled"
         @click="handleLogin"
+        :fullWidth="true"
       />
       <BaseButton
         text="Crear una cuenta"
         buttonStyle="baseButton-secondary--outlined"
         @click="router.push(USER_SIGNUP_ROUTE)"
+        :fullWidth="true"
       />
     </form>
   </div>
@@ -127,13 +129,11 @@ const handleLogin = async () => {
 @import "@/assets/scss/_variables.scss";
 @import "@/assets/scss/_mixins.scss";
 
-.login-form {
+.login-form-container {
   @include flex-column-center;
-  @include full-width;
 
   & > h1 {
-    color: $color-dark;
-    font-size: $heading-2-fontSize;
+    font-weight: 400;
   }
 }
 
@@ -145,6 +145,10 @@ const handleLogin = async () => {
   //border: 2px solid $color-tertiary-light;
   padding: 20px;
   border-radius: $global-border-radius;
+
+  & > div {
+    width: 100%;
+  }
 }
 
 hr {

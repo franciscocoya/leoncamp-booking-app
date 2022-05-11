@@ -34,7 +34,7 @@ function updateInputValue(value: string) {
 </script>
 
 <template>
-  <div>
+  <div class="input-container">
     <input
       :type="inputType"
       :id="inputId"
@@ -49,4 +49,10 @@ function updateInputValue(value: string) {
 </template>
 
 <style lang="scss" scoped>
+.input-container {
+  width: 100%;
+  & > input {
+    width: 100%;
+  }
+}
 </style>

@@ -3,7 +3,7 @@
 import { getAccomodationServiceImageById } from "@/helpers/utils";
 
 // Iconos
-import {ICON_CLOSE} from '@/helpers/iconConstants'
+import { ICON_CLOSE } from "@/helpers/iconConstants";
 
 const props = defineProps({
   services: {
@@ -21,7 +21,6 @@ const emit = defineEmits(["close-modal"]);
 const closeModal = () => {
   emit("close-modal");
 };
-
 </script>
 
 <template>
@@ -34,12 +33,15 @@ const closeModal = () => {
         title="Cerrar la ventana"
         @click="closeModal"
       /> -->
-      <img :src="ICON_CLOSE" alt="" @click.prevent="closeModal" class="close-modal-button">
+      <img
+        :src="ICON_CLOSE"
+        alt=""
+        @click.prevent="closeModal"
+        class="close-modal-button"
+      />
       <h2>Servicios del alojamiento</h2>
       <ul>
-        <li
-          v-for="(service, index) in props.services" :key="index"
-        >
+        <li v-for="(service, index) in props.services" :key="index">
           <img
             :src="
               getAccomodationServiceImageById(
@@ -78,7 +80,7 @@ const closeModal = () => {
   position: relative;
 
   & > .close-modal-button {
-    width: 15px;
+    width: 40px;
     height: auto;
     background-color: $color-tertiary-light;
     border-radius: 100%;
@@ -90,8 +92,8 @@ const closeModal = () => {
     cursor: pointer;
   }
 
-  & > h2{
-      color: $color-dark;
+  & > h2 {
+    color: $color-dark;
   }
 }
 

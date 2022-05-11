@@ -12,12 +12,12 @@
   border: none;
   border-radius: $global-border-radius;
   padding: 10px 5px 0px 5px;
-  height: 30px;
+  height: 50px;
 }
 
 .base-input {
   @include base-input;
-  height: 30px;
+  height: 50px;
   width: fit-content;
   background-color: #ffffff;
   color: $color-dark;

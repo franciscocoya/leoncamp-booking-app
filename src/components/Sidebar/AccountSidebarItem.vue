@@ -111,9 +111,7 @@ onMounted(() => {
           Anuncios
         </li>
         <li id="app-help" @click.prevent="router.push('/help')">Ayuda</li>
-        <li v-if="userStore.datosHost == null">
-          Actualizar plan
-        </li>
+        <li v-if="userStore.datosHost == null">Actualizar plan</li>
         <li id="user-logout" @click="userStore.logout()">Cerrar sesión</li>
       </ul>
     </div>
@@ -129,7 +127,7 @@ onMounted(() => {
   @include flex-column;
   align-items: center;
   gap: 40px;
-  min-width: 250px;
+  min-width: 300px;
   max-width: 15%;
   padding: 50px 30px;
   border: 1px solid $color-tertiary-dark;

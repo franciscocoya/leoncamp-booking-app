@@ -14,10 +14,15 @@ import type { Accomodation } from '@/models/accomodation/accomodation.model';
 // Rutas alojamientos API: /api/accomodations
 import { ACCOMODATIONS_BASE_PATH } from './AccomodationsRoutesEnum';
 
+// Servicios
+import { addServiceToExistingAccomodation } from '@/services/accomodation/AccomodationServiceService';
+
+import { addRuleToExistingAccomodation } from '@/services/accomodation/AccomodationRuleService';
+
 import {
   API_ACCOMODATION_SERVICES,
   API_ACCOMODATION_RULES,
-  API_ACCOMODATION_LOCATIONS
+  API_ACCOMODATION_LOCATIONS,
 } from '@/helpers/apiRoutes';
 
 // Rutas de las reservas API: /api/bookings
@@ -30,8 +35,9 @@ const apiJwtToken: string = JSON.parse(
   sessionStorage?.getItem('user') || '{}'
 )?.token;
 
-export const addNewAccomodation = async (accomodationToAdd: Accomodation): Promise<any> => {
-
+export const addNewAccomodation = async (
+  accomodationToAdd: Accomodation
+): Promise<any> => {
   const {
     registerNumber,
     description,
@@ -62,19 +68,20 @@ export const addNewAccomodation = async (accomodationToAdd: Accomodation): Promi
       direction: string;
       city: string;
       zip: string;
-    },
+    };
     accomodationImages: any[];
     userHost: any;
     accomodationRules: any[];
     accomodationServices: any[];
   } = accomodationToAdd;
 
+  let newAccomodation;
   // Creación de la ubicaición del alojamiento
   let location = await axios({
     url: `${API_ACCOMODATION_LOCATIONS}/new`,
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${apiJwtToken}`
+      Authorization: `Bearer ${apiJwtToken}`,
     },
     data: {
       latitude: accomodationLocation.coords.lat,
@@ -82,63 +89,74 @@ export const addNewAccomodation = async (accomodationToAdd: Accomodation): Promi
       direction: accomodationLocation.direction,
       city: accomodationLocation.city,
       zip: accomodationLocation.zip,
-    }
-  }).catch(err => console.log(err));
+    },
+  }).catch((err) => console.log(err));
 
   // Creación del alojamiento
+  // TODO: Comprobaciones previas: Longitud campos para base de datos, checks en cliente y si hay en servidos, devolver mensaje e
+  // TODO: interrumpir operación.
   if (location) {
-    let newAccomodation = await axios(
-      {
-        url: `${baseUri}${ACCOMODATIONS_BASE_PATH}/new`,
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiJwtToken}`
+    newAccomodation = await axios({
+      url: `${baseUri}${ACCOMODATIONS_BASE_PATH}/new`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+      data: {
+        registerNumber,
+        description,
+        numOfBeds,
+        numOfBathRooms,
+        numOfBedRooms,
+        pricePerNight,
+        numOfGuests,
+        area,
+        idAccomodationCategory: category,
+        idAccomodationLocation: location.data,
+        idUserHost: {
+          id: userHost.id,
+          name: userHost.name,
+          surname: userHost.surname,
+          email: userHost.email,
+          phone: userHost.phone,
         },
-        data: {
-          registerNumber,
-          description,
-          numOfBeds,
-          numOfBathRooms,
-          numOfBedRooms,
-          pricePerNight,
-          numOfGuests,
-          area,
-          idAccomodationCategory: {
-            id: 5,
-            accomodationCategory: "Apartamento"
-          },
-          idAccomodationLocation: location.data,
-          idUserHost: {
-            id: userHost.id,
-            name: userHost.name,
-            surname: userHost.surname,
-            email: userHost.email,
-            phone: userHost.phone,
-          }
-        }
-      })
-    console.log(newAccomodation.data);
+      },
+    });
   }
 
-  Promise.all();
+  // Añadir las imágenes del alojamiento
+  
 
-  // Añadir servicios al alojamiento
+  if (newAccomodation) {
+    // Añadir servicios al alojamiento
+    accomodationServices.map(async (service) => {
+      await addServiceToExistingAccomodation(
+        newAccomodation.data.registerNumber,
+        service.idAccomodationService.id
+      );
+    });
 
-  // Añadir normas al alojamiento
-
+    // Añadir normas al alojamiento
+    accomodationRules.map(async (rule) => {
+      await addRuleToExistingAccomodation(
+        newAccomodation.data.registerNumber,
+        rule.idAccomodationRule.id
+      );
+    });
+  }
 };
 
 /**
  * Añade una nueva ubicación
- * @param accomodationLocation 
- * @returns 
+ * @param accomodationLocation
+ * @returns
  */
 const addNewLocation = async (accomodationLocation: any): Promise<any> => {
   return await axios({
     url: `${API_ACCOMODATION_LOCATIONS}/new`,
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${apiJwtToken}`
+      Authorization: `Bearer ${apiJwtToken}`,
     },
     data: {
       latitude: accomodationLocation.coords.lat,
@@ -146,10 +164,9 @@ const addNewLocation = async (accomodationLocation: any): Promise<any> => {
       direction: accomodationLocation.direction,
       city: accomodationLocation.city,
       zip: accomodationLocation.zip,
-    }
-  }).catch(err => console.log(err));
+    },
+  }).catch((err) => console.log(err));
 };
-
 
 /**
  * Lista todos los alojamientos disponibles.
@@ -480,33 +497,38 @@ export async function updateAccomodationData(accomodationData: any) {
 }
 
 /**
- * Obtiene la dirección (Dirección, ciudad / localidad, código postal) en base a las coordinadas pasadas 
+ * Obtiene la dirección (Dirección, ciudad / localidad, código postal) en base a las coordinadas pasadas
  * como parámetro.
- * 
- * @param coords 
- * 
+ *
+ * @param coords
+ *
  * @returns
  */
 export async function getAccomodationLocationByCoords(coords: Coordinate) {
   const MAX_RESULTS = 2;
   interface LocationResponse {
-    address: string,
-    city: string,
-    cp: number
+    address: string;
+    city: string;
+    cp: number;
   }
 
   let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
 
   const { data } = await axios.get(
-    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${import.meta.env.VITE_POSITION_STACK_API_TOKEN}&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`);
+    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${
+      import.meta.env.VITE_POSITION_STACK_API_TOKEN
+    }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
+  );
 
   console.log(data);
   // Se obtienen dos resultados, por si no se encuentra la dirección en las coordenadas especificadas
   let dataResponse = data.data[0] || data.data[1];
 
-  accomodationLocationToReturn.address = dataResponse.name ?? dataResponse.street;
+  accomodationLocationToReturn.address =
+    dataResponse.name ?? dataResponse.street;
   accomodationLocationToReturn.city = dataResponse.locality;
-  accomodationLocationToReturn.cp = dataResponse.postal_code ?? data.data[1].postal_code;
+  accomodationLocationToReturn.cp =
+    dataResponse.postal_code ?? data.data[1].postal_code;
 
   return accomodationLocationToReturn;
 }

@@ -72,7 +72,7 @@ function updateInputValue(value) {
     min-width: max-content;
     width: 100%;
     max-width: 100%;
-    height: 45px;
+    height: 50px;
     font-size: 14px;
     font-weight: 500;
     padding: 5px 0 0 5px;

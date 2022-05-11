@@ -13,16 +13,15 @@ const accomodationStore = useAccomodationStore();
  * Manejador del evento change de los checkbox de los servicios.
  */
 const handleServiceChipChange = (e, serviceToAdd) => {
+  let accomodationAccServiceId = {
+    idAccomodation: accomodationStore.registerNumber,
+    idAccomodationService: {
+      id: serviceToAdd.id,
+      denomination: serviceToAdd.denomination,
+    },
+  };
 
-    let accomodationAccServiceId = {
-        idAccomodation: accomodationStore.registerNumber,
-        idAccomodationService: {
-            id: serviceToAdd.id,
-            denomination: serviceToAdd.denomination,
-        }
-    };
-
-    e.target.checked 
+  e.target.checked
     ? accomodationStore.accomodationServices.push(accomodationAccServiceId)
     : accomodationStore.accomodationServices.shift(accomodationAccServiceId);
 };
@@ -47,12 +46,10 @@ onMounted(async () => {
         :serviceData="service"
         :showIcon="true"
         :isServiceEnabled="
-              accomodationStore.accomodationServices.some(
-                (serv) =>
-                  serv.idAccomodationService.id ===
-                  service.id
-              )
-            "
+          accomodationStore.accomodationServices.some(
+            (serv) => serv.idAccomodationService.id === service.id
+          )
+        "
         @handleCheckBoxChange="(e) => handleServiceChipChange(e, service)"
       />
     </div>
@@ -62,11 +59,11 @@ onMounted(async () => {
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
 
-.accomodation-ad-upload-services-view{
-    & > .accomodation-ad-upload-services__wrapper{
-        @include flex-row;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
+.accomodation-ad-upload-services-view {
+  & > .accomodation-ad-upload-services__wrapper {
+    @include flex-row;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
 }
 </style>

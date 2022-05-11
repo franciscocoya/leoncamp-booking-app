@@ -9,17 +9,17 @@ import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
 
 import FooterItem from "./components/Footer/FooterItem.vue";
 
-const HeaderItem = defineAsyncComponent(
-  () => import("@/components/Header/HeaderItem.vue")
+const HeaderItem = defineAsyncComponent(() =>
+  import("@/components/Header/HeaderItem.vue")
 );
 
-const HeaderMobileItem = defineAsyncComponent(
-  () => import("@/components/Header/HeaderMobileItem.vue")
+const HeaderMobileItem = defineAsyncComponent(() =>
+  import("@/components/Header/HeaderMobileItem.vue")
 );
 
 // Diálogos modales
-const SearchResultsItem = defineAsyncComponent(
-  () => import("@/components/Header/SearchBar/SearchResultsItem.vue")
+const SearchResultsItem = defineAsyncComponent(() =>
+  import("@/components/Header/SearchBar/SearchResultsItem.vue")
 );
 // Rutas públicas
 

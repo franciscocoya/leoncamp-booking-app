@@ -19,7 +19,7 @@ import { checkFileSize, checkImageMimeType } from "@/helpers/formValidator";
 
 const accomodationStore = useAccomodationStore();
 
-const dragText = ref("Selecciona un archivo o arrástralo aquí");
+const dragText = ref("Selecciona uno o varios archivo/s o arrástralo/s aquí");
 
 /**
  * Manejador del evento de subida de imágenes mediante drag & drop.
@@ -27,6 +27,9 @@ const dragText = ref("Selecciona un archivo o arrástralo aquí");
  * @see https://developer.mozilla.org/es/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
  */
 const handleDragImages = async (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+
   if (e.dataTransfer.items) {
     // Usar la interfaz DataTransferItemList para acceder a el/los archivos)
     for (let i = 0; i < e.dataTransfer.items.length; i++) {
@@ -181,7 +184,7 @@ const handleClickUploadImage = async (e) => {
       <div
         class="accomodation-ad-upload__drag-area"
         id="drag_and_drop_area_container"
-        @drop.stop="(e) => handleDragImages(e)"
+        @drop="(e) => handleDragImages(e)"
         @dragover.stop
         @dragend="dragText = 'Imágenes subidas'"
       >
@@ -222,7 +225,10 @@ const handleClickUploadImage = async (e) => {
 
       <!-- Columna previsualización de las imágenes subidas -->
       <Transition name="fade">
-        <div class="accomodation-ad-upload__images-preview-container">
+        <div
+          v-if="accomodationStore.accomodationImages.length > 0"
+          class="accomodation-ad-upload__images-preview-container"
+        >
           <AccomodationImagePreviewItem
             v-for="(image, index) in accomodationStore.accomodationImages"
             :key="image.idAccomodationImage.id"
@@ -241,13 +247,15 @@ const handleClickUploadImage = async (e) => {
 
 .accomodation-ad-upload-images-view {
   & > .accomodation-ad-upload-images__wrapper {
-    @include flex-row;
-    gap: 10px;
+    @include flex-row-center;
+    align-items: flex-start;
+    gap: 30px;
 
     // Estilos área de selección y subida de archivos
     & > .accomodation-ad-upload__drag-area {
       @include flex-column-center;
-      height: 300px;
+      width: 33%;
+      aspect-ratio: 1 / 1;
       background-color: $color-tertiary-light;
       border: 5px dashed $color-tertiary-dark;
       border-radius: $global-border-radius;
@@ -302,6 +310,7 @@ const handleClickUploadImage = async (e) => {
       @include flex-row;
       gap: 10px;
       flex-wrap: wrap;
+      flex: 2;
     }
   } // Fin accomodation-ad-upload-images__wrapper
 } // Fin accomodation-ad-upload-images-view

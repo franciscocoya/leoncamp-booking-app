@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 // Store
@@ -11,7 +11,7 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
 
 // Rutas
-import {USER_SIGNIN_ROUTE} from '@/helpers/appRoutes'
+import { USER_SIGNIN_ROUTE } from "@/helpers/appRoutes";
 
 // Validacion formularios
 import { checkFieldNotBlank, checkValidEmail } from "@/helpers/formValidator";
@@ -98,6 +98,7 @@ const handleRegister = () => {
         text="Crear cuenta"
         buttonStyle="baseButton-primary--filled"
         @click="handleRegister"
+        :fullWidth="true"
       />
 
       <p>¿Ya tienes una cuenta?</p>
@@ -106,6 +107,7 @@ const handleRegister = () => {
         text="Iniciar sesión"
         buttonStyle="baseButton-secondary--outlined"
         @click="router.push(USER_SIGNIN_ROUTE)"
+        :fullWidth="true"
       />
     </form>
   </div>
@@ -131,15 +133,18 @@ const handleRegister = () => {
   gap: 15px;
   padding: 20px;
   border-radius: $global-border-radius;
+
+  & > div {
+    width: 100%;
+  }
 }
 
 // ------------------------------------------------------------
 // -- Responsive design
 // ------------------------------------------------------------
 @media (max-width: $breakpoint-sm) {
-  .register-form-container{
+  .register-form-container {
     height: auto;
   }
 }
-
 </style>

@@ -37,5 +37,6 @@ defineProps({
 <style scoped>
 img {
   object-fit: contain;
+  cursor: pointer;
 }
 </style>

@@ -75,7 +75,6 @@ function updateInputValue(value: string) {
 
   & > textarea {
     @include flex-column;
-    box-sizing: content-box;
     width: 100%;
     height: 100px;
     padding-top: 20px;

@@ -12,15 +12,15 @@ const accomodationStore = useAccomodationStore();
 const allAvailableRules = ref([]);
 
 const handleRuleChipChange = (e, ruleToAdd) => {
-      let accomodationAccRuleId = {
-        idAccomodation: accomodationStore.registerNumber,
-        idAccomodationRule: {
-            id: ruleToAdd.id,
-            rule: ruleToAdd.denomination,
-        }
-    };
+  let accomodationAccRuleId = {
+    idAccomodation: accomodationStore.registerNumber,
+    idAccomodationRule: {
+      id: ruleToAdd.id,
+      rule: ruleToAdd.rule,
+    },
+  };
 
-    e.target.checked 
+  e.target.checked
     ? accomodationStore.accomodationRules.push(accomodationAccRuleId)
     : accomodationStore.accomodationRules.shift(accomodationAccRuleId);
 };

@@ -11,7 +11,7 @@
 @import "@/assets/scss/_variables.scss";
 
 footer {
-  height: 50px;
+  height: 100px;
   padding: 30px;
   text-align: center;
   background-color: $color-tertiary-light;

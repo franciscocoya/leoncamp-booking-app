@@ -49,8 +49,7 @@ onMounted(() => {
             :inputValue="accomodationStore.accomodationLocation.coords.lat"
             @handleInput="
               (value) =>
-                (accomodationStore.accomodationLocation.coords.lat =
-                  value)
+                (accomodationStore.accomodationLocation.coords.lat = value)
             "
           />
           <LabelFormInput
@@ -59,8 +58,7 @@ onMounted(() => {
             :inputValue="accomodationStore.accomodationLocation.coords.lng"
             @handleInput="
               (value) =>
-                (accomodationStore.accomodationLocation.coords.lng =
-                  value)
+                (accomodationStore.accomodationLocation.coords.lng = value)
             "
           />
         </div>
@@ -71,8 +69,7 @@ onMounted(() => {
             :inputValue="accomodationStore.accomodationLocation.direction"
             @handleInput="
               (value) =>
-                (accomodationStore.accomodationLocation.direction =
-                  value)
+                (accomodationStore.accomodationLocation.direction = value)
             "
           />
         </div>
@@ -82,9 +79,7 @@ onMounted(() => {
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.city"
             @handleInput="
-              (value) =>
-                (accomodationStore.accomodationLocation.city =
-                  value)
+              (value) => (accomodationStore.accomodationLocation.city = value)
             "
           />
           <LabelFormInput
@@ -92,9 +87,7 @@ onMounted(() => {
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.zip"
             @handleInput="
-              (value) =>
-                (accomodationStore.accomodationLocation.zip =
-                  value)
+              (value) => (accomodationStore.accomodationLocation.zip = value)
             "
           />
         </div>

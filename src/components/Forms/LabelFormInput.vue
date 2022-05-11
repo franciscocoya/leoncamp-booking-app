@@ -27,7 +27,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  inputTitle : {
+  inputTitle: {
     type: String,
     default: "",
   },
@@ -39,7 +39,7 @@ const emit = defineEmits(["handleInput"]);
 
 function updateInputValue(value: string) {
   disableField = false;
-    emit("handleInput", value);
+  emit("handleInput", value);
 }
 
 const disableInput = (disable: boolean) => {
@@ -95,7 +95,7 @@ onMounted(() => {
   border: 2px solid $color-tertiary-light;
   border-radius: $global-border-radius;
 
-  & > input:read-only ~ .currency-input-symbol{
+  & > input:read-only ~ .currency-input-symbol {
     color: gray;
   }
 
@@ -108,11 +108,11 @@ onMounted(() => {
   }
 
   & > input {
-    width: 90%;
+    width: 100%;
     font-size: 14px;
     font-weight: 500;
 
-    &::placeholder{
+    &::placeholder {
       color: gray;
     }
   }
@@ -122,7 +122,7 @@ onMounted(() => {
     border-color: $color-tertiary-light;
   }
 
-  & > .currency-input-symbol{
+  & > .currency-input-symbol {
     height: 100%;
     color: $color-dark;
     font-size: 1.5rem;

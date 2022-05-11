@@ -13,6 +13,18 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#app {
+  @include flex-column;
+  justify-content: space-between;
 }
 
 // Tipografía

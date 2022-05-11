@@ -25,20 +25,18 @@ const apiJwtToken: string = JSON.parse(
  */
 export const addRuleToExistingAccomodation = async (
   regNumber: string,
-  rule: number
+  ruleId: number
 ) => {
-  const { data } = (await axios({
-    url: `${API_ACCOMODATION_RULES}/${regNumber}`,
+  return await axios({
+    url: `${API_ACCOMODATION_RULES}/${regNumber}/new`,
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
     params: {
-      rule,
+      rule: ruleId,
     },
-  }).catch((err) => console.log(err))) as any;
-
-  return data;
+  }).catch((err) => console.log(err));
 };
 
 /**

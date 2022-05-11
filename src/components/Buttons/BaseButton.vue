@@ -39,9 +39,7 @@ function handleClick() {
     <button
       :class="buttonStyle"
       @click.prevent="handleClick"
-      :style="`${
-        buttonWidth ? `width: ${fullWidth ? '100%' : buttonWidth}` : ''
-      }`"
+      :style="`width:${fullWidth == true ? '100%' : buttonWidth}`"
       :id="buttonId && buttonId"
       :disabled="isDisabled"
       :title="title"
