@@ -30,7 +30,7 @@ const accomodationStore = useAccomodationStore();
         <!-- Descripción -->
         <BaseFormTextArea
           inputLabel="Descripción"
-          inputTitle="Realiza una descripción lo más detallada posible para atraer a nuevas huéspedes y crecer en la comunidad. Puedes explicar más características y servicios que ofreces, que no se encuentran disponibles en la plataforma."
+          inputTitle="Realiza una descripción lo más detallada posible para atraer a nuevos huéspedes y crecer en la comunidad. Puedes explicar más características y servicios que ofreces, que no se encuentran disponibles en la plataforma."
           :textAreaContent="accomodationStore.description"
           @handleInput="(value) => (accomodationStore.description = value)"
         />

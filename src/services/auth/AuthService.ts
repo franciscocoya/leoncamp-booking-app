@@ -68,11 +68,10 @@ const login = async (
     );
 
     // Redireccionar a su cuenta personal.
-    if ((await name) && (await surname)) {
-      window.location.href = `/account/${(name as any).toLowerCase()}-${(
-        surname as any
-      ).toLowerCase()}/profile`;
-    }
+    window.location.href = `/account/${(name as any)}-${(
+      surname as any
+    )}/profile`;
+
   }
 };
 

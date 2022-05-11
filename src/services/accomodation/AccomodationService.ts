@@ -6,9 +6,9 @@
  *
  */
 import axios from 'axios';
-import { handleError } from '../errorHandler';
+import { handleError } from '@/services/errorHandler';
 
-import type { Accomodation } from '@/models/accomodation/accomodation.model';
+import type { Coordinate } from '@/models/accomodation/coordinates.model';
 
 // Rutas alojamientos API: /api/accomodations
 import { ACCOMODATIONS_BASE_PATH } from './AccomodationsRoutesEnum';
@@ -354,4 +354,36 @@ export async function updateAccomodationData(accomodationData: any) {
       }
     )
     .catch((err) => console.log(err));
+}
+
+/**
+ * Obtiene la dirección (Dirección, ciudad / localidad, código postal) en base a las coordinadas pasadas 
+ * como parámetro.
+ * 
+ * @param coords 
+ * 
+ * @returns
+ */
+export async function getAccomodationLocationByCoords(coords: Coordinate) {
+  const MAX_RESULTS = 2;
+  interface LocationResponse {
+    address: string,
+    city: string,
+    cp: number
+  }
+
+  let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
+
+  const { data } = await axios.get(
+    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${import.meta.env.VITE_POSITION_STACK_API_TOKEN}&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`);
+
+    console.log(data);
+  // Se obtienen dos resultados, por si no se encuentra la dirección en las coordenadas especificadas
+  let dataResponse = data.data[0] || data.data[1];
+
+  accomodationLocationToReturn.address = dataResponse.name ?? dataResponse.street;
+  accomodationLocationToReturn.city = dataResponse.locality;
+  accomodationLocationToReturn.cp = dataResponse.postal_code ?? data.data[1].postal_code;
+
+  return accomodationLocationToReturn;
 }

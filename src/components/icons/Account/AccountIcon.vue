@@ -59,7 +59,7 @@ const redirectToUserProfile = () => {
     showMenuMobile();
   } else {
     router.push(
-      `/account/${name.toLowerCase()}-${surname.toLowerCase()}/profile`
+      `/account/${name}-${surname}/profile`
     );
   }
 };

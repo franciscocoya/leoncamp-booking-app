@@ -8,6 +8,9 @@ import { useAccomodationStore } from "@/store/accomodation";
 // Iconos
 import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
 
+// Service
+import {getAccomodationLocationByCoords} from '@/services/accomodation/AccomodationService';
+
 const accomodationStore = useAccomodationStore();
 
 // Componentes
@@ -66,10 +69,15 @@ onMounted(() => {
 
   marker.on("dragend", onDragEnd);
 
-  function onDragEnd() {
-    const lngLat = marker.getLngLat();
+  async function onDragEnd() {
+    const lngLat = await marker.getLngLat();
     accomodationStore.accomodationLocation.coords.lat = lngLat.lat;
     accomodationStore.accomodationLocation.coords.lng = lngLat.lng;
+    const resultLocation = await getAccomodationLocationByCoords({lat: lngLat.lat, lng: lngLat.lng});
+
+    accomodationStore.accomodationLocation.direction = resultLocation.address;
+    accomodationStore.accomodationLocation.city = resultLocation.city;
+    accomodationStore.accomodationLocation.zip = resultLocation.cp;
   }
 });
 </script>

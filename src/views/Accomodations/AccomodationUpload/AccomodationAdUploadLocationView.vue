@@ -55,19 +55,32 @@ onMounted(() => {
           />
         </div>
         <div class="accomodation-upload-location-form__direction">
-          <LabelFormInput inputLabel="Dirección" inputType="text" />
+          <LabelFormInput
+            inputLabel="Dirección"
+            inputType="text"
+            :inputValue="accomodationStore.accomodationLocation.direction"
+          />
         </div>
         <div class="accomodation-upload-location-form__direction-city">
-          <LabelFormInput inputLabel="Ciudad" inputType="text" />
-          <LabelFormInput inputLabel="Código Postal" inputType="text" />
+          <LabelFormInput
+            inputLabel="Ciudad"
+            inputType="text"
+            :inputValue="accomodationStore.accomodationLocation.city"
+          />
+          <LabelFormInput
+            inputLabel="Código Postal"
+            inputType="text"
+            :inputValue="accomodationStore.accomodationLocation.zip"
+          />
         </div>
+        <p>* Si modificas los campos en el formulario, no se actualizará en el mapa.</p>
       </div>
       <div class="accomodation-upload-location__map">
-        <ThumbnailMap
+        <!-- <ThumbnailMap
           :lat="currentCoords.lat"
           :lng="currentCoords.lng"
           :isMarkerDraggable="true"
-        />
+        /> -->
       </div>
     </div>
   </div>

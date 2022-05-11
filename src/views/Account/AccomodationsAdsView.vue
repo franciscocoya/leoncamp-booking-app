@@ -1,8 +1,8 @@
 <script setup>
 import { defineAsyncComponent, onMounted, ref } from "vue";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 import { useAccomodationStore } from "@/store/accomodation";
-import {useUserStore} from "@/store/user";
+import { useUserStore } from "@/store/user";
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
@@ -20,6 +20,20 @@ const userStore = useUserStore();
 // Alojamientos publicados por el usuario en sesión
 let accomodations = ref([]);
 
+/**
+ * Manejador de click para mostrar la vista de publicación de un alojamiento.
+ *
+ */
+const handleClickUploadButton = () => {
+  router.push({
+    name: "account-accomodation-upload",
+    params: {
+      username: `${userStore.name}-${userStore.surname}`,
+    },
+  });
+  accomodationStore.$reset();
+};
+
 onMounted(async () => {
   accomodations.value = await accomodationStore.getAllUserAccomodations();
 });
@@ -33,12 +47,7 @@ onMounted(async () => {
         text="Publicar"
         buttonStyle="baseButton-dark--outlined--small"
         buttonId="bt-ads-upload-new"
-        @click="router.push({
-          name: 'account-accomodation-upload',
-          params: {
-            username: `${userStore.name.toLowerCase()}-${userStore.surname.toLowerCase()}`,
-          },
-        })"
+        @click="handleClickUploadButton"
       />
     </div>
     <div class="grid-user-accomodation-ads" v-if="accomodations.length > 0">
@@ -69,7 +78,7 @@ onMounted(async () => {
   gap: 10px;
 
   // Estilos cabecera de la vista (Título y botón de publicar)
-  & > .accomodations-ads-view__header{
+  & > .accomodations-ads-view__header {
     @include flex-row;
     gap: 20px;
   }
