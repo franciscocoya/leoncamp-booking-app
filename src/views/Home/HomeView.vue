@@ -95,7 +95,7 @@ const deselectMarker = () => {
 $home-section-margin: 50px;
 
 .home-view {
-  height: calc(100vh - $header-height - $home-section-margin);
+  // height: calc(100vh - $header-height - $home-section-margin);
   display: grid;
   grid-template-columns: auto 60%;
   grid-gap: 20px;

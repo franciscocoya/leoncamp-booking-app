@@ -37,6 +37,8 @@ const API_ACCOMODATION_RULES = `${API_BASE_URL}${
   import.meta.env.VITE_API_ACCOMODATION_RULES
 }`;
 
+const API_ACCOMODATION_LOCATIONS = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATION_LOCATION}`;
+
 // -----------------------------------------------------------------------------
 
 // -- Rutas de reservas
@@ -53,5 +55,6 @@ export {
   API_ACCOMODATION_SERVICES,
   API_ACCOMODATION_CATEGORIES,
   API_ACCOMODATION_RULES,
+  API_ACCOMODATION_LOCATIONS,
   API_BOOKINGS,
 };

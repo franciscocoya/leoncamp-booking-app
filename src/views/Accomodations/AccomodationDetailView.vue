@@ -34,6 +34,7 @@ import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
 const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+const currentUserData = JSON.parse(sessionStorage.getItem("data") || "{}");
 
 const router = useRouter();
 
@@ -48,7 +49,7 @@ const handleUserProfileButtonClick = () => {
   const { id } = currentUser;
   router.push(
     id === accomodationStore.userHost.id
-      ? `/account/${accomodationStore.userHost.name.toLowerCase()}-${accomodationStore.userHost.surname.toLowerCase()}/profile`
+      ? `/account/${currentUserData.name}-${currentUserData.surname}/profile`
       : `/u/${accomodationStore.userHost.id}`
   );
 };

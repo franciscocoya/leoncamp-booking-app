@@ -9,7 +9,7 @@
 const DEFAULT_EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 // Expresión regular que especifica los tipos de imagen válidos.
-const FILE_MIME_TYPES_VALID_REGEX = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/;
+const FILE_MIME_TYPES_VALID_REGEX = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'image/webp'];
 
 // Tamaño máximo de una imagen.
 const MAX_FILE_SIZE = 1024 * 1024 * 1; // 1MB
@@ -61,7 +61,7 @@ const checkFieldNotContainSpecialCharacters = (value: string): boolean => /^[a-z
  * @param fileSize 
  * @returns 
  */
-const checkFileSize = (fileSize: number): boolean => fileSize < MAX_FILE_SIZE;
+const checkFileSize = (fileToCheck: File): boolean => fileToCheck.size < MAX_FILE_SIZE;
 
 /**
  * Valida que el formato de imagen pasado como parámtro.
@@ -69,7 +69,7 @@ const checkFileSize = (fileSize: number): boolean => fileSize < MAX_FILE_SIZE;
  * @param fileType Extensión del archivo a validar (Por ejemplo, .jpeg)
  * @returns 
  */
-const checkImageMimeType = (fileType: string): boolean => FILE_MIME_TYPES_VALID_REGEX.test(fileType);
+const checkImageMimeType = (fileToCheck: File): boolean => FILE_MIME_TYPES_VALID_REGEX.includes(fileToCheck.type);
 
 
 export {

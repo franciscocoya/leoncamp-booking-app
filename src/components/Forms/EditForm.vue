@@ -316,7 +316,7 @@ onMounted(async () => {
           <TextEditChip
             v-for="rule in allRules"
             :key="`rule-${rule.id}`"
-            :chipTitle="`Haz click apra eliminar el servicio ${rule.id}`"
+            :chipTitle="`Haz click para eliminar el servicio ${rule.id}`"
             :chipText="rule.rule"
             :isServiceEnabled="
               accomodationStore.accomodationRules.some(

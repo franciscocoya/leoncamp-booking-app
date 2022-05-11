@@ -1,18 +1,31 @@
 <script setup>
 import { ref, onMounted } from "vue";
-
 import { RouterView, useRouter } from "vue-router";
+
+// Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
+
+// Servicios
+import {addNewAccomodation} from "@/services/accomodation/AccomodationService";
+import {getUserDataById} from "@/services/user/userService";
+
+// Store
+import {useAccomodationStore} from "@/store/accomodation";
 
 const router = useRouter();
 
 const accomodationUploadSteps = [
   "accomodation-upload-basic-data",
   "accomodation-upload-location",
+  "accomodation-upload-services",
+  "accomodation-upload-rules",
+  "accomodation-upload-images"
 ];
 
+const accomodationStore = useAccomodationStore();
+
 // Número de paso de subida de alojamiento
-const currentUploadStepNum = ref(0);
+const currentUploadStepNum = ref(1);
 
 // Ruta paso subida alojamiento actual
 const currentUploadStepRoute = ref(accomodationUploadSteps[0]);
@@ -33,6 +46,15 @@ const showNextStep = () => {
 };
 
 /**
+ * Finaliza la subida de un alojamiento, con todos los datos 
+ * de los 5 pasos (Datos básicos, ubicación, servicios, reglas e imagenes)
+ */
+const handleUploadAccomodation = async () => {
+  console.log(accomodationStore.$state);
+  await addNewAccomodation(accomodationStore.$state);
+};
+
+/**
  * Vuelve al paso anterior.
  */
 const showPreviousStep = () => {
@@ -47,8 +69,15 @@ const showPreviousStep = () => {
   });
 };
 
-onMounted(() => {
+onMounted(async () => {
   currentUploadStepRoute.value = router.currentRoute.value.name;
+  currentUploadStepNum.value = accomodationUploadSteps.indexOf(
+    currentUploadStepRoute.value
+  );
+  // 
+  let currentUser = await getUserDataById(JSON.parse(sessionStorage.getItem("user")).id);
+
+  accomodationStore.userHost = currentUser;
 });
 </script>
 
@@ -58,7 +87,7 @@ onMounted(() => {
       <h1 v-once>Publicar un nuevo alojamiento</h1>
     </div>
     <div class="accomodation-upload-view__body">
-      <Transition name="slide-fade">
+      <Transition name="slide-right-fade">
         <RouterView />
       </Transition>
       <div class="accomodation_upload_steps">
@@ -74,9 +103,9 @@ onMounted(() => {
             @click="showPreviousStep"
           />
           <BaseButton
-            text="Siguiente"
+            :text="`${currentUploadStepNum == 4 ? 'Finalizar' : 'Siguiente'}`"
             buttonStyle="baseButton-dark--filled--small"
-            @click="showNextStep"
+            @click="currentUploadStepNum == 4 ? handleUploadAccomodation() : showNextStep()"
           />
         </div>
         <!-- TODO: Child component con el paso -->
@@ -124,5 +153,12 @@ onMounted(() => {
       }
     }
   }
+}
+
+// Estilos titulos de los pasos
+:deep(h2) {
+  font-weight: 400;
+  text-transform: uppercase;
+  margin-bottom: 20px;
 }
 </style>

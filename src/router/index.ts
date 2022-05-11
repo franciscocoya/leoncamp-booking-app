@@ -14,6 +14,9 @@ import {
 
   UPLOAD_ACCOMODATION_BASIC_DATA,
   UPLOAD_ACCOMODATION_LOCATION,
+  UPLOAD_ACCOMODATION_SERVICES,
+  UPLOAD_ACCOMODATION_RULES,
+  UPLOAD_ACCOMODATION_IMAGES,
 } from '@/helpers/appRoutes';
 
 // Rutas públicas
@@ -113,6 +116,24 @@ const router = createRouter({
           path: UPLOAD_ACCOMODATION_LOCATION,
           name: 'accomodation-upload-location',
           component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadLocationView.vue'),
+        },
+        {
+          // Subida alojamiento - Paso 3: Servicios
+          path: UPLOAD_ACCOMODATION_SERVICES,
+          name: 'accomodation-upload-services',
+          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadServicesView.vue'),
+        },
+        {
+          // Subida alojamiento - Paso 4: Normas
+          path: UPLOAD_ACCOMODATION_RULES,
+          name: 'accomodation-upload-rules',
+          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadRulesView.vue'),
+        },
+        {
+          // Subida alojamiento - Paso 5: Imágenes
+          path: UPLOAD_ACCOMODATION_IMAGES,
+          name: 'accomodation-upload-images',
+          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadImagesView.vue'),
         }
       ],
     },

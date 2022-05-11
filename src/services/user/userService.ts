@@ -88,7 +88,7 @@ const updateUserData = async (
 ) => {
   return await axios({
     url: `${API_USERS}/${userId}`,
-    method: 'put',
+    method: 'PUT',
     data: {
       name,
       surname,

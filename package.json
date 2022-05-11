@@ -13,6 +13,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.5",
     "algoliasearch": "^4.13.0",
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",

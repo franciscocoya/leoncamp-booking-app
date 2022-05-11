@@ -47,11 +47,21 @@ onMounted(() => {
             inputLabel="Latitud"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.coords.lat"
+            @handleInput="
+              (value) =>
+                (accomodationStore.accomodationLocation.coords.lat =
+                  value)
+            "
           />
           <LabelFormInput
             inputLabel="Longitud"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.coords.lng"
+            @handleInput="
+              (value) =>
+                (accomodationStore.accomodationLocation.coords.lng =
+                  value)
+            "
           />
         </div>
         <div class="accomodation-upload-location-form__direction">
@@ -59,6 +69,11 @@ onMounted(() => {
             inputLabel="Dirección"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.direction"
+            @handleInput="
+              (value) =>
+                (accomodationStore.accomodationLocation.direction =
+                  value)
+            "
           />
         </div>
         <div class="accomodation-upload-location-form__direction-city">
@@ -66,14 +81,27 @@ onMounted(() => {
             inputLabel="Ciudad"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.city"
+            @handleInput="
+              (value) =>
+                (accomodationStore.accomodationLocation.city =
+                  value)
+            "
           />
           <LabelFormInput
             inputLabel="Código Postal"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.zip"
+            @handleInput="
+              (value) =>
+                (accomodationStore.accomodationLocation.zip =
+                  value)
+            "
           />
         </div>
-        <p>* Si modificas los campos en el formulario, no se actualizará en el mapa.</p>
+        <p>
+          * Si modificas los campos en el formulario, no se actualizará en el
+          mapa.
+        </p>
       </div>
       <div class="accomodation-upload-location__map">
         <!-- <ThumbnailMap
@@ -95,11 +123,11 @@ onMounted(() => {
   width: 100%;
   margin-top: 20px;
 
-  & > h2 {
-    font-weight: 400;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
+  // & > h2 {
+  //   font-weight: 400;
+  //   text-transform: uppercase;
+  //   margin-bottom: 20px;
+  // }
 
   & > .accomodation-upload-location__wrapper {
     @include flex-row;

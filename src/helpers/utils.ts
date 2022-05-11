@@ -21,6 +21,8 @@ const months = [
   'diciembre',
 ];
 
+const MAX_IMAGES_UPLOAD = 8;
+
 /**
  * Formatea un fecha de un array a una cadena de texto en formato dd/mm/yy
  * Añade cero por la izquierda si el día o el mes son menores que 10.
@@ -114,4 +116,5 @@ export {
   getAccomodationServiceImageById,
   formatArrayAsSimpleStringDate,
   cropTextByWordCount,
+  MAX_IMAGES_UPLOAD
 };
