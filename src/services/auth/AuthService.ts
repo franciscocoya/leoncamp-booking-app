@@ -55,10 +55,11 @@ const login = async (
 
   if (JSON.parse(sessionStorage.getItem('user') as string)?.id) {
     // Obtener datos de usuario
-    const { name, surname }: { name: Promise<any>; surname: Promise<any> } =
+    const { name, surname }: { name: Promise<string>; surname: Promise<string> } =
       await getUserDataById(
         JSON.parse(sessionStorage.getItem('user') || '{}')?.id
       );
+
     sessionStorage.setItem(
       'data',
       JSON.stringify({
@@ -68,9 +69,7 @@ const login = async (
     );
 
     // Redireccionar a su cuenta personal.
-    window.location.href = `/account/${(name as any)}-${(
-      surname as any
-    )}/profile`;
+    window.location.href = `/account/${name}-${surname}/profile`;
 
   }
 };

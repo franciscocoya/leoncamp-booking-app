@@ -35,6 +35,10 @@ const apiJwtToken: string = JSON.parse(
   sessionStorage?.getItem('user') || '{}'
 )?.token;
 
+const userDataStorage: any = JSON.parse(
+  sessionStorage?.getItem('data') || '{}'
+);
+
 export const addNewAccomodation = async (
   accomodationToAdd: Accomodation
 ): Promise<any> => {
@@ -143,6 +147,13 @@ export const addNewAccomodation = async (
         rule.idAccomodationRule.id
       );
     });
+
+    // Añadir todas las imágenes al alojamiento creado
+    accomodationImages.map(async (image) => {
+      await addNewImageToAccomodation(newAccomodation.data.registerNumber, image.idAccomodationImage.imageUrl);
+    });
+
+    window.location.href = `/account/${userDataStorage.name}-${userDataStorage.surname}/accomodations`;
   }
 };
 
@@ -510,6 +521,7 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
     address: string;
     city: string;
     cp: number;
+    distanceAccuracy: number;
   }
 
   let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
@@ -520,15 +532,17 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
     }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
   );
 
-  console.log(data);
   // Se obtienen dos resultados, por si no se encuentra la dirección en las coordenadas especificadas
   let dataResponse = data.data[0] || data.data[1];
 
+  console.log(dataResponse);
+
   accomodationLocationToReturn.address =
     dataResponse.name ?? dataResponse.street;
-  accomodationLocationToReturn.city = dataResponse.locality;
+  accomodationLocationToReturn.city = dataResponse.locality ?? dataResponse.administrative_area ?? dataResponse.region;
   accomodationLocationToReturn.cp =
     dataResponse.postal_code ?? data.data[1].postal_code;
+  accomodationLocationToReturn.distanceAccuracy = dataResponse.distance;
 
   return accomodationLocationToReturn;
 }

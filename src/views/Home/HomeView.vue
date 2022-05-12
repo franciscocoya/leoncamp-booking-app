@@ -4,7 +4,7 @@ import { onMounted, ref } from "vue";
 // Componentes
 // import { DatePicker } from "v-calendar";
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
-// import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
+import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
 // Componentes
 // import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 

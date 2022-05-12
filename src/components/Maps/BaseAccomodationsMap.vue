@@ -42,7 +42,7 @@ onMounted(async () => {
 
     // Estilos marker
     // priceMark.className = "price-marker";
-    priceMark.style.width = "35px";
+    priceMark.style.width = "max-content";
     priceMark.style.textAlign = "center";
     priceMark.style.backgroundColor = isMarkerSelected ? "#222222" : "#FFFFFF";
     priceMark.style.color = isMarkerSelected ? "#FFFFFF" : "#222222";

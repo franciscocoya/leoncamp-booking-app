@@ -142,6 +142,7 @@ const handleMouseLeave = () => {
         <div class="accomodation-star-average-container">
           <!-- Icono de estrella -->
           <svg
+          v-if="accomodationStore.stars > 0"
             width="24"
             height="24"
             viewBox="0 0 24 24"

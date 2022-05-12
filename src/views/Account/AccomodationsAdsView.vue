@@ -82,5 +82,10 @@ onMounted(async () => {
     @include flex-row;
     gap: 20px;
   }
+
+  & > .grid-user-accomodation-ads{
+    @include flex-column;
+    gap: 20px;
+  }
 }
 </style>

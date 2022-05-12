@@ -31,6 +31,24 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  inputMinCharacters: {
+    type: Number,
+    default: 1,
+  },
+  inputMaxCharacters: {
+    type: Number,
+    default: 3,
+  },
+  inputNumberMax : {
+    type: Number,
+    default: 3,
+  },
+  // Si se selecciona esta opción, el input convertirá el texto a mayúsculas 
+  // mientras el usuario teclea.
+  convertInputToUpper: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 let disableField: boolean = ref(false).value;
@@ -46,8 +64,27 @@ const disableInput = (disable: boolean) => {
   disableField = disable;
 };
 
+/**
+ * Manejador del evento keydown. Si la propiedad convertInputToUpper es true, 
+ * se convertirá el texto a mayúsculas mientras el usuario teclea.
+ */
+const handleKeyDown = (e: { target: { value: string; }; }) => {
+  if (props.convertInputToUpper) {
+    e.target.value = e.target.value.toUpperCase();
+  }
+};
+
 onMounted(() => {
   disableField = props.isReadonly;
+  document.getElementById(props.inputLabel)?.addEventListener('paste', (e) => e.preventDefault());
+  document.getElementById(props.inputLabel)?.addEventListener(
+    "keydown",
+    (e: KeyboardEvent) => {
+      if (e.key === "-") {
+        e.preventDefault();
+      }
+    }
+  );
 });
 </script>
 
@@ -66,8 +103,12 @@ onMounted(() => {
       :placeholder="inputPlaceholder"
       class="base-input-no-border"
       :value="inputValue"
+      :minlength="inputMinCharacters"
+      :maxlength="inputMaxCharacters"
+      :size="inputMaxCharacters"
       :readonly="disableField"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
+      @keyup="(e) => handleKeyDown(e)"
     />
 
     <input
@@ -76,10 +117,12 @@ onMounted(() => {
       :type="inputType"
       :placeholder="inputPlaceholder"
       class="base-input-no-border"
-      :value="inputValue"
+      :value="inputValue || 0"
       :readonly="disableField"
-      :min="`${inputType == 'number' && 1}`"
-      :step="`${inputType == 'number' && 1}`"
+      :min="1"
+      :max="inputNumberMax"
+      :size="inputNumberMax"
+      :step="1"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
     />
 

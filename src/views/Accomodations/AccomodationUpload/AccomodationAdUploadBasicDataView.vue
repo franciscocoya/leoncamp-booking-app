@@ -37,7 +37,11 @@ onMounted(async () => {
           inputLabel="Número de registro"
           inputType="text"
           :inputValue="accomodationStore.registerNumber"
+          :inputMinCharacters="2"
+          :inputMaxCharacters="20"
+          :convertInputToUpper="true"
           @handleInput="(value) => (accomodationStore.registerNumber = value)"
+          @keydown="(e) => convertInputToUpper ? e.target.value = e.target.value.toUpperCase() : null"
         />
 
         <!-- Descripción -->
@@ -73,6 +77,7 @@ onMounted(async () => {
           <LabelFormInput
             inputLabel="Camas"
             inputType="number"
+            :inputNumberMax="1"
             :inputValue="accomodationStore.numOfBeds"
             @handleInput="(value) => (accomodationStore.numOfBeds = value)"
           />
@@ -90,6 +95,7 @@ onMounted(async () => {
             inputLabel="Baños"
             inputType="number"
             :inputValue="accomodationStore.numOfBathRooms"
+            :inputNumberMax="3"
             @handleInput="(value) => (accomodationStore.numOfBathRooms = value)"
           />
         </div>
@@ -167,16 +173,20 @@ onMounted(async () => {
       position: relative;
       flex: 0 40%;
       & > img {
-        width: 350px;
+        width: 200px;
+        object-fit: contain;
         border-radius: $global-border-radius;
 
         &:first-child {
           z-index: $z-index-2;
+          position: absolute;
+          left: 0;
+          top: 0;
         }
         &:last-child {
           position: absolute;
-          left: 175px;
-          top: 75px;
+          left: 25%;
+          top: 10%;
           box-shadow: $global-box-shadow;
           z-index: $z-index-1;
         }

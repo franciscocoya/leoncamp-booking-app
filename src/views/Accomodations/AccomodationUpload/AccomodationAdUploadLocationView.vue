@@ -11,6 +11,9 @@ import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 
+// Service
+import { getAccomodationLocationByCoords } from "@/services/accomodation/AccomodationService";
+
 // Si el usuario no acepta el uso de la geolocalizacion, se muestran por defecto
 // las coordenadas del centro de León.
 const currentCoords = ref({
@@ -20,10 +23,12 @@ const currentCoords = ref({
 
 const accomodationStore = useAccomodationStore();
 
-onMounted(() => {
+onMounted(async () => {
   if (!navigator.geolocation) {
     console.log("Geolocation is not supported by this browser.");
   }
+
+  // Si el navegador soporta geolocalización
   navigator.geolocation.getCurrentPosition((pos) => {
     accomodationStore.accomodationLocation.coords.lat = navigator.geolocation
       ? pos.coords.latitude
@@ -32,6 +37,17 @@ onMounted(() => {
       ? pos.coords.longitude
       : currentCoords.value.lng;
   });
+
+  const accomodationLocation = await getAccomodationLocationByCoords(
+    {
+      lat: accomodationStore.accomodationLocation.coords.lat, 
+      lng: accomodationStore.accomodationLocation.coords.lng}
+  );
+
+  accomodationStore.accomodationLocation.direction =
+    accomodationLocation.address;
+  accomodationStore.accomodationLocation.city = accomodationLocation.city;
+  accomodationStore.accomodationLocation.zip = accomodationLocation.cp;
 });
 </script>
 
@@ -97,11 +113,11 @@ onMounted(() => {
         </p>
       </div>
       <div class="accomodation-upload-location__map">
-        <!-- <ThumbnailMap
+        <ThumbnailMap
           :lat="currentCoords.lat"
           :lng="currentCoords.lng"
           :isMarkerDraggable="true"
-        /> -->
+        />
       </div>
     </div>
   </div>
@@ -132,14 +148,11 @@ onMounted(() => {
       @include flex-column;
       gap: 10px;
 
-      & > .accomodation-upload-location-form__coords {
-        @include flex-row;
-        gap: 10px;
-      }
-
+      & > .accomodation-upload-location-form__coords,
       & > .accomodation-upload-location-form__direction-city {
-        @include flex-row;
-        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
       }
     }
 
