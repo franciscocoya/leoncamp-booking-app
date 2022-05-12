@@ -12,6 +12,8 @@ import {
   ERROR_500_ROUTE,
   ERROR_503_ROUTE,
 
+  BOOKING_ACCOMODATION_ROUTE,
+
   UPLOAD_ACCOMODATION_BASIC_DATA,
   UPLOAD_ACCOMODATION_LOCATION,
   UPLOAD_ACCOMODATION_SERVICES,
@@ -142,6 +144,12 @@ const router = createRouter({
       path: '/bookings/:bookingId',
       name: 'booking-detail',
       component: () => import('@/views/Bookings/BookingDetailView.vue'),
+    },
+    {
+      // Reserva del alojamiento indicado
+      path: BOOKING_ACCOMODATION_ROUTE,
+      name: 'booking-accomodation',
+      component: () => import('@/views/Bookings/BookingTaskView.vue'),
     },
     {
       // Detalle de un alojamiento

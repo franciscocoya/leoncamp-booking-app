@@ -106,7 +106,7 @@ onMounted(() => {
       :minlength="inputMinCharacters"
       :maxlength="inputMaxCharacters"
       :size="inputMaxCharacters"
-      :readonly="disableField"
+      :readonly="isReadonly"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
       @keyup="(e) => handleKeyDown(e)"
     />

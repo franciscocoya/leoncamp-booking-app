@@ -16,6 +16,9 @@ const UPLOAD_ACCOMODATION_SERVICES = 'services';
 const UPLOAD_ACCOMODATION_RULES = 'rules';
 const UPLOAD_ACCOMODATION_IMAGES = 'images';
 
+// Ruta realización de la reserva de la aplicación
+const BOOKING_ACCOMODATION_ROUTE = '/booking';
+
 // Errors
 const ERROR_401_ROUTE = '/401';
 const ERROR_404_ROUTE = '/404';
@@ -47,6 +50,8 @@ export {
     UPLOAD_ACCOMODATION_SERVICES,
     UPLOAD_ACCOMODATION_RULES,
     UPLOAD_ACCOMODATION_IMAGES,
+
+    BOOKING_ACCOMODATION_ROUTE,
 
     HELP_ROUTE,
     ERROR_401_ROUTE,

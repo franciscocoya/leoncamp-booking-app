@@ -83,6 +83,17 @@ const formatArrayAsSimpleStringDate = (date: number[]): string | null => {
 };
 
 /**
+ * Devuelve el número de días de diferencia entre dos fechas.
+ * 
+ * @param dateStart 
+ * @param dateEnd 
+ * @returns 
+ */
+const getDateDiffOnDays = (dateStart: Date, dateEnd: Date): number => {
+  return Math.abs(dateEnd.getTime() - dateStart.getTime()) / 1000 / 60 / 60 / 24;
+};
+
+/**
  * Obtiene el icono asociado al servicio de alojamiento pasado como parámetro.
 
  * @param id
@@ -115,6 +126,7 @@ export {
   convertImageToBase64,
   getAccomodationServiceImageById,
   formatArrayAsSimpleStringDate,
+  getDateDiffOnDays,
   cropTextByWordCount,
   MAX_IMAGES_UPLOAD
 };

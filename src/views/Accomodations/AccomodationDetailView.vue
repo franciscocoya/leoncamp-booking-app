@@ -54,6 +54,18 @@ const handleUserProfileButtonClick = () => {
   );
 };
 
+/**
+ * Manejador de click de la redirección a la página de perfil del usuario.
+ */
+const handleRedirectToBooking = () => {
+  router.push({
+    name: "booking-accomodation",
+    query: {
+      regnum: accomodationStore.registerNumber,
+    }
+  });
+};
+
 onBeforeMount(() => {
   isLoading.value = true;
 });
@@ -162,7 +174,7 @@ onMounted(async () => {
             <BaseButton
               text="Reservar"
               buttonStyle="baseButton-primary-gradient--filled"
-              v-once
+              @click="handleRedirectToBooking"
             />
           </div>
         </section>

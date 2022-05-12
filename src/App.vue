@@ -56,7 +56,6 @@ onMounted(() => {
 </script>
 
 <template class="app-root">
-  <!-- <HeaderMobileItem v-if="enableHeaderMobile == true" /> -->
   <HeaderMobileItem
     v-if="enableHeaderMobile == true"
     @showMenuMobile="showMenuMobile = !showMenuMobile"
