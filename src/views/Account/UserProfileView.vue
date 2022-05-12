@@ -140,6 +140,9 @@ form {
     @include flex-row;
     gap: 20px;
     flex-wrap: wrap;
+    & > div {
+      flex: 1;
+    }
   }
 
   // Estilos sección datos del usuario host
@@ -167,14 +170,13 @@ form {
     @include flex-column;
   }
 
-  .user-profile-data__host-data__wrapper{
-   margin: 0 auto;
-   padding: 10px;
+  .user-profile-data__host-data__wrapper {
+    margin: 0 auto;
+    padding: 10px;
   }
 
-  .btEditar-perfil-usuario{
+  .btEditar-perfil-usuario {
     align-self: center;
   }
 }
-
 </style>

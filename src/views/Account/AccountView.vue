@@ -25,7 +25,7 @@ const isMobile = window.innerWidth < 768;
 
     <Suspense>
       <Transition name="fade">
-        <RouterView />
+        <RouterView id="account-children-view" />
       </Transition>
     </Suspense>
   </div>
@@ -42,18 +42,8 @@ const isMobile = window.innerWidth < 768;
   margin: 40px 20px;
 }
 
-/*
-  Enter and leave animations can use different
-  durations and timing functions.
-*/
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+#account-children-view {
+  flex: 0 1 60%;
 }
 
 // ---------------------------------------------------------------

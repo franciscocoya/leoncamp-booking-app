@@ -11,15 +11,19 @@ import { useBookingStore } from "@/store/booking";
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import { DatePicker } from "v-calendar";
+import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Utils
-import { getDateDiffOnDays } from "@/helpers/utils";
+import { getDateDiffOnDays, formatDateType1 } from "@/helpers/utils";
 
 const accomodationStore = useAccomodationStore();
 const bookingStore = useBookingStore();
 
 const notAvailableBookingDates = ref([]);
 
+/**
+ * Rango de fechas seleccionado.
+ */
 const range = ref({
   start: new Date(),
   end: new Date(),
@@ -32,9 +36,20 @@ const getBookingNights = () => {
   );
 };
 
-const handleSelectedDates = (value) => {
-  console.log(range.value);
+const handleSelectedDates = () => {
   const pricePerNight = accomodationStore.pricePerNight;
+  const amount = pricePerNight * getBookingNights();
+  const bookingFee = amount * 0.1;
+  const totalCost = amount + bookingFee;
+
+  bookingStore.amount = amount.toFixed(2);
+  bookingStore.serviceFee = bookingFee.toFixed(2);
+  bookingStore.totalPrice = totalCost.toFixed(2);
+};
+
+const handleGuestsInput = (value) => {
+  bookingStore.numOfGuests = value;
+  handleSelectedDates();
 };
 
 onMounted(async () => {
@@ -60,7 +75,9 @@ onMounted(async () => {
 
 <template>
   <div class="booking-task-view">
-    <h2>Reserva para el alojamiento {{ accomodationStore.registerNumber }}</h2>
+    <h2 v-once>
+      Reserva para el alojamiento {{ accomodationStore.registerNumber }}
+    </h2>
     <div class="booking-task-view__wrapper">
       <!-- Columna izquierda -->
       <div class="accomodation_image_thumbnail">
@@ -72,31 +89,55 @@ onMounted(async () => {
           alt=""
         />
         <div>
-          <h3>Detalles del precio</h3>
+          <h3 v-once>Detalles del precio</h3>
           <div>
             <div>
               <p>
                 {{ accomodationStore.pricePerNight }} € x
                 {{ getBookingNights() }} noches
               </p>
-              <p>200 <span>€</span></p>
+              <p>
+                {{ bookingStore.amount > 0 ? bookingStore.amount : "-" }}
+                <span v-once>€</span>
+              </p>
             </div>
             <div>
-              <p>Comisión servicio</p>
-              <p>50 <span>€</span></p>
+              <p v-once>Comisión servicio</p>
+              <p>
+                {{
+                  bookingStore.serviceFee > 0 ? bookingStore.serviceFee : "-"
+                }}
+                <span>€</span>
+              </p>
             </div>
             <div>
-              <p>Total(EUR)</p>
-              <p>400,50€</p>
+              <p v-once>Total(EUR)</p>
+              <p>
+                {{
+                  bookingStore.totalPrice > 0 ? bookingStore.totalPrice : "-"
+                }}
+                <span v-once>€</span>
+              </p>
             </div>
           </div>
-          <p></p>
-          <p></p>
         </div>
       </div>
 
       <!-- Columna derecha -->
       <div class="accomodation_details">
+        <div>
+          <p>
+            {{ accomodationStore.category.accomodationCategory }} en
+            {{ accomodationStore.accomodationLocation.city }}
+          </p>
+          <p>
+            {{ accomodationStore.accomodationLocation.direction }}
+          </p>
+          <p>
+            Hasta un máximo de {{ accomodationStore.numOfGuests }} huéspedes.
+          </p>
+        </div>
+
         <!-- Calendario seleccion fechas reserva -->
         <DatePicker
           ref="datePicker"
@@ -109,7 +150,7 @@ onMounted(async () => {
           :min-date="new Date()"
           transition="slide-h"
           :disabled-dates="notAvailableBookingDates"
-          @input="handleSelectedDates"
+          @dayclick="handleSelectedDates"
         />
 
         <!-- Desglose precios -->
@@ -118,20 +159,38 @@ onMounted(async () => {
             <LabelFormInput
               inputLabel="Check-In"
               inputType="text"
+              :inputValue="range.start && formatDateType1(range.start)"
               :isReadonly="true"
+              id="input-booking-check-in"
             />
             <LabelFormInput
               inputLabel="Check-Out"
               inputType="text"
               :isReadonly="true"
+              :inputValue="range.end && formatDateType1(range.end)"
+              id="input-booking-check-out"
             />
           </div>
           <LabelFormInput
             inputLabel="Húespedes"
             inputType="number"
-            @handleInput="(value) => (bookingStore.numOfGuests = value)"
+            :inputNumberMax="accomodationStore.numOfGuests"
+            @handleInput="(value) => handleGuestsInput(value)"
           />
+          <div class="booking-payment-method-container">
+            <p>Método de pago:</p>
+            <div>
+              <input type="radio" name="paymethod-type" />
+              <label>Tarjeta de crétito/débito</label>
+              <input type="radio" name="paymethod-type" />
+              <label>PayPal</label>
+            </div>
+          </div>
         </div>
+        <BaseButton
+          text="Confirmar reservar"
+          buttonStyle="baseButton-secondary--filled"
+        />
       </div>
     </div>
   </div>
@@ -139,6 +198,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
 
 // Estilos vista realización de una reserva
 .booking-task-view {
@@ -156,6 +216,7 @@ onMounted(async () => {
         width: 400px;
         height: auto;
         object-fit: cover;
+        border-radius: $global-border-radius;
       }
 
       // Estilos contenedor detalles del precio
@@ -174,15 +235,15 @@ onMounted(async () => {
       @include flex-column;
       gap: 20px;
 
-      & > .booking-data-summary{
-          @include flex-column;
-          gap: 20px;
+      & > .booking-data-summary {
+        @include flex-column;
+        gap: 20px;
 
-          & > .booking-data-summary__dates{
-              display: grid;
-              grid-template-columns: repeat(2, 1fr);
-              grid-gap: 10px;
-          }
+        & > .booking-data-summary__dates {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap: 10px;
+        }
       }
     }
   }

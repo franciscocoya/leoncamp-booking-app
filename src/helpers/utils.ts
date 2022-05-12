@@ -84,13 +84,27 @@ const formatArrayAsSimpleStringDate = (date: number[]): string | null => {
 
 /**
  * Devuelve el número de días de diferencia entre dos fechas.
- * 
- * @param dateStart 
- * @param dateEnd 
- * @returns 
+ *
+ * @param dateStart
+ * @param dateEnd
+ * @returns
  */
 const getDateDiffOnDays = (dateStart: Date, dateEnd: Date): number => {
-  return Math.abs(dateEnd.getTime() - dateStart.getTime()) / 1000 / 60 / 60 / 24;
+  return (
+    Math.abs(dateEnd.getTime() - dateStart.getTime()) / 1000 / 60 / 60 / 24
+  );
+};
+
+/**
+ * Formatea una fecha en formato Date [dd/mm/yyyy] a una cadena de texto en formato dd/mm/yyyy
+ * @param date
+ * @returns
+ */
+const formatDateType1 = (date: Date): string => {
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  const month =
+    date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+  return `${day}/${month}/${date.getFullYear()}`;
 };
 
 /**
@@ -127,6 +141,7 @@ export {
   getAccomodationServiceImageById,
   formatArrayAsSimpleStringDate,
   getDateDiffOnDays,
+  formatDateType1,
   cropTextByWordCount,
-  MAX_IMAGES_UPLOAD
+  MAX_IMAGES_UPLOAD,
 };

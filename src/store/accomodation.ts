@@ -69,7 +69,7 @@ const useAccomodationStore = defineStore({
       profileImage: '',
     },
     stars: 0,
-    createdAt: new Date(),
+    createdAt: [],
   }),
 
   actions: {
