@@ -26,13 +26,7 @@ const closeModal = () => {
 <template>
   <div class="base-modal">
     <div class="base-modal-window">
-      <!-- <BaseButton
-        text="x"
-        buttonStyle="baseButton-close--filled"
-        id="bt-close-modal"
-        title="Cerrar la ventana"
-        @click="closeModal"
-      /> -->
+      <!-- Icono cerrar modal -->
       <img
         :src="ICON_CLOSE"
         alt=""
@@ -109,6 +103,22 @@ ul {
     @include flex-row;
     gap: 15px;
     margin-bottom: 1px solid $color-tertiary-light;
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .base-modal-window{
+    width: 90%;
+    height: 80vh;
+    margin-bottom: 20%;
+    z-index: $z-index-1;
+
+    & > h2 {
+    font-weight: 400;
+  }
   }
 }
 </style>

@@ -62,7 +62,7 @@ const handleRedirectToBooking = () => {
     name: "booking-accomodation",
     query: {
       regnum: accomodationStore.registerNumber,
-    }
+    },
   });
 };
 
@@ -301,6 +301,7 @@ onMounted(async () => {
       @include flex-column-center;
     }
 
+    // Estilos descripción alojamiento
     & > .accomodation-detail__description {
       display: grid;
       grid-template-columns: 60% auto;
@@ -330,6 +331,7 @@ onMounted(async () => {
 
       & > .accomodation-detail_description__booking-price-container {
         @include flex-column;
+        gap: 20px;
         border: 1px solid $color-tertiary-dark;
         border-radius: $global-border-radius;
         padding: 10px;
@@ -342,6 +344,7 @@ onMounted(async () => {
       align-items: flex-start;
     }
 
+    // Estilos sección ubicación del alojamiento
     & > .accomodation-detail__location {
       border-radius: $global-border-radius;
 
@@ -430,28 +433,36 @@ onMounted(async () => {
   }
 }
 
-// Estilos transicion
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 1s ease;
-}
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .accomodation-detail-view {
+    & > .accomodation-detail-view__wrapper {
 
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
+      & > .accomodation-detail__header{
+        & > h1{
+          font-size: 1.5rem;
+          font-weight: 400;
+        }
+      }
 
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
+      & > .accomodation-detail__description {
+        @include flex-column;
 
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
+        & > .accomodation-detail_description__booking-price-container {
+          text-align: center;
+          padding: 30px 0;
+        } // Fin accomodation-detail_description__booking-price-container
+      } // Fin estilos accomodation-detail__description
 
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
+      & > .accomodation-host {
+        & > .accomodation-host-summary {
+          @include flex-column;
+          width: 100%;
+        }
+      }
+    }
+  } // Fin estilos accomodation-detail-view__wrapper
 }
 </style>

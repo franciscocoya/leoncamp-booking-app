@@ -112,6 +112,7 @@ const useUserStore = defineStore({
      * @param email
      */
     async loadUserData() {
+      let userData = {};
       // Nombre y apellidos previamente obtenidos en el login.
       if (JSON.parse(sessionStorage.getItem('data') || '{}')) {
         const { id, email } = JSON.parse(
@@ -152,6 +153,8 @@ const useUserStore = defineStore({
           verified,
         };
       }
+      
+      return userData;
     },
 
     /**

@@ -37,22 +37,19 @@ const handleSearchInput = (e) => {
     />
 
     <input type="text" placeholder="León" @input.prevent="(e) => handleSearchInput(e)"/>
-
-    <div class="search-filter-button-group">
-      <!-- Boton checkIn -->
+    <!-- <div class="search-filter-button-group">
       <IconButton
         text="check in"
         buttonStyle="iconButton-primary--outlined-small"
         :buttonIcon="ICON_CALENDAR"
       />
 
-      <!-- Boton check out -->
       <IconButton
         text="check out"
         buttonStyle="iconButton-primary--outlined-small"
         :buttonIcon="ICON_CALENDAR"
       />
-    </div>
+    </div> -->
 
     <img
       :src="ICON_SEARCH"

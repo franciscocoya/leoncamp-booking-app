@@ -4,11 +4,15 @@ import { onMounted, ref } from "vue";
 // Componentes
 import TextEditChip from "@/components/Chips/TextEditChip.vue";
 import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
+import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 
 const accomodationStore = useAccomodationStore();
+
+let allAvaibleServices = ref([]);
+let originalServices = ref([]);
 
 /**
  * Manejador del evento change de los checkbox de los servicios.
@@ -27,20 +31,21 @@ const handleServiceChipChange = (e, serviceToAdd) => {
     : accomodationStore.accomodationServices.shift(accomodationAccServiceId);
 };
 
-const allAvaibleServices = ref([]);
-let originalServices = ref([]);
 
 const applyFilters = (serviceSearchTerm) => {
+  const regex = new RegExp(serviceSearchTerm, "gi");
 
-  const regex = new RegExp(serviceSearchTerm, 'gi');
-  
-  if(serviceSearchTerm == ''){
+  if (serviceSearchTerm == "") {
     allAvaibleServices.value = originalServices.value;
-  }else{
+  } else {
     allAvaibleServices.value = allAvaibleServices.value.filter((service) =>
       regex.test(service.denomination)
     );
   }
+};
+
+const showAllServiceChips = () => {
+  allAvaibleServices.value = originalServices.value;
 };
 
 onMounted(async () => {
@@ -78,13 +83,27 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
 
 .accomodation-ad-upload-services-view {
+  
   & > .accomodation-ad-upload-services__wrapper {
     @include flex-row;
     gap: 10px;
     flex-wrap: wrap;
     margin-top: 20px;
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .accomodation-ad-upload-services-view {
+    margin-bottom: 50px;
+    & > .accomodation-ad-upload-services__wrapper {
+      margin: 20px 0;
+    }
   }
 }
 </style>

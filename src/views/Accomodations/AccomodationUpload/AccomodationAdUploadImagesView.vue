@@ -326,4 +326,25 @@ const handleClickUploadImage = async (e) => {
   border-color: $color-success !important;
   background-color: $color-success-light !important;
 }
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .accomodation-ad-upload-images-view {
+    & > .accomodation-ad-upload-images__wrapper {
+      @include flex-column;
+      gap: 20px;
+
+      & > .accomodation-ad-upload__drag-area{
+        width: 100%;
+      }
+
+      & > .accomodation-ad-upload__images-preview-container{
+        @include flex-column;
+      }
+    }
+    
+  }
+}
 </style>

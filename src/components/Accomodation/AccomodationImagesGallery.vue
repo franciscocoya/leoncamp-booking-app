@@ -28,7 +28,7 @@ const props = defineProps({
     <BaseButton
       text="Ver todas"
       buttonStyle="baseButton-dark--filled"
-      buttonId="bt-show-all-accomodation-images"
+      id="bt-show-all-accomodation-images"
     />
   </div>
   <div v-else>
@@ -41,8 +41,6 @@ const props = defineProps({
 @import "@/assets/scss/_mixins.scss";
 @import "@/assets/scss/_variables.scss";
 .accomodation-image-gallery {
-  display: block;
-  width: 100%;
   position: relative;
   border-radius: $global-border-radius;
 
@@ -58,6 +56,7 @@ const props = defineProps({
       grid-gap: 10px;
       overflow: hidden;
 
+    // Posicionamiento imágenes grid galería
       & > img {
         width: 100%;
         height: 100%;
@@ -97,10 +96,22 @@ const props = defineProps({
     } // fin accomodation-image-gallery__images
   } // fin accomodation-image-gallery__wrapper
 
-  & #bt-show-all-accomodation-images {
-    bottom: 5%;
+  & > #bt-show-all-accomodation-images {
+    position: absolute;
+    top: 5%;
     right: 12%;
-    z-index: $z-index-1;
+    z-index: $z-index-3;
   }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+.accomodation-image-gallery{
+  & > .accomodation-image-gallery__wrapper{
+    height: 300px;
+  }
+}
 }
 </style>

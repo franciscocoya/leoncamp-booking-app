@@ -10,3 +10,13 @@
     background-color: rgba(0, 0, 0, 0.4);
     z-index: $z-index-modal;
 }
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+    .base-modal{
+        height: 100%;
+        z-index: $z-index-2;
+    }
+}

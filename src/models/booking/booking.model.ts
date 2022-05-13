@@ -17,5 +17,6 @@ export interface Booking {
   disccount?: number;
   serviceFee: number;
   totalPrice: number;
+  paymentId: number;
   createdAt: Date;
 }

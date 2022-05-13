@@ -3,10 +3,12 @@ import { ref, onMounted, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 import { authRoutes } from "@/helpers/appRoutes";
 
-//import HeaderItem from "./components/Header/HeaderItem.vue";
-//import SearchResultsItem from "./components/Header/SearchBar/SearchResultsItem.vue";
-import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
+import { SCREEN_BREAKPOINTS } from "@/helpers/utils";
 
+import { useAppContextStore } from "@/store/appContext";
+
+// Componentes
+import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
 import FooterItem from "./components/Footer/FooterItem.vue";
 
 const HeaderItem = defineAsyncComponent(() =>
@@ -21,7 +23,8 @@ const HeaderMobileItem = defineAsyncComponent(() =>
 const SearchResultsItem = defineAsyncComponent(() =>
   import("@/components/Header/SearchBar/SearchResultsItem.vue")
 );
-// Rutas públicas
+
+const appContextStore = useAppContextStore();
 
 // Obtener la ruta actual
 const router = useRouter();
@@ -35,23 +38,17 @@ const isCurrentRoutePublic = () => {
 const showSearchResults = ref(false);
 const showMenuMobile = ref(false);
 
-const screenBreakpoints = {
-  xs: 480,
-  sm: 768,
-  md: 992,
-  lg: 1200,
-  xl: 1440,
-};
-
 let enableHeaderMobile = ref(false);
 
 // Mostrar header mobile
 window.addEventListener("resize", () => {
-  enableHeaderMobile.value = document.body.clientWidth < screenBreakpoints.sm;
+  enableHeaderMobile.value = document.body.clientWidth < SCREEN_BREAKPOINTS.sm;
 });
 
 onMounted(() => {
-  enableHeaderMobile.value = document.body.clientWidth < screenBreakpoints.sm;
+  enableHeaderMobile.value = document.body.clientWidth < SCREEN_BREAKPOINTS.sm;
+
+  appContextStore.isMobile = appContextStore.getIsMobile();
 });
 </script>
 

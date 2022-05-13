@@ -92,4 +92,15 @@ const handleExcludeImage = () => {
     }
   }
 }
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .accomodation-preview-item {
+    & > #accomodation-preview__img {
+      width: 100%;
+    }
+  }
+}
 </style>

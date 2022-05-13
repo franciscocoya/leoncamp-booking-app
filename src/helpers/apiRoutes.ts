@@ -45,6 +45,11 @@ const API_ACCOMODATION_LOCATIONS = `${API_BASE_URL}${import.meta.env.VITE_API_AC
 const API_BOOKINGS = `${API_BASE_URL}${import.meta.env.VITE_API_BOOKINGS}`;
 // -----------------------------------------------------------------------------
 
+// -- Rutas de reservas
+
+const API_PAYMENTS = `${API_BASE_URL}${import.meta.env.VITE_API_PAYMENTS}`;
+// -----------------------------------------------------------------------------
+
 export {
   LOGIN_URL,
   SIGNUP_URL,
@@ -57,4 +62,5 @@ export {
   API_ACCOMODATION_RULES,
   API_ACCOMODATION_LOCATIONS,
   API_BOOKINGS,
+  API_PAYMENTS
 };

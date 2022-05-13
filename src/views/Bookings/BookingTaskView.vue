@@ -2,24 +2,39 @@
 import { onMounted, ref } from "vue";
 
 // Service
-import { listAccomodationBookingDates } from "@/services/booking/BookingService";
+import {
+  listAccomodationBookingDates,
+  addNewBooking,
+} from "@/services/booking/BookingService";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useBookingStore } from "@/store/booking";
+import { useAppContextStore } from "@/store/appContext";
+import { useUserStore } from "@/store/user";
 
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import { DatePicker } from "v-calendar";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
+// Iconos
+import {
+  ICON_PAYMENT_CREDIT_CARD,
+  ICON_PAYMENT_PAYPAL,
+} from "@/helpers/iconConstants";
+
 // Utils
 import { getDateDiffOnDays, formatDateType1 } from "@/helpers/utils";
 
 const accomodationStore = useAccomodationStore();
 const bookingStore = useBookingStore();
+const appContextStore = useAppContextStore();
+const userStore = useUserStore();
 
 const notAvailableBookingDates = ref([]);
+
+const paymentMethodToShow = ref(1);
 
 /**
  * Rango de fechas seleccionado.
@@ -52,31 +67,52 @@ const handleGuestsInput = (value) => {
   handleSelectedDates();
 };
 
-onMounted(async () => {
-  let params = new URLSearchParams(window.location.search);
-  console.log(params.get("regnum"));
-  await accomodationStore.getAccomodationByRegisterNumber(params.get("regnum"));
+/**
+ * Muestra el input correspondiente al método de pago seleccionado.
+ */
+const showPaymentMethodInput = (methodNum) => {
+  paymentMethodToShow.value = methodNum;
+};
 
-  const datesToDisable = await listAccomodationBookingDates(
-    params.get("regnum")
-  );
+/**
+ * Manejador del evento click de botón confirmar reserva.
+ */
+const handleConfirmBooking = async () => {
+  await addNewBooking(bookingStore.$state, paymentMethodToShow.value);
+};
 
+/**
+ * Deshabilidta las fechas reservedas en el calendario.
+ */
+const disableReservedDates = async (regNumber) => {
+  const datesToDisable = await listAccomodationBookingDates(regNumber);
+
+  // Deshabilitar las fechas reservadas en el calendario.
   datesToDisable.map((dateRange) => {
-    //   let checkIn = dateRange[0];
-    //     let checkOut = dateRange[1];
-    // console.log(checkIn[0], checkIn[1], checkIn[2]);
     notAvailableBookingDates.value.push({
       start: new Date(dateRange[0][0], dateRange[0][1] - 1, dateRange[0][2]),
       end: new Date(dateRange[1][0], dateRange[1][1] - 1, dateRange[1][2]),
     });
   });
+};
+
+onMounted(async () => {
+  let params = new URLSearchParams(window.location.search);
+  await accomodationStore.getAccomodationByRegisterNumber(params.get("regnum"));
+  await disableReservedDates(params.get("regnum"));
+
+  // Usuario en sesión
+  const userId = JSON.parse(sessionStorage.getItem("user") || "{}")?.id;
+  const userData = await userStore.getUserDataById(userId);
+  bookingStore.userHost = userData;
 });
 </script>
 
 <template>
   <div class="booking-task-view">
-    <h2 v-once>
-      Reserva para el alojamiento {{ accomodationStore.registerNumber }}
+    <h2>
+      Reserva para el alojamiento
+      <span>{{ accomodationStore.registerNumber }}</span>
     </h2>
     <div class="booking-task-view__wrapper">
       <!-- Columna izquierda -->
@@ -90,8 +126,9 @@ onMounted(async () => {
         />
         <div>
           <h3 v-once>Detalles del precio</h3>
-          <div>
-            <div>
+          <ul>
+            <!-- Precio noche x días -->
+            <li>
               <p>
                 {{ accomodationStore.pricePerNight }} € x
                 {{ getBookingNights() }} noches
@@ -100,8 +137,9 @@ onMounted(async () => {
                 {{ bookingStore.amount > 0 ? bookingStore.amount : "-" }}
                 <span v-once>€</span>
               </p>
-            </div>
-            <div>
+            </li>
+            <!-- Comisión aplicada -->
+            <li>
               <p v-once>Comisión servicio</p>
               <p>
                 {{
@@ -109,8 +147,9 @@ onMounted(async () => {
                 }}
                 <span>€</span>
               </p>
-            </div>
-            <div>
+            </li>
+            <!-- Precio total (EUR) -->
+            <li>
               <p v-once>Total(EUR)</p>
               <p>
                 {{
@@ -118,25 +157,25 @@ onMounted(async () => {
                 }}
                 <span v-once>€</span>
               </p>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
 
       <!-- Columna derecha -->
       <div class="accomodation_details">
-        <div>
-          <p>
+        <ul class="accomodation_details__simplified_data">
+          <li>
             {{ accomodationStore.category.accomodationCategory }} en
             {{ accomodationStore.accomodationLocation.city }}
-          </p>
-          <p>
+          </li>
+          <li>
             {{ accomodationStore.accomodationLocation.direction }}
-          </p>
-          <p>
+          </li>
+          <li>
             Hasta un máximo de {{ accomodationStore.numOfGuests }} huéspedes.
-          </p>
-        </div>
+          </li>
+        </ul>
 
         <!-- Calendario seleccion fechas reserva -->
         <DatePicker
@@ -145,12 +184,14 @@ onMounted(async () => {
           v-model="range"
           :from-page="new Date()"
           is-range
-          :columns="$screens({ default: 1, lg: 2 })"
+          :columns="$screens({ default: 1, lg: 2, sm: 1 })"
           color="orange"
           :min-date="new Date()"
           transition="slide-h"
           :disabled-dates="notAvailableBookingDates"
+          :is-expanded="appContextStore.isMobile"
           @dayclick="handleSelectedDates"
+          id="data-picker-booking-dates"
         />
 
         <!-- Desglose precios -->
@@ -175,21 +216,60 @@ onMounted(async () => {
             inputLabel="Húespedes"
             inputType="number"
             :inputNumberMax="accomodationStore.numOfGuests"
+            :inputValue="bookingStore.numOfGuests"
             @handleInput="(value) => handleGuestsInput(value)"
           />
+          <!-- Contenedor métodos de pago disponibles -->
           <div class="booking-payment-method-container">
             <p>Método de pago:</p>
+            <div class="booking-payment-method-container__radios">
+              <div>
+                <input
+                  type="radio"
+                  name="paymethod-type"
+                  @change="showPaymentMethodInput(1)"
+                  checked
+                />
+                <label>Tarjeta de crétito/débito</label>
+                <img
+                  :src="ICON_PAYMENT_CREDIT_CARD"
+                  alt="Pagar con tarjeta de crédito"
+                />
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="paymethod-type"
+                  @change="showPaymentMethodInput(2)"
+                />
+                <label>PayPal</label>
+                <img :src="ICON_PAYMENT_PAYPAL" alt="Pagar con Paypal" />
+              </div>
+            </div>
             <div>
-              <input type="radio" name="paymethod-type" />
-              <label>Tarjeta de crétito/débito</label>
-              <input type="radio" name="paymethod-type" />
-              <label>PayPal</label>
+              <LabelFormInput
+                v-if="paymentMethodToShow === 1"
+                inputLabel="Número de tarjeta"
+                :inputMaxCharacters="16"
+                :inputMinCharacters="16"
+                :inputValue="bookingStore.idPayment.cardNumber"
+                @handleInput="(value) => bookingStore.idPayment.cardNumber = value"
+              />
+              <LabelFormInput
+                v-if="paymentMethodToShow === 2"
+                inputLabel="Correo Cuenta PayPal"
+                inputType="email"
+                :inputMaxCharacters="70"
+                :inputValue="bookingStore.idPayment.accountEmail"
+                @handleInput="(value) => bookingStore.idPayment.accountEmail = value"
+              />
             </div>
           </div>
         </div>
         <BaseButton
           text="Confirmar reservar"
           buttonStyle="baseButton-secondary--filled"
+          @click="handleConfirmBooking"
         />
       </div>
     </div>
@@ -203,6 +283,21 @@ onMounted(async () => {
 // Estilos vista realización de una reserva
 .booking-task-view {
   @include flex-column;
+
+  & > h2 {
+    color: $color-primary;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 20px;
+    line-height: 2.5rem;
+
+    & > span {
+      background-color: $color-secondary;
+      color: #fff;
+      padding: 5px;
+      border-radius: $global-border-radius;
+    }
+  }
 
   & > .booking-task-view__wrapper {
     @include flex-row;
@@ -220,20 +315,33 @@ onMounted(async () => {
       }
 
       // Estilos contenedor detalles del precio
-      & > div > div {
+      & > div > ul {
         @include flex-column;
         gap: 10px;
+        list-style: none;
+        padding-left: 0;
 
-        & > div {
+        & > li {
           @include flex-row;
           justify-content: space-between;
+
+          // Separador desglose - precio total
+          &:last-child {
+            border-top: 1px solid $color-tertiary-light;
+          }
         }
       }
-    }
+    } // Fin estilos accomodation_image_thumbnail
 
     & > .accomodation_details {
       @include flex-column;
       gap: 20px;
+
+      & > .accomodation_details__simplified_data {
+        @include flex-column;
+        gap: 20px;
+        list-style: none;
+      }
 
       & > .booking-data-summary {
         @include flex-column;
@@ -244,8 +352,52 @@ onMounted(async () => {
           grid-template-columns: repeat(2, 1fr);
           grid-gap: 10px;
         }
+
+        & > .booking-payment-method-container {
+          @include flex-column;
+          gap: 20px;
+
+          & > .booking-payment-method-container__radios {
+            @include flex-column;
+            gap: 20px;
+
+            & > div {
+              @include flex-row;
+              align-items: center;
+              gap: 10px;
+
+              & > img {
+                width: 30px;
+                height: auto;
+              }
+            }
+          }
+        }
+      } // Fin estilos booking-data-summary
+    } // Fin estilos accomodation_details
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .booking-task-view {
+    & > .booking-task-view__wrapper {
+      margin: 30px;
+      & > .accomodation_image_thumbnail {
+        & > img {
+          width: 100%;
+        }
+      } // Fin accomodation_image_thumbnail
+
+      & > .accomodation_details {
+        width: 100%;
+        & > .data-picker-booking-dates {
+          align-self: center;
+        }
       }
-    }
+    } // Fin estilos booking-task-view__wrapper
   }
 }
 </style>

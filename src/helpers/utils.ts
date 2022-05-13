@@ -23,6 +23,14 @@ const months = [
 
 const MAX_IMAGES_UPLOAD = 8;
 
+const SCREEN_BREAKPOINTS = {
+  xs: 480,
+  sm: 768,
+  md: 992,
+  lg: 1200,
+  xl: 1440,
+};
+
 /**
  * Formatea un fecha de un array a una cadena de texto en formato dd/mm/yy
  * Añade cero por la izquierda si el día o el mes son menores que 10.
@@ -143,5 +151,7 @@ export {
   getDateDiffOnDays,
   formatDateType1,
   cropTextByWordCount,
+  
   MAX_IMAGES_UPLOAD,
+  SCREEN_BREAKPOINTS
 };

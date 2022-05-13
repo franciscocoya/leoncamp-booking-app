@@ -6,11 +6,12 @@ import { RouterView, useRouter } from "vue-router";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Servicios
-import {addNewAccomodation} from "@/services/accomodation/AccomodationService";
-import {getUserDataById} from "@/services/user/userService";
+import { addNewAccomodation } from "@/services/accomodation/AccomodationService";
+import { getUserDataById } from "@/services/user/userService";
 
 // Store
-import {useAccomodationStore} from "@/store/accomodation";
+import { useAccomodationStore } from "@/store/accomodation";
+import {useAppContextStore} from "@/store/appContext";
 
 const router = useRouter();
 
@@ -19,10 +20,11 @@ const accomodationUploadSteps = [
   "accomodation-upload-location",
   "accomodation-upload-services",
   "accomodation-upload-rules",
-  "accomodation-upload-images"
+  "accomodation-upload-images",
 ];
 
 const accomodationStore = useAccomodationStore();
+const appContextStore = useAppContextStore();
 
 // Número de paso de subida de alojamiento
 const currentUploadStepNum = ref(1);
@@ -46,7 +48,7 @@ const showNextStep = () => {
 };
 
 /**
- * Finaliza la subida de un alojamiento, con todos los datos 
+ * Finaliza la subida de un alojamiento, con todos los datos
  * de los 5 pasos (Datos básicos, ubicación, servicios, reglas e imagenes)
  */
 const handleUploadAccomodation = async () => {
@@ -70,12 +72,15 @@ const showPreviousStep = () => {
 };
 
 onMounted(async () => {
+  currentUploadStepNum.value = 0;
   currentUploadStepRoute.value = router.currentRoute.value.name;
   currentUploadStepNum.value = accomodationUploadSteps.indexOf(
     currentUploadStepRoute.value
   );
-  // 
-  let currentUser = await getUserDataById(JSON.parse(sessionStorage.getItem("user")).id);
+  //
+  let currentUser = await getUserDataById(
+    JSON.parse(sessionStorage.getItem("user")).id
+  );
 
   accomodationStore.userHost = currentUser;
 });
@@ -105,11 +110,15 @@ onMounted(async () => {
           <BaseButton
             :text="`${currentUploadStepNum == 4 ? 'Finalizar' : 'Siguiente'}`"
             buttonStyle="baseButton-dark--filled--small"
-            @click="currentUploadStepNum == 4 ? handleUploadAccomodation() : showNextStep()"
+            @click="
+              currentUploadStepNum == 4
+                ? handleUploadAccomodation()
+                : showNextStep()
+            "
           />
         </div>
         <!-- TODO: Child component con el paso -->
-        <p>Paso {{ currentUploadStepNum + 1 }} de 5</p>
+        <p v-if="appContextStore.isMobile == false">Paso {{ currentUploadStepNum + 1 }} de 5</p>
       </div>
     </div>
   </div>
@@ -128,7 +137,7 @@ onMounted(async () => {
 
     & > h1 {
       text-align: center;
-      margin: 0;
+      margin-bottom: 30px;
       font-size: 1.5rem;
       font-weight: 400;
     }
@@ -139,7 +148,7 @@ onMounted(async () => {
 
     & > .accomodation_upload_steps {
       @include flex-column;
-      margin-top: 20px;
+      margin: 30px 0;
 
       // Estilos contenedor botones siguiente y volver
       & > .accomodation_upload_steps__buttons {
@@ -160,5 +169,22 @@ onMounted(async () => {
   font-weight: 400;
   text-transform: uppercase;
   margin-bottom: 20px;
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  :deep(h2) {
+    text-align: center;
+  }
+
+  .accomodation-upload-view {
+
+    // Estilos botones volver y siguiente en móvil
+    & > .accomodation-upload-view__body{
+      flex-direction: column-reverse;
+    }
+  }
 }
 </style>

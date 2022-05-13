@@ -15,6 +15,8 @@ import {
   ICON_ADD,
 } from "@/helpers/iconConstants";
 
+import { UPLOAD_ACCOMODATION_ROUTE } from "@/helpers/appRoutes";
+
 const router = useRouter();
 
 const emit = defineEmits(["showMenuMobile"]);
@@ -25,14 +27,18 @@ const handleShowMenuMobile = () => {
 
 const isLogged = ref(false);
 
+let userToken = ref(null);
+let userData = ref(null);
+
 onMounted(() => {
-  isLogged.value =
-    JSON.parse(localStorage.getItem("user"))?.token !== undefined;
+  userToken.value = JSON.parse(sessionStorage.getItem("user"))?.token;
+  userData.value = JSON.parse(sessionStorage.getItem("data"));
+  
+  isLogged.value = userToken !== null;
 });
 
 onUpdated(() => {
-  isLogged.value =
-    JSON.parse(localStorage.getItem("user"))?.token !== undefined;
+  isLogged.value = userToken !== null;
 });
 </script>
 
@@ -41,7 +47,8 @@ onUpdated(() => {
     <div class="header-mobile-wrapper">
       <ul>
         <!-- Icono Inicio -->
-        <li class="menu-mobile-item--active">
+        <!-- class="menu-mobile-item--active" -->
+        <li >
           <MenuIcon
             v-once
             :icon="ICON_MENU_HOME"
@@ -67,7 +74,7 @@ onUpdated(() => {
           <MenuIcon
             v-once
             :icon="ICON_ADD"
-            path="/bookings"
+            :path="`/account/${userData.name}-${userData.surname}${UPLOAD_ACCOMODATION_ROUTE}`"
             :iconSize="50"
             id="add-accomodation-menu-mobile"
           />
