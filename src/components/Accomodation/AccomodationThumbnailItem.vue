@@ -38,6 +38,8 @@ const props = defineProps({
   },
 });
 
+const currentUser = JSON.parse(sessionStorage.getItem("user"))?.id;
+
 const getAccomodationStarAverage = async () => {
   accomodationStore.stars = await accomodationStore.getStarAverage(
     accomodationStore.registerNumber
@@ -48,13 +50,6 @@ const handleDeleteAccomodation = async () => {
   await accomodationStore.deleteAccomodationBySavedAccId(props.savedAccId);
 };
 
-onMounted(async () => {
-  accomodationStore.registerNumber = props.accData?.registerNumber;
-  getAccomodationStarAverage();
-
-  await userStore.loadUserData();
-});
-
 const emit = defineEmits(["highlightMarker", "deselectMarker"]);
 
 const handleMouseEnter = () => {
@@ -64,6 +59,14 @@ const handleMouseEnter = () => {
 const handleMouseLeave = () => {
   emit("deselectMarker", props.accData.registerNumber);
 };
+onMounted(async () => {
+  accomodationStore.registerNumber = props.accData?.registerNumber;
+  getAccomodationStarAverage();
+
+  if (currentUser) {
+    await userStore.loadUserData();
+  }
+});
 </script>
 
 <template>
@@ -108,7 +111,7 @@ const handleMouseLeave = () => {
         <div>
           <!-- Icono guardar alojamiento -->
           <SavedAccomodationIcon
-            v-if="userStore.id !== accData.idUserHost.id"
+            v-if="userStore.id !== accData.idUserHost.id && currentUser"
             :regNumber="accData.registerNumber"
           />
           <div class="accomodation-icons">

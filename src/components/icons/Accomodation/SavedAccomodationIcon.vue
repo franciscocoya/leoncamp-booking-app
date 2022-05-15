@@ -32,7 +32,7 @@ const props = defineProps({
 });
 
 let isIconActive = ref(props.isActive);
-const currentUserId = JSON.parse(sessionStorage.getItem("user")).id;
+const currentUserId = JSON.parse(sessionStorage.getItem("user"))?.id;
 
 /**
  * Al hacer click se cambia el estado isActive y se añade el alojamiento

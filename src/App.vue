@@ -51,6 +51,7 @@ onMounted(() => {
   enableHeaderMobile.value = document.body.clientWidth < SCREEN_BREAKPOINTS.sm;
 
   appContextStore.isMobile = appContextStore.getIsMobile();
+  appContextStore.isTablet = appContextStore.getIsTabletOrSmaller();
 });
 </script>
 

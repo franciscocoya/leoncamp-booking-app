@@ -38,11 +38,10 @@ onMounted(async () => {
       : currentCoords.value.lng;
   });
 
-  const accomodationLocation = await getAccomodationLocationByCoords(
-    {
-      lat: accomodationStore.accomodationLocation.coords.lat, 
-      lng: accomodationStore.accomodationLocation.coords.lng}
-  );
+  const accomodationLocation = await getAccomodationLocationByCoords({
+    lat: accomodationStore.accomodationLocation.coords.lat,
+    lng: accomodationStore.accomodationLocation.coords.lng,
+  });
 
   accomodationStore.accomodationLocation.direction =
     accomodationLocation.address;
@@ -158,8 +157,27 @@ onMounted(async () => {
 
     // Estilos mapa
     & > .accomodation-upload-location__map {
+      width: 100%;
       height: 300px;
       flex: 1;
+    }
+  }
+}
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-md) {
+  .accomodation-upload-location-view {
+    & > .accomodation-upload-location__wrapper {
+      @include flex-column;
+      margin-bottom: 30px;
+
+      & > .accomodation-upload-location__map {
+        & > div {
+          height: 300px;
+        }
+      }
     }
   }
 }

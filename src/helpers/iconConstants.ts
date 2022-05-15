@@ -38,6 +38,7 @@ const ICON_MENU_PROFILE_IMAGE = `${IMG_PATH}icons/user-profile-solid-icon.svg`;
 const IMG_PROFILE_PLACEHOLDER = `${IMG_PATH}icons/profile-image-empty.png`;
 const IMG_NOT_FOUND_PLACEHOLDER = `${IMG_PATH}image-placeholder.jpg`;
 const IMG_APP_LOGO = `${IMG_PATH}logo.png`;
+const IMG_APP_LOGO_XL = `${IMG_PATH}logo_leonCamp.png`;
 
 /**
  * Imágenes pasos subida alojamiento.
@@ -75,6 +76,7 @@ export {
   ICON_MENU_PROFILE_IMAGE,
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
+  IMG_APP_LOGO_XL,
   IMG_NOT_FOUND_PLACEHOLDER,
   IMG_UPLOAD_ACCOMODATION_STEP_1_A,
   IMG_UPLOAD_ACCOMODATION_STEP_1_B,

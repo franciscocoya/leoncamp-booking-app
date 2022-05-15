@@ -9,7 +9,7 @@ import { useAccomodationStore } from "@/store/accomodation";
 import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
 
 // Service
-import {getAccomodationLocationByCoords} from '@/services/accomodation/AccomodationService';
+import { getAccomodationLocationByCoords } from "@/services/accomodation/AccomodationService";
 
 const accomodationStore = useAccomodationStore();
 
@@ -37,6 +37,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  mapZoom: {
+    type: Number,
+    default: 14,
+  },
 });
 
 onMounted(() => {
@@ -47,7 +51,7 @@ onMounted(() => {
     // starting position [lng, lat]
     center: [props.lng, props.lat],
     minzoom: 1.3,
-    zoom: 14, // starting zoom
+    zoom: props.mapZoom, // starting zoom
   });
 
   // Marcador
@@ -73,7 +77,10 @@ onMounted(() => {
     const lngLat = await marker.getLngLat();
     accomodationStore.accomodationLocation.coords.lat = lngLat.lat;
     accomodationStore.accomodationLocation.coords.lng = lngLat.lng;
-    const resultLocation = await getAccomodationLocationByCoords({lat: lngLat.lat, lng: lngLat.lng});
+    const resultLocation = await getAccomodationLocationByCoords({
+      lat: lngLat.lat,
+      lng: lngLat.lng,
+    });
 
     accomodationStore.accomodationLocation.direction = resultLocation.address;
     accomodationStore.accomodationLocation.city = resultLocation.city;

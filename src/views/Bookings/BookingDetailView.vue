@@ -2,15 +2,14 @@
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { jsPDF } from "jspdf";
-
-// Default export is a4 paper, portrait, using millimeters for units
-const doc = new jsPDF();
-
-doc.text("Hello world!", 10, 10);
+// Store
+import { useAppContextStore } from "@/store/appContext";
+import { useUserStore } from "@/store/user";
+import { useBookingStore } from "@/store/booking";
 
 // Componentes
 import SingleAccomodationMap from "@/components/Maps/SingleAccomodationMap.vue";
+import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import UserAccountSummaryDataItem from "@/components/Account/UserAccountSummaryDataItem.vue";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
@@ -20,31 +19,60 @@ import IconButton from "@/components/Buttons/IconButton.vue";
 // Icons
 import { ICON_DOWNLOAD } from "@/helpers/iconConstants";
 
-import { formatArrayAsDate } from "@/helpers/utils";
+// Generador de la factura en PDF
+import { generateReceipt } from "@/helpers/receiptGenerator";
 
-// Store
-import { useBookingStore } from "@/store/booking";
+import {
+  formatArrayAsDate,
+  getDateDiffOnDays,
+  convertArrayToDate,
+} from "@/helpers/utils";
+
 const bookingStore = useBookingStore();
+const appContextStore = useAppContextStore();
+const userStore = useUserStore();
 
 const bookingData = ref({});
 
 const router = useRouter();
 
+// Datos del usuario anfitrión de la reserva
+const userHostData = ref({});
+const currentUserData = ref({});
+
 const handleGenerateReceipt = () => {
   console.log("hola");
-  doc.output("dataurlnewwindow");
+  generateReceipt(bookingData.value, userHostData.value, currentUserData.value);
 };
 
 onMounted(async () => {
   const bookingId = router.currentRoute.value.params.bookingId;
   bookingData.value = await bookingStore.getBookingDataById(bookingId);
+  userHostData.value = await userStore.getUserDataById(
+    bookingData?.value.idAccomodation.idUserHost.id
+  );
+
+  currentUserData.value = await userStore.getUserDataById(
+    JSON.parse(sessionStorage.getItem("user")).id
+  );
 });
 </script>
 
 <template>
   <div class="booking-detail-view">
     <div class="booking-detail__data">
-      <h1>Reserva</h1>
+      <div class="booking-detail_data__header">
+        <h1>
+          Reserva alojamiento
+          <span>{{ bookingData?.idAccomodation?.registerNumber }}</span>
+        </h1>
+        <!-- Botón ver anuncio alojamiento -->
+        <BaseButton
+          text="Ver anuncio"
+          buttonStyle="baseButton-primary--filled"
+          :fullWidth="appContextStore.isMobile"
+        />
+      </div>
       <div class="booking_detail_data__wrapper">
         <!-- Imágenes del alojamiento -->
         <BaseCarousel
@@ -59,29 +87,32 @@ onMounted(async () => {
         <!-- Datos usuario host -->
         <h2>Anfitrión</h2>
         <UserAccountSummaryDataItem
-          :name="bookingData?.idAccomodation?.idUserHost?.name"
-          :surname="bookingData?.idAccomodation?.idUserHost?.surname"
-          :profileImage="bookingData?.idAccomodation?.idUserHost?.profileImage"
-          :createdAt="bookingData?.idAccomodation?.idUserHost?.createdAt"
+          :name="userHostData?.name"
+          :surname="userHostData?.surname"
+          :profileImage="userHostData?.profileImage"
+          :createdAt="userHostData?.createdAt"
         />
 
-        <!-- Fechas reserva -->
+        <!-- Sección fechas reserva -->
         <section class="booking_detail_data__dates">
           <h2>Fechas reserva</h2>
-          <LabelFormInput
-            :inputValue="formatArrayAsDate(bookingData.checkIn)"
-            :isReadonly="true"
-            inputLabel="Check-In"
-          />
-          <LabelFormInput
-            :inputValue="formatArrayAsDate(bookingData.checkOut)"
-            :isReadonly="true"
-            inputLabel="Check-Out"
-          />
+          <div class="booking_detail_data__dates_container">
+            <LabelFormInput
+              :inputValue="formatArrayAsDate(bookingData.checkIn)"
+              :isReadonly="true"
+              inputLabel="Check-In"
+            />
+            <LabelFormInput
+              :inputValue="formatArrayAsDate(bookingData.checkOut)"
+              :isReadonly="true"
+              inputLabel="Check-Out"
+            />
+          </div>
         </section>
 
-        <div class="booking_detail_data__price_summary">
-          <section class="booking_detail_data__price_summary__price">
+        <!-- Sección resumen de coste y desglose de la reserva -->
+        <section class="booking_detail_data__price_summary">
+          <div class="booking_detail_data__price_summary__price">
             <h2>Resumen pago</h2>
             <ul>
               <li>
@@ -92,11 +123,16 @@ onMounted(async () => {
               </li>
               <li>
                 <span
-                  >Coste ({{ bookingData?.numOfGuests }}
+                  >Coste ( {{ bookingData?.idAccomodation?.pricePerNight }} € x
                   {{
-                    bookingData?.numOfGuests > 1 ? "huéspedes" : "huésped"
-                  }})</span
-                >
+                    bookingData?.checkIn &&
+                    getDateDiffOnDays(
+                      convertArrayToDate(bookingData?.checkIn),
+                      convertArrayToDate(bookingData?.checkOut)
+                    )
+                  }}
+                  noches )
+                </span>
                 <span>{{ bookingData?.amount }} €</span>
               </li>
               <li>
@@ -115,22 +151,44 @@ onMounted(async () => {
               buttonWidth="250px"
               @click="handleGenerateReceipt"
             />
-          </section>
-        </div>
+          </div>
+        </section>
 
-        <!-- Botón ver anuncio alojamiento -->
-        <BaseButton text="Ver anuncio" buttonStyle="baseButton-dark--filled" />
+        <section
+          v-if="appContextStore.isTablet"
+          class="booking_detail_data__mobileMap"
+        >
+          <h2>Ubicación</h2>
+          <p>
+            {{ bookingData?.idAccomodation?.idAccomodationLocation.direction }},
+            {{ bookingData?.idAccomodation?.idAccomodationLocation.city }} -
+            {{ bookingData?.idAccomodation?.idAccomodationLocation.zip }}
+          </p>
+          <!-- <ThumbnailMap
+            :lat="
+              bookingData &&
+              bookingData?.idAccomodation?.idAccomodationLocation?.latitude
+            "
+            :lng="
+              bookingData &&
+              bookingData?.idAccomodation?.idAccomodationLocation?.longitude
+            "
+            mapWidth="100%"
+            mapHeight="350px"
+          /> -->
+        </section>
       </div>
     </div>
-    <div class="booking-detail_map">
+    <!-- Mapa ubicación alojamiento -->
+    <div class="booking-detail_map" v-if="!appContextStore.isTablet">
       <SingleAccomodationMap
         :lat="
           bookingData &&
-          bookingData?.idAccomodation?.idAccomodationLocation.latitude
+          bookingData?.idAccomodation?.idAccomodationLocation?.latitude
         "
         :lng="
           bookingData &&
-          bookingData?.idAccomodation?.idAccomodationLocation.longitude
+          bookingData?.idAccomodation?.idAccomodationLocation?.longitude
         "
         :mapZoom="18"
       />
@@ -160,24 +218,108 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
 
 .booking-detail-view {
   display: grid;
   grid-template-columns: auto 55%;
-  height: 100vh;
-
+  // height: 100vh;
   & > .booking-detail__data {
+    @include flex-column;
+    margin-top: 30px;
+
+    & > .booking-detail_data__header {
+      @include flex-row-center;
+      flex-wrap: wrap;
+      gap: 20px;
+      & > h1 {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 400;
+        & > span {
+          font-size: 2rem;
+          font-weight: 700;
+          color: $color-primary;
+          background-color: $color-tertiary-light;
+          padding: 5px 10px;
+          border-radius: $global-border-radius;
+        }
+      }
+    }
     & > .booking_detail_data__wrapper {
       @include flex-column;
       padding: 20px;
       gap: 20px;
 
       & > .booking_detail_data__dates {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        @include flex-column;
         gap: 20px;
+
+        & > .booking_detail_data__dates_container {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        } // FIn estilos booking_detail_data__dates_container
+      } // Fin estilos booking_detail_data__dates
+
+      & > .booking_detail_data__price_summary {
+        @include flex-column;
+        gap: 20px;
+
+        & > .booking_detail_data__price_summary__price {
+          @include flex-column;
+          gap: 20px;
+
+          & > ul {
+            @include flex-column;
+            gap: 30px;
+            padding-left: 0;
+
+            & > li {
+              @include flex-row;
+              justify-content: space-between;
+              font-size: 1rem;
+              padding: 10px 0;
+
+              &:last-child {
+                font-weight: 700;
+                font-size: 1.2rem;
+                text-transform: uppercase;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
       }
-    }
+
+      & > .booking_detail_data__mobileMap {
+        @include flex-column;
+        gap: 10px;
+        margin-top: 20px;
+        border-top: 2px solid $color-tertiary-light;
+        padding-top: 30px;
+
+        & > h2 {
+          color: $color-primary;
+          font-weight: 400;
+        }
+
+        & > p {
+          font-size: 1rem;
+          color: $color-primary;
+        }
+      }
+    } // Fin estilos booking_detail_data__wrapper
+  } // Fin estilos booking-detail__data
+} // Fin estilos booking-detail-view
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-md) {
+  .booking-detail-view {
+    @include flex-column;
+    margin-bottom: 50px;
   }
 }
 </style>

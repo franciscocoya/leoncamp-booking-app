@@ -6,7 +6,7 @@ import { useRouter } from "vue-router";
 import AccomodationImagesGallery from "@/components/Accomodation/AccomodationImagesGallery.vue";
 import AccomodationServicesItem from "@/components/Accomodation/AccomodationServicesItem.vue";
 import AccomodationReviewsItem from "@/components/Accomodation/AccomodationReview/AccomodationReviewsItem.vue";
-// import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
+import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 
 // Utils
@@ -202,12 +202,12 @@ onMounted(async () => {
               {{ accomodationStore.accomodationLocation.city }}
             </p>
           </div>
-          <!-- <ThumbnailMap
+          <ThumbnailMap
             :lat="accomodationStore.accomodationLocation.latitude"
             :lng="accomodationStore.accomodationLocation.longitude"
-            :mapWidth="800"
-            :mapHeight="450"
-          /> -->
+            mapWidth="800px"
+            mapHeight="450px"
+          />
         </section>
 
         <!-- Sección detalles anfitrión -->
