@@ -17,6 +17,14 @@ import { useUserStore } from "@/store/user";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import { DatePicker } from "v-calendar";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
+import BaseMessage from "@/components/Forms/Messages/BaseMessageItem.vue";
+
+// Validacion formularios
+import {
+  checkFieldNotBlank,
+  checkValidEmail,
+  checkNumberPositive,
+} from "@/helpers/formValidator";
 
 // Iconos
 import {
@@ -32,39 +40,64 @@ const bookingStore = useBookingStore();
 const appContextStore = useAppContextStore();
 const userStore = useUserStore();
 
+// Lista de las fechas reservadas o pendientes de reserva del alojamiento.
 const notAvailableBookingDates = ref([]);
 
+// Método de pago a mostrar: 1 para tarjeta de crédito y 2 para PayPal
 const paymentMethodToShow = ref(1);
 
-/**
- * Rango de fechas seleccionado.
- */
-const range = ref({
-  start: new Date(),
-  end: new Date(),
-});
+// Mensajes de error al realizar la reserva.
+let bookingErrors = ref([]);
+let showBookingErrors = ref(false);
 
-const getBookingNights = () => {
-  return getDateDiffOnDays(
-    new Date(range.value.start),
-    new Date(range.value.end)
-  );
+// Rango de fechas seleccionado
+let range = ref({
+  start: null,
+  end: null,
+});
+/**
+ * Borra las fechas seleccionadas.
+ */
+const clearSelectedDates = () => {
+  range.value = null;
 };
 
+/**
+ * Número de noches seleccionadas.
+ */
+const getBookingNights = () => {
+  let nights = 0;
+  if (range.value) {
+    nights = getDateDiffOnDays(
+      new Date(range.value.start),
+      new Date(range.value.end)
+    );
+  }
+
+  return nights;
+};
+
+/**
+ * Manejador de la selección de fechas y cálculo dinámico de precios.
+ */
 const handleSelectedDates = () => {
-  const pricePerNight = accomodationStore.pricePerNight;
-  const amount = pricePerNight * getBookingNights();
-  const bookingFee = amount * 0.1;
-  const totalCost = amount + bookingFee;
+  let pricePerNight = accomodationStore.pricePerNight;
+  let amount = pricePerNight * getBookingNights();
+  let bookingFee = amount * 0.1;
+  let totalCost = amount + bookingFee;
 
   bookingStore.amount = amount.toFixed(2);
   bookingStore.serviceFee = bookingFee.toFixed(2);
   bookingStore.totalPrice = totalCost.toFixed(2);
+  bookingStore.checkIn = range.value.start;
+  bookingStore.checkOut = range.value.end;
 };
 
+/**
+ * Manejador número huéspedes seleccionados.
+ */
 const handleGuestsInput = (value) => {
   bookingStore.numOfGuests = value;
-  handleSelectedDates();
 };
 
 /**
@@ -78,11 +111,77 @@ const showPaymentMethodInput = (methodNum) => {
  * Manejador del evento click de botón confirmar reserva.
  */
 const handleConfirmBooking = async () => {
-  await addNewBooking(bookingStore.$state, paymentMethodToShow.value);
+  if (checkBookingData()) {
+    await addNewBooking(
+      bookingStore.$state,
+      paymentMethodToShow.value,
+      (err) => {
+        bookingErrors.value.push(err.data.message);
+        showBookingErrors.value = true;
+        console.log(err);
+      }
+    );
+  } else {
+    if (showBookingErrors.value) {
+      setTimeout(() => {
+        showBookingErrors.value = false;
+      }, 6000);
+    }
+  }
 };
 
 /**
- * Deshabilidta las fechas reservedas en el calendario.
+ * Validación previa a la reserva.
+ */
+const checkBookingData = () => {
+  let isValid = true;
+  bookingErrors.value = [];
+
+  // Validar fechas seleccionadas
+  if (!range.value?.start) {
+    bookingErrors.value.push("Selecciona una fecha de entrada");
+    isValid = false;
+  }
+
+  if (!range.value?.end) {
+    bookingErrors.value.push("Selecciona una fecha de salida");
+    isValid = false;
+  }
+
+  // Validar número de huéspedes
+  if (!bookingStore.numOfGuests) {
+    bookingErrors.value.push("Selecciona el número de huéspedes");
+    isValid = false;
+  }
+  // Validar método de pago
+  if (paymentMethodToShow.value === 1) {
+    if (!bookingStore.idPayment.cardNumber) {
+      bookingErrors.value.push("Introduce el número de la tarjeta de crédito");
+      isValid = false;
+    }
+  } else if (paymentMethodToShow.value === 2) {
+    if (!bookingStore.idPayment.accountEmail) {
+      bookingErrors.value.push(
+        "Introduce el correo electrónico de tu cuenta PayPal"
+      );
+      isValid = false;
+    }
+  }
+
+  if (bookingStore.numOfGuests > accomodationStore.numOfGuests) {
+    bookingErrors.value.push(
+      `El número de huéspedes máximo es de ${accomodationStore.numOfGuests}`
+    );
+    isValid = false;
+  }
+
+  showBookingErrors.value = bookingErrors.value.length > 0;
+
+  return isValid;
+};
+
+/**
+ * Deshabilita las fechas reservedas en el calendario.
  */
 const disableReservedDates = async (regNumber) => {
   const datesToDisable = await listAccomodationBookingDates(regNumber);
@@ -105,6 +204,13 @@ onMounted(async () => {
   const userId = JSON.parse(sessionStorage.getItem("user") || "{}")?.id;
   const userData = await userStore.getUserDataById(userId);
   bookingStore.userHost = userData;
+
+  const currentAccomodation =
+    await accomodationStore.getAccomodationByRegisterNumber(
+      params.get("regnum")
+    );
+
+  bookingStore.accomodation = currentAccomodation;
 });
 </script>
 
@@ -130,11 +236,21 @@ onMounted(async () => {
             <!-- Precio noche x días -->
             <li>
               <p>
-                {{ accomodationStore.pricePerNight }} € x
-                {{ getBookingNights() }} noches
+                {{ accomodationStore.pricePerNight }} €
+                {{
+                  getBookingNights() > 0 && range
+                    ? getBookingNights() > 1
+                      ? " x " + getBookingNights() + " días"
+                      : " x " + getBookingNights() + " día"
+                    : ""
+                }}
               </p>
               <p>
-                {{ bookingStore.amount > 0 ? bookingStore.amount : "-" }}
+                {{
+                  bookingStore.amount > 0 && range !== null
+                    ? bookingStore.amount
+                    : "-"
+                }}
                 <span v-once>€</span>
               </p>
             </li>
@@ -143,7 +259,9 @@ onMounted(async () => {
               <p v-once>Comisión servicio</p>
               <p>
                 {{
-                  bookingStore.serviceFee > 0 ? bookingStore.serviceFee : "-"
+                  bookingStore.serviceFee > 0 && range !== null
+                    ? bookingStore.serviceFee
+                    : "-"
                 }}
                 <span>€</span>
               </p>
@@ -153,7 +271,9 @@ onMounted(async () => {
               <p v-once>Total(EUR)</p>
               <p>
                 {{
-                  bookingStore.totalPrice > 0 ? bookingStore.totalPrice : "-"
+                  bookingStore.totalPrice > 0 && range !== null
+                    ? bookingStore.totalPrice
+                    : "-"
                 }}
                 <span v-once>€</span>
               </p>
@@ -193,6 +313,12 @@ onMounted(async () => {
           @dayclick="handleSelectedDates"
           id="data-picker-booking-dates"
         />
+        <BaseButton
+          text="Limpiar fechas"
+          buttonStyle="baseButton-dark--outlined"
+          @click="clearSelectedDates"
+          id="bt-clear-selected-booking-dates"
+        />
 
         <!-- Desglose precios -->
         <div class="booking-data-summary">
@@ -200,7 +326,7 @@ onMounted(async () => {
             <LabelFormInput
               inputLabel="Check-In"
               inputType="text"
-              :inputValue="range.start && formatDateType1(range.start)"
+              :inputValue="range?.start ? formatDateType1(range.start) : ''"
               :isReadonly="true"
               id="input-booking-check-in"
             />
@@ -208,7 +334,7 @@ onMounted(async () => {
               inputLabel="Check-Out"
               inputType="text"
               :isReadonly="true"
-              :inputValue="range.end && formatDateType1(range.end)"
+              :inputValue="range?.end ? formatDateType1(range.end) : ''"
               id="input-booking-check-out"
             />
           </div>
@@ -222,6 +348,11 @@ onMounted(async () => {
           <!-- Contenedor métodos de pago disponibles -->
           <div class="booking-payment-method-container">
             <p>Método de pago:</p>
+            <p class="payment-booking-info">
+              Los datos no serán tratados hasta el día de checkIn de la reserva.
+              En caso de cancelarse, los datos de pago (Número de tarjeta o
+              correo electrónico de PayPal) se borrarán del sistema.
+            </p>
             <div class="booking-payment-method-container__radios">
               <div>
                 <input
@@ -229,6 +360,7 @@ onMounted(async () => {
                   name="paymethod-type"
                   @change="showPaymentMethodInput(1)"
                   checked
+                  :isPasteAvailable="true"
                 />
                 <label>Tarjeta de crétito/débito</label>
                 <img
@@ -250,10 +382,13 @@ onMounted(async () => {
               <LabelFormInput
                 v-if="paymentMethodToShow === 1"
                 inputLabel="Número de tarjeta"
+                inputType="number"
                 :inputMaxCharacters="16"
                 :inputMinCharacters="16"
                 :inputValue="bookingStore.idPayment.cardNumber"
-                @handleInput="(value) => bookingStore.idPayment.cardNumber = value"
+                @handleInput="
+                  (value) => (bookingStore.idPayment.cardNumber = value)
+                "
               />
               <LabelFormInput
                 v-if="paymentMethodToShow === 2"
@@ -261,11 +396,24 @@ onMounted(async () => {
                 inputType="email"
                 :inputMaxCharacters="70"
                 :inputValue="bookingStore.idPayment.accountEmail"
-                @handleInput="(value) => bookingStore.idPayment.accountEmail = value"
+                @handleInput="
+                  (value) => (bookingStore.idPayment.accountEmail = value)
+                "
               />
             </div>
           </div>
         </div>
+        <!-- Mensajes de error -->
+        <Transition name="fade">
+          <div v-if="showBookingErrors">
+            <BaseMessage
+              msgType="error"
+              v-for="(msgContent, index) in bookingErrors"
+              :key="index"
+              :msg="msgContent"
+            />
+          </div>
+        </Transition>
         <BaseButton
           text="Confirmar reservar"
           buttonStyle="baseButton-secondary--filled"
@@ -302,7 +450,6 @@ onMounted(async () => {
   & > .booking-task-view__wrapper {
     @include flex-row;
     gap: 30px;
-    flex-wrap: wrap;
     margin: 50px;
 
     // Estilos imagen del alojamiento
@@ -337,6 +484,10 @@ onMounted(async () => {
       @include flex-column;
       gap: 20px;
 
+      & > #bt-clear-selected-booking-dates {
+        align-self: flex-end;
+      }
+
       & > .accomodation_details__simplified_data {
         @include flex-column;
         gap: 20px;
@@ -356,6 +507,17 @@ onMounted(async () => {
         & > .booking-payment-method-container {
           @include flex-column;
           gap: 20px;
+
+          & > .payment-booking-info {
+            max-width: 100%;
+            background-color: $color-warning-light;
+            color: $color-dark;
+            font-size: 1rem;
+            padding: 20px;
+            margin: 0;
+            border: 1px solid $color-warning;
+            border-radius: $global-border-radius;
+          }
 
           & > .booking-payment-method-container__radios {
             @include flex-column;
@@ -384,6 +546,7 @@ onMounted(async () => {
 @media (max-width: $breakpoint-sm) {
   .booking-task-view {
     & > .booking-task-view__wrapper {
+      flex-wrap: wrap;
       margin: 30px;
       & > .accomodation_image_thumbnail {
         & > img {

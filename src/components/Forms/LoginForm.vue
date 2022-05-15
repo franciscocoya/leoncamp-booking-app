@@ -61,17 +61,19 @@ const showErrors = ref(false);
 const handleLogin = async () => {
   if (formCheck()) {
     const err = await userStore.login();
+    console.log(err);
     if (err !== null) {
       authStore.errors.push(err);
     }
   }
-  showErrors.value = true;
-
-  // Cerrar automáticamente los mensajes de error transcurridos 6 segundos.
-  setTimeout(() => {
-    showErrors.value = false;
-    authStore.errors = [];
-  }, 6000);
+  if (authStore.errors.length > 0) {
+    showErrors.value = true;
+    // Cerrar automáticamente los mensajes de error transcurridos 6 segundos.
+    setTimeout(() => {
+      showErrors.value = false;
+      authStore.errors = [];
+    }, 6000);
+  }
 };
 </script>
 

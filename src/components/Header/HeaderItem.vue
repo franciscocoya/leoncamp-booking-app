@@ -44,7 +44,7 @@ onMounted(() => {
 
 <template>
   <header>
-    <AppLogoIcon v-once />
+    <AppLogoIcon v-once :iconWidth="200" :iconHeight="100" />
 
     <SearchBarItem
       v-once
@@ -85,7 +85,7 @@ onMounted(() => {
 header {
   height: $header-height;
   display: grid;
-  grid-template-columns: auto 40% auto auto;
+  grid-template-columns: 200px 40% auto auto;
   background-color: #ffffff;
   gap: 10px;
   align-items: center;

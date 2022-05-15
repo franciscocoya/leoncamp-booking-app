@@ -30,7 +30,7 @@ defineProps({
     default: 200,
   },
   slideWidth: {
-    type: Number,
+    type: String,
     default: 300,
   },
 });
@@ -58,14 +58,12 @@ defineProps({
       <swiper-slide
         v-for="(img, index) in images"
         :key="index"
-        :style="`width: ${slideWidth}px`"
+        :style="`width: ${slideWidth}`"
       >
         <img :src="img" alt="" />
       </swiper-slide>
     </swiper>
-    <div v-else class="carousel-no-images">
-      No hay imágenes
-    </div>
+    <div v-else class="carousel-no-images">No hay imágenes</div>
   </div>
 </template>
 

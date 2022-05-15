@@ -39,36 +39,45 @@ const props = defineProps({
     type: Number,
     default: 3,
   },
-  inputNumberMax : {
+  inputNumberMax: {
     type: Number,
     default: 3,
   },
-  // Si se selecciona esta opción, el input convertirá el texto a mayúsculas 
+  // Si se selecciona esta opción, el input convertirá el texto a mayúsculas
   // mientras el usuario teclea.
   convertInputToUpper: {
     type: Boolean,
     default: false,
-  }
+  },
+  isPasteAvailable: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 let disableField: boolean = ref(false).value;
 
-const emit = defineEmits(["handleInput"]);
+const emit = defineEmits(["handleInput", "handleBlur"]);
 
 function updateInputValue(value: string) {
   disableField = false;
   emit("handleInput", value);
 }
 
+const updateInputValueOnBlur = (value) => {
+  disableField = false;
+  emit("handleBlur", value);
+};
+
 const disableInput = (disable: boolean) => {
   disableField = disable;
 };
 
 /**
- * Manejador del evento keydown. Si la propiedad convertInputToUpper es true, 
+ * Manejador del evento keydown. Si la propiedad convertInputToUpper es true,
  * se convertirá el texto a mayúsculas mientras el usuario teclea.
  */
-const handleKeyDown = (e: { target: { value: string; }; }) => {
+const handleKeyDown = (e: { target: { value: string } }) => {
   if (props.convertInputToUpper) {
     e.target.value = e.target.value.toUpperCase();
   }
@@ -76,15 +85,18 @@ const handleKeyDown = (e: { target: { value: string; }; }) => {
 
 onMounted(() => {
   disableField = props.isReadonly;
-  document.getElementById(props.inputLabel)?.addEventListener('paste', (e) => e.preventDefault());
-  document.getElementById(props.inputLabel)?.addEventListener(
-    "keydown",
-    (e: KeyboardEvent) => {
+  if (props.isPasteAvailable) {
+    document
+      .getElementById(props.inputLabel)
+      ?.addEventListener("paste", (e) => e.preventDefault());
+  }
+  document
+    .getElementById(props.inputLabel)
+    ?.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "-") {
         e.preventDefault();
       }
-    }
-  );
+    });
 });
 </script>
 
@@ -112,7 +124,7 @@ onMounted(() => {
     />
 
     <input
-      v-else
+      v-else-if="inputType === 'number'"
       :id="inputLabel"
       :type="inputType"
       :placeholder="inputPlaceholder"
@@ -124,6 +136,17 @@ onMounted(() => {
       :size="inputNumberMax"
       :step="1"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
+    />
+
+    <input
+      v-else
+      :id="inputLabel"
+      type="date"
+      class="base-input-no-border"
+      :value="inputValue || new Date().getDate()"
+      :readonly="disableField"
+      :min="new Date().getDate()"
+      @blur="(e) => updateInputValueOnBlur((e.target as HTMLOutputElement)?.value)"
     />
 
     <span v-if="isPriceInput" class="currency-input-symbol">€</span>

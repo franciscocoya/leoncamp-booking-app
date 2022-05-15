@@ -63,8 +63,10 @@ const useUserStore = defineStore({
      */
     async login() {
       let loginError = '';
-      await login(this.email, this.password, (err: string) => {
-        loginError = err;
+      await login(this.email, this.password, (err: any) => {
+        loginError = [400, 401, 402].includes(err.status)
+          ? 'Correo electrónico o contraseña no válidos'
+          : err.data.message;
       });
 
       return loginError;
@@ -112,48 +114,40 @@ const useUserStore = defineStore({
      * @param email
      */
     async loadUserData() {
-      let userData = {};
-      // Nombre y apellidos previamente obtenidos en el login.
-      if (JSON.parse(sessionStorage.getItem('data') || '{}')) {
-        const { id, email } = JSON.parse(
-          sessionStorage.getItem('user') || '{}'
-        );
-        const { name, surname } = JSON.parse(
-          sessionStorage.getItem('data') || '{}'
-        );
+      const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id;
 
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
+      let userData = await getUserDataById(userId);
 
-        const userData = await getUserDataById(id);
-        if (userData.profileImage) {
-          this.profileImage = await decodeURI(userData.profileImage);
-        }
+      this.id = userId;
+      this.name = userData.name;
+      this.surname = userData.surname;
+      this.email = userData.email;
 
-        // Si el usuario es host, se mostrarán los siguientes datos.
-        const {
-          dni,
-          bio,
-          direction,
-          emailVerified,
-          dniVerified,
-          phoneVerified,
-          verified,
-        } = userData;
-
-        this.datosHost = {
-          dni,
-          bio,
-          direction,
-          emailVerified,
-          dniVerified,
-          phoneVerified,
-          verified,
-        };
+      if (userData.profileImage) {
+        this.profileImage = await decodeURI(userData.profileImage);
       }
-      
+
+      // Si el usuario es host, se mostrarán los siguientes datos.
+      const {
+        dni,
+        bio,
+        direction,
+        emailVerified,
+        dniVerified,
+        phoneVerified,
+        verified,
+      } = userData;
+
+      this.datosHost = {
+        dni,
+        bio,
+        direction,
+        emailVerified,
+        dniVerified,
+        phoneVerified,
+        verified,
+      };
+
       return userData;
     },
 

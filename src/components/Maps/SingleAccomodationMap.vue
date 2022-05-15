@@ -5,6 +5,8 @@ import mapboxgl from "mapbox-gl";
 
 // import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
 
+import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
+
 const props = defineProps({
   lat: {
     type: Number,
@@ -22,6 +24,10 @@ const props = defineProps({
     type: String,
     default: "90vh",
   },
+  mapZoom: {
+    type: Number,
+    default: 14,
+  },
 });
 
 // Componentes
@@ -33,12 +39,20 @@ onMounted(() => {
     style: "mapbox://styles/mapbox/streets-v11", // style URL
     center: [props.lng, props.lat], // starting position [lng, lat]
     minzoom: 1.3,
-    zoom: 14, // starting zoom
+    zoom: props.mapZoom, // starting zoom
   }).addControl(new mapboxgl.NavigationControl(), "top-right");
 
-  //const myMark = document.createElement("div");
+  const myMark = document.createElement("div");
+  myMark.style.backgroundImage = `url(${ICON_MAP_MARKER_TENTH})`;
+  myMark.style.backgroundRepeat = "no-repeat";
+  myMark.style.backgroundPosition = "center center";
+  myMark.style.backgroundColor = "rgba(245, 86, 42, 0.5)";
+  myMark.style.borderRadius = "50%";
+  myMark.style.padding = "8px";
+  myMark.style.width = "80px";
+  myMark.style.height = "80px";
 
-  new mapboxgl.Marker().setLngLat([props.lng, props.lat]).addTo(map);
+  new mapboxgl.Marker(myMark).setLngLat([props.lng, props.lat]).addTo(map);
 });
 </script>
 

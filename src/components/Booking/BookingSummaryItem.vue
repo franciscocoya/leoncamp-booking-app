@@ -11,11 +11,16 @@ import { PaymentMethod } from "@/models/payment/payment.enum";
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import DateBadgeIcon from "@/components/icons/DateBadgeIcon.vue";
+import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
+
+// Utils
+import { getStyleBookingStatusBadge } from "@/helpers/utils";
 
 // Iconos
 import {
   // ICON_PAYMENT_CREDIT_CARD,
   ICON_PAYMENT_PAYPAL,
+  ICON_PAYMENT_CREDIT_CARD,
 } from "@/helpers/iconConstants";
 
 const router = useRouter();
@@ -44,15 +49,18 @@ const props = defineProps({
   },
   // Método de pago utilizado a la hora de la reserva
   paymentType: {
+    type: Object,
+    default: {},
+  },
+  bookingStatus: {
     type: String,
-    default: PaymentMethod.CREDIT_CARD,
+    default: "PENDIENTE",
   },
 });
 
-const bookingStatus = reactive(
-  convertArrayToDate(props.checkOut) < new Date() ? "--booking-finished" : ""
-);
-
+/**
+ * Redireccionamiento a la página de detalle de la reserva.
+ */
 const redirectToBookingDetail = () => {
   router.push({
     name: "booking-detail",
@@ -61,20 +69,52 @@ const redirectToBookingDetail = () => {
     },
   });
 };
+
+const getPaymentType = () => {
+  const paymentType = props.paymentType;
+  let paymentTypeIcon = null;
+  if (paymentType.cardNumber) {
+    paymentTypeIcon = ICON_PAYMENT_CREDIT_CARD;
+  } else if (paymentType.accountEmail) {
+    paymentTypeIcon = ICON_PAYMENT_PAYPAL;
+  }
+  return paymentTypeIcon;
+};
 </script>
 
 <template>
   <div class="booking-summary-item">
     <div class="booking-summary-item__status">
-      <div :class="`booking-status-icon ${bookingStatus}`"></div>
+      <div :class="`booking-status-icon --booking-${bookingStatus}`">
+        <BaseBadge
+          :text="bookingStatus"
+          :backgroundColor="
+            getStyleBookingStatusBadge(bookingStatus).backgroundColor
+          "
+          :color="getStyleBookingStatusBadge(bookingStatus).color"
+          badgeWidth="300px"
+          class="booking-status-badge"
+        />
+      </div>
     </div>
     <div class="booking-summary-item__detail">
-      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkIn)" dateTitle="Fecha check-in"/>
-      <DateBadgeIcon :dateText="formatArrayAsDate(props.checkOut)" dateTitle="Fecha check-out"/>
-      <div class="booking-payment-method-container" title="Método de pago utilizado">
-        <img :src="ICON_PAYMENT_PAYPAL" alt="" />
+      <DateBadgeIcon
+        :dateText="formatArrayAsDate(props.checkIn)"
+        dateTitle="Fecha check-in"
+      />
+      <DateBadgeIcon
+        :dateText="formatArrayAsDate(props.checkOut)"
+        dateTitle="Fecha check-out"
+      />
+      <div
+        class="booking-payment-method-container"
+        title="Método de pago utilizado"
+      >
+        <img :src="getPaymentType()" alt="" />
       </div>
-      <p class="booking-total-price" title="Precio total de la reserva">{{ totalPrice }} €</p>
+      <p class="booking-total-price" title="Precio total de la reserva">
+        {{ props.totalPrice }} €
+      </p>
       <BaseButton
         text="VER"
         buttonStyle="baseButton-dark--outlined--small"
@@ -89,23 +129,25 @@ const redirectToBookingDetail = () => {
 @import "@/assets/scss/_mixins.scss";
 
 .booking-summary-item {
-  @include flex-row-center;
-  padding: 10px 20px 10px 8px;
-  box-shadow: $global-box-shadow;
-  border: 1px solid $color-tertiary-light;
-  border-radius: $global-border-radius;
+  display: grid;
+  grid-template-columns: 20% auto;
+  width: 75%;
+  grid-gap: 50px;
+  padding: 20px 20px 20px 8px;
+  // box-shadow: $global-box-shadow;
+  border-bottom: 1px solid $color-tertiary-light;
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   & > .booking-summary-item__status {
+    @include flex-row-center;
     height: 100%;
-    margin-right: 10px;
-    align-self: flex-start;
 
-    & > .booking-status-icon {
-      width: 12px;
-      height: 12px;
-      background-color: $color-secondary;
-      border-radius: 30px;
-    } // fin booking-status-icon
+    & > .booking-status-badge {
+      align-self: center;
+    }
   } // fin booking-summary-item__status
 
   & > .booking-summary-item__detail {
@@ -123,10 +165,6 @@ const redirectToBookingDetail = () => {
     & > .booking-total-price {
       font-size: 18px;
     }
-  }
-
-  .--booking-finished {
-    background-color: $color-primary;
   }
 } // fin booking-summary-item
 </style>

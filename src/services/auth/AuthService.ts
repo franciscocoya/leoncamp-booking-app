@@ -25,7 +25,6 @@ const login = async (
         password,
       })
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .then(async (data) => {
@@ -49,28 +48,22 @@ const login = async (
       });
   } catch (err: any) {
     if (err.response) {
-      callback(err?.response.data.message);
+      callback(err?.response);
     }
   }
 
   if (JSON.parse(sessionStorage.getItem('user') as string)?.id) {
     // Obtener datos de usuario
-    const { name, surname }: { name: Promise<string>; surname: Promise<string> } =
+    const {
+      name,
+      surname,
+    }: { name: Promise<string>; surname: Promise<string> } =
       await getUserDataById(
         JSON.parse(sessionStorage.getItem('user') || '{}')?.id
       );
 
-    sessionStorage.setItem(
-      'data',
-      JSON.stringify({
-        name,
-        surname,
-      })
-    );
-
     // Redireccionar a su cuenta personal.
     window.location.href = `/account/${name}-${surname}/profile`;
-
   }
 };
 

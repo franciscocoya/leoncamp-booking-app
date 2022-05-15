@@ -31,7 +31,10 @@ import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useAppContextStore } from "@/store/appContext";
+
 const accomodationStore = useAccomodationStore();
+const appContextStore = useAppContextStore();
 
 const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
 const currentUserData = JSON.parse(sessionStorage.getItem("data") || "{}");
@@ -172,6 +175,7 @@ onMounted(async () => {
           <div class="accomodation-detail_description__booking-price-container">
             <span>{{ accomodationStore.pricePerNight }} € / noche</span>
             <BaseButton
+              v-if="accomodationStore.userHost.id !== currentUser.id"
               text="Reservar"
               buttonStyle="baseButton-primary-gradient--filled"
               @click="handleRedirectToBooking"
@@ -439,9 +443,8 @@ onMounted(async () => {
 @media (max-width: $breakpoint-sm) {
   .accomodation-detail-view {
     & > .accomodation-detail-view__wrapper {
-
-      & > .accomodation-detail__header{
-        & > h1{
+      & > .accomodation-detail__header {
+        & > h1 {
           font-size: 1.5rem;
           font-weight: 400;
         }

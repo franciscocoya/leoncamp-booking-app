@@ -9,11 +9,14 @@ import { ICON_EDIT, ICON_DELETE } from "@/helpers/iconConstants";
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
 import SavedAccomodationIcon from "@/components/icons/Accomodation/SavedAccomodationIcon.vue";
+
 import IconButton from "@/components/Buttons/IconButton.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useUserStore } from "@/store/user";
 const accomodationStore = useAccomodationStore();
+const userStore = useUserStore();
 
 const router = useRouter();
 
@@ -45,9 +48,11 @@ const handleDeleteAccomodation = async () => {
   await accomodationStore.deleteAccomodationBySavedAccId(props.savedAccId);
 };
 
-onMounted(() => {
+onMounted(async () => {
   accomodationStore.registerNumber = props.accData?.registerNumber;
   getAccomodationStarAverage();
+
+  await userStore.loadUserData();
 });
 
 const emit = defineEmits(["highlightMarker", "deselectMarker"]);
@@ -80,11 +85,15 @@ const handleMouseLeave = () => {
     <!-- Detalles del alojamiento -->
     <div
       class="accomodation-thumbnail-detail-container"
-      @click.prevent="!showEditButton && router.push(`/accomodation/${accData.registerNumber}`)"
       title="Haz click para el alojamiento"
     >
       <div class="accomodation-thumbnail-detail-container__header">
-        <div>
+        <div
+          @click.prevent="
+            !showEditButton &&
+              router.push(`/accomodation/${accData.registerNumber}`)
+          "
+        >
           <!-- Categoría del alojamiento -->
           <BaseBadge
             :text="accData.idAccomodationCategory.accomodationCategory"
@@ -99,12 +108,13 @@ const handleMouseLeave = () => {
         <div>
           <!-- Icono guardar alojamiento -->
           <SavedAccomodationIcon
-            v-if="!accData.idUserHost && !isCurrentUserOwner"
+            v-if="userStore.id !== accData.idUserHost.id"
+            :regNumber="accData.registerNumber"
           />
           <div class="accomodation-icons">
             <!-- Botón de eliminar -->
             <IconButton
-              v-if="showDeleteButton"
+              v-if="showDeleteButton && userStore.id == accData.idUserHost.id"
               :buttonIcon="ICON_DELETE"
               buttonStyle="iconButton-accomodation-action--delete"
               class="bt-delete-accomodation"
@@ -142,7 +152,7 @@ const handleMouseLeave = () => {
         <div class="accomodation-star-average-container">
           <!-- Icono de estrella -->
           <svg
-          v-if="accomodationStore.stars > 0"
+            v-if="accomodationStore.stars > 0"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -255,11 +265,9 @@ const handleMouseLeave = () => {
 // Responsive design
 // ---------------------------------------------------------------
 
-  @media (max-width: $breakpoint-sm) {
-    .accomodation-thumbnail-base{
-      @include flex-column;
-    }
+@media (max-width: $breakpoint-sm) {
+  .accomodation-thumbnail-base {
+    @include flex-column;
   }
-
-
+}
 </style>

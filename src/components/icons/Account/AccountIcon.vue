@@ -1,7 +1,10 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-import { IMG_PROFILE_PLACEHOLDER } from "@/helpers/iconConstants";
+import {
+  IMG_PROFILE_PLACEHOLDER,
+  ICON_UPLOAD_IMAGE,
+} from "@/helpers/iconConstants";
 
 // Utils
 import { convertImageToBase64 } from "@/helpers/utils";
@@ -58,9 +61,7 @@ const redirectToUserProfile = () => {
   if (props.isOnMenuMobile) {
     showMenuMobile();
   } else {
-    router.push(
-      `/account/${name}-${surname}/profile`
-    );
+    router.push(`/account/${name}-${surname}/profile`);
   }
 };
 

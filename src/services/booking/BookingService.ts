@@ -1,68 +1,96 @@
 import axios from 'axios';
 
-import { API_BOOKINGS } from "@/helpers/apiRoutes";
+import { API_BOOKINGS } from '@/helpers/apiRoutes';
 
-import {addNewPayment} from "@/services/booking/PaymentService";
+import { addNewPayment } from '@/services/booking/PaymentService';
 
 axios.defaults.headers.common = {
-    'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+  Authorization: `Bearer ${
+    JSON.parse(sessionStorage.getItem('user') || '{}').token
+  }`,
 };
 
 /**
  * Obtención de la reserva con el id pasado como parámetro.
- * 
+ *
  * @param bookingId
- * 
+ *
  * @returns
  */
 const getBookingDataByBookingId = async (bookingId: string) => {
-    const { data } = await axios.get(`${API_BOOKINGS}/${bookingId}`, {
-        headers: {
-            'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
-        }
-    });
+  const { data } = await axios.get(`${API_BOOKINGS}/${bookingId}`, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(sessionStorage.getItem('user') || '{}').token
+      }`,
+    },
+  });
 
-    return data;
-}
+  return data;
+};
 
 /**
  * Listado de fechas de reserva del alojamiento con el número de registro pasado como parámetro.
- * 
- * @param regNumber 
- * @returns 
+ *
+ * @param regNumber
+ * @returns
  */
 const listAccomodationBookingDates = async (regNumber: string) => {
-    const { data } = await axios.get(`${API_BOOKINGS}/${regNumber}/dates`, {
-        headers: {
-            Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
-        }
-    });
+  const { data } = await axios.get(`${API_BOOKINGS}/${regNumber}/dates`, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(sessionStorage.getItem('user') || '{}').token
+      }`,
+    },
+  });
 
-    return data;
+  return data;
 };
 
 /**
  * Creación de una nueva reserva de alojamiento.
- * @param bookingData 
- * @returns 
+ * @param bookingData
+ * @returns
  */
-export const addNewBooking = async (bookingData: any, paymentSelected: number) => {
+export const addNewBooking = async (
+  bookingData: any,
+  paymentSelected: number,
+  callback: CallableFunction
+) => {
+  try {
+    let newPayment = await addNewPayment(
+      paymentSelected,
+      bookingData.idPayment,
+      (err) => callback(err)
+    );
 
-    const newPayment = await addNewPayment(paymentSelected, bookingData.idPayment);
-
-    if(newPayment){
-    const newBooking = await axios.post(`${API_BOOKINGS}/new`, bookingData, {
-        headers: {
-            Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token}`
+    if (newPayment) {
+      await axios.post(
+        `${API_BOOKINGS}/new`,
+        {
+          checkIn: bookingData.checkIn,
+          checkOut: bookingData.checkOut,
+          numOfGuests: bookingData.numOfGuests,
+          disccount: bookingData.disccount,
+          amount: bookingData.amount,
+          idAccomodation: bookingData.accomodation,
+          idPayment: newPayment,
+          idUser: bookingData.userHost,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(sessionStorage.getItem('user') || '{}').token
+            }`,
+          },
         }
-    });
-
-    console.log(newBooking.data);
+      );
     }
+  } catch (err: any) {
+    if (err.response) {
+      callback(err.response);
+    }
+  }
 };
 
-
-export {
-    getBookingDataByBookingId,
-    listAccomodationBookingDates
-}
+export { getBookingDataByBookingId, listAccomodationBookingDates };

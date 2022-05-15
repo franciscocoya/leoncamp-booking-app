@@ -39,7 +39,7 @@ function handleClick() {
 </script>
 
 <template>
-  <div>
+  <div class="icon-button">
     <button
       :class="buttonStyle"
       @click.prevent="handleClick"
@@ -49,12 +49,27 @@ function handleClick() {
       :title="title"
     >
       <img :src="buttonIcon" alt="" />
-      {{ test && text }}
+      <p>
+        {{ text }}
+      </p>
     </button>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
+.icon-button {
+  & > button {
+    @include flex-row-center;
+    gap: 10px;
+
+    & > p {
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+  }
+}
 img {
   width: 24px;
 }

@@ -15,6 +15,7 @@ import TextEditChip from "@/components/Chips/TextEditChip.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useAppContextStore } from "@/store/appContext";
 
 // Utils
 import { convertImageToBase64 } from "@/helpers/utils";
@@ -28,6 +29,7 @@ import {
 const router = useRouter();
 
 const accomodationStore = useAccomodationStore();
+const appContextStore = useAppContextStore();
 
 const MAX_ACCOMODATION_IMAGES = 8;
 
@@ -250,6 +252,7 @@ onMounted(async () => {
             buttonStyle="baseButton-primary--filled"
             id="button-edit-accomodation-main-properties"
             buttonTitle="Haz click aquí para editar los características del alojamiento."
+            :fullWidth="appContextStore.isMobile"
             @click="handleApplyAccomodationChanges"
           />
         </section>
@@ -271,6 +274,7 @@ onMounted(async () => {
             buttonStyle="baseButton-dark--filled--small"
             title="Haz click aquí para editar la categoría del alojamiento."
             id="button-edit-accomodation-category"
+            :fullWidth="appContextStore.isMobile"
             @click="handleEditAccomodationCategory"
           />
         </div>
@@ -336,6 +340,7 @@ onMounted(async () => {
           text="Volver"
           buttonStyle="baseButton-danger--filled"
           buttonTitle="Haz click aquí para cancelar los cambios realizados en el alojamiento"
+          :fullWidth="appContextStore.isMobile"
           @click="router.go(-1)"
         />
       </div>
@@ -383,9 +388,9 @@ onMounted(async () => {
           align-self: center;
 
           & > div {
-            @include flex-row;
-            gap: 10px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-gap: 20px;
           }
         } // Fin .form-edit-main-features-images__container
       } // Fin .form-edit-main-features__images
@@ -393,9 +398,11 @@ onMounted(async () => {
       // -- Estilos sección campos de entrada para editar los datos del alojamiento.
       & > .form-edit-main-features__properties {
         @include flex-column;
+        gap: 20px;
 
         & fieldset {
           border: none;
+          padding: 0;
         }
         // Estilos campos de entrada
         & > .form-edit-main-features_properties__rooms,
@@ -460,14 +467,6 @@ onMounted(async () => {
         flex-wrap: wrap;
       }
     }
-
-    // Estilos botones editar y cancelar
-    & > .form-edit-buttons {
-      @include flex-row;
-      gap: 10px;
-      align-self: center;
-      margin-top: 30px;
-    }
   } // Fin form-edit-container
 }
 
@@ -476,26 +475,51 @@ onMounted(async () => {
 // -------------------------------------------------
 @media screen and (max-width: $breakpoint-sm) {
   // Estilos sección características principales e imágenes.
-  .edit-form > #form-edit-container > .form-edit-main-features {
-    @include flex-column;
+  .edit-form {
+    & > #form-edit-container {
+      // Estilos seccion imágenes y características principales
+      & > .form-edit-main-features {
+        @include flex-column;
 
-    & > .form-edit-main-features__images {
-      & > .form-edit-main-features-images__container {
-        align-self: center;
+        & > .form-edit-main-features__images {
+          & > .form-edit-main-features-images__container {
+            width: 100%;
+            & > div {
+              @include flex-column;
+            }
+          }
+        }
+
+        & > .form-edit-main-features__properties {
+          align-self: center;
+
+          & > .form-edit-main-features_properties__rooms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+          }
+
+          & > .form-edit-main-features_properties__guest-category {
+            display: grid;
+            grid-template-columns: 1fr;
+          }
+
+          & > .form-edit-main-features_properties__area-price {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 2fr));
+          }
+        }
+      } // Fin estilos .form-edit-main-features
+
+      &
+        > .form-edit-accomodation-category
+        > .form-edit-accomodation-category__wrapper {
+        @include flex-column;
+
+        // Estilos selector de categoría
+        & > div:first-child {
+          width: 100%;
+        }
       }
-    }
-  }
-
-  // Estilos sección categoría
-  .edit-form
-    > #form-edit-container
-    > .form-edit-accomodation-category
-    > .form-edit-accomodation-category__wrapper {
-    @include flex-column;
-
-    // Estilos selector de categoría
-    & > div:first-child {
-      width: 100%;
     }
   }
 }

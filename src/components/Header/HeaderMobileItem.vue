@@ -7,6 +7,9 @@ import MenuIcon from "@/components/Header/Menu/MenuIcon.vue";
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
+// Service
+import { getUserDataById } from "@/services/user/userService";
+
 // Iconos
 import {
   ICON_BOOKMARK,
@@ -30,10 +33,12 @@ const isLogged = ref(false);
 let userToken = ref(null);
 let userData = ref(null);
 
-onMounted(() => {
+onMounted(async () => {
   userToken.value = JSON.parse(sessionStorage.getItem("user"))?.token;
-  userData.value = JSON.parse(sessionStorage.getItem("data"));
-  
+  userData.value = await getUserDataById(
+    JSON.parse(sessionStorage.getItem("user")).id
+  );
+
   isLogged.value = userToken !== null;
 });
 
@@ -48,7 +53,7 @@ onUpdated(() => {
       <ul>
         <!-- Icono Inicio -->
         <!-- class="menu-mobile-item--active" -->
-        <li >
+        <li>
           <MenuIcon
             v-once
             :icon="ICON_MENU_HOME"
@@ -98,7 +103,9 @@ onUpdated(() => {
             :width="50"
             :height="50"
             username="Cuenta"
+            :profileImage="userData.profileImage"
             :isOnMenuMobile="true"
+            :isUploading="false"
             @showMenu="handleShowMenuMobile"
           />
         </li>

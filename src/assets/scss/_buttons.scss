@@ -189,10 +189,26 @@
 }
 
 .iconButton-primary--outlined {
+  outline: none;
+  border: none;
+  background-color: $color-primary;
+  color: #fff;
+  border-radius: $global-border-radius;
+
+  & > img {
+    filter: invert(1);
+  }
+
+  & > p {
+    color: #fff;
+  }
+}
+
+.iconButton-primary-rounded--outlined {
   @include iconButton--rounded--outlined($color-primary, $color-primary);
 }
 
-.iconButton-primary--outlined-small {
+.iconButton-primary--outlined .iconButton-primary--outlined-small {
   @include iconButton--rounded--outlined-small;
 }
 
@@ -203,26 +219,38 @@
   background-color: $color-tertiary-light;
   padding: 5px;
   border-radius: 10px 5px 5px 20px;
-  transition: all .1s cubic-bezier(0.215, 0.610, 0.355, 1);
+  transition: all 0.1s cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  & > img{
+  & > img {
     filter: invert(20%);
   }
 
-  &:hover{
+  &:hover {
     background-color: $color-tertiary-dark;
     box-shadow: $global-box-shadow;
   }
 }
 
-.iconButton-accomodation-action--delete{
+.iconButton-accomodation-action--delete {
   outline: none;
   border: none;
   padding: 5px;
   border-radius: 10px 5px 5px 20px;
   background-color: $color-danger;
 
-  & > img{
+  & > img {
     filter: invert(1);
+  }
+}
+
+.iconButton-return {
+  outline: none;
+  border: none;
+  padding: 4px 10px;
+  margin: 20px 0 0 20px;
+  border-radius: $global-border-radius;
+
+  & > img {
+    width: 18px;
   }
 }

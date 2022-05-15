@@ -4,12 +4,14 @@ import { useRouter } from "vue-router";
 import { authRoutes } from "@/helpers/appRoutes";
 
 import { SCREEN_BREAKPOINTS } from "@/helpers/utils";
+import { ICON_RETURN } from "@/helpers/iconConstants";
 
 import { useAppContextStore } from "@/store/appContext";
 
 // Componentes
 import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
 import FooterItem from "./components/Footer/FooterItem.vue";
+import IconButton from "@/components/Buttons/IconButton.vue";
 
 const HeaderItem = defineAsyncComponent(() =>
   import("@/components/Header/HeaderItem.vue")
@@ -56,6 +58,12 @@ onMounted(() => {
   <HeaderMobileItem
     v-if="enableHeaderMobile == true"
     @showMenuMobile="showMenuMobile = !showMenuMobile"
+  />
+  <IconButton
+    v-if="appContextStore.isMobile == true && currentRoute() !== '/'"
+    :buttonIcon="ICON_RETURN"
+    buttonStyle="iconButton-return"
+    @click="router.go(-1)"
   />
   <HeaderItem
     v-if="isCurrentRoutePublic() && enableHeaderMobile == false"

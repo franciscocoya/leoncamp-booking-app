@@ -52,10 +52,8 @@ const handleDeleteCurrentImage = async () => {
 
 // Estilos chip imagen de un alojamiento
 .image-chip-edit {
-  width: 30%;
-  height: 90px;
-  padding: 5px;
-  border: 1px solid $color-dark;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: $global-border-radius;
   position: relative;
 
@@ -75,8 +73,8 @@ const handleDeleteCurrentImage = async () => {
   // Estilos icono eliminar el alojamiento
   & > .close-chip {
     @include flex-row-center;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -101,8 +99,8 @@ const handleDeleteCurrentImage = async () => {
 // -------------------------------------------------
 @media screen and (max-width: $breakpoint-sm) {
   .image-chip-edit {
-    width: 45%;
-    height: 150px;
+    width: 100%;
+    height: auto;
   }
 }
 </style>

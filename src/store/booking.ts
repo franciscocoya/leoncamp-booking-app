@@ -23,6 +23,7 @@ const useBookingStore = defineStore({
     amount: 0,
     disccount: 0,
     serviceFee: 0,
+    bookingStatus: '',
     total: 0,
     idPayment: {} as Payment,
     createdAt: new Date(),
@@ -33,21 +34,9 @@ const useBookingStore = defineStore({
      * Carga los datos de una reserva.
      * @param bookingId
      */
-    async loadBookingDataById(bookingId: string): Promise<void> {
+    async getBookingDataById(bookingId: string) {
       const bookingData = await getBookingDataByBookingId(bookingId);
-      const {
-        id,
-        name,
-        surname,
-        profileImage,
-      }: { id: number; name: string; surname: string; profileImage: string } =
-        bookingData.idUser;
-      this.userHost = {
-        id,
-        name,
-        surname,
-        profileImage,
-      };
+      return bookingData;
     },
   },
 });

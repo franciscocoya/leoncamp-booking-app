@@ -123,12 +123,11 @@ const uploadUserProfileImage = async (userId: number, newImage: File) => {
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
-    withCredentials: true,
-    params: {
-      user: userId,
-    },
     data: {
       profileImage: newImage,
+    },
+    params: {
+      user: userId,
     },
   });
 

@@ -25,6 +25,9 @@ onMounted(async () => {
         :bookingId="booking.id"
         :checkIn="booking.checkIn"
         :checkOut="booking.checkOut"
+        :totalPrice="booking.total"
+        :bookingStatus="booking.bookingStatus"
+        :paymentType="booking.idPayment"
       />
     </div>
     <h2 v-else v-once>Aún no has realizado ninguna reserva</h2>

@@ -109,6 +109,9 @@ const getDateDiffOnDays = (dateStart: Date, dateEnd: Date): number => {
  * @returns
  */
 const formatDateType1 = (date: Date): string => {
+  if (date == null) {
+    return null;
+  }
   const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
   const month =
     date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
@@ -141,6 +144,45 @@ const cropTextByWordCount = (text: string, wordCount: number): string => {
   return text;
 };
 
+/**
+ * Devuelve un estilo CSS según el estado de reserva pasado como parámetro.
+
+ * @param bookingStatus
+ * @returns
+ */
+const getStyleBookingStatusBadge = (bookingStatus: string) => {
+  let style = {
+    backgroundColor: '',
+    color: '',
+  };
+  switch (bookingStatus) {
+    case 'PENDIENTE':
+      style = {
+        backgroundColor: 'orange',
+        color: '#FFF',
+      };
+      break;
+    case 'CONFIRMADA':
+      style = {
+        backgroundColor: 'green',
+        color: '#FFF',
+      };
+      break;
+    case 'CANCELADA':
+      style = {
+        backgroundColor: 'red',
+        color: '#FFF',
+      };
+      break;
+    default:
+      style = {
+        backgroundColor: 'orange',
+        color: '#FFF',
+      };
+  }
+  return style;
+};
+
 export {
   getUserToken,
   formatArrayAsDate,
@@ -151,7 +193,7 @@ export {
   getDateDiffOnDays,
   formatDateType1,
   cropTextByWordCount,
-  
   MAX_IMAGES_UPLOAD,
-  SCREEN_BREAKPOINTS
+  SCREEN_BREAKPOINTS,
+  getStyleBookingStatusBadge,
 };

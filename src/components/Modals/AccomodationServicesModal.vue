@@ -65,8 +65,8 @@ const closeModal = () => {
 .base-modal-window {
   @include flex-column;
   gap: 20px;
-  width: 30%;
-  height: 60vh;
+  width: 40%;
+  height: max-content;
   padding: 20px 50px;
   background-color: #fff;
   border-radius: $global-border-radius;
@@ -110,15 +110,15 @@ ul {
 // -- Responsive design
 // ---------------------------------------------------------------
 @media (max-width: $breakpoint-sm) {
-  .base-modal-window{
+  .base-modal-window {
     width: 90%;
     height: 80vh;
     margin-bottom: 20%;
     z-index: $z-index-1;
 
     & > h2 {
-    font-weight: 400;
-  }
+      font-weight: 400;
+    }
   }
 }
 </style>

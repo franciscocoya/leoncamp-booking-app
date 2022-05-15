@@ -18,5 +18,6 @@ export interface Booking {
   serviceFee: number;
   totalPrice: number;
   paymentId: number;
+  bookingStatus: string;
   createdAt: Date;
 }

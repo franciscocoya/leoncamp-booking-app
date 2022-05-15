@@ -129,7 +129,6 @@ export const addNewAccomodation = async (
   }
 
   // Añadir las imágenes del alojamiento
-  
 
   if (newAccomodation) {
     // Añadir servicios al alojamiento
@@ -150,7 +149,10 @@ export const addNewAccomodation = async (
 
     // Añadir todas las imágenes al alojamiento creado
     accomodationImages.map(async (image) => {
-      await addNewImageToAccomodation(newAccomodation.data.registerNumber, image.idAccomodationImage.imageUrl);
+      await addNewImageToAccomodation(
+        newAccomodation.data.registerNumber,
+        image.idAccomodationImage.imageUrl
+      );
     });
 
     window.location.href = `/account/${userDataStorage.name}-${userDataStorage.surname}/accomodations`;
@@ -539,10 +541,79 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
 
   accomodationLocationToReturn.address =
     dataResponse.name ?? dataResponse.street;
-  accomodationLocationToReturn.city = dataResponse.locality ?? dataResponse.administrative_area ?? dataResponse.region;
+  accomodationLocationToReturn.city =
+    dataResponse.locality ??
+    dataResponse.administrative_area ??
+    dataResponse.region;
   accomodationLocationToReturn.cp =
     dataResponse.postal_code ?? data.data[1].postal_code;
   accomodationLocationToReturn.distanceAccuracy = dataResponse.distance;
 
   return accomodationLocationToReturn;
+}
+
+// ---------------------------------------------------------------
+// -- Saved Accomodations
+// ---------------------------------------------------------------
+
+/**
+ * Guarda el alojamiento con número de registro <code>idAccomodation</code>
+ * en la lista de alojamientos guardados del usuario <code>idUser</code>.
+ *
+ * @param idUser
+ * @param idAccomodation
+ */
+export async function saveAccomodation(idAccomodation: string, idUser: number) {
+  await axios({
+    url: `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}/new`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
+}
+
+/**
+ * Elimina de la lista de guardados el alojamiento con número de registro <code>idAccomodation</code>
+ * por el usuario <code>userId</code>
+ *
+ * @param idUser
+ * @param idAccomodation
+ */
+export async function removeSavedAccomodation(
+  idAccomodation: string,
+  idUser: number
+) {
+  await axios.delete(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
+}
+
+/**
+ * Elimina de la lista de guardados el alojamiento con número de registro <code>idAccomodation</code>
+ * por el usuario <code>userId</code>
+ *
+ * @param idUser
+ * @param idAccomodation
+ */
+export async function getSavedAccomodation(
+  idAccomodation: string,
+  idUser: number
+  
+) {
+  const { data } = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
+
+  return data;
 }

@@ -17,6 +17,7 @@
     "algoliasearch": "^4.13.0",
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
+    "jspdf": "^2.5.1",
     "leaflet": "^1.8.0",
     "mapbox-gl": "^2.8.2",
     "pinia": "^2.0.13",

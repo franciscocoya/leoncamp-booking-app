@@ -85,4 +85,13 @@ onBeforeRouteLeave(() => {
     width: 100%;
   }
 }
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-sm) {
+  .accomodation-edit-view {
+    margin: 30px 20px;
+  }
+}
 </style>

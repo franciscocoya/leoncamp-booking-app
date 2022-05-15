@@ -22,6 +22,8 @@ const ICON_ADD = `${IMG_PATH}icons/add-icon.svg`;
 const ICON_ADD_SECONDARY = `${IMG_PATH}icons/add-icon-secondary.png`;
 const ICON_HOME = `${IMG_PATH}icons/home-icon.svg`;
 const ICON_INFO = `${IMG_PATH}icons/info-icon.svg`;
+const ICON_RETURN = `${IMG_PATH}icons/return-icon.svg`;
+const ICON_DOWNLOAD = `${IMG_PATH}icons/download-icon.svg`;
 
 // Iconos menú
 const ICON_MENU_HOME = `${IMG_PATH}icons/home-menu-icon.svg`;
@@ -62,6 +64,8 @@ export {
   ICON_ADD_SECONDARY,
   ICON_HOME,
   ICON_INFO,
+  ICON_RETURN,
+  ICON_DOWNLOAD,
   // Iconos menú mobile
   ICON_MENU_HOME,
   ICON_MENU_BOOKMARK_OUTLINE,

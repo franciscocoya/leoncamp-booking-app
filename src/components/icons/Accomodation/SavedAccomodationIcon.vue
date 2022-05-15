@@ -1,5 +1,12 @@
 <script setup>
-import {ref} from 'vue';
+import { onMounted, ref } from "vue";
+
+// Service
+import {
+  saveAccomodation,
+  removeSavedAccomodation,
+  getSavedAccomodation,
+} from "@/services/accomodation/AccomodationService";
 
 const props = defineProps({
   isActive: {
@@ -18,17 +25,36 @@ const props = defineProps({
     type: String,
     default: "#F5562A",
   },
+  regNumber: {
+    type: String,
+    default: "",
+  },
 });
 
 let isIconActive = ref(props.isActive);
+const currentUserId = JSON.parse(sessionStorage.getItem("user")).id;
 
 /**
  * Al hacer click se cambia el estado isActive y se añade el alojamiento
  * a la lista de alojamientos guardados del usuario.
  */
-const handleClick = () => {
-  isIconActive = !isIconActive.value;
+const handleClick = async () => {
+  isIconActive.value
+    ? await removeSavedAccomodation(props.regNumber, currentUserId)
+    : await saveAccomodation(props.regNumber, currentUserId);
+
+  isIconActive.value = !isIconActive.value;
+  props.isActive = isIconActive.value;
 };
+
+onMounted(async () => {
+  const savedAccomodation = await getSavedAccomodation(
+    props.regNumber,
+    currentUserId
+  );
+
+  isIconActive.value = savedAccomodation !== null;
+});
 </script>
 
 <template>
