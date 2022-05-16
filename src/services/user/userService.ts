@@ -18,8 +18,9 @@ const checkExistsUser = async (emailToCheck: string) => {
   return await axios
     .get(`${API_USERS}/load/${emailToCheck}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
     })
     .then((res) => res.data)
@@ -37,19 +38,37 @@ const checkExistsUser = async (emailToCheck: string) => {
  * @returns
  */
 const getUserDataById = async (id: number) => {
-  return await axios
+  const { data } = await axios
     .get(`${API_USERS}/${id}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
       timeout: 5000,
     })
-    .then((res) => res.data)
-    .then((data) => {
-      return data;
-    })
     .catch((err: Error) => handleError(err));
+
+  return data;
+};
+
+const getUserHostDataById = async (
+  userId: number,
+  callback?: CallableFunction
+) => {
+  const { data } = await axios
+    .get(`${API_USERS}/host/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
+      },
+    })
+    .catch((err) => {
+      if (err.response) {
+        callback(err.response);
+      }
+    });
 };
 
 /**
@@ -59,8 +78,9 @@ const getUserConfigurationByUserId = async (userId: number) => {
   return await axios
     .get(`${API_USER_CONFIG}/${userId}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
     })
     .then((res) => res.data)
@@ -109,17 +129,17 @@ export const updateUserData = async (
 
 /**
  * Actualiza los datos de un usuario host con el id <code>userId</code> pasado como parámetro.
- * 
- * @param userId 
- * @param dni 
- * @param bio 
- * @param direction 
- * @param emailVerified 
- * @param dniVerified 
- * @param phoneVerified 
- * @param verified 
- * @param callback 
- * @returns 
+ *
+ * @param userId
+ * @param dni
+ * @param bio
+ * @param direction
+ * @param emailVerified
+ * @param dniVerified
+ * @param phoneVerified
+ * @param verified
+ * @param callback
+ * @returns
  */
 export const updateUserHostData = async (
   userId: number,
@@ -154,8 +174,7 @@ export const updateUserHostData = async (
   });
 
   return data;
-
-}
+};
 
 /**
  * Actualiza la imagen de perfil del usuario con id <code>userId</code>.
@@ -185,9 +204,9 @@ const uploadUserProfileImage = async (userId: number, newImage: File) => {
 
 /**
  * Listado de valoraciones realizadas por un usuario.
- * 
- * @param userId 
- * @returns 
+ *
+ * @param userId
+ * @returns
  */
 const getUserReviewsById = async (userId: number) => {
   const { data } = await axios

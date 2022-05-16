@@ -17,7 +17,7 @@ const props = defineProps({
       <!-- Galería con algunas de las imágenes del alojamiento -->
       <div class="accomodation-image-gallery__images">
         <img
-          v-for="(img, index) in props.images"
+          v-for="(img, index) in props.images.slice(0, 5)"
           :key="index"
           :src="img.imageUrl"
           :id="`${props.regNumber}_image${index}`"
@@ -31,9 +31,7 @@ const props = defineProps({
       id="bt-show-all-accomodation-images"
     />
   </div>
-  <div v-else>
-    No hay imágenes
-  </div>
+  <div v-else>No hay imágenes</div>
 </template>
 
 
@@ -56,7 +54,7 @@ const props = defineProps({
       grid-gap: 10px;
       overflow: hidden;
 
-    // Posicionamiento imágenes grid galería
+      // Posicionamiento imágenes grid galería
       & > img {
         width: 100%;
         height: 100%;
@@ -108,10 +106,10 @@ const props = defineProps({
 // -- Responsive design
 // ---------------------------------------------------------------
 @media (max-width: $breakpoint-sm) {
-.accomodation-image-gallery{
-  & > .accomodation-image-gallery__wrapper{
-    height: 300px;
+  .accomodation-image-gallery {
+    & > .accomodation-image-gallery__wrapper {
+      height: 300px;
+    }
   }
-}
 }
 </style>

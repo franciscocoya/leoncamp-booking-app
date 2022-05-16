@@ -86,8 +86,9 @@ const signUp = async (
   repeatedPassword: string,
   callback?: CallableFunction
 ) => {
-  const { data } = await axios
-    ({
+  let res = null;
+  try {
+    const { data } = await axios({
       url: SIGNUP_URL,
       method: 'POST',
       data: {
@@ -97,14 +98,16 @@ const signUp = async (
         password,
         repeatedPassword,
       },
-    })
-    .catch((err: any) => {
-      if (err.response) {
-        callback(err.response);
-      }
     });
 
-    return data;
+    res = data;
+  } catch (err: any) {
+    if (err) {
+      callback(err.response);
+    }
+  }
+
+  return res;
 };
 
 /**

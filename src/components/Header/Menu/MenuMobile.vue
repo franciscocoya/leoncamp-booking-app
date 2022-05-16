@@ -1,28 +1,34 @@
 <script setup>
+import { onMounted } from "vue";
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
 
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const redirectAccountChildrenView = (viewName) => {
   router.push({
     name: viewName,
     params: {
-      username: `${userStore.name}-${userStore.surname}`,
+      username: `${authStore.userData.name}-${authStore.userData.surname}`,
     },
   });
 
   handleHideMenu();
 };
 
-const emit = defineEmits(['hideMenu']);
+const emit = defineEmits(["hideMenu"]);
 
 const handleHideMenu = () => {
   emit("hideMenu");
 };
 
+onMounted(async () => {
+  await authStore.loadCurrentUserData();
+});
 </script>
 
 <template>
@@ -30,12 +36,22 @@ const handleHideMenu = () => {
     <div class="menu-mobile-responsive__overlay"></div>
     <div class="menu-mobile-responsive__wrapper">
       <ul>
-        <li id="menu-mobile-username">Hola, {{userStore.name}}</li>
-        <li id="user-profile" @click.prevent="redirectAccountChildrenView('user-profile')">Perfil</li>
-        <li id="user-security-privacity">Seguridad y privacidad</li>
-        <li id="user-bookings" @click.prevent="redirectAccountChildrenView('user-bookings')">Reservas</li>
+        <li id="menu-mobile-username">Hola, {{ authStore?.userData?.name }}</li>
         <li
-          v-if="userStore.datosHost != null"
+          id="user-profile"
+          @click.prevent="redirectAccountChildrenView('user-profile')"
+        >
+          Perfil
+        </li>
+        <li id="user-security-privacity">Seguridad y privacidad</li>
+        <li
+          id="user-bookings"
+          @click.prevent="redirectAccountChildrenView('user-bookings')"
+        >
+          Reservas
+        </li>
+        <li
+          v-if="authStore?.userData?.dni"
           id="user-ads"
           @click.prevent="redirectAccountChildrenView('user-ads')"
         >
@@ -62,13 +78,13 @@ const handleHideMenu = () => {
   left: 0;
   z-index: $z-index-3;
 
-  & > .menu-mobile-responsive__overlay{
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(10px);
-      z-index: $z-index-3;
+  & > .menu-mobile-responsive__overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: $z-index-3;
   }
 
   & > .menu-mobile-responsive__wrapper {
@@ -88,10 +104,10 @@ const handleHideMenu = () => {
       padding: 20px;
       margin: 0 auto;
 
-      & > #menu-mobile-username{
-          font-size: 1.7rem;
-          font-weight: 600;
-          color: $color-primary;
+      & > #menu-mobile-username {
+        font-size: 1.7rem;
+        font-weight: 600;
+        color: $color-primary;
       }
 
       & > li {

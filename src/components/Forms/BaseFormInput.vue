@@ -43,6 +43,8 @@ function updateInputValue(value: string) {
       :value="inputValue"
       :readonly="isReadonly"
       autocomplete="on"
+      aria-autocomplete="list"
+      aria-label="input"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
     />
   </div>

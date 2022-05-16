@@ -116,7 +116,7 @@ onMounted(async () => {
           />
 
           <!-- Sección datos del usuario host -->
-          <div v-if="userStore.datosHost" class="user-profile-data__host-data">
+          <div v-if="userStore.dni || userStore.bio" class="user-profile-data__host-data">
             <h2 v-once>Datos del host</h2>
             <div class="user-profile-data__host-data__wrapper">
               <LabelFormInput

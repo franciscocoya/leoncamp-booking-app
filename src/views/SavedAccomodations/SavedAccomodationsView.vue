@@ -29,7 +29,10 @@ onMounted(async () => {
         :showDeleteButton="true"
       />
     </div>
-    <h2 v-else v-once>No tienes alojamientos guardados</h2>
+    <div v-else class="not-saved-accomodations_container">
+      <h2 v-once>No tienes alojamientos guardados</h2>
+      <p>Aquí se mostrarán todos los alojamientos que guardes</p>
+    </div>
   </div>
 </template>
 
@@ -43,6 +46,16 @@ onMounted(async () => {
   margin: 20px 50px;
 }
 
+.not-saved-accomodations_container {
+  @include flex-column-center;
+  gap: 10px;
+
+  & > h2 {
+    font-size: 2rem;
+    font-weight: 400;
+  }
+}
+
 // ---------------------------------------------------------------
 // -- Responsive design
 // ---------------------------------------------------------------
@@ -51,7 +64,7 @@ onMounted(async () => {
     gap: 10px;
     margin: 10px 30px;
 
-    & > h1{
+    & > h1 {
       font-size: 2rem;
       font-weight: 400;
       text-align: center;

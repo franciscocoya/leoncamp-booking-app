@@ -86,7 +86,9 @@ const useUserStore = defineStore({
         this.password,
         this.repeatedPassword || '',
         (err: any) => {
-          console.log(err.data.message);
+          err.data.errors.forEach((msg: any) => {
+            console.log(msg.defaultMessage);
+          });
         }
       );
 
@@ -197,7 +199,6 @@ const useUserStore = defineStore({
       this.email = updatedUserData.email;
       this.phone = updatedUserData.phone;
 
-
       // Si el usuario es host, se actualizan los siguientes datos.
       if (this.dni) {
         this.datosHost.dni = updatedUserData.dni;
@@ -206,26 +207,25 @@ const useUserStore = defineStore({
       if (this.bio) {
         this.datosHost.bio = updatedUserData.bio;
       }
-
     },
 
     /**
      * Si el usuario es host, se actualizan los datos respectivos (Dni, biografía, dirección, etc).
      */
-    async updateUserHost(){
-        await updateUserHostData(
-            this.id,
-            this.datosHost.dni,
-            this.datosHost.bio,
-            this.datosHost.direction,
-            this.datosHost.emailVerified,
-            this.datosHost.dniVerified,
-            this.datosHost.phoneVerified,
-            this.datosHost.verified,
-            (err) => {
-                console.log(err);
-            }
-        );
+    async updateUserHost() {
+      await updateUserHostData(
+        this.id,
+        this.datosHost.dni,
+        this.datosHost.bio,
+        this.datosHost.direction,
+        this.datosHost.emailVerified,
+        this.datosHost.dniVerified,
+        this.datosHost.phoneVerified,
+        this.datosHost.verified,
+        (err) => {
+          console.log(err);
+        }
+      );
     },
 
     /**

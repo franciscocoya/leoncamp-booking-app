@@ -46,6 +46,11 @@ const IMG_APP_LOGO_XL = `${IMG_PATH}logo_leonCamp.png`;
 const IMG_UPLOAD_ACCOMODATION_STEP_1_A = `${IMG_PATH}accomodation_upload_basic_data_1.jpg`;
 const IMG_UPLOAD_ACCOMODATION_STEP_1_B = `${IMG_PATH}accomodation_upload_basic_data_2.jpg`;
 
+/**
+ * Gifs
+ */
+const GIF_CAMPFIRE = `${IMG_PATH}gifs/animat-campfire-color.gif`;
+
 export {
   ICON_CALENDAR,
   ICON_BOOKMARK,
@@ -74,10 +79,13 @@ export {
   ICON_MENU_CALENDAR_SOLID,
   ICON_ADD,
   ICON_MENU_PROFILE_IMAGE,
+  // Imágenes
   IMG_PROFILE_PLACEHOLDER,
   IMG_APP_LOGO,
   IMG_APP_LOGO_XL,
   IMG_NOT_FOUND_PLACEHOLDER,
   IMG_UPLOAD_ACCOMODATION_STEP_1_A,
   IMG_UPLOAD_ACCOMODATION_STEP_1_B,
+  // Gifs
+  GIF_CAMPFIRE,
 };

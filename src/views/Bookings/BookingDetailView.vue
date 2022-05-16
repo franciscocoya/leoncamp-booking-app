@@ -106,7 +106,7 @@ onMounted(async () => {
               (img) => img.accomodationAccImageId?.idAccomodationImage.imageUrl
             )
           "
-          :sliderWidth="600"
+          :sliderWidth="510"
           :sliderHeight="350"
         />
         <!-- Datos usuario host -->
@@ -347,17 +347,17 @@ onMounted(async () => {
     @include flex-column;
     margin-bottom: 50px;
 
-    & > .booking-detail__data{
-      & > .booking-detail_data__header{
+    & > .booking-detail__data {
+      & > .booking-detail_data__header {
         @include flex-column;
         gap: 10px;
         padding: 0 25px;
 
-        & > span{
+        & > span {
           margin-top: 10px;
         }
 
-        & > div{
+        & > div {
           width: 100%;
         }
       }

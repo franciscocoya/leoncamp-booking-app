@@ -13,7 +13,10 @@ import {
 
 // Store usuario
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
+
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -58,6 +61,8 @@ const redirectAccountChildrenView = (viewName) => {
 onMounted(() => {
   const currentRouteName = router.currentRoute.value.name;
   redirectAccountChildrenView(currentRouteName);
+
+  authStore.loadCurrentUserData();
 });
 </script>
 
@@ -104,7 +109,7 @@ onMounted(() => {
           Reservas
         </li>
         <li
-          v-if="userStore.datosHost != null"
+          v-if="authStore.userData.dni"
           id="user-ads"
           @click="redirectAccountChildrenView('user-ads')"
         >

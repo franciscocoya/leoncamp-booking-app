@@ -37,7 +37,8 @@ const MAX_FILE_SIZE = 1024 * 1024 * 1; // 1MB
 const checkFieldNotBlank = (value: string): boolean =>
   value !== undefined && value !== null && value !== '';
 
-const checkNumberPositive = (value: number): boolean => !isNaN(value) && value > 0;
+const checkNumberPositive = (value: number): boolean =>
+  !isNaN(value) && value > 0;
 
 /**
  * Comprueba que el valor introducido cumpla con el formato de un email definido.
@@ -50,8 +51,8 @@ const checkValidEmail = (value: string): boolean =>
 
 /**
  * Comprueba que el valor introducido cumpla con el formato de un código postal de españa.
- * @param value 
- * @returns 
+ * @param value
+ * @returns
  */
 const checkValidSpanishZipCode = (value: string): boolean =>
   spanishZipCodeRegex.test(value);
@@ -99,38 +100,48 @@ const checkFileSize = (fileToCheck: File): boolean =>
 const checkImageMimeType = (fileToCheck: File): boolean =>
   FILE_MIME_TYPES_VALID_REGEX.includes(fileToCheck.type);
 
-
-
 // ---------------------------------------------------------------------------------------------------------------------
 // -- Validaciones formularios
 // ---------------------------------------------------------------------------------------------------------------------
 
 /**
  * Validación genérrica para los campos de texto.
- * 
- * @param value 
- * @param minLength 
- * @param maxLength 
- * @returns 
+ *
+ * @param value
+ * @param minLength
+ * @param maxLength
+ * @returns
  */
 const checkInputStringFieldIsValid = (
   value: string,
   minLength: number,
-  maxLength: number
+  maxLength: number,
+  containSpecialCharacters?: boolean
 ): boolean => {
-  return checkFieldNotBlank(value) && value.length >= minLength && value.length <= maxLength &&
-    checkFieldNotContainSpecialCharacters(value);
+  const cond1 = containSpecialCharacters
+    ? checkFieldNotContainSpecialCharacters(value)
+    : true;
+  return (
+    checkFieldNotBlank(value) &&
+    value.length >= minLength &&
+    value.length <= maxLength &&
+    cond1
+  );
 };
 
 /**
  * Validación genérica para los campos numéricos.
- * 
- * @param value 
- * @param min 
- * @param max 
- * @returns 
+ *
+ * @param value
+ * @param min
+ * @param max
+ * @returns
  */
-const checkInputNumberFieldIsValid = (value: number, min: number, max: number): boolean => {
+const checkInputNumberFieldIsValid = (
+  value: number,
+  min: number,
+  max: number
+): boolean => {
   return value && checkNumberPositive(value) && value >= min && value <= max;
 };
 
@@ -143,7 +154,6 @@ export {
   checkFieldNotContainSpecialCharacters,
   checkFileSize,
   checkImageMimeType,
-
   checkInputStringFieldIsValid,
-  checkInputNumberFieldIsValid
+  checkInputNumberFieldIsValid,
 };

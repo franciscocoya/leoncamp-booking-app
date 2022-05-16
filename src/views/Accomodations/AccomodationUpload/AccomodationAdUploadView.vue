@@ -59,9 +59,7 @@ const showNextStep = () => {
  * de los 5 pasos (Datos básicos, ubicación, servicios, reglas e imagenes)
  */
 const handleUploadAccomodation = async () => {
-  if(checkAllRequiredFieldsAreValid()){
-    await addNewAccomodation(accomodationStore.$state);
-  }
+  await addNewAccomodation(accomodationStore.$state);
 };
 
 /**
@@ -80,39 +78,6 @@ const showPreviousStep = () => {
       name: currentUploadStepRoute.value,
     });
   }
-};
-
-/**
- * Comprueba que todos los campos necesarios para la publicación del alojamiento están rellenos y con válidos.
- */
-const checkAllRequiredFieldsAreValid = () => {
-  return (
-    checkInputStringFieldIsValid(accomodationStore?.registerNumber, 1, 20) &&
-    checkInputStringFieldIsValid(accomodationStore?.description, 1, 4000) &&
-    checkInputNumberFieldIsValid(accomodationStore?.area, 1, 100000) &&
-    checkInputNumberFieldIsValid(accomodationStore?.numOfBeds, 1, 100) &&
-    checkInputNumberFieldIsValid(accomodationStore?.numOfBathRooms, 1, 50) &&
-    checkInputNumberFieldIsValid(accomodationStore?.numOfBedRooms, 1, 50) &&
-    checkInputNumberFieldIsValid(accomodationStore?.pricePerNight, 1, 100000) &&
-    checkInputNumberFieldIsValid(
-      accomodationStore?.numOfGuests,
-      1,
-      accomodationStore?.numOfGuests
-    ) &&
-    accomodationStore?.category !== "" &&
-    accomodationStore?.category !== null &&
-    !existsAccomodation &&
-    checkInputStringFieldIsValid(
-      accomodationStore?.accomodationLocation.direction
-    ) &&
-    checkInputStringFieldIsValid(
-      accomodationStore?.accomodationLocation.city
-    ) &&
-    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip) &&
-    checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip)
-    && accomodationStore?.accomodationServices.length > 0
-    && accomodationStore?.accomodationImages.length > 0
-  );
 };
 
 onMounted(async () => {

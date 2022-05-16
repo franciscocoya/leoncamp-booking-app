@@ -61,7 +61,7 @@ const checkRegisterNumber = async () => {
  * Valida la descripción introducida.
  */
 const checkAccomodationDescription = () => {
-  if (!checkInputStringFieldIsValid(accomodationStore?.description, 1, 4000)) {
+  if (!checkInputStringFieldIsValid(accomodationStore?.description, 1, 10000)) {
     formErrorsStore.errors.push("La descripción introducida no es válida");
   }
 
@@ -161,20 +161,18 @@ const showNextButton = async () => {
 
   formErrorsStore.enableNextButton =
     checkInputStringFieldIsValid(accomodationStore?.registerNumber, 1, 20) &&
-    checkInputStringFieldIsValid(accomodationStore?.description, 1, 4000) &&
+    checkInputStringFieldIsValid(accomodationStore?.description, 1, 10000) &&
     checkInputNumberFieldIsValid(accomodationStore?.area, 1, 100000) &&
     checkInputNumberFieldIsValid(accomodationStore?.numOfBeds, 1, 100) &&
     checkInputNumberFieldIsValid(accomodationStore?.numOfBathRooms, 1, 50) &&
     checkInputNumberFieldIsValid(accomodationStore?.numOfBedRooms, 1, 50) &&
     checkInputNumberFieldIsValid(accomodationStore?.pricePerNight, 1, 100000) &&
-    checkInputNumberFieldIsValid(
-      accomodationStore?.numOfGuests,
-      1,
-      accomodationStore?.numOfGuests
-    ) &&
+    checkInputNumberFieldIsValid(accomodationStore?.numOfGuests, 1, 100) &&
     accomodationStore?.category !== "" &&
     accomodationStore?.category !== null &&
     !existsAccomodation;
+
+  console.log(formErrorsStore.enableNextButton);
 
   if (formErrorsStore.enableNextButton) {
     formErrorsStore.errors = [];
@@ -199,6 +197,8 @@ const checkBasicDataFields = () => {
   checkAccomodationPrice();
   checkAccomodationNumOfGuests();
 
+  formErrorsStore.enableNextButton = formErrorsStore.errors.length == 0;
+
   return formErrorsStore.enableNextButton;
 };
 
@@ -210,10 +210,9 @@ onMounted(async () => {
 });
 
 onBeforeRouteLeave((to, from) => {
-  console.log(to);
   if (
-    formErrorsStore.enableNextButton == false &&
-    !headerRoutes.includes(to.name)
+    formErrorsStore.enableNextButton == false ||
+    headerRoutes.includes(to.name)
   ) {
     return false;
   }
@@ -240,7 +239,7 @@ onBeforeRouteLeave((to, from) => {
                 ? (e.target.value = e.target.value.toUpperCase())
                 : null
           "
-          @handleBlur="() => checkRegisterNumber()"
+          @handleBlur="checkRegisterNumber"
         />
 
         <!-- Descripción -->

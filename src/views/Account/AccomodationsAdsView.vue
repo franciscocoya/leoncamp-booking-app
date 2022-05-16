@@ -44,6 +44,7 @@ onMounted(async () => {
     <div class="accomodations-ads-view__header">
       <h1 v-once>Mis alojamientos</h1>
       <BaseButton
+        v-if="accomodations.length > 0"
         text="Publicar"
         buttonStyle="baseButton-dark--outlined--small"
         buttonId="bt-ads-upload-new"
@@ -64,7 +65,16 @@ onMounted(async () => {
         <template #fallback>Cargando... </template>
       </Suspense>
     </div>
-    <h2 v-else>No tienes alojamientos publicados</h2>
+    <div v-else class="not-acomodation-ads_container">
+      <h2>No tienes alojamientos publicados</h2>
+      <p>Publica tu primer anuncio</p>
+      <BaseButton
+        text="Publicar"
+        buttonStyle="baseButton-dark--filled"
+        buttonId="bt-ads-upload-new"
+        @click="handleClickUploadButton"
+      />
+    </div>
   </div>
 </template>
 
@@ -83,9 +93,34 @@ onMounted(async () => {
     gap: 20px;
   }
 
-  & > .grid-user-accomodation-ads{
+  & > .grid-user-accomodation-ads {
     @include flex-column;
     gap: 20px;
+  }
+}
+
+.not-acomodation-ads_container {
+  @include flex-column-center;
+  gap: 10px;
+
+  & > h2 {
+    font-size: 2rem;
+    font-weight: 400;
+  }
+
+  & > p {
+    font-size: 1.5rem;
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .accomodations-ads-view {
+    & > .accomodations-ads-view__header {
+      justify-content: center;
+    }
   }
 }
 </style>

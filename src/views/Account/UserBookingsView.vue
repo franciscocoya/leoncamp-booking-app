@@ -4,6 +4,9 @@ import { onMounted, ref } from "vue";
 // Componentes
 import BookingSummaryItem from "@/components/Booking/BookingSummaryItem.vue";
 
+// Gifs
+import { GIF_CAMPFIRE } from "@/helpers/iconConstants";
+
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
@@ -30,7 +33,12 @@ onMounted(async () => {
         :paymentType="booking.idPayment"
       />
     </div>
-    <h2 v-else v-once>Aún no has realizado ninguna reserva</h2>
+    <div v-else class="not-booking-now">
+      <h2 v-once class="not-booking-now__title">
+        Aún no has realizado ninguna reserva
+      </h2>
+      <img :src="GIF_CAMPFIRE" alt="" />
+    </div>
   </div>
 </template>
 
@@ -42,10 +50,24 @@ onMounted(async () => {
   @include flex-column;
   gap: 20px;
 
-  & > h1{
+  & > h1 {
     font-size: 2rem;
     font-weight: 400;
     margin: 0;
+  }
+}
+
+.not-booking-now {
+  @include flex-column-center;
+  & > .not-booking-now__title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 400;
+  }
+
+  & > img {
+    width: 400px;
+    height: auto;
   }
 }
 
@@ -57,7 +79,7 @@ onMounted(async () => {
     margin-top: 0;
     gap: 10px;
 
-    & > h1{
+    & > h1 {
       text-align: center;
     }
   }

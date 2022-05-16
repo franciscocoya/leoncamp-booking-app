@@ -43,7 +43,6 @@ function updateInputValue(value) {
 function handleBlur() {
   emit("handleBlur");
 }
-
 </script>
 
 <template>
@@ -58,7 +57,7 @@ function handleBlur() {
       :rows="textAreaRows"
       autocomplete="on"
       @input="(e) => updateInputValue(e.target.value)"
-      @blur="handleBlur"
+      @blur="(e) => handleBlur"
     >
     </textarea>
   </div>

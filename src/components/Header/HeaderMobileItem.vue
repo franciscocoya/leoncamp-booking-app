@@ -21,7 +21,10 @@ import {
 import { UPLOAD_ACCOMODATION_ROUTE } from "@/helpers/appRoutes";
 
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
+
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -54,6 +57,8 @@ onMounted(async () => {
     );
 
     isLogged.value = userToken !== null;
+
+    await authStore.loadCurrentUserData();
   }
 });
 
@@ -90,11 +95,11 @@ onUpdated(() => {
         </li>
 
         <!-- Icono subir alojamiento -->
-        <li v-if="isLogged == true">
+        <li v-if="isLogged == true && authStore?.userData?.dni">
           <MenuIcon
             v-once
             :icon="ICON_ADD"
-            :path="`/account/${userData?.name}-${userData?.surname}${UPLOAD_ACCOMODATION_ROUTE}`"
+            :path="`/account/${authStore?.userData?.name}-${authStore?.userData?.surname}${UPLOAD_ACCOMODATION_ROUTE}`"
             :iconSize="50"
             id="add-accomodation-menu-mobile"
           />

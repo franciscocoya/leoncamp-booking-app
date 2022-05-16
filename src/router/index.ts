@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+import { getUserDataById } from '@/services/user/userService';
+
 import {
   USER_SIGNIN_ROUTE,
   USER_SIGNUP_ROUTE,
@@ -11,9 +13,7 @@ import {
   ERROR_404_ROUTE,
   ERROR_500_ROUTE,
   ERROR_503_ROUTE,
-
   BOOKING_ACCOMODATION_ROUTE,
-
   UPLOAD_ACCOMODATION_BASIC_DATA,
   UPLOAD_ACCOMODATION_LOCATION,
   UPLOAD_ACCOMODATION_SERVICES,
@@ -24,7 +24,14 @@ import {
 // Rutas públicas
 const authRoutes: string[] = ['/signin', '/signup', '/password/reset'];
 const publicRoutes: string[] = [...authRoutes, '/'];
-const publicRoutesNames: string[] = ['accomodation-detail', 'user-profile-public', 'app-help', 'error-404', 'error-500', 'home'];
+const publicRoutesNames: string[] = [
+  'accomodation-detail',
+  'user-profile-public',
+  'app-help',
+  'error-404',
+  'error-500',
+  'home',
+];
 
 const router = createRouter({
   history: createWebHistory(),
@@ -58,7 +65,8 @@ const router = createRouter({
       // Alojamientos guardados por el usuario en sesión
       path: SAVED_ACCOMODATIONS_ROUTE,
       name: 'saved',
-      component: () => import('@/views/SavedAccomodations/SavedAccomodationsView.vue'),
+      component: () =>
+        import('@/views/SavedAccomodations/SavedAccomodationsView.vue'),
     },
     {
       path: '/account/:accUser/accomodation/:registerNumber/edit',
@@ -72,7 +80,7 @@ const router = createRouter({
       redirect: () => {
         return {
           name: 'user-profile',
-        }
+        };
       },
       component: () => import('@/views/Account/AccountView.vue'),
       children: [
@@ -103,40 +111,58 @@ const router = createRouter({
       redirect: () => {
         return {
           name: 'accomodation-upload-basic-data',
-        }
+        };
       },
-      component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadView.vue'),
+      component: () =>
+        import(
+          '@/views/Accomodations/AccomodationUpload/AccomodationAdUploadView.vue'
+        ),
       children: [
         {
           // Subida alojamiento - Paso 1: Datos básicos
           path: UPLOAD_ACCOMODATION_BASIC_DATA,
           name: 'accomodation-upload-basic-data',
-          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadBasicDataView.vue'),
+          component: () =>
+            import(
+              '@/views/Accomodations/AccomodationUpload/AccomodationAdUploadBasicDataView.vue'
+            ),
         },
         {
           // Subida alojamiento - Paso 2: Ubicación
           path: UPLOAD_ACCOMODATION_LOCATION,
           name: 'accomodation-upload-location',
-          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadLocationView.vue'),
+          component: () =>
+            import(
+              '@/views/Accomodations/AccomodationUpload/AccomodationAdUploadLocationView.vue'
+            ),
         },
         {
           // Subida alojamiento - Paso 3: Servicios
           path: UPLOAD_ACCOMODATION_SERVICES,
           name: 'accomodation-upload-services',
-          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadServicesView.vue'),
+          component: () =>
+            import(
+              '@/views/Accomodations/AccomodationUpload/AccomodationAdUploadServicesView.vue'
+            ),
         },
         {
           // Subida alojamiento - Paso 4: Normas
           path: UPLOAD_ACCOMODATION_RULES,
           name: 'accomodation-upload-rules',
-          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadRulesView.vue'),
+          component: () =>
+            import(
+              '@/views/Accomodations/AccomodationUpload/AccomodationAdUploadRulesView.vue'
+            ),
         },
         {
           // Subida alojamiento - Paso 5: Imágenes
           path: UPLOAD_ACCOMODATION_IMAGES,
           name: 'accomodation-upload-images',
-          component: () => import('@/views/Accomodations/AccomodationUpload/AccomodationAdUploadImagesView.vue'),
-        }
+          component: () =>
+            import(
+              '@/views/Accomodations/AccomodationUpload/AccomodationAdUploadImagesView.vue'
+            ),
+        },
       ],
     },
     {
@@ -198,8 +224,8 @@ const router = createRouter({
       path: '/:catchAll(.*)',
       redirect: {
         name: 'error-404',
-      }
-    }
+      },
+    },
   ],
 });
 
@@ -207,7 +233,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authRequired = !publicRoutes.includes(to.path);
   const isLogged = JSON.parse(sessionStorage.getItem('user'))?.token;
-  if (!publicRoutesNames.includes(to.name) && (authRequired && !isLogged)) {
+  if (!publicRoutesNames.includes(to.name) && authRequired && !isLogged) {
     next('/signin');
   } else {
     // Si el usuario está logeado, no podrá acceder a las rutas de autenticación (signin y signup).
@@ -215,5 +241,24 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+// Middleware rutas usuarios hosts
+// Accomodation ads, publish new ad, edit ad, delete ad
+// router.beforeEach(async (to, from, next) => {
+//   const idUser: number = JSON.parse(sessionStorage.getItem('user'))?.id;
+//   const userData: any = await getUserDataById(idUser);
+
+//   const hostRouteNames: string[] = [
+//     'account-accomodation-upload',
+//     'user-ads',
+//     'accomodation-edit',
+//   ];
+
+//   if (hostRouteNames.includes(to.name) && !userData.dni) {
+//     next('/403');
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;
