@@ -62,11 +62,6 @@ const handleSearchInput = (e) => {
 @import "@/assets/scss/_variables.scss";
 @import "@/assets/scss/_mixins.scss";
 
-.search-filter-button-group {
-  @include flex-row-center;
-  gap: 10px;
-}
-
 .searchBar--light {
   @include flex-row-space-between;
   // width: 582px;

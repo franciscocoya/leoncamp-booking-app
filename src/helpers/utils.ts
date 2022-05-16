@@ -183,6 +183,17 @@ const getStyleBookingStatusBadge = (bookingStatus: string) => {
   return style;
 };
 
+/**
+ * Muestra el número de tarjeta <code>cardNumber</code>, pasado como parámetro, de forma parcial.
+ * Por ejemplo, si la tarjeta es 1234 5678 9012 3456, se mostrará 1234 XXXX XXXX 3456.
+ */
+const showCreditCardNumberPartial = (cardNumber: string): string => {
+  return cardNumber.substring(0, 4) + ' ' 
+  + cardNumber.substring(4, 8).replace(cardNumber.substring(4, 8), 'XXXX') 
+  + ' ' + cardNumber.substring(8, 12).replace(cardNumber.substring(8, 12), 'XXXX')
+  + ' ' + cardNumber.substring(12, 16);
+}
+
 export {
   getUserToken,
   formatArrayAsDate,
@@ -196,4 +207,5 @@ export {
   MAX_IMAGES_UPLOAD,
   SCREEN_BREAKPOINTS,
   getStyleBookingStatusBadge,
+  showCreditCardNumberPartial
 };

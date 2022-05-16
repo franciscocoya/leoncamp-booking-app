@@ -35,11 +35,14 @@ let userData = ref(null);
 
 onMounted(async () => {
   userToken.value = JSON.parse(sessionStorage.getItem("user"))?.token;
-  userData.value = await getUserDataById(
-    JSON.parse(sessionStorage.getItem("user")).id
-  );
 
-  isLogged.value = userToken !== null;
+  if (userToken.value) {
+    userData.value = await getUserDataById(
+      JSON.parse(sessionStorage.getItem("user"))?.id
+    );
+
+    isLogged.value = userToken !== null;
+  }
 });
 
 onUpdated(() => {
@@ -79,7 +82,7 @@ onUpdated(() => {
           <MenuIcon
             v-once
             :icon="ICON_ADD"
-            :path="`/account/${userData.name}-${userData.surname}${UPLOAD_ACCOMODATION_ROUTE}`"
+            :path="`/account/${userData?.name}-${userData?.surname}${UPLOAD_ACCOMODATION_ROUTE}`"
             :iconSize="50"
             id="add-accomodation-menu-mobile"
           />
@@ -103,7 +106,7 @@ onUpdated(() => {
             :width="50"
             :height="50"
             username="Cuenta"
-            :profileImage="userData.profileImage"
+            :profileImage="userData?.profileImage"
             :isOnMenuMobile="true"
             :isUploading="false"
             @showMenu="handleShowMenuMobile"

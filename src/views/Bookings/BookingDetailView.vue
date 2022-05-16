@@ -41,8 +41,18 @@ const userHostData = ref({});
 const currentUserData = ref({});
 
 const handleGenerateReceipt = () => {
-  console.log("hola");
-  generateReceipt(bookingData.value, userHostData.value, currentUserData.value);
+  const numOfNights = getDateDiffOnDays(
+    convertArrayToDate(bookingData?.value?.checkIn),
+    convertArrayToDate(bookingData?.value?.checkOut)
+  );
+  console.log(numOfNights);
+
+  generateReceipt(
+    bookingData.value,
+    userHostData.value,
+    currentUserData.value,
+    numOfNights
+  );
 };
 
 onMounted(async () => {
