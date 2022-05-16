@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 defineProps({
   placeholder: {
     type: String,
@@ -34,11 +34,16 @@ defineProps({
   },
 });
 
-const emit = defineEmits(["handleInput"]);
+const emit = defineEmits(["handleInput", "handleBlur"]);
 
-function updateInputValue(value: string) {
+function updateInputValue(value) {
   emit("handleInput", value);
 }
+
+function handleBlur() {
+  emit("handleBlur");
+}
+
 </script>
 
 <template>
@@ -52,7 +57,8 @@ function updateInputValue(value: string) {
       :cols="textAreaColums"
       :rows="textAreaRows"
       autocomplete="on"
-      @input="(e) => updateInputValue((e.target as HTMLOutputElement).value)"
+      @input="(e) => updateInputValue(e.target.value)"
+      @blur="handleBlur"
     >
     </textarea>
   </div>

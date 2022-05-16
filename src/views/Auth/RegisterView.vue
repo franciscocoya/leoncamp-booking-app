@@ -5,8 +5,8 @@ import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";
 </script>
 
 <template>
-  <div class="login-view">
-    <div class="login-view-wrapper">
+  <div class="register-view">
+    <div class="register-view-wrapper">
       <AppLogoIcon v-once/>
       <RegisterForm title="Crear una cuenta" />
     </div>
@@ -16,12 +16,11 @@ import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
 
-.login-view {
+.register-view {
   @include flex-row-center;
   
-  & > .login-view-wrapper {
+  & > .register-view-wrapper {
     @include flex-column-center;
-    @include full-width;
   }
 }
 </style>

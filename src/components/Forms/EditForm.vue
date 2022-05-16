@@ -485,10 +485,12 @@ onMounted(async () => {
           & > .form-edit-main-features-images__container {
             width: 100%;
             & > div {
-              @include flex-column;
-            }
-          }
-        }
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+              grid-gap: 20px;
+            } // Fin estilos div
+          } // Fin estilos .form-edit-main-features-images__container
+        } // Fin estilos form-edit-main-features__images
 
         & > .form-edit-main-features__properties {
           align-self: center;

@@ -6,6 +6,23 @@ const router = useRouter();
 
 const userStore = useUserStore();
 
+const redirectAccountChildrenView = (viewName) => {
+  router.push({
+    name: viewName,
+    params: {
+      username: `${userStore.name}-${userStore.surname}`,
+    },
+  });
+
+  handleHideMenu();
+};
+
+const emit = defineEmits(['hideMenu']);
+
+const handleHideMenu = () => {
+  emit("hideMenu");
+};
+
 </script>
 
 <template>
@@ -14,13 +31,13 @@ const userStore = useUserStore();
     <div class="menu-mobile-responsive__wrapper">
       <ul>
         <li id="menu-mobile-username">Hola, {{userStore.name}}</li>
-        <li id="user-profile" @click.prevent="router.push('')">Perfil</li>
+        <li id="user-profile" @click.prevent="redirectAccountChildrenView('user-profile')">Perfil</li>
         <li id="user-security-privacity">Seguridad y privacidad</li>
-        <li id="user-bookings" @click.prevent="router.push('')">Reservas</li>
+        <li id="user-bookings" @click.prevent="redirectAccountChildrenView('user-bookings')">Reservas</li>
         <li
           v-if="userStore.datosHost != null"
           id="user-ads"
-          @click.prevent="router.push('')"
+          @click.prevent="redirectAccountChildrenView('user-ads')"
         >
           Anuncios
         </li>
@@ -82,6 +99,7 @@ const userStore = useUserStore();
         text-align: center;
         padding: 20px 0;
         border-radius: $global-border-radius;
+        cursor: pointer;
 
         &:not(#menu-mobile-username):hover {
           background-color: $color-tertiary-light;

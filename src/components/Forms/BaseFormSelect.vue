@@ -18,17 +18,22 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["handleChange"]);
+const emit = defineEmits(["handleChange", "handleBlur"]);
 
 /**
  * Envia al emit la opción de categoría seleccionada.
  */
-function updateInputValue(value) {
+const updateInputValue = (value) =>{
   const selectedOption = props.options
     .filter((opt) => opt.accomodationCategory === value)
     .shift();
   emit("handleChange", selectedOption);
 }
+
+const handleBlur = () => {
+  emit("handleBlur");
+}
+
 </script>
 
 <template>
@@ -38,14 +43,12 @@ function updateInputValue(value) {
       name="accomodation-edit-category"
       :id="selectId"
       @change="(e) => updateInputValue(e.target.value)"
+      @blur="handleBlur"
     >
+    <option value="-" selected> -- Selecciona una opción --</option>
       <option
         v-for="opt in options"
         :key="opt.id"
-        :selected="
-          opt.accomodationCategory ===
-          accomodationStore.category.accomodationCategory
-        "
         :value="opt.accomodationCategory"
       >
         {{ opt.accomodationCategory }}

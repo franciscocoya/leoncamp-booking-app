@@ -35,4 +35,31 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
+
+.user-bookings-view {
+  @include flex-column;
+  gap: 20px;
+
+  & > h1{
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 0;
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .user-bookings-view {
+    margin-top: 0;
+    gap: 10px;
+
+    & > h1{
+      text-align: center;
+    }
+  }
+}
 </style>

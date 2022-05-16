@@ -131,10 +131,8 @@ const getPaymentType = () => {
 .booking-summary-item {
   display: grid;
   grid-template-columns: 20% auto;
-  width: 75%;
   grid-gap: 50px;
   padding: 20px 20px 20px 8px;
-  // box-shadow: $global-box-shadow;
   border-bottom: 1px solid $color-tertiary-light;
 
   &:last-child {
@@ -167,4 +165,24 @@ const getPaymentType = () => {
     }
   }
 } // fin booking-summary-item
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .booking-summary-item {
+    @include flex-column;
+    width: 100%;
+    align-items: flex-start;
+    gap: 20px;
+
+    // Estilos detalle reserva
+    & > .booking-summary-item__detail {
+      @include flex-row;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  }
+}
 </style>

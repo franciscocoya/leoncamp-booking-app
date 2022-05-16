@@ -31,6 +31,8 @@ const authRoutes = [
     '/password/reset'
 ];
 
+const headerRoutes = ['saved', 'home', 'user-bookings', 'error-404', 'account' ];
+
 
 const publicRoutes = [
     '/'
@@ -39,6 +41,7 @@ const publicRoutes = [
 export {
     publicRoutes,
     authRoutes,
+    headerRoutes,
     USER_SIGNIN_ROUTE,
     USER_SIGNUP_ROUTE,
     RESET_PASSWORD_ROUTE,

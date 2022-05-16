@@ -114,28 +114,27 @@ onMounted(() => {
       :type="inputType"
       :placeholder="inputPlaceholder"
       class="base-input-no-border"
-      :value="inputValue"
-      :minlength="inputMinCharacters"
-      :maxlength="inputMaxCharacters"
+      :value="inputValue || ''"
       :size="inputMaxCharacters"
       :readonly="isReadonly"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
       @keyup="(e) => handleKeyDown(e)"
+      @blur="(e) => updateInputValueOnBlur((e.target as HTMLOutputElement)?.value)"
     />
 
     <input
       v-else-if="inputType === 'number'"
       :id="inputLabel"
       :type="inputType"
-      :placeholder="inputPlaceholder"
+      :placeholder="1"
       class="base-input-no-border"
-      :value="inputValue || 0"
-      :readonly="disableField"
+      :value="inputValue"
+      :readonly="isReadonly"
       :min="1"
       :max="inputNumberMax"
-      :size="inputNumberMax"
       :step="1"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
+      @blur="(e) => updateInputValueOnBlur((e.target as HTMLOutputElement)?.value)"
     />
 
     <input

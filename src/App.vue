@@ -72,7 +72,7 @@ onMounted(() => {
     @hide-search-results="showSearchResults = false"
   />
   <Transition>
-    <MenuMobile v-if="showMenuMobile == true" />
+    <MenuMobile v-if="showMenuMobile == true" @hideMenu="() => showMenuMobile = !showMenuMobile"/>
   </Transition>
 
   <Transition>
@@ -90,16 +90,7 @@ onMounted(() => {
 <style lang="scss">
 @import "./assets/scss/main.scss";
 .app-root {
+  @include flex-column;
   position: relative;
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 </style>

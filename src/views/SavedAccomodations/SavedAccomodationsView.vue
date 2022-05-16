@@ -10,8 +10,6 @@ const accomodationStore = useAccomodationStore();
 
 let savedAccomodations = ref([]);
 
-
-
 onMounted(async () => {
   savedAccomodations.value =
     await accomodationStore.getAllUserSavedAccomodations();
@@ -35,8 +33,29 @@ onMounted(async () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/scss/_variables.scss";
+@import "@/assets/scss/_mixins.scss";
+
 .saved-accomodations-view {
+  @include flex-column;
+  gap: 20px;
   margin: 20px 50px;
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .saved-accomodations-view {
+    gap: 10px;
+    margin: 10px 30px;
+
+    & > h1{
+      font-size: 2rem;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
 }
 </style>

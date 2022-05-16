@@ -27,12 +27,12 @@ import {
   showCreditCardNumberPartial
 } from '@/helpers/utils';
 
-import { IMG_APP_LOGO_XL, IMG_APP_LOGO } from '@/helpers/iconConstants';
+import { IMG_APP_LOGO } from '@/helpers/iconConstants';
 
 // Default export is a4 paper, portrait, using millimeters for units
 const doc = new jsPDF({
   orientation: 'p',
-  unit: 'pt',
+  unit: 'pt'
 });
 
 // Alto y ancho de la página
@@ -56,15 +56,34 @@ export function generateReceipt(
   numOfNights?: number,
 ) {
 
+  doc.setDocumentProperties({
+    title: `reserva_${bookingData?.idAccomodation?.registerNumber}`,
+    subject: 'Factura',
+    author: 'LeonCamp',
+    keywords: 'factura, reserva',
+    creator: 'LeonCamp',
+  });
+
   // Encabezado
   // Logo LeonCamp
   doc.addImage(IMG_APP_LOGO, 'PNG', 410, MARGIN_TOP, 120, 75);
+
+  // Título factura
+  doc.setFontSize(25);
+  doc.setTextColor(34, 34, 34);
+  doc.text("Factura Reserva", MARGIN_LEFT_COL1, 40);
 
   // Número de registro del alojamiento
   doc.setFontSize(HEADING_FONT_SIZE);
   doc.setTextColor(HEADING_TEXT_COLOR);
   const registerNumber = 'Nº. registro: ' + bookingData?.idAccomodation?.registerNumber;
   doc.text(registerNumber, MARGIN_LEFT_COL1, 75);
+
+  // Fecha de creación de la reserva
+  doc.setFontSize(DEFAULT_FONT_SIZE);
+  doc.setTextColor("gray");
+  const bookingCreatedAt: string = 'Efectuada el ' + convertArrayToDate(bookingData?.createdAt).toLocaleString();
+  doc.text(bookingCreatedAt, MARGIN_LEFT_COL1, 90);
 
   // -- Columna 1
   // Título: Ciudad
@@ -84,7 +103,6 @@ export function generateReceipt(
     bookingData?.idAccomodation?.idAccomodationLocation?.zip;
 
   doc.setFontSize(DEFAULT_FONT_SIZE);
-  doc.setFont('inter', 'normal');
   doc.setTextColor(PARAGRAPH_TEXT_COLOR);
   doc.text(fullAddress, MARGIN_LEFT_COL1, positionY += LINE_HEIGHT * 2);
 
@@ -215,10 +233,8 @@ export function generateReceipt(
   doc.setFontSize(10);
   doc.text('Copyright © ' + new Date().getFullYear() + ' · LeonCamp. Todos los Derechos Reservados.', pageWidth - 10, pageHeight / 1.5, null, 90);
 
-
-
-  // Abrir PDF en una nueva pestaña
-  doc.output('dataurlnewwindow');
+  // Guardar PDF
+  doc.save(`reserva_${bookingData?.idAccomodation?.registerNumber}__${new Date().getTime()}.pdf`);
 };
 
 /**

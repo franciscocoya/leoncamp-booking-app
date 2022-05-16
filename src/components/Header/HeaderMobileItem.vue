@@ -20,6 +20,9 @@ import {
 
 import { UPLOAD_ACCOMODATION_ROUTE } from "@/helpers/appRoutes";
 
+import { useUserStore } from "@/store/user";
+const userStore = useUserStore();
+
 const router = useRouter();
 
 const emit = defineEmits(["showMenuMobile"]);
@@ -32,6 +35,15 @@ const isLogged = ref(false);
 
 let userToken = ref(null);
 let userData = ref(null);
+
+const redirectToUserBookings = () => {
+  router.push({
+    name: "user-bookings",
+    params: {
+      username: `${userStore.name}-${userStore.surname}`,
+    },
+  });
+};
 
 onMounted(async () => {
   userToken.value = JSON.parse(sessionStorage.getItem("user"))?.token;
@@ -96,6 +108,7 @@ onUpdated(() => {
             :iconSize="40"
             title="Reservas"
             path="/bookings"
+            @click="redirectToUserBookings"
           />
         </li>
 

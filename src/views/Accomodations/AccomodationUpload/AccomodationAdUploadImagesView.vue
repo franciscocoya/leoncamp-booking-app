@@ -14,6 +14,9 @@ import { useAccomodationStore } from "@/store/accomodation";
 // Conversor imagen a base64
 import { convertImageToBase64, MAX_IMAGES_UPLOAD } from "@/helpers/utils";
 
+// Rutas permitidas
+import {headerRoutes} from '@/helpers/appRoutes';
+
 // Validadores para la subida de imágenes
 import { checkFileSize, checkImageMimeType } from "@/helpers/formValidator";
 
@@ -214,6 +217,7 @@ const handleClickUploadImage = async (e) => {
             id="drag-input-upload-image"
             @input.stop="handleClickUploadImage"
             multiple
+            accept="image/jpeg, image/png, image/gif, image/webp"
           />
         </form>
         <!-- Icono informatico del área -->

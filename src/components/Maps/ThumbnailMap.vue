@@ -4,6 +4,7 @@ import mapboxgl from "mapbox-gl";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useFormErrorsStore } from "@/store/formErrors";
 
 // Iconos
 import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
@@ -12,6 +13,7 @@ import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
 import { getAccomodationLocationByCoords } from "@/services/accomodation/AccomodationService";
 
 const accomodationStore = useAccomodationStore();
+const formErrorsStore = useFormErrorsStore();
 
 // Componentes
 // import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
@@ -85,6 +87,8 @@ onMounted(() => {
     accomodationStore.accomodationLocation.direction = resultLocation.address;
     accomodationStore.accomodationLocation.city = resultLocation.city;
     accomodationStore.accomodationLocation.zip = resultLocation.cp;
+
+    formErrorsStore.enableNextButton = formErrorsStore.errors.length == 0;
   }
 });
 </script>

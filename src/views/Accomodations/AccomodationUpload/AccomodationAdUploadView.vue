@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUpdated } from "vue";
 import { RouterView, useRouter } from "vue-router";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
+import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // Servicios
 import { addNewAccomodation } from "@/services/accomodation/AccomodationService";
@@ -11,7 +12,8 @@ import { getUserDataById } from "@/services/user/userService";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
-import {useAppContextStore} from "@/store/appContext";
+import { useAppContextStore } from "@/store/appContext";
+import { useFormErrorsStore } from "@/store/formErrors";
 
 const router = useRouter();
 
@@ -25,6 +27,7 @@ const accomodationUploadSteps = [
 
 const accomodationStore = useAccomodationStore();
 const appContextStore = useAppContextStore();
+const formErrorsStore = useFormErrorsStore();
 
 // Número de paso de subida de alojamiento
 const currentUploadStepNum = ref(1);
@@ -39,12 +42,16 @@ const showNextStep = () => {
   if (currentUploadStepNum.value == 5) {
     currentUploadStepNum.value = 5;
   }
-  currentUploadStepNum.value++;
-  currentUploadStepRoute.value =
-    accomodationUploadSteps[currentUploadStepNum.value];
-  router.push({
-    name: currentUploadStepRoute.value,
-  });
+
+  if (formErrorsStore.enableNextButton == true) {
+    currentUploadStepNum.value++;
+    currentUploadStepRoute.value =
+      accomodationUploadSteps[currentUploadStepNum.value];
+
+    router.push({
+      name: currentUploadStepRoute.value,
+    });
+  }
 };
 
 /**
@@ -52,8 +59,9 @@ const showNextStep = () => {
  * de los 5 pasos (Datos básicos, ubicación, servicios, reglas e imagenes)
  */
 const handleUploadAccomodation = async () => {
-  console.log(accomodationStore.$state);
-  await addNewAccomodation(accomodationStore.$state);
+  if(checkAllRequiredFieldsAreValid()){
+    await addNewAccomodation(accomodationStore.$state);
+  }
 };
 
 /**
@@ -63,16 +71,51 @@ const showPreviousStep = () => {
   if (currentUploadStepNum == 0) {
     currentUploadStepNum.value = 0;
   }
-  currentUploadStepNum.value--;
-  currentUploadStepRoute.value =
-    accomodationUploadSteps[currentUploadStepNum.value];
-  router.push({
-    name: currentUploadStepRoute.value,
-  });
+
+  if (formErrorsStore.enableNextButton == true) {
+    currentUploadStepNum.value--;
+    currentUploadStepRoute.value =
+      accomodationUploadSteps[currentUploadStepNum.value];
+    router.push({
+      name: currentUploadStepRoute.value,
+    });
+  }
+};
+
+/**
+ * Comprueba que todos los campos necesarios para la publicación del alojamiento están rellenos y con válidos.
+ */
+const checkAllRequiredFieldsAreValid = () => {
+  return (
+    checkInputStringFieldIsValid(accomodationStore?.registerNumber, 1, 20) &&
+    checkInputStringFieldIsValid(accomodationStore?.description, 1, 4000) &&
+    checkInputNumberFieldIsValid(accomodationStore?.area, 1, 100000) &&
+    checkInputNumberFieldIsValid(accomodationStore?.numOfBeds, 1, 100) &&
+    checkInputNumberFieldIsValid(accomodationStore?.numOfBathRooms, 1, 50) &&
+    checkInputNumberFieldIsValid(accomodationStore?.numOfBedRooms, 1, 50) &&
+    checkInputNumberFieldIsValid(accomodationStore?.pricePerNight, 1, 100000) &&
+    checkInputNumberFieldIsValid(
+      accomodationStore?.numOfGuests,
+      1,
+      accomodationStore?.numOfGuests
+    ) &&
+    accomodationStore?.category !== "" &&
+    accomodationStore?.category !== null &&
+    !existsAccomodation &&
+    checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.direction
+    ) &&
+    checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.city
+    ) &&
+    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip) &&
+    checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip)
+    && accomodationStore?.accomodationServices.length > 0
+    && accomodationStore?.accomodationImages.length > 0
+  );
 };
 
 onMounted(async () => {
-  currentUploadStepNum.value = 0;
   currentUploadStepRoute.value = router.currentRoute.value.name;
   currentUploadStepNum.value = accomodationUploadSteps.indexOf(
     currentUploadStepRoute.value
@@ -82,6 +125,9 @@ onMounted(async () => {
     JSON.parse(sessionStorage.getItem("user")).id
   );
 
+  formErrorsStore.enableNextButton = false;
+
+  accomodationStore.$state = {};
   accomodationStore.userHost = currentUser;
 });
 </script>
@@ -110,6 +156,7 @@ onMounted(async () => {
           <BaseButton
             :text="`${currentUploadStepNum == 4 ? 'Finalizar' : 'Siguiente'}`"
             buttonStyle="baseButton-dark--filled--small"
+            :isDisabled="formErrorsStore.enableNextButton == false"
             @click="
               currentUploadStepNum == 4
                 ? handleUploadAccomodation()
@@ -117,9 +164,20 @@ onMounted(async () => {
             "
           />
         </div>
-        <!-- TODO: Child component con el paso -->
-        <p v-if="appContextStore.isMobile == false">Paso {{ currentUploadStepNum + 1 }} de 5</p>
+        <p v-if="appContextStore.isMobile == false">
+          Paso {{ currentUploadStepNum + 1 }} de 5
+        </p>
       </div>
+      <Transition name="fade">
+        <div v-if="formErrorsStore.errors.length > 0">
+          <BaseMessageItem
+            v-for="(errorMsg, index) in formErrorsStore.errors"
+            :key="index"
+            :msg="errorMsg"
+            msgType="error"
+          />
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -180,9 +238,8 @@ onMounted(async () => {
   }
 
   .accomodation-upload-view {
-
     // Estilos botones volver y siguiente en móvil
-    & > .accomodation-upload-view__body{
+    & > .accomodation-upload-view__body {
       flex-direction: column-reverse;
     }
   }

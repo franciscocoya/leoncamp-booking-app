@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
 
 // Componentes
 import TextEditChip from "@/components/Chips/TextEditChip.vue";
@@ -8,8 +9,13 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useFormErrorsStore} from "@/store/formErrors";
+
+// Rutas permitidas
+import {headerRoutes} from '@/helpers/appRoutes';
 
 const accomodationStore = useAccomodationStore();
+const formErrorsStore = useFormErrorsStore();
 
 let allAvaibleServices = ref([]);
 let originalServices = ref([]);
@@ -28,7 +34,9 @@ const handleServiceChipChange = (e, serviceToAdd) => {
 
   e.target.checked
     ? accomodationStore.accomodationServices.push(accomodationAccServiceId)
-    : accomodationStore.accomodationServices.shift(accomodationAccServiceId);
+    : accomodationStore.accomodationServices = accomodationStore.accomodationServices.filter(serv => serv.idAccomodationService.id !== serviceToAdd.id);
+
+  formErrorsStore.enableNextButton = accomodationStore.accomodationServices.length > 0;
 };
 
 
@@ -51,7 +59,17 @@ const showAllServiceChips = () => {
 onMounted(async () => {
   allAvaibleServices.value = await accomodationStore.getAllServices();
   originalServices.value = [...allAvaibleServices.value];
+
+  formErrorsStore.enableNextButton = accomodationStore.accomodationServices.length > 0;
 });
+
+onBeforeRouteLeave(() => {
+  if (formErrorsStore.enableNextButton == false &&
+    !headerRoutes.includes(to.name)) {
+    return false;
+  }
+});
+
 </script>
 
 <template>

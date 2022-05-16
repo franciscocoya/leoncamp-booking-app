@@ -1,11 +1,13 @@
 <script setup>
-import { defineEmits, onMounted } from "vue";
+import { defineEmits, onMounted, ref } from "vue";
 
 import { useRouter } from "vue-router";
 
 // Iconos
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";
+
+import {IMG_PROFILE_PLACEHOLDER} from '@/helpers/iconConstants';
 
 // Componentes
 import SearchBarItem from "./SearchBar/SearchBarItem.vue";
@@ -19,11 +21,8 @@ const router = useRouter();
 // Store usuario
 const userStore = useUserStore();
 
-// Token de usuario
-const userToken = JSON.parse(sessionStorage.getItem("user") || "{}")?.token;
-
 // Nombre y apellidos del usuario
-const userData = JSON.parse(sessionStorage.getItem("data") || "{}");
+const userData = ref({});
 
 const emit = defineEmits(["show-search-results", "hide-search-results"]);
 
@@ -35,10 +34,11 @@ const hideSearchResults = () => {
   emit("hide-search-results");
 };
 
-onMounted(() => {
+onMounted(async () => {
   if (userData.id) {
-    userStore.loadUserData(userData.id);
+    await userStore.loadUserData(userData.id);
   }
+  userData.value = await userStore.getUserDataById(JSON.parse(sessionStorage.getItem("user") || "{}")?.id);
 });
 </script>
 
@@ -52,17 +52,15 @@ onMounted(() => {
       @hide-search-results="hideSearchResults"
     />
 
-    <MenuDesktopItem v-if="userToken" v-once />
+    <MenuDesktopItem v-if="userData" v-once />
     <!-- Si el usuario está logeado -->
     <AccountIcon
-      v-if="userToken"
+      v-if="userData"
       width="54"
       height="54"
       :username="`${userData?.name} ${userData?.surname}`"
       :profileImage="`${
-        userStore.profileImage == 'null'
-          ? IMG_PROFILE_PLACEHOLDER
-          : userStore.profileImage
+        !userData?.profileImage ? IMG_PROFILE_PLACEHOLDER : userData?.profileImage
       }`"
       :isLinked="true"
     />

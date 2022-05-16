@@ -205,8 +205,8 @@ onMounted(async () => {
           <ThumbnailMap
             :lat="accomodationStore.accomodationLocation.latitude"
             :lng="accomodationStore.accomodationLocation.longitude"
-            mapWidth="800px"
-            mapHeight="450px"
+            :mapWidth="`${appContextStore.isMobile ? '100%' : '800px'}`"
+            :mapHeight="`${appContextStore.isMobile ? '300px' : '400px'}`"
           />
         </section>
 

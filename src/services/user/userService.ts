@@ -18,9 +18,8 @@ const checkExistsUser = async (emailToCheck: string) => {
   return await axios
     .get(`${API_USERS}/load/${emailToCheck}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
     })
     .then((res) => res.data)
@@ -41,9 +40,8 @@ const getUserDataById = async (id: number) => {
   return await axios
     .get(`${API_USERS}/${id}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
       timeout: 5000,
     })
@@ -61,9 +59,8 @@ const getUserConfigurationByUserId = async (userId: number) => {
   return await axios
     .get(`${API_USER_CONFIG}/${userId}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
     })
     .then((res) => res.data)
@@ -79,14 +76,17 @@ const getUserConfigurationByUserId = async (userId: number) => {
  * @param userId
  * @returns
  */
-const updateUserData = async (
+export const updateUserData = async (
   userId: number,
   name: string,
   surname: string,
   email: string,
-  phone: string
+  phone: string,
+  dni?: string,
+  bio?: string,
+  callback?: CallableFunction
 ) => {
-  return await axios({
+  const { data } = await axios({
     url: `${API_USERS}/${userId}`,
     method: 'PUT',
     data: {
@@ -98,15 +98,64 @@ const updateUserData = async (
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
-  })
-    .then((res) => res.data)
-    .then((data) => {
-      return data;
-    })
-    .catch((err: Error) => {
-      return err;
-    });
+  }).catch((err: any) => {
+    if (err.response) {
+      callback(err.response);
+    }
+  });
+
+  return data;
 };
+
+/**
+ * Actualiza los datos de un usuario host con el id <code>userId</code> pasado como parámetro.
+ * 
+ * @param userId 
+ * @param dni 
+ * @param bio 
+ * @param direction 
+ * @param emailVerified 
+ * @param dniVerified 
+ * @param phoneVerified 
+ * @param verified 
+ * @param callback 
+ * @returns 
+ */
+export const updateUserHostData = async (
+  userId: number,
+  dni: string,
+  bio: string,
+  direction?: string,
+  emailVerified?: boolean,
+  dniVerified?: boolean,
+  phoneVerified?: boolean,
+  verified?: boolean,
+  callback?: CallableFunction
+) => {
+  const { data } = await axios({
+    url: `${API_USERS}/hosts/${userId}`,
+    method: 'PATCH',
+    data: {
+      dni,
+      bio,
+      direction,
+      emailVerified,
+      dniVerified,
+      phoneVerified,
+      verified,
+    },
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  }).catch((err: any) => {
+    if (err.response) {
+      callback(err.response);
+    }
+  });
+
+  return data;
+
+}
 
 /**
  * Actualiza la imagen de perfil del usuario con id <code>userId</code>.
@@ -134,18 +183,18 @@ const uploadUserProfileImage = async (userId: number, newImage: File) => {
   return data;
 };
 
+/**
+ * Listado de valoraciones realizadas por un usuario.
+ * 
+ * @param userId 
+ * @returns 
+ */
 const getUserReviewsById = async (userId: number) => {
   const { data } = await axios
     .get(`${API_USERS}/reviews/${userId}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${apiJwtToken}`,
       },
-    })
-    .then((res) => res.data)
-    .then((data) => {
-      return data;
     })
     .catch((err: Error) => {
       return err;
@@ -156,7 +205,6 @@ const getUserReviewsById = async (userId: number) => {
 export {
   checkExistsUser,
   getUserDataById,
-  updateUserData,
   getUserConfigurationByUserId,
   uploadUserProfileImage,
   getUserReviewsById,

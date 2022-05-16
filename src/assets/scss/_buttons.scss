@@ -84,6 +84,12 @@
   width: 80px;
   height: 35px;
   font-size: 1rem;
+
+  &:disabled{
+    background-color: $color-tertiary-light;
+    color: gray;
+    cursor: no-drop;
+  }
 }
 
 .baseButton-dark--outlined {
@@ -244,13 +250,22 @@
 }
 
 .iconButton-return {
+  @include flex-row-center;
+  width: 50px;
+  height: 50px;
   outline: none;
-  border: none;
-  padding: 4px 10px;
+  border: 1px solid $color-tertiary-light;
   margin: 20px 0 0 20px;
+  background: #FFF;
   border-radius: $global-border-radius;
+  box-shadow: $global-box-shadow;
+  z-index: $z-index-4;
 
   & > img {
     width: 18px;
+  }
+
+  & > p{
+    display: none;
   }
 }

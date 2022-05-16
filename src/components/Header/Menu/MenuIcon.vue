@@ -30,9 +30,6 @@ defineProps({
   },
 });
 
-defineComponent({
-  RouterLink,
-});
 </script>
 
 <template>

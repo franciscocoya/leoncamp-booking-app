@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
 
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
@@ -10,9 +11,20 @@ import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useFormErrorsStore } from "@/store/formErrors";
 
 // Service
 import { getAccomodationLocationByCoords } from "@/services/accomodation/AccomodationService";
+
+// Rutas permitidas
+import {headerRoutes} from '@/helpers/appRoutes';
+
+// Validaciones
+import {
+  checkInputStringFieldIsValid,
+  checkInputNumberFieldIsValid,
+  checkValidSpanishZipCode,
+} from "@/helpers/formValidator";
 
 // Si el usuario no acepta el uso de la geolocalizacion, se muestran por defecto
 // las coordenadas del centro de León.
@@ -22,13 +34,75 @@ const currentCoords = ref({
 });
 
 const accomodationStore = useAccomodationStore();
+const formErrorsStore = useFormErrorsStore();
+
+/**
+ * Valida la dirección del alojamiento
+ */
+const checkAccomodationDirection = () => {
+  if (
+    !checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.direction, 2, 100
+    )
+  ) {
+    formErrorsStore.errors.push("La dirección introducida no es válida");
+  }
+
+  showNextButton();
+};
+
+/**
+ * Valida la ciudad introducida.
+ */
+const checkAccomodationCity = () => {
+  if (
+    !checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.city, 2, 30)
+  ) {
+    formErrorsStore.errors.push("La ciudad introducida no es válida");
+  }
+
+  showNextButton();
+};
+
+/**
+ * Valida el código postal introducido.
+ */
+const checkAccomodationZipCode = () => {
+if (
+    !checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip, 4, 4)
+  ) {
+    formErrorsStore.errors.push("El código postal no es válido");
+
+  }else{
+      // Si no está vacío
+      if(!checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip)){
+        formErrorsStore.errors.push("El código postal no se corresponde con ninguna provincia");
+      }
+  }
+
+  showNextButton();
+};
+
+const showNextButton = () => {
+  formErrorsStore.enableNextButton =
+    checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.direction
+    ) &&
+    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.city)
+    && checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip)
+    && checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip);
+
+    if(formErrorsStore.enableNextButton){
+      formErrorsStore.errors = [];
+    }
+};
 
 onMounted(async () => {
   if (!navigator.geolocation) {
-    console.log("Geolocation is not supported by this browser.");
+    console.log("El navegador no sorporta geolocalización.");
   }
 
-  // Si el navegador soporta geolocalización
+  // Si el navegador soporta geolocalización, obtener las coordenadas actuales y reflejarlas en el mapa.
   navigator.geolocation.getCurrentPosition((pos) => {
     accomodationStore.accomodationLocation.coords.lat = navigator.geolocation
       ? pos.coords.latitude
@@ -48,6 +122,12 @@ onMounted(async () => {
   accomodationStore.accomodationLocation.city = accomodationLocation.city;
   accomodationStore.accomodationLocation.zip = accomodationLocation.cp;
 });
+
+onBeforeRouteLeave(() => {
+  if (formErrorsStore.enableNextButton == false && !headerRoutes.includes(to.name)) {
+    return false;
+  }
+});
 </script>
 
 
@@ -61,6 +141,7 @@ onMounted(async () => {
           <LabelFormInput
             inputLabel="Latitud"
             inputType="text"
+            :isReadonly="true"
             :inputValue="accomodationStore.accomodationLocation.coords.lat"
             @handleInput="
               (value) =>
@@ -70,6 +151,7 @@ onMounted(async () => {
           <LabelFormInput
             inputLabel="Longitud"
             inputType="text"
+            :isReadonly="true"
             :inputValue="accomodationStore.accomodationLocation.coords.lng"
             @handleInput="
               (value) =>
@@ -86,6 +168,7 @@ onMounted(async () => {
               (value) =>
                 (accomodationStore.accomodationLocation.direction = value)
             "
+            @handleBlur="checkAccomodationDirection"
           />
         </div>
         <div class="accomodation-upload-location-form__direction-city">
@@ -96,6 +179,7 @@ onMounted(async () => {
             @handleInput="
               (value) => (accomodationStore.accomodationLocation.city = value)
             "
+            @handleBlur="checkAccomodationCity"
           />
           <LabelFormInput
             inputLabel="Código Postal"
@@ -104,11 +188,11 @@ onMounted(async () => {
             @handleInput="
               (value) => (accomodationStore.accomodationLocation.zip = value)
             "
+            @handleBlur="checkAccomodationZipCode"
           />
         </div>
         <p>
-          * Si modificas los campos en el formulario, no se actualizará en el
-          mapa.
+          * Puedes arrastrar el marcador del mapa para obtener rellenar los campos automáticamente.
         </p>
       </div>
       <div class="accomodation-upload-location__map">

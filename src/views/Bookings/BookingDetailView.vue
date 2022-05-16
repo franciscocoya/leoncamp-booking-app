@@ -40,12 +40,14 @@ const router = useRouter();
 const userHostData = ref({});
 const currentUserData = ref({});
 
+/**
+ * Manejador de click del botón de decargar factura de la reserva.
+ */
 const handleGenerateReceipt = () => {
   const numOfNights = getDateDiffOnDays(
     convertArrayToDate(bookingData?.value?.checkIn),
     convertArrayToDate(bookingData?.value?.checkOut)
   );
-  console.log(numOfNights);
 
   generateReceipt(
     bookingData.value,
@@ -53,6 +55,18 @@ const handleGenerateReceipt = () => {
     currentUserData.value,
     numOfNights
   );
+};
+
+/**
+ * Manejador de click del botón que redirecciona a la página del alojamiento reservado.
+ */
+const handleRedirectToAccomodation = () => {
+  router.push({
+    name: "accomodation-detail",
+    params: {
+      registerNumber: bookingData?.value?.idAccomodation?.registerNumber,
+    },
+  });
 };
 
 onMounted(async () => {
@@ -80,7 +94,8 @@ onMounted(async () => {
         <BaseButton
           text="Ver anuncio"
           buttonStyle="baseButton-primary--filled"
-          :fullWidth="appContextStore.isMobile"
+          :fullWidth="appContextStore.isMobile == true"
+          @click="handleRedirectToAccomodation"
         />
       </div>
       <div class="booking_detail_data__wrapper">
@@ -159,6 +174,7 @@ onMounted(async () => {
               buttonStyle="iconButton-primary--outlined"
               :buttonIcon="ICON_DOWNLOAD"
               buttonWidth="250px"
+              :fullWidth="appContextStore.isMobile == true"
               @click="handleGenerateReceipt"
             />
           </div>
@@ -330,6 +346,22 @@ onMounted(async () => {
   .booking-detail-view {
     @include flex-column;
     margin-bottom: 50px;
+
+    & > .booking-detail__data{
+      & > .booking-detail_data__header{
+        @include flex-column;
+        gap: 10px;
+        padding: 0 25px;
+
+        & > span{
+          margin-top: 10px;
+        }
+
+        & > div{
+          width: 100%;
+        }
+      }
+    }
   }
 }
 </style>

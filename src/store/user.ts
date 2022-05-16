@@ -10,6 +10,7 @@ import { login, signUp } from '@/services/auth/AuthService';
 import {
   getUserDataById,
   updateUserData,
+  updateUserHostData,
   getUserConfigurationByUserId,
 } from '@/services/user/userService';
 
@@ -75,17 +76,17 @@ const useUserStore = defineStore({
     /**
      * Realiza el registro de la aplicación con los datos del formulario.
      */
-    signUp() {
+    async signUp() {
       let signUpError = '';
 
-      signUp(
+      await signUp(
         this.name,
         this.surname,
         this.email,
         this.password,
         this.repeatedPassword || '',
-        (err: string) => {
-          signUpError = err;
+        (err: any) => {
+          console.log(err.data.message);
         }
       );
 
@@ -183,12 +184,48 @@ const useUserStore = defineStore({
         this.name,
         this.surname,
         this.email,
-        this.phone
+        this.phone,
+        this.datosHost.dni,
+        this.datosHost.bio,
+        (err) => {
+          console.log(err);
+        }
       );
+
       this.name = updatedUserData.name;
       this.surname = updatedUserData.surname;
       this.email = updatedUserData.email;
       this.phone = updatedUserData.phone;
+
+
+      // Si el usuario es host, se actualizan los siguientes datos.
+      if (this.dni) {
+        this.datosHost.dni = updatedUserData.dni;
+      }
+
+      if (this.bio) {
+        this.datosHost.bio = updatedUserData.bio;
+      }
+
+    },
+
+    /**
+     * Si el usuario es host, se actualizan los datos respectivos (Dni, biografía, dirección, etc).
+     */
+    async updateUserHost(){
+        await updateUserHostData(
+            this.id,
+            this.datosHost.dni,
+            this.datosHost.bio,
+            this.datosHost.direction,
+            this.datosHost.emailVerified,
+            this.datosHost.dniVerified,
+            this.datosHost.phoneVerified,
+            this.datosHost.verified,
+            (err) => {
+                console.log(err);
+            }
+        );
     },
 
     /**

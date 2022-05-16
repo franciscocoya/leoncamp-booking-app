@@ -182,6 +182,25 @@ const addNewLocation = async (accomodationLocation: any): Promise<any> => {
 };
 
 /**
+ * Comprueba si existe el alojamiento con el número de registro pasado como parámetro.
+ * 
+ * @param registerNumber 
+ * @returns 
+ */
+export const checkAccomodationExistsByRegNumber = async (
+  registerNumber: string
+): Promise<any> => {
+  const {data} = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
+
+  return data;
+}
+
+
+/**
  * Lista todos los alojamientos disponibles.
  */
 export const getAllAccomodations = async () => {
@@ -529,8 +548,7 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
   let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
 
   const { data } = await axios.get(
-    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${
-      import.meta.env.VITE_POSITION_STACK_API_TOKEN
+    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${import.meta.env.VITE_POSITION_STACK_API_TOKEN
     }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
   );
 
@@ -604,7 +622,7 @@ export async function removeSavedAccomodation(
 export async function getSavedAccomodation(
   idAccomodation: string,
   idUser: number
-  
+
 ) {
   const { data } = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,

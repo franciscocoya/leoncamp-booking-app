@@ -33,8 +33,8 @@ const showErrors = ref(false);
 /**
  * Manejador del evento submit del formulario.
  */
-const handleRegister = () => {
-  userStore.signUp();
+const handleRegister = async () => {
+  await userStore.signUp();
 };
 </script>
 

@@ -115,9 +115,10 @@ const handleUpdateImage = async (img) => {
   @include flex-column-center;
   border-radius: 100px;
   position: relative;
+  cursor: pointer;
 
   &:hover > img {
-    opacity: 0.5;
+    opacity: 0.7;
     background: $color-tertiary-light;
   }
 

@@ -84,34 +84,27 @@ const signUp = async (
   email: string,
   password: string,
   repeatedPassword: string,
-  callback: CallableFunction
+  callback?: CallableFunction
 ) => {
-  await axios
-    .post(SIGNUP_URL, {
-      name,
-      surname,
-      email,
-      password,
-      repeatedPassword,
+  const { data } = await axios
+    ({
+      url: SIGNUP_URL,
+      method: 'POST',
+      data: {
+        name,
+        surname,
+        email,
+        password,
+        repeatedPassword,
+      },
     })
-    .then((res) => res.data)
-    .then(() => (window.location.href = `/signin`))
-    .catch((err) => {
-      let errorMsg = 'Error al iniciar sesión';
+    .catch((err: any) => {
       if (err.response) {
-        switch (err.response.status) {
-          case 400:
-            window.location.href = '/signin';
-            break;
-          case 500:
-            errorMsg = 'Error en el servidor';
-            break;
-          default:
-            break;
-        }
+        callback(err.response);
       }
-      callback(errorMsg);
     });
+
+    return data;
 };
 
 /**
