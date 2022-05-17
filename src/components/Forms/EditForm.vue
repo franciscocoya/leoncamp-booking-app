@@ -168,8 +168,6 @@ onMounted(async () => {
               inputId="accomodation-description"
               placeholder="Introduce la descripción"
               :textAreaContent="accomodationStore.description"
-              :textAreaColums="47"
-              :textAreaRows="7"
               @handleInput="(value) => (accomodationStore.description = value)"
             />
           </fieldset>
@@ -252,7 +250,7 @@ onMounted(async () => {
             buttonStyle="baseButton-primary--filled"
             id="button-edit-accomodation-main-properties"
             buttonTitle="Haz click aquí para editar los características del alojamiento."
-            :fullWidth="appContextStore.isMobile"
+            :fullWidth="appContextStore.isTablet == true"
             @click="handleApplyAccomodationChanges"
           />
         </section>
@@ -369,9 +367,8 @@ onMounted(async () => {
     // -- Estilos sección características principales. En dos columnas, la primera contiene las imágenes
     // y la segunda las características.
     & > .form-edit-main-features {
-      display: grid;
-      grid-template-columns: 40% auto;
-      grid-gap: 20px;
+      @include flex-row;
+      gap: 30px;
       justify-content: center;
 
       & > section {
@@ -389,7 +386,7 @@ onMounted(async () => {
 
           & > div {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             grid-gap: 20px;
           }
         } // Fin .form-edit-main-features-images__container
@@ -398,22 +395,27 @@ onMounted(async () => {
       // -- Estilos sección campos de entrada para editar los datos del alojamiento.
       & > .form-edit-main-features__properties {
         @include flex-column;
+        flex: 0 0 50%;
         gap: 20px;
 
         & fieldset {
           border: none;
           padding: 0;
+          & > div {
+            width: 100%;
+          }
         }
         // Estilos campos de entrada
-        & > .form-edit-main-features_properties__rooms,
-        & > .form-edit-main-features_properties__guest-category,
-        & > .form-edit-main-features_properties__area-price {
+        & > .form-edit-main-features_properties__guest-category {
           @include flex-row;
           gap: 10px;
           flex-wrap: wrap;
         }
 
         & > .form-edit-main-features_properties__rooms {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
           & .base-input {
             width: 50px !important;
           }
@@ -423,9 +425,14 @@ onMounted(async () => {
           @include flex-row;
         }
 
+        & > .form-edit-main-features_properties__area-price {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+
         & > #button-edit-accomodation-main-properties {
           justify-content: flex-start;
-          margin-left: 15px;
         }
       } // Fin .form-edit-main-features__properties
     } // Fin form-edit-main-features
@@ -493,8 +500,6 @@ onMounted(async () => {
         } // Fin estilos form-edit-main-features__images
 
         & > .form-edit-main-features__properties {
-          align-self: center;
-
           & > .form-edit-main-features_properties__rooms {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));

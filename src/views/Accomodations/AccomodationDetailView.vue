@@ -21,6 +21,7 @@ import { ICON_MAP_MARKER, ICON_VERIFIED_USER } from "@/helpers/iconConstants";
 // Modales
 import AccomodationServicesModal from "@/components/Modals/AccomodationServicesModal.vue";
 import AccomodationReviewsModal from "@/components/Modals/AccomodationReviewsModal.vue";
+import AccomodationImagesModel from "@/components/Modals/AccomodationImagesModel.vue";
 
 // Preloader
 import BasePreloader from "@/components/Preloader/BasePreloader.vue";
@@ -47,6 +48,7 @@ const showAllDescription = ref(false);
 // Variables condicionales para mostrar dialogos modales.
 const showServiceModal = ref(false);
 const showReviewsModal = ref(false);
+const showImagesModal = ref(false);
 
 const handleUserProfileButtonClick = () => {
   const { id } = currentUser;
@@ -99,6 +101,17 @@ onMounted(async () => {
         :reviews="accomodationStore.accomodationReviews"
         @close-modal="showReviewsModal = false"
       />
+      <Transition name="fade">
+        <AccomodationImagesModel
+          v-if="showImagesModal == true"
+          :images="
+            accomodationStore.accomodationImages.map(
+              (img) => img.accomodationAccImageId.idAccomodationImage
+            )
+          "
+          @close-modal="showImagesModal = false"
+        />
+      </Transition>
 
       <div class="accomodation-detail-view__wrapper">
         <!-- Seccion título y galería de imágenes -->
@@ -115,6 +128,7 @@ onMounted(async () => {
               )
             "
             :regNumber="accomodationStore.registerNumber"
+            @show-images="showImagesModal = true"
           />
         </section>
 

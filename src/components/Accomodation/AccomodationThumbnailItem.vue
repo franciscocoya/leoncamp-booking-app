@@ -15,8 +15,11 @@ import IconButton from "@/components/Buttons/IconButton.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
+
 const accomodationStore = useAccomodationStore();
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -30,7 +33,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  isCurrentUserOwner: Boolean,
+  isCurrentUserOwner: {
+    type: Boolean,
+    default: false,
+  },
   savedAccId: Number,
   isMarkerMapSelectionEnable: {
     type: Boolean,
@@ -62,8 +68,9 @@ const handleMouseLeave = () => {
   emit("deselectMarker", props.accData.registerNumber);
 };
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   loadingView.value = true;
+  await authStore.loadCurrentUserData();
 });
 
 onMounted(async () => {
@@ -120,7 +127,7 @@ onMounted(async () => {
         <div>
           <!-- Icono guardar alojamiento -->
           <SavedAccomodationIcon
-            v-if="userStore.id !== accData.idUserHost.id && currentUser"
+            v-if="authStore.userData.id !== accData.idUserHost.id"
             :regNumber="accData.registerNumber"
           />
           <div class="accomodation-icons">
@@ -189,7 +196,6 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    
   </article>
 </template>
 

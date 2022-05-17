@@ -51,8 +51,9 @@ const handleSearchInput = (e) => {
 @import "@/assets/scss/_mixins.scss";
 
 .searchBar--light {
-  @include flex-row-space-between;
-  // width: 582px;
+  @include flex-row;
+  gap: 20px;
+  justify-content: flex-start;
   height: 50px;
   background: $color-tertiary-light;
   border-radius: 10px;
@@ -64,6 +65,7 @@ const handleSearchInput = (e) => {
 }
 
 input[type="text"] {
+  width: 100%;
   border: none;
   outline: none;
   font-size: 1rem;
@@ -92,16 +94,16 @@ input[type="text"] {
     gap: 5px;
     justify-content: flex-start;
 
-    & > .marker-search-icon{
+    & > .marker-search-icon {
       width: 30px;
     }
 
-    input[type="text"]{
+    input[type="text"] {
       width: 100%;
       margin-left: 20px;
     }
 
-    & > .search-icon--primary{
+    & > .search-icon--primary {
       width: 35px;
       position: absolute;
       right: 30px;

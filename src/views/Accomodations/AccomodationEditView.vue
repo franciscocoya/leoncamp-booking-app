@@ -91,7 +91,7 @@ onBeforeRouteLeave(() => {
 // -------------------------------------------------
 @media screen and (max-width: $breakpoint-sm) {
   .accomodation-edit-view {
-    margin: 30px 20px;
+    margin: 30px;
   }
 }
 </style>

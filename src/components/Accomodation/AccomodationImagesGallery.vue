@@ -1,4 +1,15 @@
 <script setup>
+import BaseButton from "@/components/Buttons/BaseButton.vue";
+
+const emit = defineEmits(["show-images"]);
+
+/**
+ * Manejador del evento click del botón de ver todas las imágenes del alojamiento.
+ */
+const handleShowAllAccomodationImages = () => {
+  emit("show-images");
+};
+
 const props = defineProps({
   images: {
     type: Array,
@@ -15,7 +26,10 @@ const props = defineProps({
   <div class="accomodation-image-gallery" v-if="images.length > 0">
     <div class="accomodation-image-gallery__wrapper">
       <!-- Galería con algunas de las imágenes del alojamiento -->
-      <div class="accomodation-image-gallery__images">
+      <div
+        v-if="props.images.length > 4"
+        class="accomodation-image-gallery__images"
+      >
         <img
           v-for="(img, index) in props.images.slice(0, 5)"
           :key="index"
@@ -23,12 +37,17 @@ const props = defineProps({
           :id="`${props.regNumber}_image${index}`"
         />
       </div>
+
+      <div v-else class="accomodation-image-gallery__main_image">
+        <img :src="props.images[0].imageUrl" />
+      </div>
     </div>
     <!-- Botón para mostrar todas las imágenes. Si hay más de 5 imágenes -->
     <BaseButton
       text="Ver todas"
-      buttonStyle="baseButton-dark--filled"
+      buttonStyle="baseButton-white--filled"
       id="bt-show-all-accomodation-images"
+      @click="handleShowAllAccomodationImages"
     />
   </div>
   <div v-else>No hay imágenes</div>
@@ -92,12 +111,24 @@ const props = defineProps({
         }
       } // fin img
     } // fin accomodation-image-gallery__images
+
+    & > .accomodation-image-gallery__main_image {
+      height: 100%;
+      object-fit: cover;
+
+      & > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: $global-border-radius;
+      }
+    }
   } // fin accomodation-image-gallery__wrapper
 
   & > #bt-show-all-accomodation-images {
     position: absolute;
-    top: 5%;
-    right: 12%;
+    bottom: 5%;
+    right: 5%;
     z-index: $z-index-3;
   }
 }

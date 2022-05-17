@@ -37,7 +37,7 @@
 .baseButton-primary--filled {
   @include baseButton--filled($color-primary, #fff);
 
-  &:disabled{
+  &:disabled {
     background: $color-tertiary-light;
     color: gray;
   }
@@ -90,7 +90,7 @@
   height: 35px;
   font-size: 1rem;
 
-  &:disabled{
+  &:disabled {
     background-color: $color-tertiary-light;
     color: gray;
     cursor: no-drop;
@@ -117,6 +117,23 @@
   &:hover {
     background: $color-dark;
     color: #fff;
+  }
+}
+
+// Blanco
+.baseButton-white--filled {
+  @include baseButton--filled(#fff, $color-dark);
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(2px);
+  border: 2px solid #fff;
+  color: #000;
+  font-weight: 500;
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    background-color: #fff;
+
+    box-shadow: $global-box-shadow;
   }
 }
 
@@ -261,7 +278,7 @@
   outline: none;
   border: 1px solid $color-tertiary-light;
   margin: 20px 0 0 20px;
-  background: #FFF;
+  background: #fff;
   border-radius: $global-border-radius;
   box-shadow: $global-box-shadow;
   z-index: $z-index-4;
@@ -270,7 +287,7 @@
     width: 18px;
   }
 
-  & > p{
+  & > p {
     display: none;
   }
 }

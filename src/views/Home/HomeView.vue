@@ -10,7 +10,7 @@ import SearchBarItem from "@/components/Header/SearchBar/SearchBarItem.vue";
 import { getAllAccomodations } from "@/services/accomodation/AccomodationService";
 
 // Store
-import { useAppContextStore } from "@/store/appContext"; 
+import { useAppContextStore } from "@/store/appContext";
 
 const appContextStore = useAppContextStore();
 
@@ -46,10 +46,14 @@ const deselectMarker = () => {
 
 <template>
   <main class="home-view">
-    <section v-if="appContextStore.isMobile == true" class="home_accomodation_search">
-      <SearchBarItem 
-      @show-search-results="appContextStore.showSearchResults = true"
-      @hide-search-results="appContextStore.showSearchResults = false"/>
+    <section
+      v-if="appContextStore.isMobile == true"
+      class="home_accomodation_search"
+    >
+      <SearchBarItem
+        @show-search-results="appContextStore.showSearchResults = true"
+        @hide-search-results="appContextStore.showSearchResults = false"
+      />
     </section>
     <section class="home-view__wrapper">
       <section class="home-accomodations-list">
@@ -63,12 +67,12 @@ const deselectMarker = () => {
           @deselectMarker="(value) => deselectMarker(value)"
         />
       </section>
-      <BaseAccomodationsMap
+      <!-- <BaseAccomodationsMap
       :markers="accomodationMarkers"
       @show-selected-marker="(value) => highLightSelectedMarker(value)"
       @hide-selected-marker="(value) => deselectMarker(value)"
       :selectedMarker="selectedMarkerRegNumber"
-    />
+    /> -->
     </section>
   </main>
 </template>
@@ -102,13 +106,18 @@ $home-section-margin: 50px;
 // Responsive design
 // --------------------------------------------------------------
 
-@media (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-md) {
   .home-view {
-    margin: 20px;
+    height: 100%;
+    margin: 20px 10px;
 
-    & > .home-view__wrapper{
-    @include flex-column;
-    margin: 20px;
+    & > .home-view__wrapper {
+      @include flex-column;
+      margin: 20px;
+      height: max-content;
+      & > .home-accomodations-list {
+        overflow: auto;
+      }
     }
   }
 }

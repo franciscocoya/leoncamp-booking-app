@@ -11,6 +11,15 @@ import {
 // Componentes
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 import VerifiedListItem from "@/components/User/VerifiedListItem.vue";
+import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
+import SingleAccomodationReviewItem from "@/components/Accomodation/AccomodationReview/SingleAccomodationReviewItem.vue";
+
+// Servicios
+import {
+  getAllUserAccomodations,
+  getAllAccomodationReviewsSendByUser,
+  getAllAccomodationReviewsReceivedByUserId,
+} from "@/services/accomodation/AccomodationService";
 
 // Store
 import { useUserStore } from "@/store/user";
@@ -21,7 +30,11 @@ const router = useRouter();
 // Datos del usuario a cargar.
 const userData = ref(null);
 const userLang = ref(null);
-// const userAccomodationAds = ref([]);
+const userAccomodationAds = ref([]);
+const userAccomodationReviewsSent = ref([]);
+const userAccomodationReviewsReceived = ref([]);
+const showUserReviewsSent = ref(false);
+const showUserReviewsReceived = ref(true);
 const isHostUser = ref(false);
 
 onBeforeMount(async () => {
@@ -34,7 +47,16 @@ onBeforeMount(async () => {
   userLang.value = await userStore.getUserLanguageById(userIdFromPath);
 
   // Alojamientos publicados
-  //userAccomodationAds.value = await userStore.getAllAccomodationsByUserdId(userIdFromPath);
+  userAccomodationAds.value = await getAllUserAccomodations(userIdFromPath);
+
+  // Valoraciones realizadas por el usuario
+  userAccomodationReviewsSent.value = await getAllAccomodationReviewsSendByUser(
+    userIdFromPath
+  );
+
+  // Valoraciones recibidas de todos los alojamientos del usuario.
+  userAccomodationReviewsReceived.value =
+    await getAllAccomodationReviewsReceivedByUserId(userIdFromPath);
 
   // Verificar si el usuario es un host
   isHostUser.value =
@@ -49,35 +71,15 @@ onBeforeMount(async () => {
       <AccountIcon
         width="120"
         height="120"
-        :profileImage="userData.profileImage"
-        :username="`${userData.name} ${userData.surname}`"
+        :profileImage="userData?.profileImage"
+        :username="`${userData?.name} ${userData?.surname}`"
       />
 
       <!-- User Host detalles -->
       <div class="user_profile_sidebar__details">
         <p v-if="isHostUser" v-once>Usuario Host</p>
-        <div class="user_profile_sidebar_details__stars" v-once>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M11.5516 2.90848C11.735 2.53686 12.265 2.53686 12.4484 2.90848L14.8226 7.71918C14.8954 7.86676 15.0362 7.96904 15.1991 7.9927L20.508 8.76414C20.9181 8.82373 21.0818 9.32772 20.7851 9.61698L16.9435 13.3616C16.8257 13.4765 16.7719 13.642 16.7997 13.8042L17.7066 19.0916C17.7766 19.5001 17.3479 19.8116 16.9811 19.6187L12.2327 17.1223C12.087 17.0457 11.913 17.0457 11.7673 17.1223L7.01888 19.6187C6.65207 19.8116 6.22335 19.5001 6.29341 19.0916L7.20028 13.8042C7.2281 13.642 7.17433 13.4765 7.05648 13.3616L3.21491 9.61698C2.91815 9.32772 3.08191 8.82373 3.49202 8.76414L8.80094 7.9927C8.9638 7.96904 9.10458 7.86676 9.17741 7.71918L11.5516 2.90848Z"
-              fill="none"
-              stroke="#222222"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-          <p v-once>40 valoraciones</p>
-        </div>
         <div
-          v-if="userData.verified"
+          v-if="userData?.verified"
           class="user_profile_sidebar_details__fullVerified"
         >
           <img
@@ -91,21 +93,21 @@ onBeforeMount(async () => {
         <!-- Verificaciones del usuario -->
         <div
           v-if="
-            userData.dniVerified == true ||
-            userData.emailVerified == true ||
-            userData.phoneVerified == true
+            userData?.dniVerified == true ||
+            userData?.emailVerified == true ||
+            userData?.phoneVerified == true
           "
           class="user_profile_sidebar_details__verified"
         >
-          <h2 >{{userData.name}} {{userData.surname}} ha confirmado</h2>
+          <h2>{{ userData?.name }} {{ userData?.surname }} ha confirmado</h2>
           <ul>
-            <li v-if="userData.dniVerified">
+            <li v-if="userData?.dniVerified">
               <VerifiedListItem verifiedText="DNI" />
             </li>
-            <li v-if="userData.emailVerified">
+            <li v-if="userData?.emailVerified">
               <VerifiedListItem verifiedText="Correo electrónico" />
             </li>
-            <li v-if="userData.phoneVerified">
+            <li v-if="userData?.phoneVerified">
               <VerifiedListItem verifiedText="Teléfono" />
             </li>
           </ul>
@@ -116,42 +118,104 @@ onBeforeMount(async () => {
     <div class="user-profile__data">
       <!-- Nombre completo del usuario -->
       <h2>
-        Hola: Soy <span>{{ userData.name }} {{ userData.surname }}</span>
+        Hola: Soy <span>{{ userData?.name }} {{ userData?.surname }}</span>
       </h2>
       <!-- Fecha de registro -->
-      <span>
-
-      </span>
+      <span> </span>
 
       <!-- Acerca del usuario -->
       <section v-if="isHostUser" class="user-profile-data__biography">
         <h3>Acerca de</h3>
-        <p v-if="userData.bio">
-          {{ userData.bio }}
+        <p v-if="userData?.bio">
+          {{ userData?.bio }}
         </p>
         <!-- Idiomas -->
         <div class="user-profile-data_biography__lang">
           <img :src="ICON_USER_LANGUAGE" alt="" />
-          <p>Habla: {{ userLang }}</p>
+          <p>
+            Habla:
+            {{
+              userLang.idLanguage.language == "ES"
+                ? "Español"
+                : userLang.idLanguage.language == "EN"
+                ? "Inglés"
+                : " - "
+            }}
+          </p>
         </div>
       </section>
 
       <!-- Anuncios publicados por el usuario -->
       <section class="user-profile-data__ads">
         <h2>Alojamientos publicados</h2>
-        <!-- Alojamientos publicados -->
-        <!-- <AccomodationThumbnailItem
-        v-for="accomodation in accomodations"
-        :key="accomodation.registerNumber"
-        :accData="accomodation"
-        :isCurrentUserOwner="true"
-        :showDeleteButton="false"
-      /> -->
+        <div v-if="userAccomodationAds.length > 0">
+          <AccomodationThumbnailItem
+            v-for="accomodation in userAccomodationAds"
+            :key="accomodation.registerNumber"
+            :accData="accomodation"
+            :isCurrentUserOwner="false"
+            :showDeleteButton="false"
+            :showEditButton="true"
+          />
+        </div>
+        <div v-else>
+          <h3>No ha publicado ningún alojamiento</h3>
+        </div>
       </section>
 
-      <!-- Valoraciones del usuario (Escritas y recibidas) -->
-      <section>
+      <!-- Sección valoraciones -->
+      <section class="user-profile-data__reviews">
         <h2>Valoraciones</h2>
+        <div class="user-profile-data_reviews__tabs">
+          <span
+            title="Valoraciones realizadas por los huéspedes que se han alojado en alguno de los alojamientos del usuario"
+            role="tab"
+            :class="`${showUserReviewsReceived == true && '--is-tab-active'}`"
+            @click.prevent="
+              showUserReviewsSent = false;
+              showUserReviewsReceived = true;
+            "
+            >De los huéspedes</span
+          >
+          <span
+            title="Valoraciones realizadas por el usuario en otros alojamientos"
+            role="tab"
+            :class="`${showUserReviewsSent == true && '--is-tab-active'}`"
+            @click.prevent="
+              showUserReviewsReceived = false;
+              showUserReviewsSent = true;
+            "
+            >Del usuario</span
+          >
+        </div>
+
+        <!-- Valoraciones recibidas -->
+        <div
+          v-if="showUserReviewsReceived == true"
+          class="user-profile-data_reviews__guests"
+        >
+          <SingleAccomodationReviewItem
+            v-for="(review, index) in userAccomodationReviewsReceived"
+            :key="index"
+            :review="review"
+            :showAccomodationThumbnail="true"
+            :showReviewStars="false"
+          />
+        </div>
+
+        <!-- Valoraciones escritas por el usuario -->
+        <div
+          v-if="showUserReviewsSent == true"
+          class="user-profile-data_reviews__user"
+        >
+          <SingleAccomodationReviewItem
+            v-for="(review, index) in userAccomodationReviewsSent"
+            :key="index"
+            :review="review"
+            :showAccomodationThumbnail="true"
+            :showReviewStars="false"
+          />
+        </div>
       </section>
     </div>
   </div>
@@ -264,6 +328,76 @@ onBeforeMount(async () => {
           height: 30px;
         }
       }
+    }
+
+    // Estilos sección valoraciones
+    & > section.user-profile-data__reviews {
+      @include flex-column;
+      gap: 20px;
+
+      // Estilos tabs
+      & > .user-profile-data_reviews__tabs {
+        @include flex-row;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid $color-tertiary-light;
+
+        & > span {
+          color: gray;
+          font-weight: 400;
+          font-size: 1rem;
+          cursor: pointer;
+          padding: 8px 20px;
+          border-radius: $global-border-radius;
+
+          &:hover {
+            background-color: $color-tertiary-light;
+          }
+        }
+
+        & > span.--is-tab-active {
+          color: $color-dark;
+          font-weight: 600;
+          border: 2px solid $color-dark;
+          position: relative;
+          &:hover {
+            background: none;
+          }
+          &:after {
+            content: "";
+            position: absolute;
+            bottom: -13px;
+            left: 0;
+            width: 100%;
+            // height: 2px;
+            border-bottom: 2px solid $color-dark;
+          }
+        }
+      }
+
+      & > .user-profile-data_reviews__guests,
+      & > .user-profile-data_reviews__user {
+        @include flex-column;
+        gap: 40px;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .user-profile-view {
+    @include flex-row-center;
+    align-items: flex-start;
+    gap: 50px;
+    margin: 30px;
+    $user-profile-view-marginTop: 30px;
+    height: max-content;
+
+    & > .user-profile__sidebar {
+      display: none;
     }
   }
 }

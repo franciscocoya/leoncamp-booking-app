@@ -1,22 +1,22 @@
-@import "@/assets/scss/_variables.scss";
-@import "@/assets/scss/_mixins.scss";
+@import '@/assets/scss/_variables.scss';
+@import '@/assets/scss/_mixins.scss';
 
 // Estilos globales a las ventanas modales
-.base-modal{
-    @include flex-row-center;
-    width: 100%;
-    height: calc(100vh - $header-height);
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: $z-index-modal;
+.base-modal {
+  @include flex-row-center;
+  width: 100%;
+  height: calc(100vh - $header-height);
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: $z-index-modal;
 }
 
 // ---------------------------------------------------------------
 // -- Responsive design
 // ---------------------------------------------------------------
 @media (max-width: $breakpoint-sm) {
-    .base-modal{
-        height: 100%;
-        z-index: $z-index-2;
-    }
+  .base-modal {
+    height: 100%;
+    z-index: $z-index-2;
+  }
 }

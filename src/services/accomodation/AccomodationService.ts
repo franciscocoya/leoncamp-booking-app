@@ -97,8 +97,6 @@ export const addNewAccomodation = async (
   }).catch((err) => console.log(err));
 
   // Creación del alojamiento
-  // TODO: Comprobaciones previas: Longitud campos para base de datos, checks en cliente y si hay en servidos, devolver mensaje e
-  // TODO: interrumpir operación.
   if (location) {
     newAccomodation = await axios({
       url: `${baseUri}${ACCOMODATIONS_BASE_PATH}/new`,
@@ -183,22 +181,24 @@ const addNewLocation = async (accomodationLocation: any): Promise<any> => {
 
 /**
  * Comprueba si existe el alojamiento con el número de registro pasado como parámetro.
- * 
- * @param registerNumber 
- * @returns 
+ *
+ * @param registerNumber
+ * @returns
  */
 export const checkAccomodationExistsByRegNumber = async (
   registerNumber: string
 ): Promise<any> => {
-  const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`, {
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-  });
+  const { data } = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
 
   return data;
-}
-
+};
 
 /**
  * Lista todos los alojamientos disponibles.
@@ -222,7 +222,10 @@ export const getAllAccomodations = async () => {
 /**
  * Listado de todos los alojamientos de la ciudad <code>cityToSearch</code>.
  */
-export const getAllAccomodationsByCity = async (cityToSearch: string, callback?: CallableFunction) => {
+export const getAllAccomodationsByCity = async (
+  cityToSearch: string,
+  callback?: CallableFunction
+) => {
   const { data } = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/cities/${cityToSearch}`, {
       params: {
@@ -330,6 +333,10 @@ export async function getAccomodationStarAverage(regNumber: string) {
   return data;
 }
 
+// ---------------------------------------------------------------
+// -- Accomodation Reviews
+// ---------------------------------------------------------------
+
 /**
  *
  * Listado de las valoraciones del alojamiento con el número de registro pasado como parámetro.
@@ -376,6 +383,8 @@ export async function getAllAccomodationReviewsByRegisterNumber(
 
 /**
  * Eliminar un alojamiento por su número de registro.
+
+ * @param regNumber 
  */
 export async function deleteAccomodationBySavedAccomodationId(
   regNumber: number
@@ -388,6 +397,50 @@ export async function deleteAccomodationBySavedAccomodationId(
       },
     }
   );
+}
+
+/**
+ * Listado de las valoraciones realizadas por el usuario con el id pasado como parámetro.
+ *
+ * @param userId
+ * @param callback
+ * @returns
+ */
+export async function getAllAccomodationReviewsSendByUser(
+  userId: number,
+  callback?: CallableFunction
+) {
+  const { data } = await axios
+    .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/u/${userId}/send`)
+    .catch((err) => {
+      if (err.response) {
+        callback(err.response);
+      }
+    });
+
+  return data;
+}
+
+/**
+ * Listado de las valoraciones recibicidas en todos los alojamientos del usuario con el id pasado como parámetro.
+ *
+ * @param userId
+ * @param callback
+ * @returns
+ */
+export async function getAllAccomodationReviewsReceivedByUserId(
+  userId: number,
+  callback?: CallableFunction
+) {
+  const { data } = await axios
+    .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/u/${userId}/received`)
+    .catch((err) => {
+      if (err.response) {
+        callback(err.response);
+      }
+    });
+
+  return data;
 }
 
 /**
@@ -424,7 +477,9 @@ export async function getAllAvailableRules() {
  * Listado de todas las ciudades
  */
 export async function getAllCities(): Promise<string[]> {
-  const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/cities/all`);
+  const { data } = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/cities/all`
+  );
 
   return data;
 }
@@ -566,7 +621,8 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
   let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
 
   const { data } = await axios.get(
-    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${import.meta.env.VITE_POSITION_STACK_API_TOKEN
+    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${
+      import.meta.env.VITE_POSITION_STACK_API_TOKEN
     }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
   );
 
@@ -640,7 +696,6 @@ export async function removeSavedAccomodation(
 export async function getSavedAccomodation(
   idAccomodation: string,
   idUser: number
-
 ) {
   const { data } = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,

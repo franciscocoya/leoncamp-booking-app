@@ -81,7 +81,7 @@ function handleBlur() {
   & > textarea {
     @include flex-column;
     width: 100%;
-    height: 100px;
+    height: 250px;
     padding-top: 20px;
     outline: none;
   }
@@ -92,8 +92,7 @@ function handleBlur() {
 // -------------------------------------------------
 @media screen and (max-width: $breakpoint-sm) {
   .base-textarea-item > textarea {
-    overflow-x: hidden;
-    overflow-y: auto;
+    resize: vertical;
   }
 }
 </style>

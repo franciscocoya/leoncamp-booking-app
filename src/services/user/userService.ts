@@ -18,8 +18,9 @@ const checkExistsUser = async (emailToCheck: string) => {
   return await axios
     .get(`${API_USERS}/load/${emailToCheck}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
     })
     .then((res) => res.data)
@@ -37,11 +38,16 @@ const checkExistsUser = async (emailToCheck: string) => {
  * @returns
  */
 const getUserDataById = async (id: number) => {
+  if (isNaN(id)) {
+    return null;
+  }
+
   const { data } = await axios
     .get(`${API_USERS}/${id}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
       timeout: 5000,
     })
@@ -52,8 +58,8 @@ const getUserDataById = async (id: number) => {
 
 /**
  * Obtiene los datos de un usuario host por su id.
- * @param userId 
- * @param callback 
+ * @param userId
+ * @param callback
  */
 const getUserHostDataById = async (
   userId: number,
@@ -62,8 +68,9 @@ const getUserHostDataById = async (
   const { data } = await axios
     .get(`${API_USERS}/host/${userId}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
     })
     .catch((err) => {
@@ -92,14 +99,11 @@ const getUserConfigurationByUserId = async (userId: number) => {
 
 /**
  * Crea una configuración para el usuario con id <code>userId</code>.
- * 
- * @param userId 
- * @param configData 
+ *
+ * @param userId
+ * @param configData
  */
-const addUserConfigurationToUser = async (
-  userId: number,
-  configData: any
-) => {
+const addUserConfigurationToUser = async (userId: number, configData: any) => {
   let newConfig = await axios({
     url: `${API_CONFIG}/new`,
     method: 'POST',
@@ -121,18 +125,19 @@ const addUserConfigurationToUser = async (
     },
     data: configData,
   });
-
-}
+};
 
 /**
  * Actualiza la configuración del usuario.
- * 
- * @param userId 
- * @param configData 
+ *
+ * @param userId
+ * @param configData
  */
-const updateUserConfiguration = async (userId: number,
-  configData: any, callback?: CallableFunction) => {
-
+const updateUserConfiguration = async (
+  userId: number,
+  configData: any,
+  callback?: CallableFunction
+) => {
   const { data } = await axios({
     url: `${API_CONFIG}/${userId}`,
     method: 'PUT',
@@ -140,7 +145,7 @@ const updateUserConfiguration = async (userId: number,
       Authorization: `Bearer ${apiJwtToken}`,
     },
     data: configData,
-  }).catch(err => {
+  }).catch((err) => {
     if (err.response) {
       callback(err.response);
     }
@@ -149,11 +154,10 @@ const updateUserConfiguration = async (userId: number,
   return data;
 };
 
-
 /**
  * Listado de todos los idiomas disponibles en la aplicación.
- * 
- * @returns 
+ *
+ * @returns
  */
 const getAllAvailableCurrencies = async (callback?: CallableFunction) => {
   const { data } = await axios
@@ -302,7 +306,6 @@ const getUserReviewsById = async (userId: number) => {
   return data;
 };
 
-
 export {
   checkExistsUser,
   getUserDataById,
@@ -311,5 +314,5 @@ export {
   updateUserConfiguration,
   uploadUserProfileImage,
   getUserReviewsById,
-  getAllAvailableCurrencies
+  getAllAvailableCurrencies,
 };

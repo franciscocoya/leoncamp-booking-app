@@ -28,7 +28,7 @@ onMounted(async () => {
     style: "mapbox://styles/mapbox/streets-v11",
     // [-5.579879833258864, 42.60613038790926]
     // props.markers[0].coords.lng, props.markers[0].coords.lat
-    center: [-5.579879833258864, 42.60613038790926],
+    center: [props?.markers[0]?.coords?.lng, props?.markers[0]?.coords?.lat],
     minzoom: 1.3,
     zoom: 14, // starting zoom
   }).addControl(new mapboxgl.NavigationControl(), "top-right");

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
 // Service
 import {
@@ -7,6 +7,8 @@ import {
   removeSavedAccomodation,
   getSavedAccomodation,
 } from "@/services/accomodation/AccomodationService";
+
+import { useAuthStore } from "@/store/auth";
 
 const props = defineProps({
   isActive: {
@@ -31,8 +33,9 @@ const props = defineProps({
   },
 });
 
-let isIconActive = ref(props.isActive);
-const currentUserId = JSON.parse(sessionStorage.getItem("user"))?.id;
+const authStore = useAuthStore();
+
+let isIconActive = ref(false);
 
 /**
  * Al hacer click se cambia el estado isActive y se añade el alojamiento
@@ -40,20 +43,22 @@ const currentUserId = JSON.parse(sessionStorage.getItem("user"))?.id;
  */
 const handleClick = async () => {
   isIconActive.value
-    ? await removeSavedAccomodation(props.regNumber, currentUserId)
-    : await saveAccomodation(props.regNumber, currentUserId);
+    ? await removeSavedAccomodation(props.regNumber, authStore.userData.id)
+    : await saveAccomodation(props.regNumber, authStore.userData.id);
 
   isIconActive.value = !isIconActive.value;
-  props.isActive = isIconActive.value;
 };
 
 onMounted(async () => {
   const savedAccomodation = await getSavedAccomodation(
     props.regNumber,
-    currentUserId
+    authStore.userData.id
   );
 
-  isIconActive.value = savedAccomodation !== null;
+  console.log(savedAccomodation);
+  if (savedAccomodation) {
+    isIconActive.value = true;
+  }
 });
 </script>
 
@@ -92,7 +97,7 @@ onMounted(async () => {
             :stroke="iconColor"
             stroke-width="2"
             stroke-linecap="round"
-            :fill="isIconActive ? iconColor : 'none'"
+            :fill="isIconActive == true ? iconColor : 'none'"
           ></path>
         </g>
       </g>
