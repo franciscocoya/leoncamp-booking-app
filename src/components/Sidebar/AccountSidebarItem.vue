@@ -101,7 +101,18 @@ onMounted(() => {
         >
           Perfil
         </li>
-        <li id="user-security-privacity">Seguridad y privacidad</li>
+        <li
+          id="user-account-security"
+          @click.prevent="redirectAccountChildrenView('user-privacy')"
+        >
+          Seguridad y privacidad
+        </li>
+        <li
+          id="user-account-configuration"
+          @click.prevent="redirectAccountChildrenView('user-configuration')"
+        >
+          Configuración y preferencias
+        </li>
         <li
           id="user-bookings"
           @click="redirectAccountChildrenView('user-bookings')"

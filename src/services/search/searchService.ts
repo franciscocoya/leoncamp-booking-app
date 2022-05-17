@@ -13,15 +13,9 @@ import { getAllCities } from '@/services/accomodation/AccomodationService';
 const getCitiesMatchWithSearchWord = async (
   searchWord: string
 ): Promise<string[]> => {
-  if (!searchWord || searchWord.length === 0) {
-    return [];
-  }
-
   const cities = await getAllCities();
 
-  return cities.filter((city: string) => {
-    return city.toLowerCase().includes(searchWord.toLowerCase());
-  });
+  return cities.filter((city: string) => city.toLowerCase().includes(searchWord.toLocaleLowerCase()));
 };
 
 export { getCitiesMatchWithSearchWord };

@@ -36,6 +36,11 @@
 
 .baseButton-primary--filled {
   @include baseButton--filled($color-primary, #fff);
+
+  &:disabled{
+    background: $color-tertiary-light;
+    color: gray;
+  }
 }
 
 .baseButton-secondary--filled {

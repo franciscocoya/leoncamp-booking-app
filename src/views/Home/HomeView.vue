@@ -2,30 +2,20 @@
 import { onMounted, ref } from "vue";
 
 // Componentes
-// import { DatePicker } from "v-calendar";
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
 import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
-// Componentes
-// import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
+import SearchBarItem from "@/components/Header/SearchBar/SearchBarItem.vue";
 
 // Servicios
 import { getAllAccomodations } from "@/services/accomodation/AccomodationService";
 
-// const selectedDates = {
-//   checkIn: new Date(),
-//   checkOut: null,
-// };
+// Store
+import { useAppContextStore } from "@/store/appContext"; 
 
-// const datePicker = ref(null);
-
-// const handleChange = () => {
-//   console.log(datePicker);
-// };
+const appContextStore = useAppContextStore();
 
 let allAccomodations = ref([]);
-
 let accomodationMarkers = ref([]);
-
 let selectedMarkerRegNumber = ref("");
 
 onMounted(async () => {
@@ -52,40 +42,35 @@ const highLightSelectedMarker = (val) => {
 const deselectMarker = () => {
   selectedMarkerRegNumber.value = "";
 };
-
 </script>
 
 <template>
-  <!-- <DatePicker
-    ref="datePicker"
-    :model="range"
-    :from-page="new Date()"
-    :value="selectedDates"
-    is-range
-    :columns="$screens({ default: 1, lg: 2 })"
-    color="gray"
-    :min-date="new Date()"
-    transition="slide-h"
-  /> -->
-  <section class="home-view">
-    <div class="home-accomodations-list">
-      <AccomodationThumbnailItem
-        v-for="accomodation in allAccomodations"
-        :key="accomodation.registerNumber"
-        :accData="accomodation"
-        :isCurrentUserOwner="true"
-        :showDeleteButton="false"
-        @highlightMarker="(value) => highLightSelectedMarker(value)"
-        @deselectMarker="(value) => deselectMarker(value)"
-      />
-    </div>
-    <!-- <BaseAccomodationsMap
+  <main class="home-view">
+    <section v-if="appContextStore.isMobile == true" class="home_accomodation_search">
+      <SearchBarItem 
+      @show-search-results="appContextStore.showSearchResults = true"
+      @hide-search-results="appContextStore.showSearchResults = false"/>
+    </section>
+    <section class="home-view__wrapper">
+      <section class="home-accomodations-list">
+        <AccomodationThumbnailItem
+          v-for="accomodation in allAccomodations"
+          :key="accomodation.registerNumber"
+          :accData="accomodation"
+          :isCurrentUserOwner="true"
+          :showDeleteButton="false"
+          @highlightMarker="(value) => highLightSelectedMarker(value)"
+          @deselectMarker="(value) => deselectMarker(value)"
+        />
+      </section>
+      <BaseAccomodationsMap
       :markers="accomodationMarkers"
       @show-selected-marker="(value) => highLightSelectedMarker(value)"
       @hide-selected-marker="(value) => deselectMarker(value)"
       :selectedMarker="selectedMarkerRegNumber"
-    /> -->
-  </section>
+    />
+    </section>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -95,16 +80,21 @@ const deselectMarker = () => {
 $home-section-margin: 50px;
 
 .home-view {
-  // height: calc(100vh - $header-height - $home-section-margin);
-  display: grid;
-  grid-template-columns: auto 60%;
-  grid-gap: 20px;
-  // gap: 20px;
-  margin: $home-section-margin 0 0 $home-section-margin;
-  // Estilos para la lista de alojamientos
-  & > .home-accomodations-list {
-    @include flex-column;
-    gap: 30px;
+  @include flex-column;
+  & > .home-view__wrapper {
+    display: grid;
+    height: calc(100vh - $header-height - 50px);
+    grid-template-columns: auto 60%;
+    gap: 20px;
+    margin: $home-section-margin 0 0 $home-section-margin;
+    // Estilos para la lista de alojamientos
+    & > .home-accomodations-list {
+      @include flex-column;
+      height: 100%;
+      gap: 30px;
+      overflow-y: scroll;
+      padding-bottom: 50px;
+    }
   }
 }
 
@@ -113,9 +103,13 @@ $home-section-margin: 50px;
 // --------------------------------------------------------------
 
 @media (max-width: $breakpoint-sm) {
-  .home-view{
+  .home-view {
+    margin: 20px;
+
+    & > .home-view__wrapper{
     @include flex-column;
     margin: 20px;
+    }
   }
 }
 </style>

@@ -7,13 +7,20 @@ const RESET_PASSWORD_URL = `${API_BASE_URL}${
   import.meta.env.VITE_API_RESET_PASSWORD_URL
 }`;
 
+const RESET_PASSWORD_LOGGED_USER = `${API_BASE_URL}/auth`;
+
 // -----------------------------------------------------------------------------
 
 // -- Rutas de usuario
 const API_USERS = `${API_BASE_URL}${import.meta.env.VITE_API_USERS}`;
+
+// /config/u
 const API_USER_CONFIG = `${API_BASE_URL}${
   import.meta.env.VITE_API_USER_CONFIG
 }`;
+
+// /config
+const API_CONFIG = `${API_BASE_URL}${import.meta.env.VITE_API_CONFIG}`;
 
 // -----------------------------------------------------------------------------
 
@@ -54,7 +61,9 @@ export {
   LOGIN_URL,
   SIGNUP_URL,
   RESET_PASSWORD_URL,
+  RESET_PASSWORD_LOGGED_USER,
   API_USERS,
+  API_CONFIG,
   API_USER_CONFIG,
   API_ACCOMODATIONS,
   API_ACCOMODATION_SERVICES,

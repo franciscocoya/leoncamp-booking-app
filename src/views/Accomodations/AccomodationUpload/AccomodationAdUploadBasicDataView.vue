@@ -211,8 +211,8 @@ onMounted(async () => {
 
 onBeforeRouteLeave((to, from) => {
   if (
-    formErrorsStore.enableNextButton == false ||
-    headerRoutes.includes(to.name)
+    formErrorsStore.enableNextButton == false
+    && !headerRoutes.includes(to.name)
   ) {
     return false;
   }

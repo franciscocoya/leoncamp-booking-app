@@ -12,7 +12,9 @@
   @include flex-row-center;
   height: calc(100vh - $header-height);
   width: 100%;
+  background-color: #fff;
   position: fixed;
+  z-index: $z-index-header;
 }
 
 .loader-icon,
@@ -71,5 +73,16 @@
   40% {
     box-shadow: 0 2.5em 0 0;
   }
+}
+
+// --------------------------------------------------------------
+// Responsive design
+// --------------------------------------------------------------
+
+@media (max-width: $breakpoint-sm) {
+
+.app-preloader{
+  height: 100%;
+}
 }
 </style>

@@ -65,8 +65,8 @@ const closeModal = () => {
 .base-modal-window {
   @include flex-column;
   gap: 20px;
-  width: 40%;
-  height: max-content;
+  width: 30%;
+  height: 80%;
   padding: 20px 50px;
   background-color: #fff;
   border-radius: $global-border-radius;

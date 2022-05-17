@@ -190,7 +190,7 @@ const addNewLocation = async (accomodationLocation: any): Promise<any> => {
 export const checkAccomodationExistsByRegNumber = async (
   registerNumber: string
 ): Promise<any> => {
-  const {data} = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`, {
+  const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`, {
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
@@ -215,6 +215,29 @@ export const getAllAccomodations = async () => {
       },
     })
     .catch((err) => handleError(err))) as any;
+
+  return data.content;
+};
+
+/**
+ * Listado de todos los alojamientos de la ciudad <code>cityToSearch</code>.
+ */
+export const getAllAccomodationsByCity = async (cityToSearch: string, callback?: CallableFunction) => {
+  const { data } = await axios
+    .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/cities/${cityToSearch}`, {
+      params: {
+        page: 0,
+        size: 20,
+      },
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    })
+    .catch((err) => {
+      if (err.response) {
+        callback(err.response);
+      }
+    });
 
   return data.content;
 };
@@ -401,14 +424,9 @@ export async function getAllAvailableRules() {
  * Listado de todas las ciudades
  */
 export async function getAllCities(): Promise<string[]> {
-  const accomodations = await getAllAccomodations();
-  return [
-    ...new Set(
-      accomodations.map(
-        (accomodation: any) => accomodation.idAccomodationLocation.city
-      )
-    ),
-  ] as string[];
+  const { data } = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/cities/all`);
+
+  return data;
 }
 
 // ---------------------------------------------------------------

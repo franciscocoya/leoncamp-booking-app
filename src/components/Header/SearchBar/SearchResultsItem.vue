@@ -1,14 +1,30 @@
 <script setup>
 import { defineEmits, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 // Store
 import { useSearchStore } from "@/store/search";
 const searchStore = useSearchStore();
 
+const router = useRouter();
+
 const emit = defineEmits(["hide-search-results"]);
 
 const handleHideSearchResults = () => {
   emit("hide-search-results");
+};
+
+/**
+ * Manejador de click del resultado de búsqueda.
+ */
+const handleSearchAccomodationsByQuery = async (city) => {
+  router.push({
+    name: 'accomodation-city-list',
+    params: {
+      city
+    }
+  });
+  handleHideSearchResults();
 };
 
 onMounted(() => {
@@ -24,7 +40,11 @@ onMounted(() => {
     ></div>
     <div class="search-results-container__wrapper">
       <ul v-if="searchStore.searchResults.length > 0">
-        <li v-for="(result, index) in searchStore.searchResults" :key="index">
+        <li
+          v-for="(result, index) in searchStore.searchResults"
+          :key="index"
+          @click.prevent="handleSearchAccomodationsByQuery(result)"
+        >
           <svg
             width="30"
             height="30"
@@ -50,7 +70,7 @@ onMounted(() => {
           <p>{{ result }}</p>
         </li>
       </ul>
-      <p v-else>No hay resultados</p>
+      <h2 v-else>No hay resultados</h2>
     </div>
   </div>
 </template>
@@ -64,6 +84,7 @@ onMounted(() => {
   align-items: flex-start;
   width: 100%;
   height: 100vh;
+  top: $header-height;
   position: fixed;
   z-index: $z-index-header;
   background: rgba(0, 0, 0, 0.5);
@@ -93,9 +114,10 @@ onMounted(() => {
 
       & > li {
         @include flex-row;
+        align-items: center;
         gap: 20px;
         border-radius: $global-border-radius;
-        transition: background 0.2s ease-in;
+        transition: background-color 0.2s ease-in;
 
         & > svg {
           background-color: $color-tertiary-light;
@@ -109,6 +131,39 @@ onMounted(() => {
 
           & > svg > path {
             stroke: $color-secondary;
+          }
+        }
+      }
+    } // Fin estilos ul
+
+    & > h2 {
+      font-weight: 400;
+      color: $color-primary;
+    }
+  }
+}
+
+// --------------------------------------------------------------
+// Responsive design
+// --------------------------------------------------------------
+
+@media (max-width: $breakpoint-sm) {
+  .search-results-container {
+    top: 80px;
+
+    & > .search-results-container__wrapper {
+      width: 90%;
+      margin-top: 50px;
+      height: max-content;
+
+      & > ul {
+        & > li {
+          & > p {
+            font-size: 1.5rem;
+          }
+          & > svg {
+            width: 60px;
+            height: 60px;
           }
         }
       }

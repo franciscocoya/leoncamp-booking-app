@@ -1,16 +1,23 @@
-<script lang="ts" setup>
-
-// Servicios
-// import { checkExistsUser } from "@/services/user/userService";
+<script setup>
+import { onMounted, ref } from "vue";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
-import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
+import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
+import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // Store
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
+import { useAppContextStore } from "@/store/appContext";
 
+const authStore = useAuthStore();
 const userStore = useUserStore();
+const appContextStore = useAppContextStore();
+
+let isResetButtonEnabled = ref(false);
+let showErrorMessages = ref(false);
+let showSuccessMessage = ref(false);
 
 defineProps({
   title: {
@@ -19,72 +26,116 @@ defineProps({
   },
 });
 
-const userToken = JSON.parse(localStorage.getItem("token")|| '{}').token;
-
 /**
  * Manejador del evento submit del formulario.
  */
-const handleResetPassword = (e : Event) => {
-  e.preventDefault();
-  console.log("handlee....");
+const handleResetPassword = async () => {
+  authStore.errors = [];
+  await authStore.resetPasswordLoggedUser();
+  showErrorMessages.value = authStore.errors.length > 0;
+  showSuccessMessage.value = authStore.errors.length == 0;
+
+  if (showSuccessMessage) {
+    setTimeout(() => {
+      showSuccessMessage.value = false;
+    }, 6000);
+  }
+
+  if (showErrorMessages) {
+    setTimeout(() => {
+      showErrorMessages.value = false;
+    }, 6000);
+  }
 };
 
-const enablePasswordFields = (e : Event) => {
-  e.preventDefault();
+const enablePasswordFields = (callback) => {
+  callback();
+
+  isResetButtonEnabled.value =
+    authStore.password !== "" &&
+    authStore.newPassword !== "" &&
+    authStore.repeatedPassword !== "";
 };
+
+onMounted(() => {
+  authStore.errors = [];
+  authStore.password = "";
+  authStore.newPassword = "";
+  authStore.repeatedPassword = "";
+
+  isResetButtonEnabled.value = false;
+});
 </script>
 
 <template>
   <div class="login-form">
     <h1>{{ title }}</h1>
     <form id="form-login">
-      <!-- Email -->
-      <div v-if="!userToken" class="form-group__current-password">
-        <label for="email-reset">Correo electrónico</label>
-        <BaseFormInput
-          inputType="email"
+      <div class="form-group__current-password">
+        <LabelFormInput
+          inputType="password"
+          inputLabel="Contraseña actual"
           inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.email = value || '')"
+          @handleInput="
+            (value) =>
+              enablePasswordFields(
+                () => (authStore.password = value.replace(' ', ''))
+              )
+          "
         />
       </div>
-
-      <div v-if="userToken" class="form-group__current-password">
-        <label for="old-password">Contraseña actual</label>
-        <BaseFormInput
+      <div class="form-group__new-password">
+        <LabelFormInput
           inputType="password"
+          inputLabel="Nueva contraseña"
           inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.password = value || '')"
+          @handleInput="
+            (value) =>
+              enablePasswordFields(
+                () => (authStore.newPassword = value.replace(' ', ''))
+              )
+          "
         />
       </div>
-      <div v-if="userToken" class="form-group__new-password">
-        <label for="new-password">Nueva contraseña</label>
-        <BaseFormInput
+      <div class="form-group__new-password-repeated">
+        <LabelFormInput
           inputType="password"
+          inputLabel="Repetir nueva contraseña"
           inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.newPassword = value || '')"
-        />
-      </div>
-      <div v-if="userToken" class="form-group__new-password-repeated">
-        <label for="new-password-repeated">Repetir contraseña</label>
-        <BaseFormInput
-          inputType="password"
-          inputStyleClass="base-input"
-          @handleInput="(value) => (userStore.repeatedPassword = value)"
+          @handleInput="
+            (value) =>
+              enablePasswordFields(
+                () => (authStore.repeatedPassword = value.replace(' ', ''))
+              )
+          "
         />
       </div>
       <BaseButton
-        v-if="!userToken"
-        text="Comprobar"
-        buttonStyle="baseButton-primary--filled"
-        @click="enablePasswordFields"
-      />
-      <BaseButton
-        v-else
         text="Restablecer"
         buttonStyle="baseButton-primary--filled"
+        :fullWidth="appContextStore.isMobile == true"
+        :isDisabled="isResetButtonEnabled == false"
         @click="handleResetPassword"
       />
     </form>
+    <Transition name="fade">
+      <div v-if="showErrorMessages == true">
+        <BaseMessageItem
+          v-for="(msgError, index) in authStore.errors"
+          :key="index"
+          :msg="msgError"
+          msgType="error"
+        />
+      </div>
+    </Transition>
+    <Transition name="fade">
+      <div v-if="showSuccessMessage == true">
+        <BaseMessageItem
+          msg="La contraseña se ha restablecido correctamente"
+          msgType="success"
+        />
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -94,7 +145,6 @@ const enablePasswordFields = (e : Event) => {
 
 .login-form {
   @include flex-column-center;
-  @include full-width;
 
   & > h1 {
     color: $color-dark;
@@ -103,11 +153,9 @@ const enablePasswordFields = (e : Event) => {
 }
 
 #form-login {
-  @include flex-column-center;
+  @include flex-column;
   width: 350px;
   gap: 15px;
-  // background-color: $color-tertiary-light;
-  border: 2px solid $color-tertiary-light;
   padding: 20px;
   border-radius: $global-border-radius;
 }

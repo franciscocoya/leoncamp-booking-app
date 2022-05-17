@@ -4,7 +4,9 @@
 const USER_SIGNIN_ROUTE = '/signin';
 const USER_SIGNUP_ROUTE = '/signup';
 const SAVED_ACCOMODATIONS_ROUTE = '/saved';
-const RESET_PASSWORD_ROUTE = '/password/reset';
+const RESET_PASSWORD_ROUTE = 'password/reset';
+const USER_CONFIGURATION = 'config';
+const USER_PRIVACY = 'privacy';
 const HELP_ROUTE = '/help';
 // Esta ruta comienza desde la ruta de la cuenta de usuario, por lo que está parametrizada.
 const UPLOAD_ACCOMODATION_ROUTE = '/accomodations/upload';
@@ -31,7 +33,9 @@ const authRoutes = [
     '/password/reset'
 ];
 
-const headerRoutes = ['saved', 'home', 'user-bookings', 'error-404', 'account' ];
+const headerRoutes = ['saved', 'home', 'user-bookings', 
+'error-404', 'account', 'user-profile',
+'user-ads', 'user-configuration', 'user-privacy', 'reset-password'];
 
 
 const publicRoutes = [
@@ -45,6 +49,8 @@ export {
     USER_SIGNIN_ROUTE,
     USER_SIGNUP_ROUTE,
     RESET_PASSWORD_ROUTE,
+    USER_PRIVACY,
+    USER_CONFIGURATION,
     SAVED_ACCOMODATIONS_ROUTE,
     UPLOAD_ACCOMODATION_ROUTE,
 

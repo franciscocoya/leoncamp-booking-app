@@ -15,24 +15,17 @@ import MenuDesktopItem from "./Menu/MenuDesktopItem.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 import { useUserStore } from "@/store/user";
+import { useAppContextStore } from "@/store/appContext";
 
 const router = useRouter();
 
 // Store usuario
 const userStore = useUserStore();
 
+const appContextStore = useAppContextStore();
+
 // Nombre y apellidos del usuario
 const userData = ref({});
-
-const emit = defineEmits(["show-search-results", "hide-search-results"]);
-
-const showSearchResults = () => {
-  emit("show-search-results");
-};
-
-const hideSearchResults = () => {
-  emit("hide-search-results");
-};
 
 onMounted(async () => {
   if (userData.id) {
@@ -48,8 +41,8 @@ onMounted(async () => {
 
     <SearchBarItem
       v-once
-      @show-search-results="showSearchResults"
-      @hide-search-results="hideSearchResults"
+      @show-search-results="appContextStore.showSearchResults = true"
+      @hide-search-results="appContextStore.showSearchResults = false"
     />
 
     <MenuDesktopItem v-if="userData" v-once />

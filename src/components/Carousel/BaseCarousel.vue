@@ -155,8 +155,8 @@ defineProps({
 // -------------------------------
 @media (max-width: $breakpoint-sm) {
   .carousel-no-images {
-    width: 100%;
-    margin: 0;
+    width: 300px;
+    margin: 0 auto;
     padding: 0;
   }
 }

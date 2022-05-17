@@ -13,6 +13,8 @@ import MenuMobile from "./components/Header/Menu/MenuMobile.vue";
 import FooterItem from "./components/Footer/FooterItem.vue";
 import IconButton from "@/components/Buttons/IconButton.vue";
 
+//import BasePreloader from "@/components/Preloader/BasePreloader.vue";
+
 const HeaderItem = defineAsyncComponent(() =>
   import("@/components/Header/HeaderItem.vue")
 );
@@ -56,6 +58,7 @@ onMounted(() => {
 </script>
 
 <template class="app-root">
+<!-- <BasePreloader /> -->
   <HeaderMobileItem
     v-if="enableHeaderMobile == true"
     @showMenuMobile="showMenuMobile = !showMenuMobile"
@@ -68,17 +71,15 @@ onMounted(() => {
   />
   <HeaderItem
     v-if="isCurrentRoutePublic() && enableHeaderMobile == false"
-    @show-search-results="showSearchResults = true"
-    @hide-search-results="showSearchResults = false"
   />
-  <Transition>
+  <Transition name="slide-fade">
     <MenuMobile v-if="showMenuMobile == true" @hideMenu="() => showMenuMobile = !showMenuMobile"/>
   </Transition>
 
-  <Transition>
+  <Transition name="fade">
     <SearchResultsItem
-      v-if="showSearchResults"
-      @hide-search-results="showSearchResults = false"
+      v-if="appContextStore.showSearchResults == true"
+      @hide-search-results="appContextStore.showSearchResults = false"
     />
   </Transition>
 

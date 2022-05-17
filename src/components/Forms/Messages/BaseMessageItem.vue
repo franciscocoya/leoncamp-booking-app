@@ -44,4 +44,10 @@ defineProps({
   background-color: $color_tertiary_light;
   color: $color-dark;
 }
+
+// Estilo mensage de información
+.msg-success {
+  background-color: $color_success;
+  color: $color-dark;
+}
 </style>

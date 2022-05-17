@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_USERS, API_USER_CONFIG } from '@/helpers/apiRoutes';
+import { API_USERS, API_USER_CONFIG, API_CONFIG } from '@/helpers/apiRoutes';
 
 import { handleError } from '../errorHandler';
 
@@ -18,9 +18,8 @@ const checkExistsUser = async (emailToCheck: string) => {
   return await axios
     .get(`${API_USERS}/load/${emailToCheck}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
     })
     .then((res) => res.data)
@@ -41,9 +40,8 @@ const getUserDataById = async (id: number) => {
   const { data } = await axios
     .get(`${API_USERS}/${id}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
       timeout: 5000,
     })
@@ -52,6 +50,11 @@ const getUserDataById = async (id: number) => {
   return data;
 };
 
+/**
+ * Obtiene los datos de un usuario host por su id.
+ * @param userId 
+ * @param callback 
+ */
 const getUserHostDataById = async (
   userId: number,
   callback?: CallableFunction
@@ -59,9 +62,8 @@ const getUserHostDataById = async (
   const { data } = await axios
     .get(`${API_USERS}/host/${userId}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
     })
     .catch((err) => {
@@ -78,9 +80,7 @@ const getUserConfigurationByUserId = async (userId: number) => {
   return await axios
     .get(`${API_USER_CONFIG}/${userId}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${apiJwtToken}`,
       },
     })
     .then((res) => res.data)
@@ -88,6 +88,87 @@ const getUserConfigurationByUserId = async (userId: number) => {
       return data;
     })
     .catch((err: Error) => handleError(err));
+};
+
+/**
+ * Crea una configuración para el usuario con id <code>userId</code>.
+ * 
+ * @param userId 
+ * @param configData 
+ */
+const addUserConfigurationToUser = async (
+  userId: number,
+  configData: any
+) => {
+  let newConfig = await axios({
+    url: `${API_CONFIG}/new`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+    data: configData,
+  });
+
+  let newConfigId = await newConfig.data.id;
+
+  // TODO: Completar
+
+  let newUserConfig = await axios({
+    url: `${API_USER_CONFIG}/${userId}`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+    data: configData,
+  });
+
+}
+
+/**
+ * Actualiza la configuración del usuario.
+ * 
+ * @param userId 
+ * @param configData 
+ */
+const updateUserConfiguration = async (userId: number,
+  configData: any, callback?: CallableFunction) => {
+
+  const { data } = await axios({
+    url: `${API_CONFIG}/${userId}`,
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+    data: configData,
+  }).catch(err => {
+    if (err.response) {
+      callback(err.response);
+    }
+  });
+
+  return data;
+};
+
+
+/**
+ * Listado de todos los idiomas disponibles en la aplicación.
+ * 
+ * @returns 
+ */
+const getAllAvailableCurrencies = async (callback?: CallableFunction) => {
+  const { data } = await axios
+    .get(`${API_CONFIG}/currencies/all`, {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    })
+    .catch((err: any) => {
+      if (err.response) {
+        callback(err.response);
+      }
+    });
+
+  return data;
 };
 
 /**
@@ -221,10 +302,14 @@ const getUserReviewsById = async (userId: number) => {
   return data;
 };
 
+
 export {
   checkExistsUser,
   getUserDataById,
   getUserConfigurationByUserId,
+  addUserConfigurationToUser,
+  updateUserConfiguration,
   uploadUserProfileImage,
   getUserReviewsById,
+  getAllAvailableCurrencies
 };

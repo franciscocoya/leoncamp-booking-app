@@ -6,6 +6,8 @@ import {
   USER_SIGNIN_ROUTE,
   USER_SIGNUP_ROUTE,
   RESET_PASSWORD_ROUTE,
+  USER_CONFIGURATION,
+  USER_PRIVACY,
   SAVED_ACCOMODATIONS_ROUTE,
   UPLOAD_ACCOMODATION_ROUTE,
   HELP_ROUTE,
@@ -50,12 +52,6 @@ const router = createRouter({
       component: () => import('@/views/Auth/RegisterView.vue'),
     },
     {
-      // Restablecer contraseña
-      path: RESET_PASSWORD_ROUTE,
-      name: 'reset-password',
-      component: () => import('@/views/Auth/ForgotPasswordView.vue'),
-    },
-    {
       // Inicio
       path: '/',
       name: 'home',
@@ -72,6 +68,11 @@ const router = createRouter({
       path: '/account/:accUser/accomodation/:registerNumber/edit',
       name: 'accomodation-edit',
       component: () => import('@/views/Accomodations/AccomodationEditView.vue'),
+    },
+    {
+      path: '/accomodations/:city',
+      name: 'accomodation-city-list',
+      component: () => import('@/views/Accomodations/AccomodationSearchResultsView.vue'),
     },
     {
       // Perfil del usuario en sesión
@@ -101,6 +102,23 @@ const router = createRouter({
           path: 'bookings',
           name: 'user-bookings',
           component: () => import('@/views/Account/UserBookingsView.vue'),
+        },
+        {
+          // Configuración de la cuenta
+          path: USER_CONFIGURATION,
+          name: 'user-configuration',
+          component: () => import('@/views/Account/AccountConfigurationView.vue'),
+        },{
+          // Seguridad y privacidad
+          path: USER_PRIVACY,
+          name: 'user-privacy',
+          component: () => import('@/views/Account/AccountPrivacySecurityView.vue'),
+        },
+        {
+          // Restablecer contraseña
+          path: RESET_PASSWORD_ROUTE,
+          name: 'reset-password',
+          component: () => import('@/views/Auth/ForgotPasswordView.vue'),
         },
       ],
     },

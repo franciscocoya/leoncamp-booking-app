@@ -70,25 +70,6 @@ const handleBlur = () => {
     font-size: 11px;
     color: grey;
   }
-
-  & > select {
-    min-width: max-content;
-    width: 100%;
-    max-width: 100%;
-    height: 50px;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 5px 0 0 5px;
-    border: 2px solid $color-tertiary-light;
-    border-radius: $global-border-radius;
-    color: $color-dark;
-    outline: none;
-    cursor: pointer;
-
-    & > option {
-      padding: 10px 0;
-    }
-  }
 }
 
 // -------------------------------------------------

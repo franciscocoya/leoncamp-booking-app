@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 // Iconos
@@ -40,6 +40,8 @@ const props = defineProps({
 
 const currentUser = JSON.parse(sessionStorage.getItem("user"))?.id;
 
+const loadingView = ref(true);
+
 const getAccomodationStarAverage = async () => {
   accomodationStore.stars = await accomodationStore.getStarAverage(
     accomodationStore.registerNumber
@@ -59,6 +61,11 @@ const handleMouseEnter = () => {
 const handleMouseLeave = () => {
   emit("deselectMarker", props.accData.registerNumber);
 };
+
+onBeforeMount(() => {
+  loadingView.value = true;
+});
+
 onMounted(async () => {
   accomodationStore.registerNumber = props.accData?.registerNumber;
   getAccomodationStarAverage();
@@ -66,6 +73,8 @@ onMounted(async () => {
   if (currentUser) {
     await userStore.loadUserData();
   }
+
+  loadingView.value = false;
 });
 </script>
 
@@ -180,6 +189,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+    
   </article>
 </template>
 

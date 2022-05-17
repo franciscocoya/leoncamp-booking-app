@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { LOGIN_URL, SIGNUP_URL, RESET_PASSWORD_URL } from '@/helpers/apiRoutes';
+import { LOGIN_URL, SIGNUP_URL, RESET_PASSWORD_LOGGED_USER } from '@/helpers/apiRoutes';
 
 // Servicio usuarios
 import { getUserDataById } from '@/services/user/userService';
+
+let apiJwtToken: string = JSON.parse(sessionStorage.getItem('user') || '{}')?.token;
 
 /**
  * Login de la aplicación mediante JWT.
@@ -119,27 +121,28 @@ const signUp = async (
  * @param repeatedPassword
  */
 const resetPassword = async (
-  email: string,
+  userId: number,
   password: string,
   newPassword: string,
   repeatedPassword: string,
-  callback: CallableFunction
+  callback?: CallableFunction
 ) => {
-  await axios
-    .post(RESET_PASSWORD_URL, {
-      email,
-      password,
+  await axios({
+    url: `${RESET_PASSWORD_LOGGED_USER}/${userId}/password/reset`,
+    method: 'PUT',
+    data: {
+      oldPassword: password,
       newPassword,
-      repeatedPassword,
-    })
-    .then((res) => res.data)
-    .then((data) => {
-      console.log(data);
-    })
-    .catch(() => {
-      const errorMsg = 'Error al restablecer la contraseña';
-      callback(errorMsg);
-    });
+      newPasswordRepeated: repeatedPassword,
+    },
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    }
+  }).catch(err => {
+    if (err.response) {
+      callback(err.response);
+    }
+  });
 };
 
 /**
