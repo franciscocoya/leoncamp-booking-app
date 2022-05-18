@@ -55,7 +55,6 @@ onMounted(async () => {
     authStore.userData.id
   );
 
-  console.log(savedAccomodation);
   if (savedAccomodation) {
     isIconActive.value = true;
   }

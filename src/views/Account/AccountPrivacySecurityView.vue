@@ -1,6 +1,9 @@
 <script setup>
-import { useRouter} from 'vue-router';
- 
+import { useRouter } from "vue-router";
+
+// Servicios
+import { downgradeUserHostToBaseUser } from "@/services/user/userService";
+
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
@@ -22,12 +25,14 @@ const authStore = useAuthStore();
         <BaseButton
           text="Restablecer"
           buttonStyle="baseButton-dark--outlined"
-          @click="router.push({
-            name: 'reset-password',
-            params: {
-                username: `${authStore?.name}-${authStore?.surname}`
-            }
-          })"
+          @click="
+            router.push({
+              name: 'reset-password',
+              params: {
+                username: `${authStore?.name}-${authStore?.surname}`,
+              },
+            })
+          "
         />
       </article>
     </div>
@@ -44,7 +49,10 @@ const authStore = useAuthStore();
   gap: 10px;
 
   & > .account-security-privacy__wrapper {
-    & > .account-security-privacy__resetPassword {
+    @include flex-column;
+    gap: 30px;
+
+    & > article {
       @include flex-column-center;
       gap: 10px;
       background-color: $color-tertiary-light;
@@ -72,7 +80,7 @@ const authStore = useAuthStore();
     }
 
     & > .account-security-privacy__wrapper {
-        margin: 0 30px;
+      margin: 0 30px;
     }
   }
 }

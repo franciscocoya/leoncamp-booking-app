@@ -32,6 +32,19 @@ const SCREEN_BREAKPOINTS = {
 };
 
 /**
+ *
+ * Lee una imagen en formato base64 y devuelve una imagen en URL.
+ */
+ const convertImageToBase64 = async (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    let reader: FileReader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
+/**
  * Formatea un fecha de un array a una cadena de texto en formato dd/mm/yy
  * Añade cero por la izquierda si el día o el mes son menores que 10.
  *
@@ -56,19 +69,6 @@ const formatArrayAsDate = (dateArr: number[]): string => {
  */
 const convertArrayToDate = (dateArr: number[]): Date => {
   return new Date(dateArr[0], dateArr[1], dateArr[2]);
-};
-
-/**
- *
- * Lee una imagen en formato base64 y devuelve una imagen en URL.
- */
-const convertImageToBase64 = async (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    let reader: FileReader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
 };
 
 /*

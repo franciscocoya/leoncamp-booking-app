@@ -23,7 +23,10 @@ import {
 
 // Store
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
+
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -38,7 +41,9 @@ const showUserReviewsReceived = ref(true);
 const isHostUser = ref(false);
 
 onBeforeMount(async () => {
+  
   const userIdFromPath = router.currentRoute.value.params.userId;
+
 
   // Datos del usuario
   userData.value = await userStore.getUserDataById(userIdFromPath);
@@ -47,7 +52,9 @@ onBeforeMount(async () => {
   userLang.value = await userStore.getUserLanguageById(userIdFromPath);
 
   // Alojamientos publicados
-  userAccomodationAds.value = await getAllUserAccomodations(userIdFromPath);
+  if (userData?.value.dni) {
+    userAccomodationAds.value = await getAllUserAccomodations(userIdFromPath);
+  }
 
   // Valoraciones realizadas por el usuario
   userAccomodationReviewsSent.value = await getAllAccomodationReviewsSendByUser(
@@ -135,9 +142,9 @@ onBeforeMount(async () => {
           <p>
             Habla:
             {{
-              userLang.idLanguage.language == "ES"
+              userLang?.idLanguage?.language == "ES"
                 ? "Español"
-                : userLang.idLanguage.language == "EN"
+                : userLang?.idLanguage?.language == "EN"
                 ? "Inglés"
                 : " - "
             }}
@@ -148,7 +155,10 @@ onBeforeMount(async () => {
       <!-- Anuncios publicados por el usuario -->
       <section class="user-profile-data__ads">
         <h2>Alojamientos publicados</h2>
-        <div v-if="userAccomodationAds.length > 0">
+        <div
+          v-if="userAccomodationAds.length > 0"
+          class="user-profile-data_ads__wrapper"
+        >
           <AccomodationThumbnailItem
             v-for="accomodation in userAccomodationAds"
             :key="accomodation.registerNumber"
@@ -231,7 +241,7 @@ onBeforeMount(async () => {
   gap: 50px;
   margin: 50px;
   $user-profile-view-marginTop: 50px;
-  height: 100vh;
+  height: max-content;
 
   // Estilos sidebar
   & > .user-profile__sidebar {
@@ -330,6 +340,18 @@ onBeforeMount(async () => {
       }
     }
 
+    // Estilos sección anuncios usuario
+    & > .user-profile-data__ads {
+      @include flex-column;
+      gap: 20px;
+
+      & > .user-profile-data_ads__wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
     // Estilos sección valoraciones
     & > section.user-profile-data__reviews {
       @include flex-column;
@@ -387,6 +409,27 @@ onBeforeMount(async () => {
 // ---------------------------------------------------------------
 // -- Responsive design
 // ---------------------------------------------------------------
+
+// Tablet
+@media (max-width: $breakpoint-md) {
+  .user-profile-view {
+    & > .user-profile__sidebar {
+      display: none;
+    }
+    & > .user-profile__data {
+      & > .user-profile-data__ads {
+        @include flex-column;
+
+        & > .user-profile-data_ads__wrapper {
+          @include flex-column;
+          gap: 20px;
+        }
+      }
+    }
+  }
+}
+
+// Mobile
 @media (max-width: $breakpoint-sm) {
   .user-profile-view {
     @include flex-row-center;

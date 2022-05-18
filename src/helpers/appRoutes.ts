@@ -3,9 +3,11 @@
  */
 const USER_SIGNIN_ROUTE = '/signin';
 const USER_SIGNUP_ROUTE = '/signup';
+const ADMINISTRATOR_ROUTE = '/administrator';
 const SAVED_ACCOMODATIONS_ROUTE = '/saved';
 const RESET_PASSWORD_ROUTE = 'password/reset';
 const USER_CONFIGURATION = 'config';
+const USER_ACCOUNT_UPGRADE = 'upgrade';
 const USER_PRIVACY = 'privacy';
 const HELP_ROUTE = '/help';
 // Esta ruta comienza desde la ruta de la cuenta de usuario, por lo que está parametrizada.
@@ -48,7 +50,9 @@ export {
     headerRoutes,
     USER_SIGNIN_ROUTE,
     USER_SIGNUP_ROUTE,
+    ADMINISTRATOR_ROUTE,
     RESET_PASSWORD_ROUTE,
+    USER_ACCOUNT_UPGRADE,
     USER_PRIVACY,
     USER_CONFIGURATION,
     SAVED_ACCOMODATIONS_ROUTE,

@@ -157,6 +157,21 @@ export const addNewAccomodation = async (
   }
 };
 
+
+/**
+ * Borrado de un alojamiento con número de registro <code>idAccomodation</code>
+ */
+ export async function removeAccomodationByRegisterNumber(registerNumber: string) {
+  await axios.delete(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    }
+  );
+}
+
 /**
  * Añade una nueva ubicación
  * @param accomodationLocation
@@ -208,7 +223,7 @@ export const getAllAccomodations = async () => {
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/all`, {
       params: {
         page: 0,
-        size: 4,
+        size: 20,
       },
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
@@ -271,13 +286,13 @@ export async function getAccomodationByRegNumber(regNumber: string) {
  * Listado de todos los alojamientos publicados por un usuario.
  */
 export async function getAllUserAccomodations(idUser: number) {
-  const { data } = (await axios
+  const { data } = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/user/${idUser}`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
       },
     })
-    .catch((err) => handleError(err))) as any;
+    .catch((err) => handleError(err));
 
   return data;
 }
@@ -305,6 +320,10 @@ export async function getUserBookingsByUserId(userId: number) {
  * @returns
  */
 export async function getUserSavedAccomodationsByUserId(userId: number) {
+  if(!userId){
+    return null;
+  }
+
   const { data } = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/users/${userId}`,
     {
@@ -321,6 +340,10 @@ export async function getUserSavedAccomodationsByUserId(userId: number) {
  * Valoración media (En estrellas) de un alojamiento.
  */
 export async function getAccomodationStarAverage(regNumber: string) {
+  if(!regNumber){
+    return null;
+  }
+
   const { data } = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`,
     {
@@ -697,6 +720,10 @@ export async function getSavedAccomodation(
   idAccomodation: string,
   idUser: number
 ) {
+  if(!idAccomodation || !idUser){
+    return null;
+  }
+  
   const { data } = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,
     {

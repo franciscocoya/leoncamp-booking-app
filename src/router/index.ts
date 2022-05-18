@@ -8,7 +8,9 @@ import {
   RESET_PASSWORD_ROUTE,
   USER_CONFIGURATION,
   USER_PRIVACY,
+  USER_ACCOUNT_UPGRADE,
   SAVED_ACCOMODATIONS_ROUTE,
+  ADMINISTRATOR_ROUTE,
   UPLOAD_ACCOMODATION_ROUTE,
   HELP_ROUTE,
   ERROR_401_ROUTE,
@@ -33,7 +35,19 @@ const publicRoutesNames: string[] = [
   'error-404',
   'error-500',
   'home',
+  'accomodation-city-list'
 ];
+
+/**
+ * Comprueba si el usuario en sesión es administrador.
+ */
+const isAdmin = async (userData: any) => {
+  if(!userData){
+    return false;
+  }
+  return userData.email === import.meta.env.VITE_API_ADMIN_EMAIL;
+}
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -108,7 +122,7 @@ const router = createRouter({
           path: USER_CONFIGURATION,
           name: 'user-configuration',
           component: () => import('@/views/Account/AccountConfigurationView.vue'),
-        },{
+        }, {
           // Seguridad y privacidad
           path: USER_PRIVACY,
           name: 'user-privacy',
@@ -120,6 +134,11 @@ const router = createRouter({
           name: 'reset-password',
           component: () => import('@/views/Auth/ForgotPasswordView.vue'),
         },
+        {
+          path: USER_ACCOUNT_UPGRADE,
+          name: 'account-upgrade',
+          component: () => import('@/views/Account/AccountUpgradeView.vue'),
+        }
       ],
     },
     {
@@ -184,6 +203,12 @@ const router = createRouter({
       ],
     },
     {
+      // Dashboard administrador
+      path: ADMINISTRATOR_ROUTE,
+      name: 'administrator',
+      component: () => import('@/views/Administrator/AdministratorDashboardView.vue'),
+    },
+    {
       // Detalle de la reserva de un alojamiento
       path: '/bookings/:bookingId',
       name: 'booking-detail',
@@ -215,7 +240,7 @@ const router = createRouter({
       component: () => import('@/views/Help/HelpView.vue'),
     },
     {
-      // Ruta para la página de error 404
+      // Ruta para la página de error 401
       path: ERROR_401_ROUTE,
       name: 'error-401',
       component: () => import('@/views/Error/401View.vue'),
@@ -248,35 +273,37 @@ const router = createRouter({
 });
 
 // Middleware autenticación
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authRequired = !publicRoutes.includes(to.path);
   const isLogged = JSON.parse(sessionStorage.getItem('user'))?.token;
   if (!publicRoutesNames.includes(to.name) && authRequired && !isLogged) {
     next('/signin');
   } else {
-    // Si el usuario está logeado, no podrá acceder a las rutas de autenticación (signin y signup).
-    // authRoutes.includes(to.path) && isLogged ? next('/') : next();
+    const idUser: number = JSON.parse(sessionStorage.getItem('user'))?.id;
+    const userData: any = await getUserDataById(idUser);
+    
+    const condAdmin = await isAdmin(userData);
+
+    // Dashboard administrador
+    if (to.name === 'administrator' && condAdmin == false) {
+      next({ name: 'error-401' });
+    }else{
+      next();
+    }
+
+    // Rutas usuarios host
+    const hostRouteNames: string[] = [
+      'account-accomodation-upload',
+      'user-ads',
+      'accomodation-edit',
+    ];
+
+    if (hostRouteNames.includes(to.name) && !userData.dni) {
+      next({ name: 'error-401' });
+    }
+
     next();
   }
 });
-
-// Middleware rutas usuarios hosts
-// Accomodation ads, publish new ad, edit ad, delete ad
-// router.beforeEach(async (to, from, next) => {
-//   const idUser: number = JSON.parse(sessionStorage.getItem('user'))?.id;
-//   const userData: any = await getUserDataById(idUser);
-
-//   const hostRouteNames: string[] = [
-//     'account-accomodation-upload',
-//     'user-ads',
-//     'accomodation-edit',
-//   ];
-
-//   if (hostRouteNames.includes(to.name) && !userData.dni) {
-//     next('/403');
-//   } else {
-//     next();
-//   }
-// });
 
 export default router;

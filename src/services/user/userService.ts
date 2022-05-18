@@ -18,9 +18,8 @@ const checkExistsUser = async (emailToCheck: string) => {
   return await axios
     .get(`${API_USERS}/load/${emailToCheck}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
     })
     .then((res) => res.data)
@@ -45,9 +44,8 @@ const getUserDataById = async (id: number) => {
   const { data } = await axios
     .get(`${API_USERS}/${id}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
       timeout: 5000,
     })
@@ -68,9 +66,8 @@ const getUserHostDataById = async (
   const { data } = await axios
     .get(`${API_USERS}/host/${userId}`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+          }`,
       },
     })
     .catch((err) => {
@@ -155,6 +152,56 @@ const updateUserConfiguration = async (
 };
 
 /**
+ * Actualización de un usuario base a un usuario host.
+ * 
+ * @param userId 
+ * @param dni 
+ * @param direction 
+ */
+export const upgradeBaseUserToHost = async (userId: number, dni: string, direction: string, callback?: CallableFunction) => {
+  const { data } = await axios({
+    url: `${API_USERS}/hosts/${userId}/upgrade`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+    params: {
+      dni,
+      direction
+    }
+  }).catch((err) => {
+    if (err.response) {
+      callback(err.response);
+    }
+  });
+
+  return data;
+};
+
+/**
+ * Restablece la cuenta de host a una cuenta base. En el proceso, se perderán todos los alojamientos realizados por el usuario.
+ * 
+ * @param userId 
+ * @param callback 
+ * @returns 
+ */
+export const downgradeUserHostToBaseUser = async (userId: number, callback?: CallableFunction) => {
+  const { data } = await axios({
+    url: `${API_USERS}/hosts/${userId}`,
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  }).catch((err) => {
+    if (err.response) {
+      callback(err.response);
+    }
+  });
+
+  return data;
+};
+
+/**
  * Listado de todos los idiomas disponibles en la aplicación.
  *
  * @returns
@@ -213,6 +260,24 @@ export const updateUserData = async (
 };
 
 /**
+ * Borrado del usuario con id <code>userId</code>.
+ * 
+ * @param userId 
+ * @param callback 
+ */
+export const removeUserById = async (userId: number, callback?: CallableFunction) => {
+  await axios.delete(`${API_USERS}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  }).catch((err: any) => {
+    if (err.response) {
+      callback(err.response);
+    }
+  });
+}
+
+/**
  * Actualiza los datos de un usuario host con el id <code>userId</code> pasado como parámetro.
  *
  * @param userId
@@ -269,7 +334,7 @@ export const updateUserHostData = async (
  *
  * @returns
  */
-const uploadUserProfileImage = async (userId: number, newImage: File) => {
+const uploadUserProfileImage = async (userId: number, newImage: string) => {
   const { data } = await axios({
     url: `${API_USERS}/profileImage`,
     method: 'patch',
@@ -306,6 +371,22 @@ const getUserReviewsById = async (userId: number) => {
   return data;
 };
 
+/**
+ * Listado de todos los usuarios de la aplicación.
+ */
+const getAllUsers = async () => {
+  const { data } = await axios
+    .get(`${API_USERS}/all`, {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    })
+    .catch((err: Error) => {
+      return err;
+    });
+  return data;
+};
+
 export {
   checkExistsUser,
   getUserDataById,
@@ -315,4 +396,5 @@ export {
   uploadUserProfileImage,
   getUserReviewsById,
   getAllAvailableCurrencies,
+  getAllUsers,
 };

@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted, onUpdated } from "vue";
-import { RouterView, useRouter } from "vue-router";
+import { ref, onMounted, onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
@@ -14,6 +14,7 @@ import { getUserDataById } from "@/services/user/userService";
 import { useAccomodationStore } from "@/store/accomodation";
 import { useAppContextStore } from "@/store/appContext";
 import { useFormErrorsStore } from "@/store/formErrors";
+import {useAuthStore} from "@/store/auth";
 
 const router = useRouter();
 
@@ -27,6 +28,7 @@ const accomodationUploadSteps = [
 
 const accomodationStore = useAccomodationStore();
 const appContextStore = useAppContextStore();
+const authStore = useAuthStore();
 const formErrorsStore = useFormErrorsStore();
 
 // Número de paso de subida de alojamiento
@@ -81,19 +83,16 @@ const showPreviousStep = () => {
 };
 
 onMounted(async () => {
+
   currentUploadStepRoute.value = router.currentRoute.value.name;
   currentUploadStepNum.value = accomodationUploadSteps.indexOf(
     currentUploadStepRoute.value
-  );
-  //
-  let currentUser = await getUserDataById(
-    JSON.parse(sessionStorage.getItem("user")).id
   );
 
   formErrorsStore.enableNextButton = false;
 
   accomodationStore.$state = {};
-  accomodationStore.userHost = currentUser;
+  accomodationStore.userHost = authStore?.userData;
 });
 </script>
 

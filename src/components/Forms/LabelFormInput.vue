@@ -37,7 +37,7 @@ const props = defineProps({
   },
   inputMaxCharacters: {
     type: Number,
-    default: 3,
+    default: 20,
   },
   inputNumberMax: {
     type: Number,
@@ -115,6 +115,7 @@ onMounted(() => {
       :placeholder="inputPlaceholder"
       class="base-input-no-border"
       :value="inputValue || ''"
+      :maxlength="inputMaxCharacters"
       :size="inputMaxCharacters"
       :readonly="isReadonly"
       @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"

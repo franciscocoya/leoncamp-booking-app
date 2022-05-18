@@ -12,6 +12,9 @@ const DEFAULT_EMAIL_REGEX =
 // Expresión regular para validar una código postal de españa.
 const spanishZipCodeRegex = /^(?:0?[1-9]|[1-4]\d|5[0-2])\d{3}$/;
 
+// Expresión regular para validar un DNI de España.
+const DNI_REGEX = /^(\d{8})([A-Z])$/;
+
 // Expresión regular que especifica los tipos de imagen válidos.
 const FILE_MIME_TYPES_VALID_REGEX = [
   'image/jpeg',
@@ -48,6 +51,23 @@ const checkNumberPositive = (value: number): boolean =>
  */
 const checkValidEmail = (value: string): boolean =>
   DEFAULT_EMAIL_REGEX.test(value);
+
+/**
+ * Comprueba que el valor pasado como parámetro es un DNI válido.
+ * 
+ * @param value 
+ * @returns 
+ */
+const checkValidDNI = (dniToCheck: string): boolean => {
+  return DNI_REGEX.test(dniToCheck) && _checkValidSpanishDni(dniToCheck.toUpperCase().replace(/\s/, ''));
+};
+
+const _checkValidSpanishDni = (dniToCheck: string): boolean => {
+  var dni_letters = "TRWAGMYFPDXBNJZSQVHLCKE";
+  var letter = dni_letters.charAt( parseInt( dniToCheck, 10 ) % 23 );
+  
+  return letter == dniToCheck.charAt(8);
+}
 
 /**
  * Comprueba que el valor introducido cumpla con el formato de un código postal de españa.
@@ -118,7 +138,7 @@ const checkInputStringFieldIsValid = (
   maxLength: number,
   containSpecialCharacters?: boolean
 ): boolean => {
-  const cond1 = containSpecialCharacters
+  const cond1 = containSpecialCharacters == true
     ? checkFieldNotContainSpecialCharacters(value)
     : true;
   return (
@@ -149,6 +169,7 @@ export {
   checkFieldNotBlank,
   checkValidSpanishZipCode,
   checkValidEmail,
+  checkValidDNI,
   checkPasswordMatch,
   checkNumberPositive,
   checkFieldNotContainSpecialCharacters,

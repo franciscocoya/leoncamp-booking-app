@@ -172,7 +172,6 @@ const useUserStore = defineStore({
      */
     async getUserLanguageById(userId: number) {
       const userConfig = await getUserConfigurationByUserId(userId);
-      console.log(userConfig);
       return userConfig;
     },
 

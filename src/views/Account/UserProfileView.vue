@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, ref } from "@vue/runtime-core";
+import { onBeforeMount, onMounted, ref } from "@vue/runtime-core";
+import {useRouter } from "vue-router";
 
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
@@ -8,13 +9,19 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 import { useUserStore } from "@/store/user";
 import { useAppContextStore } from "@/store/appContext";
+import {useAuthStore } from "@/store/auth";
+
+const router = useRouter();
 
 // Store
 const userStore = useUserStore();
 const appContextStore = useAppContextStore();
+const authStore = useAuthStore();
 
 const enableEditButton = ref(false);
 const enableEditHostButton = ref(false);
+
+const adminEmail = import.meta.env.VITE_API_ADMIN_EMAIL;
 
 // Actualizar datos de la store.
 // userStore.loadUserData();
@@ -40,9 +47,21 @@ const handleEditUserHostData = async () => {
   await userStore.updateUserHost();
 };
 
+const handleRedirectAccountUpgrade = () => {
+  router.push({
+          name: 'account-upgrade',
+          params: {
+            username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`
+          }
+        })
+};
+
 onMounted(async () => {
-  await userStore.loadUserData();
   enableEditButton.value = false;
+});
+
+onBeforeMount(async () => {
+  await authStore.loadCurrentUserData();
 });
 </script>
 
@@ -50,6 +69,14 @@ onMounted(async () => {
   <div class="user-profile-view">
     <main>
       <h1 v-once>Información personal</h1>
+      <BaseButton
+      v-if="!authStore?.userData?.dni && authStore?.userData?.email !== adminEmail"
+        text="Hazte anfitrión"
+        buttonStyle="baseButton-primary--filled"
+        class="btEditar-perfil-usuario"
+        title="Comienza a publicar tus alojamientos con solo un click."
+        @click="handleRedirectAccountUpgrade"
+      />
       <div class="user-profile-view__wrapper">
         <form>
           <!-- Sección nombre y apellidos -->
@@ -61,10 +88,10 @@ onMounted(async () => {
               type="text"
               inputLabel="Nombre"
               :isReadonly="false"
-              :inputValue="userStore.name"
+              :inputValue="authStore?.userData?.name"
               @handleInput="
                 (value) =>
-                  updateFieldValue(() => (userStore.name = value), value)
+                  updateFieldValue(() => (authStore.userData.name = value), value)
               "
             />
 
@@ -73,10 +100,10 @@ onMounted(async () => {
               type="text"
               inputLabel="Apellidos"
               :isReadonly="false"
-              :inputValue="userStore.surname"
+              :inputValue="authStore?.userData?.surname"
               @handleInput="
                 (value) =>
-                  updateFieldValue(() => (userStore.surname = value), value)
+                  updateFieldValue(() => (authStore.userData.surname = value), value)
               "
             />
           </div>
@@ -89,9 +116,9 @@ onMounted(async () => {
               type="text"
               inputLabel="Teléfono"
               :isReadonly="false"
-              :inputValue="userStore.phone"
+              :inputValue="authStore?.userData?.phone"
               @handleInput="
-                (value) => updateFieldValue(() => (userStore.phone = value))
+                (value) => updateFieldValue(() => (authStore.userData.phone = value))
               "
             />
 
@@ -100,9 +127,9 @@ onMounted(async () => {
               type="text"
               inputLabel="Correo electrónico"
               :isReadonly="false"
-              :inputValue="userStore.email"
+              :inputValue="authStore?.userData?.email"
               @handleInput="
-                (value) => updateFieldValue(() => (userStore.email = value))
+                (value) => updateFieldValue(() => (authStore.userData.email = value))
               "
             />
           </div>
@@ -116,25 +143,28 @@ onMounted(async () => {
           />
 
           <!-- Sección datos del usuario host -->
-          <div v-if="userStore.dni || userStore.bio" class="user-profile-data__host-data">
+          <div
+            v-if="authStore.userData?.dni || authStore?.userData?.bio"
+            class="user-profile-data__host-data"
+          >
             <h2 v-once>Datos del host</h2>
             <div class="user-profile-data__host-data__wrapper">
               <LabelFormInput
                 type="text"
                 inputLabel="DNI"
                 :isReadonly="false"
-                :inputValue="userStore.datosHost.dni"
+                :inputValue="authStore?.userData?.dni"
                 @handleInput="
                   (value) =>
-                    updateHostData(() => (userStore.datosHost.dni = value))
+                    updateHostData(() => (authStore.userData.dni = value))
                 "
               />
               <BaseFormTextArea
-                :textAreaContent="userStore.datosHost.bio"
+                :textAreaContent="authStore?.userData?.bio"
                 inputLabel="Biografía"
                 @handleInput="
                   (value) =>
-                    updateHostData(() => (userStore.datosHost.bio = value))
+                    updateHostData(() => (authStore.userData.bio = value))
                 "
               />
             </div>

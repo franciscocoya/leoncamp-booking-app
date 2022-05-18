@@ -51,8 +51,9 @@ onMounted(async () => {
   gap: 10px;
 
   & > h2 {
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: 400;
+    text-align: center;
   }
 }
 

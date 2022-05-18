@@ -127,13 +127,13 @@ onMounted(async () => {
         <div>
           <!-- Icono guardar alojamiento -->
           <SavedAccomodationIcon
-            v-if="authStore.userData.id !== accData.idUserHost.id"
-            :regNumber="accData.registerNumber"
+            v-if="authStore?.userData?.id !== accData?.idUserHost?.id"
+            :regNumber="accData?.registerNumber"
           />
           <div class="accomodation-icons">
             <!-- Botón de eliminar -->
             <IconButton
-              v-if="showDeleteButton && userStore.id == accData.idUserHost.id"
+              v-if="showDeleteButton && userStore?.id == accData?.idUserHost.id"
               :buttonIcon="ICON_DELETE"
               buttonStyle="iconButton-accomodation-action--delete"
               class="bt-delete-accomodation"

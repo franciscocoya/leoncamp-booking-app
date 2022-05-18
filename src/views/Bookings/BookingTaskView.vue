@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
 // Service
 import {
@@ -12,6 +12,7 @@ import { useAccomodationStore } from "@/store/accomodation";
 import { useBookingStore } from "@/store/booking";
 import { useAppContextStore } from "@/store/appContext";
 import { useUserStore } from "@/store/user";
+import {useAuthStore} from "@/store/auth";
 
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
@@ -38,7 +39,7 @@ import { getDateDiffOnDays, formatDateType1 } from "@/helpers/utils";
 const accomodationStore = useAccomodationStore();
 const bookingStore = useBookingStore();
 const appContextStore = useAppContextStore();
-const userStore = useUserStore();
+const authStore = useAuthStore();
 
 // Lista de las fechas reservadas o pendientes de reserva del alojamiento.
 const notAvailableBookingDates = ref([]);
@@ -118,7 +119,6 @@ const handleConfirmBooking = async () => {
       (err) => {
         bookingErrors.value.push(err.data.message);
         showBookingErrors.value = true;
-        console.log(err);
       }
     );
   } else {
@@ -195,15 +195,17 @@ const disableReservedDates = async (regNumber) => {
   });
 };
 
+onBeforeMount(async () => {
+    // Usuario en sesión
+await authStore.loadCurrentUserData();
+});
+
 onMounted(async () => {
   let params = new URLSearchParams(window.location.search);
   await accomodationStore.getAccomodationByRegisterNumber(params.get("regnum"));
   await disableReservedDates(params.get("regnum"));
-
-  // Usuario en sesión
-  const userId = JSON.parse(sessionStorage.getItem("user") || "{}")?.id;
-  const userData = await userStore.getUserDataById(userId);
-  bookingStore.userHost = userData;
+ 
+  bookingStore.userHost = authStore?.userData;
 
   const currentAccomodation =
     await accomodationStore.getAccomodationByRegisterNumber(

@@ -155,6 +155,19 @@
   }
 }
 
+.baseButton-danger--filled--small {
+  @include baseButton--filled($color-danger, #fff);
+  width: 80px;
+  height: 35px;
+  font-size: 1rem;
+
+  &:disabled {
+    background-color: $color-tertiary-light;
+    color: gray;
+    cursor: no-drop;
+  }
+}
+
 .baseButton-danger--outlined--small {
   @include baseButton--outlined($color-danger, $color-danger);
   width: 80px;
