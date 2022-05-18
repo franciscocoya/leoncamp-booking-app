@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { onMounted, ref } from "vue";
 
 const props = defineProps({
@@ -55,11 +55,11 @@ const props = defineProps({
   },
 });
 
-let disableField: boolean = ref(false).value;
+let disableField = ref(false).value;
 
 const emit = defineEmits(["handleInput", "handleBlur"]);
 
-function updateInputValue(value: string) {
+function updateInputValue(value) {
   disableField = false;
   emit("handleInput", value);
 }
@@ -69,7 +69,7 @@ const updateInputValueOnBlur = (value) => {
   emit("handleBlur", value);
 };
 
-const disableInput = (disable: boolean) => {
+const disableInput = (disable) => {
   disableField = disable;
 };
 
@@ -77,7 +77,7 @@ const disableInput = (disable: boolean) => {
  * Manejador del evento keydown. Si la propiedad convertInputToUpper es true,
  * se convertirá el texto a mayúsculas mientras el usuario teclea.
  */
-const handleKeyDown = (e: { target: { value: string } }) => {
+const handleKeyDown = (e) => {
   if (props.convertInputToUpper) {
     e.target.value = e.target.value.toUpperCase();
   }
@@ -92,7 +92,7 @@ onMounted(() => {
   }
   document
     .getElementById(props.inputLabel)
-    ?.addEventListener("keydown", (e: KeyboardEvent) => {
+    ?.addEventListener("keydown", (e) => {
       if (e.key === "-") {
         e.preventDefault();
       }
@@ -118,9 +118,9 @@ onMounted(() => {
       :maxlength="inputMaxCharacters"
       :size="inputMaxCharacters"
       :readonly="isReadonly"
-      @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
+      @input="(e) => updateInputValue(e.target.value)"
       @keyup="(e) => handleKeyDown(e)"
-      @blur="(e) => updateInputValueOnBlur((e.target as HTMLOutputElement)?.value)"
+      @blur="(e) => updateInputValueOnBlur(e.target.value)"
     />
 
     <input
@@ -134,8 +134,8 @@ onMounted(() => {
       :min="1"
       :max="inputNumberMax"
       :step="1"
-      @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
-      @blur="(e) => updateInputValueOnBlur((e.target as HTMLOutputElement)?.value)"
+      @input="(e) => updateInputValue(e.target.value)"
+      @blur="(e) => updateInputValueOnBlur(e.target.value)"
     />
 
     <input
@@ -146,7 +146,7 @@ onMounted(() => {
       :value="inputValue || new Date().getDate()"
       :readonly="disableField"
       :min="new Date().getDate()"
-      @blur="(e) => updateInputValueOnBlur((e.target as HTMLOutputElement)?.value)"
+      @blur="(e) => updateInputValueOnBlur(e.target.value)"
     />
 
     <span v-if="isPriceInput" class="currency-input-symbol">€</span>

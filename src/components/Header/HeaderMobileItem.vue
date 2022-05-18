@@ -56,14 +56,14 @@ onMounted(async () => {
       JSON.parse(sessionStorage.getItem("user"))?.id
     );
 
-    isLogged.value = userToken !== null;
+    isLogged.value = userToken.value !== null;
 
     await authStore.loadCurrentUserData();
   }
 });
 
 onUpdated(() => {
-  isLogged.value = userToken !== null;
+  isLogged.value = userToken.value !== null;
 });
 </script>
 

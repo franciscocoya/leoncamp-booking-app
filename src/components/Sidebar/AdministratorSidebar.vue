@@ -1,5 +1,4 @@
 <script setup>
-import {ref} from 'vue';
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Store
@@ -7,48 +6,44 @@ import { useUserStore } from "@/store/user";
 
 const userStore = useUserStore();
 
-const emit = defineEmits([
-    'showPanel',
-    'hidePanel',
-]);
+const emit = defineEmits(["showPanel", "hidePanel"]);
 
 const handleShowPanels = (panelOpt) => {
+  let accOpt = document.getElementById("admin-menu-accomodation");
+  let userOpt = document.getElementById("admin-menu-user");
 
-    let accOpt = document.getElementById('admin-menu-accomodation');
-    let userOpt = document.getElementById('admin-menu-user');
+  accOpt.classList.remove("--menu-item-active");
+  userOpt.classList.remove("--menu-item-active");
 
-    accOpt.classList.remove('--menu-item-active');
-    userOpt.classList.remove('--menu-item-active');
+  switch (panelOpt) {
+    case 1:
+      accOpt.classList.add("--menu-item-active");
+      break;
 
-    switch (panelOpt) {
-        case 1:
-            accOpt.classList.add('--menu-item-active');
-            break;
+    case 2:
+      userOpt.classList.add("--menu-item-active");
+      break;
 
-        case 2:
-            userOpt.classList.add('--menu-item-active');
-            break;
-    
-        default:
-            break;
-    }
-    
+    default:
+      break;
+  }
 
-    emit("showPanel", panelOpt)
+  emit("showPanel", panelOpt);
 };
-
-
-
 </script>
 
 <template>
   <div class="administrator-sidebar">
     <ul>
-      <li id="admin-menu-accomodation" class="--menu-item-active" @click.prevent="handleShowPanels(1)">
-        {{$t('administrator.menu.accomodations')}}
+      <li
+        id="admin-menu-accomodation"
+        class="--menu-item-active"
+        @click.prevent="handleShowPanels(1)"
+      >
+        {{ $t("administrator.menu.accomodations") }}
       </li>
-      <li id="admin-menu-user"  @click.prevent="handleShowPanels(2)">
-        {{$t('administrator.menu.users')}}
+      <li id="admin-menu-user" @click.prevent="handleShowPanels(2)">
+        {{ $t("administrator.menu.users") }}
       </li>
     </ul>
     <div>

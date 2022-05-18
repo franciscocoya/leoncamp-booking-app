@@ -9,10 +9,10 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
-import { useFormErrorsStore} from "@/store/formErrors";
+import { useFormErrorsStore } from "@/store/formErrors";
 
 // Rutas permitidas
-import {headerRoutes} from '@/helpers/appRoutes';
+import { headerRoutes } from "@/helpers/appRoutes";
 
 const accomodationStore = useAccomodationStore();
 const formErrorsStore = useFormErrorsStore();
@@ -34,11 +34,14 @@ const handleServiceChipChange = (e, serviceToAdd) => {
 
   e.target.checked
     ? accomodationStore.accomodationServices.push(accomodationAccServiceId)
-    : accomodationStore.accomodationServices = accomodationStore.accomodationServices.filter(serv => serv.idAccomodationService.id !== serviceToAdd.id);
+    : (accomodationStore.accomodationServices =
+        accomodationStore.accomodationServices.filter(
+          (serv) => serv.idAccomodationService.id !== serviceToAdd.id
+        ));
 
-  formErrorsStore.enableNextButton = accomodationStore.accomodationServices.length > 0;
+  formErrorsStore.enableNextButton =
+    accomodationStore.accomodationServices.length > 0;
 };
-
 
 const applyFilters = (serviceSearchTerm) => {
   const regex = new RegExp(serviceSearchTerm, "gi");
@@ -52,24 +55,22 @@ const applyFilters = (serviceSearchTerm) => {
   }
 };
 
-const showAllServiceChips = () => {
-  allAvaibleServices.value = originalServices.value;
-};
-
 onMounted(async () => {
   allAvaibleServices.value = await accomodationStore.getAllServices();
   originalServices.value = [...allAvaibleServices.value];
 
-  formErrorsStore.enableNextButton = accomodationStore.accomodationServices.length > 0;
+  formErrorsStore.enableNextButton =
+    accomodationStore.accomodationServices.length > 0;
 });
 
-onBeforeRouteLeave(() => {
-  if (formErrorsStore.enableNextButton == false &&
-    !headerRoutes.includes(to.name)) {
+onBeforeRouteLeave((from, to) => {
+  if (
+    formErrorsStore.enableNextButton == false &&
+    !headerRoutes.includes(to.name)
+  ) {
     return false;
   }
 });
-
 </script>
 
 <template>
@@ -104,7 +105,6 @@ onBeforeRouteLeave(() => {
 @import "@/assets/scss/_variables.scss";
 
 .accomodation-ad-upload-services-view {
-  
   & > .accomodation-ad-upload-services__wrapper {
     @include flex-row;
     gap: 10px;

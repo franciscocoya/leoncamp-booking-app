@@ -1,7 +1,6 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 // Iconos
-import { ICON_UPLOAD_IMAGE } from "@/helpers/iconConstants";
 import InfoIcon from "@/components/icons/InfoIcon.vue";
 
 // Componentes
@@ -13,9 +12,6 @@ import { useAccomodationStore } from "@/store/accomodation";
 
 // Conversor imagen a base64
 import { convertImageToBase64, MAX_IMAGES_UPLOAD } from "@/helpers/utils";
-
-// Rutas permitidas
-import {headerRoutes} from '@/helpers/appRoutes';
 
 // Validadores para la subida de imágenes
 import { checkFileSize, checkImageMimeType } from "@/helpers/formValidator";
@@ -340,15 +336,14 @@ const handleClickUploadImage = async (e) => {
       @include flex-column;
       gap: 20px;
 
-      & > .accomodation-ad-upload__drag-area{
+      & > .accomodation-ad-upload__drag-area {
         width: 100%;
       }
 
-      & > .accomodation-ad-upload__images-preview-container{
+      & > .accomodation-ad-upload__images-preview-container {
         @include flex-column;
       }
     }
-    
   }
 }
 </style>

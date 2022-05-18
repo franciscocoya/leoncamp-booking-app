@@ -2,7 +2,6 @@
 import { onMounted, ref } from "vue";
 
 // Componentes
-import BaseFormSelect from "@/components/Forms/BaseFormSelect.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Service
@@ -67,14 +66,14 @@ const handleLanguageSelection = (e) => {
  * Actualiza la configuración del usuario.
  */
 const handleUpdateUserPreferences = async () => {
-    isExecution.value  =true;
+  isExecution.value = true;
   await updateUserConfiguration(
     authStore.userData.id,
     appContextStore.userConfiguration,
     (err) => console.log(err.data)
   );
 
-   isExecution.value = false;
+  isExecution.value = false;
 };
 
 /**
@@ -160,7 +159,11 @@ onMounted(async () => {
       </section>
       <BaseButton
         :text="`${
-          hasUserPreviuousConfig == true ? isExecution == true ? 'Actualizando...' : 'Actualizar' : 'Establecer'
+          hasUserPreviuousConfig == true
+            ? isExecution == true
+              ? 'Actualizando...'
+              : 'Actualizar'
+            : 'Establecer'
         }`"
         buttonStyle="baseButton-secondary--filled"
         :fullWidth="appContextStore.isMobile == true"

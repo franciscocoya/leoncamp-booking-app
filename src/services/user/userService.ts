@@ -18,8 +18,9 @@ const checkExistsUser = async (emailToCheck: string) => {
   return await axios
     .get(`${API_USERS}/load/${emailToCheck}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
     })
     .then((res) => res.data)
@@ -41,11 +42,12 @@ const getUserDataById = async (id: number) => {
     return null;
   }
 
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${API_USERS}/${id}`, {
       headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
       },
       timeout: 5000,
     })
@@ -59,23 +61,23 @@ const getUserDataById = async (id: number) => {
  * @param userId
  * @param callback
  */
-const getUserHostDataById = async (
-  userId: number,
-  callback?: CallableFunction
-) => {
-  const { data } = await axios
-    .get(`${API_USERS}/host/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
-      },
-    })
-    .catch((err) => {
-      if (err.response) {
-        callback(err.response);
-      }
-    });
-};
+// const getUserHostDataById = async (
+//   userId: number,
+//   callback?: CallableFunction
+// ) => {
+//   const { data }: any = await axios
+//     .get(`${API_USERS}/host/${userId}`, {
+//       headers: {
+//         Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user') || '{}').token
+//           }`,
+//       },
+//     })
+//     .catch((err) => {
+//       if (err.response && callback) {
+//         callback(err.response);
+//       }
+//     });
+// };
 
 /**
  * Idioma del usuario con el id pasado como parámetro.
@@ -95,36 +97,6 @@ const getUserConfigurationByUserId = async (userId: number) => {
 };
 
 /**
- * Crea una configuración para el usuario con id <code>userId</code>.
- *
- * @param userId
- * @param configData
- */
-const addUserConfigurationToUser = async (userId: number, configData: any) => {
-  let newConfig = await axios({
-    url: `${API_CONFIG}/new`,
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-    data: configData,
-  });
-
-  let newConfigId = await newConfig.data.id;
-
-  // TODO: Completar
-
-  let newUserConfig = await axios({
-    url: `${API_USER_CONFIG}/${userId}`,
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-    data: configData,
-  });
-};
-
-/**
  * Actualiza la configuración del usuario.
  *
  * @param userId
@@ -135,7 +107,7 @@ const updateUserConfiguration = async (
   configData: any,
   callback?: CallableFunction
 ) => {
-  const { data } = await axios({
+  const { data }: any = await axios({
     url: `${API_CONFIG}/${userId}`,
     method: 'PUT',
     headers: {
@@ -143,7 +115,7 @@ const updateUserConfiguration = async (
     },
     data: configData,
   }).catch((err) => {
-    if (err.response) {
+    if (err.response && callback) {
       callback(err.response);
     }
   });
@@ -153,13 +125,18 @@ const updateUserConfiguration = async (
 
 /**
  * Actualización de un usuario base a un usuario host.
- * 
- * @param userId 
- * @param dni 
- * @param direction 
+ *
+ * @param userId
+ * @param dni
+ * @param direction
  */
-export const upgradeBaseUserToHost = async (userId: number, dni: string, direction: string, callback?: CallableFunction) => {
-  const { data } = await axios({
+export const upgradeBaseUserToHost = async (
+  userId: number,
+  dni: string,
+  direction: string,
+  callback?: CallableFunction
+) => {
+  const { data }: any = await axios({
     url: `${API_USERS}/hosts/${userId}/upgrade`,
     method: 'POST',
     headers: {
@@ -167,10 +144,10 @@ export const upgradeBaseUserToHost = async (userId: number, dni: string, directi
     },
     params: {
       dni,
-      direction
-    }
+      direction,
+    },
   }).catch((err) => {
-    if (err.response) {
+    if (err.response && callback) {
       callback(err.response);
     }
   });
@@ -180,20 +157,23 @@ export const upgradeBaseUserToHost = async (userId: number, dni: string, directi
 
 /**
  * Restablece la cuenta de host a una cuenta base. En el proceso, se perderán todos los alojamientos realizados por el usuario.
- * 
- * @param userId 
- * @param callback 
- * @returns 
+ *
+ * @param userId
+ * @param callback
+ * @returns
  */
-export const downgradeUserHostToBaseUser = async (userId: number, callback?: CallableFunction) => {
-  const { data } = await axios({
+export const downgradeUserHostToBaseUser = async (
+  userId: number,
+  callback?: CallableFunction
+) => {
+  const { data }: any = await axios({
     url: `${API_USERS}/hosts/${userId}`,
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
   }).catch((err) => {
-    if (err.response) {
+    if (err.response && callback) {
       callback(err.response);
     }
   });
@@ -207,14 +187,14 @@ export const downgradeUserHostToBaseUser = async (userId: number, callback?: Cal
  * @returns
  */
 const getAllAvailableCurrencies = async (callback?: CallableFunction) => {
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${API_CONFIG}/currencies/all`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
       },
     })
     .catch((err: any) => {
-      if (err.response) {
+      if (err.response && callback) {
         callback(err.response);
       }
     });
@@ -238,7 +218,7 @@ export const updateUserData = async (
   bio?: string,
   callback?: CallableFunction
 ) => {
-  const { data } = await axios({
+  const { data }: any = await axios({
     url: `${API_USERS}/${userId}`,
     method: 'PUT',
     data: {
@@ -251,7 +231,7 @@ export const updateUserData = async (
       Authorization: `Bearer ${apiJwtToken}`,
     },
   }).catch((err: any) => {
-    if (err.response) {
+    if (err.response && callback) {
       callback(err.response);
     }
   });
@@ -261,21 +241,26 @@ export const updateUserData = async (
 
 /**
  * Borrado del usuario con id <code>userId</code>.
- * 
- * @param userId 
- * @param callback 
+ *
+ * @param userId
+ * @param callback
  */
-export const removeUserById = async (userId: number, callback?: CallableFunction) => {
-  await axios.delete(`${API_USERS}/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-  }).catch((err: any) => {
-    if (err.response) {
-      callback(err.response);
-    }
-  });
-}
+export const removeUserById = async (
+  userId: number,
+  callback?: CallableFunction
+) => {
+  await axios
+    .delete(`${API_USERS}/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    })
+    .catch((err: any) => {
+      if (err.response && callback) {
+        callback(err.response);
+      }
+    });
+};
 
 /**
  * Actualiza los datos de un usuario host con el id <code>userId</code> pasado como parámetro.
@@ -302,7 +287,7 @@ export const updateUserHostData = async (
   verified?: boolean,
   callback?: CallableFunction
 ) => {
-  const { data } = await axios({
+  const { data }: any = await axios({
     url: `${API_USERS}/hosts/${userId}`,
     method: 'PATCH',
     data: {
@@ -318,7 +303,7 @@ export const updateUserHostData = async (
       Authorization: `Bearer ${apiJwtToken}`,
     },
   }).catch((err: any) => {
-    if (err.response) {
+    if (err.response && callback) {
       callback(err.response);
     }
   });
@@ -335,7 +320,7 @@ export const updateUserHostData = async (
  * @returns
  */
 const uploadUserProfileImage = async (userId: number, newImage: string) => {
-  const { data } = await axios({
+  const { data }: any = await axios({
     url: `${API_USERS}/profileImage`,
     method: 'patch',
     headers: {
@@ -359,7 +344,7 @@ const uploadUserProfileImage = async (userId: number, newImage: string) => {
  * @returns
  */
 const getUserReviewsById = async (userId: number) => {
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${API_USERS}/reviews/${userId}`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
@@ -375,7 +360,7 @@ const getUserReviewsById = async (userId: number) => {
  * Listado de todos los usuarios de la aplicación.
  */
 const getAllUsers = async () => {
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${API_USERS}/all`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
@@ -387,14 +372,42 @@ const getAllUsers = async () => {
   return data;
 };
 
+/**
+ * Crea una configuración para el usuario con id <code>userId</code>.
+ *
+ * @param userId
+ * @param configData
+ */
+const addUserConfigurationToUser = async (userId: number, configData: any) => {
+  let newConfig = await axios({
+    url: `${API_CONFIG}/new`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+    data: configData,
+  });
+
+  let newConfigId = await newConfig.data.id;
+
+  let newUserConfig = await axios({
+    url: `${API_USER_CONFIG}/${userId}`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+    data: configData,
+  });
+};
+
 export {
   checkExistsUser,
   getUserDataById,
   getUserConfigurationByUserId,
-  addUserConfigurationToUser,
   updateUserConfiguration,
   uploadUserProfileImage,
   getUserReviewsById,
   getAllAvailableCurrencies,
   getAllUsers,
+  addUserConfigurationToUser,
 };

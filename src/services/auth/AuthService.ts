@@ -1,10 +1,16 @@
 import axios from 'axios';
-import { LOGIN_URL, SIGNUP_URL, RESET_PASSWORD_LOGGED_USER } from '@/helpers/apiRoutes';
+import {
+  LOGIN_URL,
+  SIGNUP_URL,
+  RESET_PASSWORD_LOGGED_USER,
+} from '@/helpers/apiRoutes';
 
 // Servicio usuarios
 import { getUserDataById } from '@/services/user/userService';
 
-let apiJwtToken: string = JSON.parse(sessionStorage.getItem('user') || '{}')?.token;
+const apiJwtToken: string = JSON.parse(
+  sessionStorage.getItem('user') || '{}'
+)?.token;
 
 /**
  * Login de la aplicación mediante JWT.
@@ -49,7 +55,7 @@ const login = async (
         window.location.href = '/';
       });
   } catch (err: any) {
-    if (err.response) {
+    if (err.response && callback) {
       callback(err?.response);
     }
   }
@@ -104,7 +110,7 @@ const signUp = async (
 
     res = data;
   } catch (err: any) {
-    if (err) {
+    if (err && callback) {
       callback(err.response);
     }
   }
@@ -137,9 +143,9 @@ const resetPassword = async (
     },
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
-    }
-  }).catch(err => {
-    if (err.response) {
+    },
+  }).catch((err) => {
+    if (err.response && callback) {
       callback(err.response);
     }
   });

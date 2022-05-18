@@ -10,6 +10,7 @@ import { handleError } from '@/services/errorHandler';
 
 import type { Coordinate } from '@/models/accomodation/coordinates.model';
 import type { Accomodation } from '@/models/accomodation/accomodation.model';
+import type { User } from '@/models/user/user.model';
 
 // Rutas alojamientos API: /api/accomodations
 import { ACCOMODATIONS_BASE_PATH } from './AccomodationsRoutesEnum';
@@ -40,7 +41,7 @@ const userDataStorage: any = JSON.parse(
 );
 
 export const addNewAccomodation = async (
-  accomodationToAdd: Accomodation
+  accomodationToAdd: any
 ): Promise<any> => {
   const {
     registerNumber,
@@ -79,9 +80,9 @@ export const addNewAccomodation = async (
     accomodationServices: any[];
   } = accomodationToAdd;
 
-  let newAccomodation;
+  let newAccomodation: any;
   // Creación de la ubicaición del alojamiento
-  let location = await axios({
+  const location = await axios({
     url: `${API_ACCOMODATION_LOCATIONS}/new`,
     method: 'POST',
     headers: {
@@ -157,19 +158,17 @@ export const addNewAccomodation = async (
   }
 };
 
-
 /**
  * Borrado de un alojamiento con número de registro <code>idAccomodation</code>
  */
- export async function removeAccomodationByRegisterNumber(registerNumber: string) {
-  await axios.delete(
-    `${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`,
-    {
-      headers: {
-        Authorization: `Bearer ${apiJwtToken}`,
-      },
-    }
-  );
+export async function removeAccomodationByRegisterNumber(
+  registerNumber: string
+) {
+  await axios.delete(`${baseUri}${ACCOMODATIONS_BASE_PATH}/${registerNumber}`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+  });
 }
 
 /**
@@ -177,22 +176,22 @@ export const addNewAccomodation = async (
  * @param accomodationLocation
  * @returns
  */
-const addNewLocation = async (accomodationLocation: any): Promise<any> => {
-  return await axios({
-    url: `${API_ACCOMODATION_LOCATIONS}/new`,
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-    data: {
-      latitude: accomodationLocation.coords.lat,
-      longitude: accomodationLocation.coords.lng,
-      direction: accomodationLocation.direction,
-      city: accomodationLocation.city,
-      zip: accomodationLocation.zip,
-    },
-  }).catch((err) => console.log(err));
-};
+// const addNewLocation = async (accomodationLocation: any): Promise<any> => {
+//   return await axios({
+//     url: `${API_ACCOMODATION_LOCATIONS}/new`,
+//     method: 'POST',
+//     headers: {
+//       Authorization: `Bearer ${apiJwtToken}`,
+//     },
+//     data: {
+//       latitude: accomodationLocation.coords.lat,
+//       longitude: accomodationLocation.coords.lng,
+//       direction: accomodationLocation.direction,
+//       city: accomodationLocation.city,
+//       zip: accomodationLocation.zip,
+//     },
+//   }).catch((err) => console.log(err));
+// };
 
 /**
  * Comprueba si existe el alojamiento con el número de registro pasado como parámetro.
@@ -241,7 +240,7 @@ export const getAllAccomodationsByCity = async (
   cityToSearch: string,
   callback?: CallableFunction
 ) => {
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/cities/${cityToSearch}`, {
       params: {
         page: 0,
@@ -251,8 +250,8 @@ export const getAllAccomodationsByCity = async (
         Authorization: `Bearer ${apiJwtToken}`,
       },
     })
-    .catch((err) => {
-      if (err.response) {
+    .catch((err: any) => {
+      if (err.response && callback) {
         callback(err.response);
       }
     });
@@ -286,13 +285,13 @@ export async function getAccomodationByRegNumber(regNumber: string) {
  * Listado de todos los alojamientos publicados por un usuario.
  */
 export async function getAllUserAccomodations(idUser: number) {
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/user/${idUser}`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
       },
     })
-    .catch((err) => handleError(err));
+    .catch((err: any) => handleError(err));
 
   return data;
 }
@@ -301,7 +300,7 @@ export async function getAllUserAccomodations(idUser: number) {
  * Listado de todos los alojamientos reservados por un usuario.
  */
 export async function getUserBookingsByUserId(userId: number) {
-  const { data } = await axios.get(
+  const { data }: any = await axios.get(
     `${baseUri}${BOKINGS_BASE_PATH}/users/${userId}`,
     {
       headers: {
@@ -320,11 +319,11 @@ export async function getUserBookingsByUserId(userId: number) {
  * @returns
  */
 export async function getUserSavedAccomodationsByUserId(userId: number) {
-  if(!userId){
+  if (!userId) {
     return null;
   }
 
-  const { data } = await axios.get(
+  const { data }: any = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/users/${userId}`,
     {
       headers: {
@@ -340,11 +339,11 @@ export async function getUserSavedAccomodationsByUserId(userId: number) {
  * Valoración media (En estrellas) de un alojamiento.
  */
 export async function getAccomodationStarAverage(regNumber: string) {
-  if(!regNumber){
+  if (!regNumber) {
     return null;
   }
 
-  const { data } = await axios.get(
+  const { data }: any = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`,
     {
       headers: {
@@ -370,7 +369,7 @@ export async function getAccomodationStarAverage(regNumber: string) {
 export async function getLatestAccomodationReviewsByRegisterNumber(
   regNumber: string
 ) {
-  const { data } = await axios.get(
+  const { data }: any = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/latest`,
     {
       headers: {
@@ -392,7 +391,7 @@ export async function getLatestAccomodationReviewsByRegisterNumber(
 export async function getAllAccomodationReviewsByRegisterNumber(
   regNumber: string
 ) {
-  const { data } = await axios.get(
+  const { data }: any = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}`,
     {
       headers: {
@@ -433,10 +432,10 @@ export async function getAllAccomodationReviewsSendByUser(
   userId: number,
   callback?: CallableFunction
 ) {
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/u/${userId}/send`)
-    .catch((err) => {
-      if (err.response) {
+    .catch((err: any) => {
+      if (err.response && callback) {
         callback(err.response);
       }
     });
@@ -455,10 +454,10 @@ export async function getAllAccomodationReviewsReceivedByUserId(
   userId: number,
   callback?: CallableFunction
 ) {
-  const { data } = await axios
+  const { data }: any = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/u/${userId}/received`)
     .catch((err) => {
-      if (err.response) {
+      if (err.response && callback) {
         callback(err.response);
       }
     });
@@ -472,7 +471,7 @@ export async function getAllAccomodationReviewsReceivedByUserId(
  * @returns
  */
 export async function getAllAvaibleServices() {
-  const { data } = await axios.get(`${API_ACCOMODATION_SERVICES}/all`, {
+  const { data }: any = await axios.get(`${API_ACCOMODATION_SERVICES}/all`, {
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
@@ -487,7 +486,7 @@ export async function getAllAvaibleServices() {
  * @returns 
  */
 export async function getAllAvailableRules() {
-  const { data } = await axios.get(`${API_ACCOMODATION_RULES}/all`, {
+  const { data }: any = await axios.get(`${API_ACCOMODATION_RULES}/all`, {
     headers: {
       Authorization: `Bearer ${apiJwtToken}`,
     },
@@ -500,7 +499,7 @@ export async function getAllAvailableRules() {
  * Listado de todas las ciudades
  */
 export async function getAllCities(): Promise<string[]> {
-  const { data } = await axios.get(
+  const { data }: any = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/cities/all`
   );
 
@@ -522,7 +521,7 @@ export async function addNewImageToAccomodation(
   regNumber: string,
   imgUrl: string
 ) {
-  const { data } = (await axios
+  const { data }: any = (await axios
     .post(
       `${baseUri}${ACCOMODATIONS_BASE_PATH}/${regNumber}/images/new`,
       {
@@ -641,18 +640,16 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
     distanceAccuracy: number;
   }
 
-  let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
+  const accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
 
-  const { data } = await axios.get(
+  const { data }: any = await axios.get(
     `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${
       import.meta.env.VITE_POSITION_STACK_API_TOKEN
     }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
   );
 
   // Se obtienen dos resultados, por si no se encuentra la dirección en las coordenadas especificadas
-  let dataResponse = data.data[0] || data.data[1];
-
-  console.log(dataResponse);
+  const dataResponse = data.data[0] || data.data[1];
 
   accomodationLocationToReturn.address =
     dataResponse.name ?? dataResponse.street;
@@ -720,11 +717,11 @@ export async function getSavedAccomodation(
   idAccomodation: string,
   idUser: number
 ) {
-  if(!idAccomodation || !idUser){
+  if (!idAccomodation || !idUser) {
     return null;
   }
-  
-  const { data } = await axios.get(
+
+  const { data }: any = await axios.get(
     `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,
     {
       headers: {

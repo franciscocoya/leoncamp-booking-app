@@ -23,10 +23,8 @@ import {
 
 // Store
 import { useUserStore } from "@/store/user";
-import { useAuthStore } from "@/store/auth";
 
 const userStore = useUserStore();
-const authStore = useAuthStore();
 
 const router = useRouter();
 
@@ -41,9 +39,7 @@ const showUserReviewsReceived = ref(true);
 const isHostUser = ref(false);
 
 onBeforeMount(async () => {
-  
   const userIdFromPath = router.currentRoute.value.params.userId;
-
 
   // Datos del usuario
   userData.value = await userStore.getUserDataById(userIdFromPath);

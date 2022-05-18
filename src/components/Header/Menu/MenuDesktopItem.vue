@@ -3,7 +3,10 @@ import { useRouter } from "vue-router";
 
 // Iconos
 import MenuIcon from "./MenuIcon.vue";
-import { ICON_MENU_CALENDAR_OUTLINE, ICON_BOOKMARK } from "@/helpers/iconConstants";
+import {
+  ICON_MENU_CALENDAR_OUTLINE,
+  ICON_BOOKMARK,
+} from "@/helpers/iconConstants";
 
 // Store
 import { useUserStore } from "@/store/user";
@@ -24,14 +27,19 @@ const redirectToUserBookings = () => {
 <template>
   <nav>
     <!-- Icono de alojamientos guardados -->
-    <MenuIcon :icon="ICON_BOOKMARK" text="Guardados" :iconSize="20" path="/saved" />
+    <MenuIcon
+      :icon="ICON_BOOKMARK"
+      :text="$t('header.menu.saved')"
+      :iconSize="20"
+      path="/saved"
+    />
 
     <CalendarIcon />
 
     <!-- Icono de reservas realizadas -->
     <MenuIcon
       :icon="ICON_MENU_CALENDAR_OUTLINE"
-      text="Reservas"
+      :text="$t('header.menu.bookings')"
       path="/bookings"
       :iconSize="29"
       @click="redirectToUserBookings()"

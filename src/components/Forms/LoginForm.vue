@@ -79,11 +79,11 @@ const handleLogin = async () => {
 
 <template>
   <div class="login-form-container">
-    <h1>{{ title }}</h1>
+    <h1 v-t="'login_view.title'"></h1>
 
     <form id="form-login">
       <div class="form-group__email">
-        <label for="email">Email</label>
+        <label for="email" v-t="'components.forms.email'"></label>
         <BaseFormInput
           inputType="email"
           inputStyleClass="base-input"
@@ -92,7 +92,7 @@ const handleLogin = async () => {
         />
       </div>
       <div class="form-group__password">
-        <label for="password">Contraseña</label>
+        <label for="password" v-t="'components.forms.password'"></label>
         <BaseFormInput
           inputType="password"
           inputStyleClass="base-input"
@@ -112,13 +112,13 @@ const handleLogin = async () => {
       </Transition>
       <!-- <RouterLink to="/password/reset">He olvidado mi contraseña</RouterLink> -->
       <BaseButton
-        text="Iniciar sesión"
+        :text="$t('login_view.button_login')"
         buttonStyle="baseButton-primary--filled"
         @click="handleLogin"
         :fullWidth="true"
       />
       <BaseButton
-        text="Crear una cuenta"
+        :text="$t('login_view.button_register')"
         buttonStyle="baseButton-secondary--outlined"
         @click="router.push(USER_SIGNUP_ROUTE)"
         :fullWidth="true"

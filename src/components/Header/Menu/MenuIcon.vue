@@ -1,5 +1,4 @@
 <script setup>
-import { defineComponent } from "vue";
 import { RouterLink } from "vue-router";
 
 defineProps({
@@ -29,7 +28,6 @@ defineProps({
     default: 24,
   },
 });
-
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 
 import { useRouter } from "vue-router";
 
@@ -7,7 +7,7 @@ import { useRouter } from "vue-router";
 import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
 import AppLogoIcon from "@/components/icons/AppLogoIcon.vue";
 
-import {IMG_PROFILE_PLACEHOLDER} from '@/helpers/iconConstants';
+import { IMG_PROFILE_PLACEHOLDER } from "@/helpers/iconConstants";
 
 // Componentes
 import SearchBarItem from "./SearchBar/SearchBarItem.vue";
@@ -28,10 +28,12 @@ const appContextStore = useAppContextStore();
 const userData = ref({});
 
 onMounted(async () => {
-  if (userData.id) {
-    await userStore.loadUserData(userData.id);
+  if (userData.value.id) {
+    await userStore.loadUserData(userData.value.id);
   }
-  userData.value = await userStore.getUserDataById(JSON.parse(sessionStorage.getItem("user") || "{}")?.id);
+  userData.value = await userStore.getUserDataById(
+    JSON.parse(sessionStorage.getItem("user") || "{}")?.id
+  );
 });
 </script>
 
@@ -53,7 +55,9 @@ onMounted(async () => {
       height="54"
       :username="`${userData?.name} ${userData?.surname}`"
       :profileImage="`${
-        !userData?.profileImage ? IMG_PROFILE_PLACEHOLDER : userData?.profileImage
+        !userData?.profileImage
+          ? IMG_PROFILE_PLACEHOLDER
+          : userData?.profileImage
       }`"
       :isLinked="true"
     />

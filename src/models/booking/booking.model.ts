@@ -1,14 +1,12 @@
-import type { User } from '../user/user.model';
 import type { Accomodation } from '../accomodation/accomodation.model';
+
+import type { Payment } from '@/models/payment/payment.model';
+
+import type { User } from '@/models/user/user.model';
 
 export interface Booking {
   id: number;
-  userHost: {
-    id: number;
-    name: string;
-    surname: string;
-    profileImage: string;
-  };
+  userHost: User;
   accomodation: Accomodation;
   checkInDate: Date;
   checkOutDate: Date;
@@ -17,7 +15,7 @@ export interface Booking {
   disccount?: number;
   serviceFee: number;
   totalPrice: number;
-  paymentId: number;
+  paymentId: Payment;
   bookingStatus: string;
   createdAt: Date;
 }

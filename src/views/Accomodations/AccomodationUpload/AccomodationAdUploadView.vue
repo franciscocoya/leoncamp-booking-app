@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeMount } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 // Componentes
@@ -8,13 +8,12 @@ import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // Servicios
 import { addNewAccomodation } from "@/services/accomodation/AccomodationService";
-import { getUserDataById } from "@/services/user/userService";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useAppContextStore } from "@/store/appContext";
 import { useFormErrorsStore } from "@/store/formErrors";
-import {useAuthStore} from "@/store/auth";
+import { useAuthStore } from "@/store/auth";
 
 const router = useRouter();
 
@@ -68,7 +67,7 @@ const handleUploadAccomodation = async () => {
  * Vuelve al paso anterior.
  */
 const showPreviousStep = () => {
-  if (currentUploadStepNum == 0) {
+  if (currentUploadStepNum.value == 0) {
     currentUploadStepNum.value = 0;
   }
 
@@ -83,7 +82,6 @@ const showPreviousStep = () => {
 };
 
 onMounted(async () => {
-
   currentUploadStepRoute.value = router.currentRoute.value.name;
   currentUploadStepNum.value = accomodationUploadSteps.indexOf(
     currentUploadStepRoute.value

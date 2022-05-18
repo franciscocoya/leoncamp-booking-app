@@ -1,15 +1,8 @@
 <script setup>
 import { defineEmits } from "vue";
 
-// Componentes
-import IconButton from "../../Buttons/IconButton.vue";
-
 // Iconos
-import {
-  ICON_MAP_MARKER,
-  ICON_CALENDAR,
-  ICON_SEARCH,
-} from "@/helpers/iconConstants";
+import { ICON_MAP_MARKER, ICON_SEARCH } from "@/helpers/iconConstants";
 
 // Store
 import { useSearchStore } from "@/store/search";

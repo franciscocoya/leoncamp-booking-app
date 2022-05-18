@@ -183,25 +183,6 @@ const showNextButton = async () => {
   }
 };
 
-/**
- * Valida todos los campos del formulario.
- */
-const checkBasicDataFields = () => {
-  checkRegisterNumber();
-  checkAccomodationDescription();
-  checkAccomodationCategory();
-  checkAccomodationArea();
-  checkAccomodationNumOfBeds();
-  checkAccomodationNumOfBathRooms();
-  checkAccomodationNumOfBedRooms();
-  checkAccomodationPrice();
-  checkAccomodationNumOfGuests();
-
-  formErrorsStore.enableNextButton = formErrorsStore.errors.length == 0;
-
-  return formErrorsStore.enableNextButton;
-};
-
 onMounted(async () => {
   allAvailableAccomodationCategories.value =
     await getAllAccomodationCategories();
@@ -209,10 +190,10 @@ onMounted(async () => {
   formErrorsStore.enableNextButton = false;
 });
 
-onBeforeRouteLeave((to, from) => {
+onBeforeRouteLeave((to) => {
   if (
-    formErrorsStore.enableNextButton == false
-    && !headerRoutes.includes(to.name)
+    formErrorsStore.enableNextButton == false &&
+    !headerRoutes.includes(to.name)
   ) {
     return false;
   }

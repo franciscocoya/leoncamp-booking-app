@@ -7,9 +7,6 @@ import TextEditChip from "@/components/Chips/TextEditChip.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 
-// Rutas permitidas
-import {headerRoutes} from '@/helpers/appRoutes';
-
 const accomodationStore = useAccomodationStore();
 
 const allAvailableRules = ref([]);

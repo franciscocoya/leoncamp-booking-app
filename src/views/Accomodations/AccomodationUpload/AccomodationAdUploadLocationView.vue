@@ -17,12 +17,11 @@ import { useFormErrorsStore } from "@/store/formErrors";
 import { getAccomodationLocationByCoords } from "@/services/accomodation/AccomodationService";
 
 // Rutas permitidas
-import {headerRoutes} from '@/helpers/appRoutes';
+import { headerRoutes } from "@/helpers/appRoutes";
 
 // Validaciones
 import {
   checkInputStringFieldIsValid,
-  checkInputNumberFieldIsValid,
   checkValidSpanishZipCode,
 } from "@/helpers/formValidator";
 
@@ -42,7 +41,9 @@ const formErrorsStore = useFormErrorsStore();
 const checkAccomodationDirection = () => {
   if (
     !checkInputStringFieldIsValid(
-      accomodationStore?.accomodationLocation.direction, 2, 100
+      accomodationStore?.accomodationLocation.direction,
+      2,
+      100
     )
   ) {
     formErrorsStore.errors.push("La dirección introducida no es válida");
@@ -56,7 +57,11 @@ const checkAccomodationDirection = () => {
  */
 const checkAccomodationCity = () => {
   if (
-    !checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.city, 2, 30)
+    !checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.city,
+      2,
+      30
+    )
   ) {
     formErrorsStore.errors.push("La ciudad introducida no es válida");
   }
@@ -68,16 +73,23 @@ const checkAccomodationCity = () => {
  * Valida el código postal introducido.
  */
 const checkAccomodationZipCode = () => {
-if (
-    !checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip, 4, 4)
+  if (
+    !checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.zip,
+      4,
+      4
+    )
   ) {
     formErrorsStore.errors.push("El código postal no es válido");
-
-  }else{
-      // Si no está vacío
-      if(!checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip)){
-        formErrorsStore.errors.push("El código postal no se corresponde con ninguna provincia");
-      }
+  } else {
+    // Si no está vacío
+    if (
+      !checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip)
+    ) {
+      formErrorsStore.errors.push(
+        "El código postal no se corresponde con ninguna provincia"
+      );
+    }
   }
 
   showNextButton();
@@ -88,13 +100,15 @@ const showNextButton = () => {
     checkInputStringFieldIsValid(
       accomodationStore?.accomodationLocation.direction
     ) &&
-    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.city)
-    && checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip)
-    && checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip);
+    checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.city
+    ) &&
+    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip) &&
+    checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip);
 
-    if(formErrorsStore.enableNextButton){
-      formErrorsStore.errors = [];
-    }
+  if (formErrorsStore.enableNextButton) {
+    formErrorsStore.errors = [];
+  }
 };
 
 onMounted(async () => {
@@ -123,8 +137,11 @@ onMounted(async () => {
   accomodationStore.accomodationLocation.zip = accomodationLocation.cp;
 });
 
-onBeforeRouteLeave(() => {
-  if (formErrorsStore.enableNextButton == false && !headerRoutes.includes(to.name)) {
+onBeforeRouteLeave((from, to) => {
+  if (
+    formErrorsStore.enableNextButton == false &&
+    !headerRoutes.includes(to.name)
+  ) {
     return false;
   }
 });
@@ -192,7 +209,8 @@ onBeforeRouteLeave(() => {
           />
         </div>
         <p>
-          * Puedes arrastrar el marcador del mapa para obtener rellenar los campos automáticamente.
+          * Puedes arrastrar el marcador del mapa para obtener rellenar los
+          campos automáticamente.
         </p>
       </div>
       <div class="accomodation-upload-location__map">

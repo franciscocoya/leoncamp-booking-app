@@ -7,10 +7,10 @@ import i18n from './i18n';
 import { SetupCalendar, DatePicker } from 'v-calendar';
 import InstantSearch from 'vue-instantsearch/vue3/es';
 
-import "@/assets/scss/main.scss";
+import '@/assets/scss/main.scss';
 import 'v-calendar/dist/style.css';
 
-const app = createApp(App)
+const app = createApp(App);
 
 app.use(router);
 app.use(i18n);

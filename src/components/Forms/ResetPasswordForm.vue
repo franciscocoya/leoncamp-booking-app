@@ -7,12 +7,10 @@ import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // Store
-import { useUserStore } from "@/store/user";
 import { useAuthStore } from "@/store/auth";
 import { useAppContextStore } from "@/store/appContext";
 
 const authStore = useAuthStore();
-const userStore = useUserStore();
 const appContextStore = useAppContextStore();
 
 let isResetButtonEnabled = ref(false);
@@ -35,13 +33,13 @@ const handleResetPassword = async () => {
   showErrorMessages.value = authStore.errors.length > 0;
   showSuccessMessage.value = authStore.errors.length == 0;
 
-  if (showSuccessMessage) {
+  if (showSuccessMessage.value) {
     setTimeout(() => {
       showSuccessMessage.value = false;
     }, 6000);
   }
 
-  if (showErrorMessages) {
+  if (showErrorMessages.value) {
     setTimeout(() => {
       showErrorMessages.value = false;
     }, 6000);

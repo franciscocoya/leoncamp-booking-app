@@ -35,19 +35,18 @@ const publicRoutesNames: string[] = [
   'error-404',
   'error-500',
   'home',
-  'accomodation-city-list'
+  'accomodation-city-list',
 ];
 
 /**
  * Comprueba si el usuario en sesión es administrador.
  */
-const isAdmin = async (userData: any) => {
-  if(!userData){
+const isAdmin = async (userData) => {
+  if (!userData) {
     return false;
   }
   return userData.email === import.meta.env.VITE_API_ADMIN_EMAIL;
-}
-
+};
 
 const router = createRouter({
   history: createWebHistory(),
@@ -86,7 +85,8 @@ const router = createRouter({
     {
       path: '/accomodations/:city',
       name: 'accomodation-city-list',
-      component: () => import('@/views/Accomodations/AccomodationSearchResultsView.vue'),
+      component: () =>
+        import('@/views/Accomodations/AccomodationSearchResultsView.vue'),
     },
     {
       // Perfil del usuario en sesión
@@ -121,12 +121,15 @@ const router = createRouter({
           // Configuración de la cuenta
           path: USER_CONFIGURATION,
           name: 'user-configuration',
-          component: () => import('@/views/Account/AccountConfigurationView.vue'),
-        }, {
+          component: () =>
+            import('@/views/Account/AccountConfigurationView.vue'),
+        },
+        {
           // Seguridad y privacidad
           path: USER_PRIVACY,
           name: 'user-privacy',
-          component: () => import('@/views/Account/AccountPrivacySecurityView.vue'),
+          component: () =>
+            import('@/views/Account/AccountPrivacySecurityView.vue'),
         },
         {
           // Restablecer contraseña
@@ -138,7 +141,7 @@ const router = createRouter({
           path: USER_ACCOUNT_UPGRADE,
           name: 'account-upgrade',
           component: () => import('@/views/Account/AccountUpgradeView.vue'),
-        }
+        },
       ],
     },
     {
@@ -206,7 +209,8 @@ const router = createRouter({
       // Dashboard administrador
       path: ADMINISTRATOR_ROUTE,
       name: 'administrator',
-      component: () => import('@/views/Administrator/AdministratorDashboardView.vue'),
+      component: () =>
+        import('@/views/Administrator/AdministratorDashboardView.vue'),
     },
     {
       // Detalle de la reserva de un alojamiento
@@ -275,19 +279,23 @@ const router = createRouter({
 // Middleware autenticación
 router.beforeEach(async (to, from, next) => {
   const authRequired = !publicRoutes.includes(to.path);
-  const isLogged = JSON.parse(sessionStorage.getItem('user'))?.token;
-  if (!publicRoutesNames.includes(to.name) && authRequired && !isLogged) {
+  const isLogged: string = JSON.parse(sessionStorage.getItem('user'))?.token;
+  if (
+    !publicRoutesNames.includes(to.name as string) &&
+    authRequired &&
+    !isLogged
+  ) {
     next('/signin');
   } else {
     const idUser: number = JSON.parse(sessionStorage.getItem('user'))?.id;
     const userData: any = await getUserDataById(idUser);
-    
+
     const condAdmin = await isAdmin(userData);
 
     // Dashboard administrador
     if (to.name === 'administrator' && condAdmin == false) {
       next({ name: 'error-401' });
-    }else{
+    } else {
       next();
     }
 

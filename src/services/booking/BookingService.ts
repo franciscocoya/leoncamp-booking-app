@@ -58,10 +58,14 @@ export const addNewBooking = async (
   callback: CallableFunction
 ) => {
   try {
-    let newPayment = await addNewPayment(
+    const newPayment = await addNewPayment(
       paymentSelected,
       bookingData.idPayment,
-      (err) => callback(err)
+      (err: any) => {
+        if (err.response && callback) {
+          callback(err);
+        }
+      }
     );
 
     if (newPayment) {

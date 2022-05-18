@@ -1,6 +1,4 @@
 <script setup>
-import { IMG_NOT_FOUND_PLACEHOLDER, ICON_CLOSE } from "@/helpers/iconConstants";
-
 defineProps({
   imageUrl: {
     type: Object,

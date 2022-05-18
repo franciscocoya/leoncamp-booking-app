@@ -4,7 +4,7 @@ import type { Booking } from '@/models/booking/booking.model';
 
 import type { Accomodation } from '@/models/accomodation/accomodation.model';
 
-import type { Payment } from '@/models/payments/payment.model';
+import type { Payment } from '@/models/payment/payment.model';
 
 import type { User } from '@/models/user/user.model';
 
@@ -17,15 +17,15 @@ const useBookingStore = defineStore({
     id: 0,
     userHost: {} as User,
     accomodation: {} as Accomodation,
-    checkIn: new Date(),
-    checkOut: new Date(),
+    checkInDate: new Date(),
+    checkOutDate: new Date(),
     numOfGuests: 0,
     amount: 0,
     disccount: 0,
     serviceFee: 0,
     bookingStatus: '',
-    total: 0,
-    idPayment: {} as Payment,
+    totalPrice: 0,
+    paymentId: {} as Payment,
     createdAt: new Date(),
   }),
 

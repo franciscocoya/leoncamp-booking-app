@@ -1,19 +1,15 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
 // Componentes
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
 import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
 
-
 // Servicios
 import { getAllAccomodationsByCity } from "@/services/accomodation/AccomodationService";
 
 // Store
-import { useAppContextStore } from "@/store/appContext";
-
-const appContextStore = useAppContextStore();
 const route = useRoute();
 
 let filteredAccomodations = ref([]);
@@ -24,7 +20,7 @@ onBeforeMount(async () => {
     route.params.city
   );
 
-    accomodationMarkers.value = await filteredAccomodations.value.map((acc) => {
+  accomodationMarkers.value = await filteredAccomodations.value.map((acc) => {
     const { latitude, longitude } = acc.idAccomodationLocation;
     return {
       coords: {
@@ -52,9 +48,9 @@ onBeforeMount(async () => {
         />
       </section>
       <BaseAccomodationsMap
-      :markers="accomodationMarkers"
-      :selectedMarker="selectedMarkerRegNumber"
-    />
+        :markers="accomodationMarkers"
+        :selectedMarker="selectedMarkerRegNumber"
+      />
     </div>
   </div>
 </template>
@@ -64,21 +60,21 @@ onBeforeMount(async () => {
 
 .accomodation-city-results-view {
   @include flex-column;
-    gap: 20px;
-    margin: 30px 0;
+  gap: 20px;
+  margin: 30px 0;
 
-  & > h1{
-      font-weight: 400;
-      text-align: center;
+  & > h1 {
+    font-weight: 400;
+    text-align: center;
   }
 
-  & > .accomodation-city-results__wrapper{
-      margin: 0 50px;
+  & > .accomodation-city-results__wrapper {
+    margin: 0 50px;
 
-      & > .home-accomodations-list{
-          @include flex-column;
-          gap: 50px;
-      }
+    & > .home-accomodations-list {
+      @include flex-column;
+      gap: 50px;
+    }
   }
 }
 </style>

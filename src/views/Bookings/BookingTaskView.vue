@@ -11,21 +11,13 @@ import {
 import { useAccomodationStore } from "@/store/accomodation";
 import { useBookingStore } from "@/store/booking";
 import { useAppContextStore } from "@/store/appContext";
-import { useUserStore } from "@/store/user";
-import {useAuthStore} from "@/store/auth";
+import { useAuthStore } from "@/store/auth";
 
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import { DatePicker } from "v-calendar";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import BaseMessage from "@/components/Forms/Messages/BaseMessageItem.vue";
-
-// Validacion formularios
-import {
-  checkFieldNotBlank,
-  checkValidEmail,
-  checkNumberPositive,
-} from "@/helpers/formValidator";
 
 // Iconos
 import {
@@ -196,15 +188,15 @@ const disableReservedDates = async (regNumber) => {
 };
 
 onBeforeMount(async () => {
-    // Usuario en sesión
-await authStore.loadCurrentUserData();
+  // Usuario en sesión
+  await authStore.loadCurrentUserData();
 });
 
 onMounted(async () => {
   let params = new URLSearchParams(window.location.search);
   await accomodationStore.getAccomodationByRegisterNumber(params.get("regnum"));
   await disableReservedDates(params.get("regnum"));
- 
+
   bookingStore.userHost = authStore?.userData;
 
   const currentAccomodation =

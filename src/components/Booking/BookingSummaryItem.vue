@@ -1,12 +1,8 @@
 <script setup>
-import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
 // Formateador de fecha
-import { convertArrayToDate, formatArrayAsDate } from "@/helpers/utils";
-
-// Tipo de pago
-import { PaymentMethod } from "@/models/payment/payment.enum";
+import { formatArrayAsDate } from "@/helpers/utils";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
@@ -50,7 +46,7 @@ const props = defineProps({
   // Método de pago utilizado a la hora de la reserva
   paymentType: {
     type: Object,
-    default: {},
+    default: null,
   },
   bookingStatus: {
     type: String,
@@ -80,6 +76,13 @@ const getPaymentType = () => {
   }
   return paymentTypeIcon;
 };
+
+const getBookingStatus = () => {
+  console.log(props.bookingStatus);
+  return ["PENDIENTE", "CONFIRMADA", "COMPLETADA", "CANCELADA"].indexOf(
+    props.bookingStatus
+  );
+};
 </script>
 
 <template>
@@ -87,7 +90,9 @@ const getPaymentType = () => {
     <div class="booking-summary-item__status">
       <div :class="`booking-status-icon --booking-${bookingStatus}`">
         <BaseBadge
-          :text="bookingStatus"
+          :text="
+            $tc(`account_view.user_bookings_view.status`, getBookingStatus())
+          "
           :backgroundColor="
             getStyleBookingStatusBadge(bookingStatus).backgroundColor
           "
@@ -116,7 +121,7 @@ const getPaymentType = () => {
         {{ props.totalPrice }} €
       </p>
       <BaseButton
-        text="VER"
+        :text="$t('components.buttons.view')"
         buttonStyle="baseButton-dark--outlined--small"
         @click="redirectToBookingDetail()"
       />

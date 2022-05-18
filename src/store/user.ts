@@ -77,7 +77,7 @@ const useUserStore = defineStore({
      * Realiza el registro de la aplicación con los datos del formulario.
      */
     async signUp() {
-      let signUpError = '';
+      const signUpError = '';
 
       await signUp(
         this.name,
@@ -119,7 +119,7 @@ const useUserStore = defineStore({
     async loadUserData() {
       const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id;
 
-      let userData = await getUserDataById(userId);
+      const userData = await getUserDataById(userId);
 
       this.id = userId;
       this.name = userData.name;
@@ -181,29 +181,26 @@ const useUserStore = defineStore({
      */
     async updateUserProfile() {
       const updatedUserData = await updateUserData(
-        this.id,
-        this.name,
-        this.surname,
-        this.email,
-        this.phone,
-        this.datosHost.dni,
-        this.datosHost.bio,
-        (err) => {
+        this?.id,
+        this?.name,
+        this?.surname,
+        this?.email,
+        this?.phone,
+        this?.datosHost?.dni,
+        this?.datosHost?.bio,
+        (err: any) => {
           console.log(err);
         }
       );
 
-      this.name = updatedUserData.name;
-      this.surname = updatedUserData.surname;
-      this.email = updatedUserData.email;
-      this.phone = updatedUserData.phone;
+      this.name = updatedUserData?.name;
+      this.surname = updatedUserData?.surname;
+      this.email = updatedUserData?.email;
+      this.phone = updatedUserData?.phone;
 
       // Si el usuario es host, se actualizan los siguientes datos.
-      if (this.dni) {
+      if (this.datosHost) {
         this.datosHost.dni = updatedUserData.dni;
-      }
-
-      if (this.bio) {
         this.datosHost.bio = updatedUserData.bio;
       }
     },
@@ -214,26 +211,18 @@ const useUserStore = defineStore({
     async updateUserHost() {
       await updateUserHostData(
         this.id,
-        this.datosHost.dni,
-        this.datosHost.bio,
-        this.datosHost.direction,
-        this.datosHost.emailVerified,
-        this.datosHost.dniVerified,
-        this.datosHost.phoneVerified,
-        this.datosHost.verified,
-        (err) => {
+        this?.datosHost?.dni ?? '',
+        this?.datosHost?.bio ?? '',
+        this?.datosHost?.direction,
+        this?.datosHost?.emailVerified,
+        this?.datosHost?.dniVerified,
+        this?.datosHost?.phoneVerified,
+        this?.datosHost?.verified,
+        (err: Error) => {
           console.log(err);
         }
       );
     },
-
-    /**
-     * Actualiza la imagen de perfil del usuario.
-     */
-    // async updateProfileImage(img: string) {
-    //   const updatedUserData = await uploadUserProfileImage(this.id, img);
-    //   this.profileImage = updatedUserData.profileImage;
-    // },
 
     /**
      * Listado de todos los alojamientos de un usuario.

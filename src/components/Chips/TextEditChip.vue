@@ -1,9 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
 import { getAccomodationServiceImageById } from "@/helpers/utils";
-
-import { useAccomodationStore } from "@/store/accomodation";
-const accomodationStore = useAccomodationStore();
 
 const props = defineProps({
   chipText: {

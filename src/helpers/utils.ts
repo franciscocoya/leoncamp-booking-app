@@ -35,9 +35,9 @@ const SCREEN_BREAKPOINTS = {
  *
  * Lee una imagen en formato base64 y devuelve una imagen en URL.
  */
- const convertImageToBase64 = async (file: File): Promise<string> => {
+const convertImageToBase64 = async (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
-    let reader: FileReader = new FileReader();
+    const reader: FileReader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
@@ -108,7 +108,7 @@ const getDateDiffOnDays = (dateStart: Date, dateEnd: Date): number => {
  * @param date
  * @returns
  */
-const formatDateType1 = (date: Date): string => {
+const formatDateType1 = (date: Date): string | null => {
   if (date == null) {
     return null;
   }
@@ -188,11 +188,16 @@ const getStyleBookingStatusBadge = (bookingStatus: string) => {
  * Por ejemplo, si la tarjeta es 1234 5678 9012 3456, se mostrará 1234 XXXX XXXX 3456.
  */
 const showCreditCardNumberPartial = (cardNumber: string): string => {
-  return cardNumber.substring(0, 4) + ' ' 
-  + cardNumber.substring(4, 8).replace(cardNumber.substring(4, 8), 'XXXX') 
-  + ' ' + cardNumber.substring(8, 12).replace(cardNumber.substring(8, 12), 'XXXX')
-  + ' ' + cardNumber.substring(12, 16);
-}
+  return (
+    cardNumber.substring(0, 4) +
+    ' ' +
+    cardNumber.substring(4, 8).replace(cardNumber.substring(4, 8), 'XXXX') +
+    ' ' +
+    cardNumber.substring(8, 12).replace(cardNumber.substring(8, 12), 'XXXX') +
+    ' ' +
+    cardNumber.substring(12, 16)
+  );
+};
 
 export {
   getUserToken,
@@ -207,5 +212,5 @@ export {
   MAX_IMAGES_UPLOAD,
   SCREEN_BREAKPOINTS,
   getStyleBookingStatusBadge,
-  showCreditCardNumberPartial
+  showCreditCardNumberPartial,
 };

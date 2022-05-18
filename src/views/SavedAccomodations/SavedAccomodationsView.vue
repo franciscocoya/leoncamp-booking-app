@@ -18,7 +18,7 @@ onMounted(async () => {
 
 <template>
   <div class="saved-accomodations-view">
-    <h1 v-once>Alojamientos guardados</h1>
+    <h1 v-once v-t="'saved_view.title'"></h1>
     <div v-if="savedAccomodations.length > 0">
       <AccomodationThumbnailItem
         v-for="accomodation in savedAccomodations"
@@ -30,8 +30,8 @@ onMounted(async () => {
       />
     </div>
     <div v-else class="not-saved-accomodations_container">
-      <h2 v-once>No tienes alojamientos guardados</h2>
-      <p>Aquí se mostrarán todos los alojamientos que guardes</p>
+      <h2 v-once v-t="'saved_view.not_saved'"></h2>
+      <p v-t="'saved_view.not_saved_subtitle'"></p>
     </div>
   </div>
 </template>

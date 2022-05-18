@@ -1,11 +1,6 @@
 <script setup>
 // Componentes
 import ResetPasswordForm from "@/components/Forms/ResetPasswordForm.vue";
-
-// Store
-import { useAuthStore } from "@/store/auth";
-const authStore = useAuthStore();
-
 </script>
 
 <template>

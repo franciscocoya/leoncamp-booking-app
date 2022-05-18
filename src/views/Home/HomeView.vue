@@ -67,12 +67,12 @@ const deselectMarker = () => {
           @deselectMarker="(value) => deselectMarker(value)"
         />
       </section>
-      <!-- <BaseAccomodationsMap
-      :markers="accomodationMarkers"
-      @show-selected-marker="(value) => highLightSelectedMarker(value)"
-      @hide-selected-marker="(value) => deselectMarker(value)"
-      :selectedMarker="selectedMarkerRegNumber"
-    /> -->
+      <BaseAccomodationsMap
+        :markers="accomodationMarkers"
+        @show-selected-marker="(value) => highLightSelectedMarker(value)"
+        @hide-selected-marker="(value) => deselectMarker(value)"
+        :selectedMarker="selectedMarkerRegNumber"
+      />
     </section>
   </main>
 </template>

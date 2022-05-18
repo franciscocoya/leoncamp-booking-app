@@ -31,7 +31,7 @@ defineProps({
   },
   slideWidth: {
     type: String,
-    default: 300,
+    default: "300px",
   },
 });
 </script>

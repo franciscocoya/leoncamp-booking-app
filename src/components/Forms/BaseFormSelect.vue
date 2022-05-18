@@ -1,8 +1,4 @@
 <script setup>
-import { useAccomodationStore } from "@/store/accomodation";
-
-const accomodationStore = useAccomodationStore();
-
 const props = defineProps({
   inputLabel: {
     type: String,
@@ -23,17 +19,16 @@ const emit = defineEmits(["handleChange", "handleBlur"]);
 /**
  * Envia al emit la opción de categoría seleccionada.
  */
-const updateInputValue = (value) =>{
+const updateInputValue = (value) => {
   const selectedOption = props.options
     .filter((opt) => opt.accomodationCategory === value)
     .shift();
   emit("handleChange", selectedOption);
-}
+};
 
 const handleBlur = () => {
   emit("handleBlur");
-}
-
+};
 </script>
 
 <template>
@@ -45,7 +40,7 @@ const handleBlur = () => {
       @change="(e) => updateInputValue(e.target.value)"
       @blur="handleBlur"
     >
-    <option value="-" selected> -- Selecciona una opción --</option>
+      <option value="-" selected>-- Selecciona una opción --</option>
       <option
         v-for="opt in options"
         :key="opt.id"

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "@vue/runtime-core";
+import { ref } from "@vue/runtime-core";
 
 import { useRouter } from "vue-router";
 
@@ -11,11 +11,6 @@ import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 import { useAppContextStore } from "@/store/appContext";
 import { useAuthStore } from "@/store/auth";
 
-// Store
-const appContextStore = useAppContextStore();
-const authStore = useAuthStore();
-
-// Servicios
 import { upgradeBaseUserToHost } from "@/services/user/userService";
 
 // Validaciones formulario
@@ -23,6 +18,12 @@ import {
   checkInputStringFieldIsValid,
   checkValidDNI,
 } from "@/helpers/formValidator";
+
+// Store
+const appContextStore = useAppContextStore();
+const authStore = useAuthStore();
+
+// Servicios
 
 const router = useRouter();
 
@@ -44,13 +45,12 @@ const isFormFieldsValid = () => {
   if (!checkInputStringFieldIsValid(userDni, 9, 9, true)) {
     formErrors.value.push("El campo DNI no es válido");
     isValid = false;
-
-  }else if (!checkValidDNI(userDni)) {
-      formErrors.value.push(
-        "El campo DNI no se corresponde con un DNI de España"
-      );
-      isValid = false;
-    }
+  } else if (!checkValidDNI(userDni)) {
+    formErrors.value.push(
+      "El campo DNI no se corresponde con un DNI de España"
+    );
+    isValid = false;
+  }
 
   if (!checkInputStringFieldIsValid(userDirection, 5, 100, false)) {
     formErrors.value.push("El campo dirección no es válido");

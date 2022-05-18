@@ -7,7 +7,6 @@
  *
  */
 import axios from 'axios';
-import { handleError } from '../errorHandler';
 
 // Ruta alojamientos: /api/accomodations
 import { API_ACCOMODATION_SERVICES } from '@/helpers/apiRoutes';

@@ -6,7 +6,6 @@ import { useRouter } from "vue-router";
 import { signUp } from "@/services/auth/AuthService";
 
 // Store
-import { useUserStore } from "@/store/user";
 import { useAuthStore } from "@/store/auth";
 
 // Componentes
@@ -16,9 +15,6 @@ import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // Rutas
 import { USER_SIGNIN_ROUTE } from "@/helpers/appRoutes";
-
-// Validacion formularios
-import { checkFieldNotBlank, checkValidEmail } from "@/helpers/formValidator";
 
 // Store
 const authStore = useAuthStore();
@@ -78,11 +74,11 @@ const handleRegister = async () => {
 
 <template>
   <div class="register-form-container">
-    <h1>{{ title }}</h1>
+    <h1 v-t="'register_view.title'"></h1>
     <form id="form-register">
       <!-- Nombre -->
       <div class="form-group__fullname__name">
-        <label for="email">Nombre</label>
+        <label for="nombre" v-t="'components.forms.name'"></label>
         <BaseFormInput
           inputType="nombre"
           inputStyleClass="base-input"
@@ -93,7 +89,7 @@ const handleRegister = async () => {
 
       <!-- Apellidos -->
       <div class="form-group__fullname__surname">
-        <label for="apellidos">Apellidos</label>
+        <label for="apellidos" v-t="'components.forms.surname'"></label>
         <BaseFormInput
           inputType="apellidos"
           inputStyleClass="base-input"
@@ -104,7 +100,7 @@ const handleRegister = async () => {
 
       <!-- Email -->
       <div class="form-group__email">
-        <label for="email">Email</label>
+        <label for="email" v-t="'components.forms.email'"></label>
         <BaseFormInput
           inputType="email"
           inputStyleClass="base-input"
@@ -114,7 +110,7 @@ const handleRegister = async () => {
       </div>
       <!-- Contraseña -->
       <div class="form-group__password">
-        <label for="password">Contraseña</label>
+        <label for="password" v-t="'components.forms.password'"></label>
         <BaseFormInput
           inputType="password"
           inputStyleClass="base-input"
@@ -124,7 +120,10 @@ const handleRegister = async () => {
 
       <!-- Repetir ontraseña -->
       <div class="form-group__password">
-        <label for="repeatedPassword">Repite la contraseña</label>
+        <label
+          for="repeatedPassword"
+          v-t="'components.forms.password_confirmation'"
+        ></label>
         <BaseFormInput
           inputType="password"
           inputStyleClass="base-input"
@@ -133,7 +132,7 @@ const handleRegister = async () => {
       </div>
 
       <BaseButton
-        text="Crear cuenta"
+        :text="$t('register_view.button_register')"
         buttonStyle="baseButton-primary--filled"
         @click="handleRegister"
         :fullWidth="true"
@@ -150,10 +149,10 @@ const handleRegister = async () => {
         </div>
       </Transition>
 
-      <p>¿Ya tienes una cuenta?</p>
+      <p v-t="'register_view.login_redirect'"></p>
 
       <BaseButton
-        text="Iniciar sesión"
+        :text="$t('components.buttons.login')"
         buttonStyle="baseButton-secondary--outlined"
         @click="router.push(USER_SIGNIN_ROUTE)"
         :fullWidth="true"

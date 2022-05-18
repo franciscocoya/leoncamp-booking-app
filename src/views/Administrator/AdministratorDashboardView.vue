@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onUpdated, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
 // Componentes
 import AdministratorSidebar from "@/components/Sidebar/AdministratorSidebar.vue";

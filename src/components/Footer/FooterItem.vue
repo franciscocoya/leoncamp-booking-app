@@ -3,7 +3,7 @@
 
 <template>
   <footer v-once>
-    <p>&copy; 2022 Francisco Coya. Todos los Derechos Reservados.</p>
+    <p v-t="'footer.copyright'"></p>
   </footer>
 </template>
 

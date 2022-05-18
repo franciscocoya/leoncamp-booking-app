@@ -3,6 +3,8 @@ import { defineStore } from 'pinia';
 import { getUserDataById } from '@/services/user/userService';
 import { resetPassword } from '@/services/auth/AuthService';
 
+import type { User } from '@/models/user/user.model';
+
 const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
@@ -12,13 +14,15 @@ const useAuthStore = defineStore({
     password: '',
     newPassword: '',
     repeatedPassword: '',
-    errors: [],
-    userData: {},
+    errors: [] as string[],
+    userData: {} as User,
   }),
 
   actions: {
     async loadCurrentUserData() {
-      const userId = this.userData.id || JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
+      const userId =
+        this.userData.id ||
+        JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
       const userDataResult = await getUserDataById(userId);
       this.userData = userDataResult;
     },
@@ -27,19 +31,24 @@ const useAuthStore = defineStore({
      * Restablece la contraseña del usuario, si éste está en sesión.
      */
     async resetPasswordLoggedUser() {
-      let successMsg = null;
       const userId = JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
-      await resetPassword(userId, this.password, this.newPassword, this.repeatedPassword, (err) => {
+      await resetPassword(
+        userId,
+        this.password,
+        this.newPassword,
+        this.repeatedPassword,
+        (err: any) => {
+          if (err.data.message) {
+            this.errors.push(err.data.message as string);
 
-        console.log(err);
-        this.errors.push(err.data.message);
-        
-        if (err.data.errors) {
-          err.data.errors.forEach(errMsg => {
-            this.errors.push(errMsg.defaultMessage);
-          });
+            if (err.data.errors) {
+              err.data.errors.forEach((errMsg: any) => {
+                this.errors.push(errMsg?.defaultMessage);
+              });
+            }
+          }
         }
-      });
+      );
     },
   },
 });

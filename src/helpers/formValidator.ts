@@ -7,7 +7,7 @@
 
 // Expresión regular para validar un email.
 const DEFAULT_EMAIL_REGEX =
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 // Expresión regular para validar una código postal de españa.
 const spanishZipCodeRegex = /^(?:0?[1-9]|[1-4]\d|5[0-2])\d{3}$/;
@@ -54,20 +54,23 @@ const checkValidEmail = (value: string): boolean =>
 
 /**
  * Comprueba que el valor pasado como parámetro es un DNI válido.
- * 
- * @param value 
- * @returns 
+ *
+ * @param value
+ * @returns
  */
 const checkValidDNI = (dniToCheck: string): boolean => {
-  return DNI_REGEX.test(dniToCheck) && _checkValidSpanishDni(dniToCheck.toUpperCase().replace(/\s/, ''));
+  return (
+    DNI_REGEX.test(dniToCheck) &&
+    _checkValidSpanishDni(dniToCheck.toUpperCase().replace(/\s/, ''))
+  );
 };
 
 const _checkValidSpanishDni = (dniToCheck: string): boolean => {
-  var dni_letters = "TRWAGMYFPDXBNJZSQVHLCKE";
-  var letter = dni_letters.charAt( parseInt( dniToCheck, 10 ) % 23 );
-  
+  const dni_letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
+  const letter = dni_letters.charAt(parseInt(dniToCheck, 10) % 23);
+
   return letter == dniToCheck.charAt(8);
-}
+};
 
 /**
  * Comprueba que el valor introducido cumpla con el formato de un código postal de españa.
@@ -138,9 +141,10 @@ const checkInputStringFieldIsValid = (
   maxLength: number,
   containSpecialCharacters?: boolean
 ): boolean => {
-  const cond1 = containSpecialCharacters == true
-    ? checkFieldNotContainSpecialCharacters(value)
-    : true;
+  const cond1 =
+    containSpecialCharacters == true
+      ? checkFieldNotContainSpecialCharacters(value)
+      : true;
   return (
     checkFieldNotBlank(value) &&
     value.length >= minLength &&
@@ -162,7 +166,9 @@ const checkInputNumberFieldIsValid = (
   min: number,
   max: number
 ): boolean => {
-  return value && checkNumberPositive(value) && value >= min && value <= max;
+  return (
+    !isNaN(value) && checkNumberPositive(value) && value >= min && value <= max
+  );
 };
 
 export {

@@ -1,9 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-// Servicios
-import { downgradeUserHostToBaseUser } from "@/services/user/userService";
-
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
@@ -12,7 +9,6 @@ import { useAuthStore } from "@/store/auth";
 
 const router = useRouter();
 const authStore = useAuthStore();
-
 </script>
 
 <template>

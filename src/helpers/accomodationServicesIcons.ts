@@ -1,4 +1,4 @@
-const SERVICES_IMG_BASE = '/src/assets/img/icons/services/';
+const SERVICES_IMG_BASE = '/images/icons/services/';
 
 const accomodationServices = [
   {

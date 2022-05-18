@@ -39,7 +39,6 @@ const isCurrentRoutePublic = () => {
   return !authRoutes.includes(currentRoute());
 };
 
-const showSearchResults = ref(false);
 const showMenuMobile = ref(false);
 
 let enableHeaderMobile = ref(false);
@@ -58,7 +57,7 @@ onMounted(() => {
 </script>
 
 <template class="app-root">
-<!-- <BasePreloader /> -->
+  <!-- <BasePreloader /> -->
   <HeaderMobileItem
     v-if="enableHeaderMobile == true"
     @showMenuMobile="showMenuMobile = !showMenuMobile"
@@ -69,11 +68,12 @@ onMounted(() => {
     buttonStyle="iconButton-return"
     @click="router.go(-1)"
   />
-  <HeaderItem
-    v-if="isCurrentRoutePublic() && enableHeaderMobile == false"
-  />
+  <HeaderItem v-if="isCurrentRoutePublic() && enableHeaderMobile == false" />
   <Transition name="slide-fade">
-    <MenuMobile v-if="showMenuMobile == true" @hideMenu="() => showMenuMobile = !showMenuMobile"/>
+    <MenuMobile
+      v-if="showMenuMobile == true"
+      @hideMenu="() => (showMenuMobile = !showMenuMobile)"
+    />
   </Transition>
 
   <Transition name="fade">

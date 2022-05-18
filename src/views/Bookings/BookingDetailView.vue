@@ -190,7 +190,7 @@ onMounted(async () => {
             {{ bookingData?.idAccomodation?.idAccomodationLocation.city }} -
             {{ bookingData?.idAccomodation?.idAccomodationLocation.zip }}
           </p>
-          <!-- <ThumbnailMap
+          <ThumbnailMap
             :lat="
               bookingData &&
               bookingData?.idAccomodation?.idAccomodationLocation?.latitude
@@ -201,7 +201,7 @@ onMounted(async () => {
             "
             mapWidth="100%"
             mapHeight="350px"
-          /> -->
+          />
         </section>
       </div>
     </div>
