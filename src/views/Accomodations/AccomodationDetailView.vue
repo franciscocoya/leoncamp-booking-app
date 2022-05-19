@@ -36,9 +36,11 @@ import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useAppContextStore } from "@/store/appContext";
+import { useAuthStore } from "@/store/auth";
 
 const accomodationStore = useAccomodationStore();
 const appContextStore = useAppContextStore();
+const authStore = useAuthStore();
 
 const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
 const currentUserData = JSON.parse(sessionStorage.getItem("data") || "{}");
@@ -53,12 +55,14 @@ const showServiceModal = ref(false);
 const showReviewsModal = ref(false);
 const showImagesModal = ref(false);
 
+/**
+ * Manejador de click para redirección a página de perfil de usuario.
+ */
 const handleUserProfileButtonClick = () => {
-  const { id } = currentUser;
   router.push(
-    id === accomodationStore.userHost.id
-      ? `/account/${currentUserData.name}-${currentUserData.surname}/profile`
-      : `/u/${accomodationStore.userHost.id}`
+    authStore?.userData?.id === accomodationStore?.userHost?.id
+      ? `/account/${currentUserData?.name}-${currentUserData?.surname}/profile`
+      : `/u/${accomodationStore?.userHost?.id}`
   );
 };
 
@@ -257,27 +261,25 @@ onUpdated(() => {
 
         <!-- Sección detalles anfitrión -->
         <section class="accomodation-host">
-          <h2 v-once v-t="'accomodation_detail_view.host.title'">
-          </h2>
+          <h2 v-once v-t="'accomodation_detail_view.host.title'"></h2>
           <div class="accomodation-host-summary">
             <div class="accomodation-host__info">
               <div class="accomodation-host_info__details">
                 <AccountIcon
-                  v-once
                   :profileImage="accomodationStore.userHost.profileImage"
                   :width="80"
                   :height="80"
                 />
                 <div class="accomodation-host_details__fullname">
                   <p>
-                    {{ accomodationStore.userHost.name }}
-                    {{ accomodationStore.userHost.surname }}
+                    {{ accomodationStore.userHost?.name }}
+                    {{ accomodationStore.userHost?.surname }}
                   </p>
                   <span>
                     {{
                       $tc("accomodation_detail_view.host.detail.created_at", {
                         date: formatArrayAsSimpleStringDate(
-                          accomodationStore.userHost.createdAt,
+                          accomodationStore?.userHost?.createdAt,
                           $i18n.locale
                         ),
                       })
@@ -296,11 +298,11 @@ onUpdated(() => {
             <BaseButton
               v-once
               :text="`${
-                accomodationStore.userHost.id === currentUser.id
-                  ? $t('accomodation_detail_view.host.button_show_profile.user')
-                  : $t(
+                accomodationStore?.userHost?.id === authStore?.userData?.id
+                  ? $t(
                       'accomodation_detail_view.host.button_show_profile.current'
                     )
+                  : $t('accomodation_detail_view.host.button_show_profile.user')
               }`"
               buttonStyle="baseButton-primary--outlined"
               @click="handleUserProfileButtonClick"
@@ -317,9 +319,13 @@ onUpdated(() => {
                 v-for="(rule, index) in accomodationStore.accomodationRules"
                 :key="index"
               >
-              {{
-                $t(`accomodation_rules[${rule.accomodationAccRuleId.idAccomodationRule.id - 1}]`)
-              }}
+                {{
+                  $t(
+                    `accomodation_rules[${
+                      rule.accomodationAccRuleId.idAccomodationRule.id - 1
+                    }]`
+                  )
+                }}
               </li>
             </ul>
           </div>

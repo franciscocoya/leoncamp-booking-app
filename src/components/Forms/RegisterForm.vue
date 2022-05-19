@@ -31,13 +31,50 @@ defineProps({
 const showErrors = ref(false);
 
 /**
+ * A partir del error pasado como parámetro,
+ * se muestra su mensaje correspondiente i18n.
+ */
+const translateErrorMessage = (error) => {
+  let resultMessage = "";
+  const baseMessagePath = "components.forms.messages";
+
+  switch (error.field) {
+    case "name":
+      resultMessage = `${baseMessagePath}.name.required`;
+      break;
+
+    case "surname":
+      resultMessage = `${baseMessagePath}.surname.required`;
+      break;
+
+    case "email":
+      resultMessage = `${baseMessagePath}.email.required`;
+      break;
+
+    case "password":
+      resultMessage = `${baseMessagePath}.password.required`;
+      break;
+
+    case "repeatedPassword":
+      resultMessage = `${baseMessagePath}.password_confirmation.required`;
+      break;
+
+    default:
+      break;
+  }
+  return resultMessage;
+};
+
+/**
  * Manejador del evento submit del formulario.
  */
 const handleRegister = async () => {
   authStore.errors = [];
 
   if (authStore.password !== authStore.repeatedPassword) {
-    authStore.errors.push("Las contraseñas no coinciden");
+    authStore.errors.push(
+      "components.forms.messages.password_confirmation_not_match"
+    );
     showErrors.value = true;
 
     setTimeout(() => {
@@ -51,17 +88,20 @@ const handleRegister = async () => {
       authStore.password,
       authStore.repeatedPassword || "",
       (err) => {
-        if (err.data?.errors.length > 0) {
+        if (err.data?.errors?.length > 0) {
           err.data.errors.forEach((msg) => {
-            authStore.errors.push(msg.defaultMessage);
+            authStore.errors.push(translateErrorMessage(msg));
           });
-
-          showErrors.value = true;
-
-          setTimeout(() => {
-            showErrors.value = false;
-          }, 6000);
+        } else {
+          console.log(err.data);
+          authStore.errors.push(
+            "components.forms.messages.user_already_exists"
+          );
         }
+        showErrors.value = true;
+        setTimeout(() => {
+          showErrors.value = false;
+        }, 6000);
       }
     );
 
@@ -118,7 +158,7 @@ const handleRegister = async () => {
         />
       </div>
 
-      <!-- Repetir ontraseña -->
+      <!-- Repetir contraseña -->
       <div class="form-group__password">
         <label
           for="repeatedPassword"
@@ -143,7 +183,7 @@ const handleRegister = async () => {
           <BaseMessageItem
             v-for="(errorMsg, index) in authStore.errors"
             :key="index"
-            :msg="errorMsg"
+            :msg="$t(errorMsg)"
             msgType="error"
           />
         </div>

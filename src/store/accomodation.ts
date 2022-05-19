@@ -34,6 +34,8 @@ import {
   deleteRuleFromAccomodation,
 } from '@/services/accomodation/AccomodationRuleService';
 
+import { getUserDataById } from '@/services/user/userService';
+
 import { updateAccomodationCategory } from '@/services/accomodation/AccomodationCategoryService';
 
 const useAccomodationStore = defineStore({
@@ -67,6 +69,7 @@ const useAccomodationStore = defineStore({
       name: '',
       surname: '',
       profileImage: '',
+      createdAt: [],
     },
     stars: 0,
     createdAt: new Date(),
@@ -85,6 +88,17 @@ const useAccomodationStore = defineStore({
       );
 
       if (accomodationToReturn) {
+        const accomodationHost = await getUserDataById(
+          accomodationToReturn.idUserHost.id
+        );
+        this.userHost = {
+          id: accomodationHost.id,
+          name: accomodationHost.name,
+          surname: accomodationHost.surname,
+          profileImage: accomodationHost.profileImage,
+          createdAt: accomodationHost.createdAt,
+        };
+
         this.registerNumber = accomodationToReturn.registerNumber;
         this.description = accomodationToReturn.description;
         this.numOfBeds = accomodationToReturn.numOfBeds;
@@ -100,7 +114,6 @@ const useAccomodationStore = defineStore({
         this.accomodationRules = accomodationToReturn.accomodationRules;
         this.accomodationServices = accomodationToReturn.accomodationServices;
         this.promoCodes = accomodationToReturn.promoCodes;
-        this.userHost = accomodationToReturn.idUserHost;
 
         // Valoracion media
         this.stars = await this.getStarAverage(

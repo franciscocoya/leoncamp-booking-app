@@ -79,7 +79,7 @@ export const en_msgs = {
       title: 'Host details',
       verified: 'Verified',
       detail: {
-        created_at: 'Since {date}'
+        created_at: 'Since {date}',
       },
       button_show_profile: {
         user: 'Show profile',
@@ -92,6 +92,7 @@ export const en_msgs = {
     reviews: {
       title: 'Reviews',
       average: 'Average rating: ({n})',
+      not_review: 'No reviews yet',
     },
   },
   upload_accomodation_view: {
@@ -121,7 +122,7 @@ export const en_msgs = {
         title: 'Select a file(s) or drag it/them here',
         image_format: 'jpg, jpeg, png, gif',
         image_max_size: 'Max. file size: 500Kb',
-        infoIcon: 'Click on or directly select the images of the accommodation'
+        infoIcon: 'Click on or directly select the images of the accommodation',
       },
     },
   },
@@ -139,12 +140,12 @@ export const en_msgs = {
     },
     services: {
       title: 'Amenities',
-      subtitle: 'This accommodation has {n} amenities.'
+      subtitle: 'This accommodation has {n} amenities.',
     },
     rules: {
       title: 'Rules',
-      subtitle: 'This accommodation has {n} rules.'
-    }
+      subtitle: 'This accommodation has {n} rules.',
+    },
   },
   account_view: {
     user_profile_view: {
@@ -152,8 +153,8 @@ export const en_msgs = {
       legal_name: 'Legal name',
       contact_data: 'Contact data',
       host_data: {
-        title: 'Host data'
-      }
+        title: 'Host data',
+      },
     },
     privacy_view: {
       title: 'Security & privacy',
@@ -193,7 +194,7 @@ export const en_msgs = {
     },
   },
   user_public_profile: {
-    title: 'Hello: I\'m {name}',
+    title: "Hello: I'm {name}",
     about: {
       title: 'About',
       lang: {
@@ -203,7 +204,7 @@ export const en_msgs = {
     },
     verified: {
       title: 'Identity verified',
-      subtitle: '{name} confirmed'
+      subtitle: '{name} confirmed',
     },
     userType: {
       base: 'Base',
@@ -218,8 +219,8 @@ export const en_msgs = {
       tabs: {
         users: 'From Guests',
         host: 'From user',
-      }
-    }
+      },
+    },
   },
   accomodation_thumbnail: {
     title_click: 'Click here to see the accomodation',
@@ -229,10 +230,10 @@ export const en_msgs = {
     delete_click: {
       title: 'Click here to delete the accomodation',
     },
-    night: 'night'
+    night: 'night',
   },
   saved_icon: {
-    title: ['Save accomodation', 'Accomodation saved']
+    title: ['Save accomodation', 'Accomodation saved'],
   },
   accomodation_reviews: {
     title: 'Reviews',
@@ -277,7 +278,7 @@ export const en_msgs = {
       update: 'Update | Updating...',
       delete: 'Delete',
       info: 'More information',
-      login: 'Sing In',
+      login: 'Sign In',
       register: 'Sign Up',
       upload: 'Publish',
       add: 'Add',
@@ -324,35 +325,109 @@ export const en_msgs = {
         default_option: 'Select an option',
       },
       messages: {
+        name: {
+          required: 'Name is required',
+          invalid: 'Name is invalid',
+        },
+        surname: {
+          required: 'Surname is required',
+          invalid: 'Surname is invalid',
+        },
         email: {
           required: 'Email is required',
+          invalid: 'Email is invalid',
+        },
+        dni: {
+          required: 'ID Card is required',
+          min: 'ID Card must be at least 8 digits and 1 letter',
+          invalid: 'ID Card is not a valid Spanish ID card',
+        },
+        direction: {
+          required: 'Direction is required',
+          invalid: 'Direction is invalid',
         },
         password: {
-          required: 'Password is required'
+          required: 'Password is required',
         },
         password_confirmation: {
           required: 'Password confirmation is required',
         },
         password_confirmation_not_match: 'Password confirmation does not match',
-      }
+        login: {
+          invalid: 'Email or password are invalid',
+        },
+        default: 'Alguno de los campos no es válido',
+        user_already_exists: 'User already exists',
+        user: {
+          update: {
+            success: 'User updated successfully',
+            error: 'Error updating user',
+          },
+        },
+      },
     },
   },
   modals: {
     services: {
-      title: 'Accomodation amenities'
+      title: 'Accomodation amenities',
     },
     accomodation_images: {
       title: 'Accomodation images',
-    }
+    },
   },
   currency: {
     symbol: '£',
   },
   bookingStatus: 'PENDING | CONFIRMED | COMPLETED | CANCELLED',
-  accomodation_categories: ['Apartament' , 'Loft' , 'Cottage' , 'Penthouse' , 'Duplex','Terraced house' ,'Studio apartment'],
-  accomodation_amenities: ['Wifi', 'Heating', 'TV', 'Bed sheets', 'Towels', 'Smoke alarm', 'First ait kit', 'Breakfast', 'Free parking', 'Air conditioning', 'Hot water', 'Hair dryer', 'Washing machine', 'Iron', 'Dishes', 'Pets allowed', 'Smokers allowed', 'Cot', 'Cleaning products', 'Microwave', 'Coffee maker', 'Accesible for the disabled', 'Freezer', 'Oven', 'Dishwasher', 'Balcony / patio', 'Lift', 'Jacuzzi', 'Private pool', 'Shared pool', 'Garden', 'Work area / Office'],
-  accomodation_rules: ['No smoking', 'Pets not allowed', 'No parties or events'],
+  accomodation_categories: [
+    'Apartament',
+    'Loft',
+    'Cottage',
+    'Penthouse',
+    'Duplex',
+    'Terraced house',
+    'Studio apartment',
+  ],
+  accomodation_amenities: [
+    'Wifi',
+    'Heating',
+    'TV',
+    'Bed sheets',
+    'Towels',
+    'Smoke alarm',
+    'First ait kit',
+    'Breakfast',
+    'Free parking',
+    'Air conditioning',
+    'Hot water',
+    'Hair dryer',
+    'Washing machine',
+    'Iron',
+    'Dishes',
+    'Pets allowed',
+    'Smokers allowed',
+    'Cot',
+    'Cleaning products',
+    'Microwave',
+    'Coffee maker',
+    'Accesible for the disabled',
+    'Freezer',
+    'Oven',
+    'Dishwasher',
+    'Balcony / patio',
+    'Lift',
+    'Jacuzzi',
+    'Private pool',
+    'Shared pool',
+    'Garden',
+    'Work area / Office',
+  ],
+  accomodation_rules: [
+    'No smoking',
+    'Pets not allowed',
+    'No parties or events',
+  ],
   linkers: {
     in: 'in',
-  }
+  },
 };

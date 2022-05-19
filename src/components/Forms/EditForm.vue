@@ -10,8 +10,10 @@ import BaseFormSelect from "@/components/Forms/BaseFormSelect.vue";
 import UploadImageInputButton from "@/components/Buttons/UploadImageInputButton.vue";
 
 // i18n
-import { translateAmenity, translateCategory } from "@/helpers/i18nTranslations";
-
+import {
+  translateAmenity,
+  translateCategory,
+} from "@/helpers/i18nTranslations";
 
 // Chips
 import ImageEditChip from "@/components/Chips/ImageEditChip.vue";
@@ -131,10 +133,10 @@ onMounted(async () => {
       <div class="form-edit-main-features">
         <!-- Sección imágenes -->
         <section class="form-edit-main-features__images">
-          <h2 v-once v-t="'edit_accommodation_view.images.title'">Imágenes</h2>
+          <h2 v-once v-t="'edit_accommodation_view.images.title'"></h2>
           <p>
             {{
-              $tc('edit_accommodation_view.images.count', {
+              $tc("edit_accommodation_view.images.count", {
                 n: accomodationStore.accomodationImages.length,
               })
             }}
@@ -268,6 +270,7 @@ onMounted(async () => {
             :inputLabel="$t('components.forms.category')"
             selectId="accomodation-category-select"
             :options="categories"
+            :selectedOption="accomodationStore.category.id"
             @handleChange="(value) => (accomodationStore.category = value)"
           />
           <BaseButton
@@ -286,8 +289,8 @@ onMounted(async () => {
         <h3 v-once v-t="'edit_accommodation_view.services.title'"></h3>
         <p>
           {{
-            $tc('edit_accommodation_view.services.subtitle', {
-              n: accomodationStore.accomodationServices.length
+            $tc("edit_accommodation_view.services.subtitle", {
+              n: accomodationStore.accomodationServices.length,
             })
           }}
         </p>
@@ -296,7 +299,13 @@ onMounted(async () => {
             v-for="service in allServices"
             :key="`service-${service.id}`"
             :chipTitle="`Haz click para eliminar el servicio ${service.denomination}`"
-            :chipText="$t(`accomodation_amenities[${translateAmenity(service.denomination)}]`)"
+            :chipText="
+              $t(
+                `accomodation_amenities[${translateAmenity(
+                  service.denomination
+                )}]`
+              )
+            "
             :serviceData="service"
             :showIcon="true"
             :isServiceEnabled="
@@ -318,8 +327,8 @@ onMounted(async () => {
         <h3 v-once v-t="'edit_accommodation_view.rules.title'">Normas</h3>
         <p>
           {{
-            $tc('edit_accommodation_view.rules.subtitle', {
-              n: accomodationStore.accomodationRules.length
+            $tc("edit_accommodation_view.rules.subtitle", {
+              n: accomodationStore.accomodationRules.length,
             })
           }}
         </p>

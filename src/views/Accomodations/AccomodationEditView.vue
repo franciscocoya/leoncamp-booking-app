@@ -39,12 +39,8 @@ onBeforeRouteLeave(() => {
 
 <template>
   <div class="accomodation-edit-view">
-    <h1 >
-      {{
-        $tc('edit_accommodation_view.title', {
-          name: accomodationStore.registerNumber,
-        })
-      }}
+    <h1>
+      {{ $tc("edit_accommodation_view.title") }}
       <span
         class="form-edit-main-features_properties__regNumber"
         title="Número de registro del alojamiento a editar"
@@ -71,6 +67,7 @@ onBeforeRouteLeave(() => {
   & > h1 {
     // Estilos número de registro
     @include flex-row-center;
+    flex-wrap: wrap;
     gap: 20px;
 
     & > .form-edit-main-features_properties__regNumber {

@@ -1,15 +1,17 @@
 <script setup>
 import { onBeforeMount, onMounted, ref } from "@vue/runtime-core";
-import {useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseFormTextArea from "@/components/Forms/BaseFormTextArea.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
+import AccountIcon from "@/components/icons/Account/AccountIcon.vue";
+import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 import { useUserStore } from "@/store/user";
 import { useAppContextStore } from "@/store/appContext";
-import {useAuthStore } from "@/store/auth";
+import { useAuthStore } from "@/store/auth";
 
 const router = useRouter();
 
@@ -23,8 +25,8 @@ const enableEditHostButton = ref(false);
 
 const adminEmail = import.meta.env.VITE_API_ADMIN_EMAIL;
 
-// Actualizar datos de la store.
-// userStore.loadUserData();
+let showSuccessMessage = ref(false);
+let showSuccessHostMessage = ref(false);
 
 const updateFieldValue = (callback) => {
   enableEditButton.value = true;
@@ -40,20 +42,34 @@ const updateHostData = (callback) => {
  * Manejador click botón editar. Edita los datos del usuario.
  */
 const handleEditUserProfile = async () => {
-  await userStore.updateUserProfile();
+  const updated = await authStore.updateUserProfile();
+  if (!updated) {
+    showSuccessMessage.value = true;
+
+    setTimeout(() => {
+      showSuccessMessage.value = false;
+    }, 3000);
+  }
 };
 
 const handleEditUserHostData = async () => {
-  await userStore.updateUserHost();
+  const updated = await authStore.updateUserHost();
+  if (!updated) {
+    showSuccessHostMessage = true;
+
+    setTimeout(() => {
+      showSuccessHostMessage = false;
+    }, 3000);
+  }
 };
 
 const handleRedirectAccountUpgrade = () => {
   router.push({
-          name: 'account-upgrade',
-          params: {
-            username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`
-          }
-        })
+    name: "account-upgrade",
+    params: {
+      username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
+    },
+  });
 };
 
 onMounted(async () => {
@@ -69,8 +85,21 @@ onBeforeMount(async () => {
   <div class="user-profile-view">
     <main>
       <h1 v-once v-t="'account_view.user_profile_view.title'"></h1>
+      <AccountIcon
+        v-if="appContextStore.isMobile == true"
+        width="120"
+        height="120"
+        :profileImage="`${
+          userStore.profileImage == 'null'
+            ? IMG_PROFILE_PLACEHOLDER
+            : userStore.profileImage
+        }`"
+        :isUploading="true"
+      />
       <BaseButton
-      v-if="!authStore?.userData?.dni && authStore?.userData?.email !== adminEmail"
+        v-if="
+          !authStore?.userData?.dni && authStore?.userData?.email !== adminEmail
+        "
         text="Hazte anfitrión"
         buttonStyle="baseButton-primary--filled"
         class="btEditar-perfil-usuario"
@@ -80,7 +109,7 @@ onBeforeMount(async () => {
       <div class="user-profile-view__wrapper">
         <form>
           <!-- Sección nombre y apellidos -->
-          <p v-once v-t="'account_view.user_profile_view.legal_name'">Nombre legal</p>
+          <p v-once v-t="'account_view.user_profile_view.legal_name'"></p>
           <div class="user-profile-data__fullname">
             <!-- Nombre -->
             <LabelFormInput
@@ -91,7 +120,10 @@ onBeforeMount(async () => {
               :inputValue="authStore?.userData?.name"
               @handleInput="
                 (value) =>
-                  updateFieldValue(() => (authStore.userData.name = value), value)
+                  updateFieldValue(
+                    () => (authStore.userData.name = value),
+                    value
+                  )
               "
             />
 
@@ -103,12 +135,15 @@ onBeforeMount(async () => {
               :inputValue="authStore?.userData?.surname"
               @handleInput="
                 (value) =>
-                  updateFieldValue(() => (authStore.userData.surname = value), value)
+                  updateFieldValue(
+                    () => (authStore.userData.surname = value),
+                    value
+                  )
               "
             />
           </div>
 
-          <p v-once v-t="'account_view.user_profile_view.contact_data'">Datos de contacto</p>
+          <p v-once v-t="'account_view.user_profile_view.contact_data'"></p>
           <!-- Sección teléfono e email -->
           <div class="user-profile-data__contact">
             <!-- Teléfono -->
@@ -118,7 +153,8 @@ onBeforeMount(async () => {
               :isReadonly="false"
               :inputValue="authStore?.userData?.phone"
               @handleInput="
-                (value) => updateFieldValue(() => (authStore.userData.phone = value))
+                (value) =>
+                  updateFieldValue(() => (authStore.userData.phone = value))
               "
             />
 
@@ -129,12 +165,25 @@ onBeforeMount(async () => {
               :isReadonly="false"
               :inputValue="authStore?.userData?.email"
               @handleInput="
-                (value) => updateFieldValue(() => (authStore.userData.email = value))
+                (value) =>
+                  updateFieldValue(() => (authStore.userData.email = value))
               "
             />
           </div>
+          <Transition name="fade">
+            <div v-if="showSuccessMessage == true">
+              <BaseMessageItem
+                :msg="$t('components.forms.messages.user.update.success')"
+                msgType="success"
+              />
+            </div>
+          </Transition>
           <BaseButton
-            :text="`${enableEditButton == true ? $t('components.buttons.update') : $t('components.buttons.edit')}`"
+            :text="`${
+              enableEditButton == true
+                ? $t('components.buttons.update')
+                : $t('components.buttons.edit')
+            }`"
             buttonStyle="baseButton-danger--filled"
             class="btEditar-perfil-usuario"
             :isDisabled="enableEditButton == false"
@@ -147,7 +196,10 @@ onBeforeMount(async () => {
             v-if="authStore.userData?.dni || authStore?.userData?.bio"
             class="user-profile-data__host-data"
           >
-            <h2 v-once v-t="'account_view.user_profile_view.host_data.title'"></h2>
+            <h2
+              v-once
+              v-t="'account_view.user_profile_view.host_data.title'"
+            ></h2>
             <div class="user-profile-data__host-data__wrapper">
               <LabelFormInput
                 type="text"
@@ -168,12 +220,24 @@ onBeforeMount(async () => {
                 "
               />
             </div>
+            <Transition name="fade">
+              <div v-if="showSuccessHostMessage == true">
+                <BaseMessageItem
+                  :msg="$t('components.forms.messages.user.update.success')"
+                  msgType="success"
+                />
+              </div>
+            </Transition>
             <BaseButton
-              :text="`${enableEditButton == true ? $t('components.buttons.update') : $t('components.buttons.edit')}`"
+              :text="`${
+                enableEditButton == true
+                  ? $t('components.buttons.update')
+                  : $t('components.buttons.edit')
+              }`"
               buttonStyle="baseButton-danger--filled"
               class="btEditar-perfil-usuario"
               :isDisabled="enableEditHostButton == false"
-              :fullWidth="appContextStore.isMobile == true"
+              :fullWidth="appContextStore?.isMobile == true"
               @click="handleEditUserHostData"
             />
           </div>
@@ -240,6 +304,10 @@ form {
     & > main {
       & > h1 {
         text-align: center;
+      }
+
+      & > .btEditar-perfil-usuario {
+        margin-top: 20px;
       }
     }
   }

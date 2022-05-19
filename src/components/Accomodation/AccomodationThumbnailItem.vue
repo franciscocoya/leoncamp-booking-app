@@ -6,7 +6,7 @@ import { useRouter } from "vue-router";
 import { ICON_EDIT, ICON_DELETE } from "@/helpers/iconConstants";
 
 // i18n
-import { translateCategory} from '@/helpers/i18nTranslations';
+import { translateCategory } from "@/helpers/i18nTranslations";
 
 // Componentes
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
@@ -118,17 +118,25 @@ onMounted(async () => {
         >
           <!-- Categoría del alojamiento -->
           <BaseBadge
-            :text="$tc('accomodation_categories', translateCategory(accData.idAccomodationCategory.accomodationCategory))"
+            :text="
+              $t(
+                `accomodation_categories[${
+                  accData?.idAccomodationCategory?.id - 1
+                }]`
+              )
+            "
             backgroundColor="#F0F0F0"
           />
           <!-- Nombre del alojamiento -->
           <h2>
             {{
-              $tc('accomodation_categories', translateCategory(accData.idAccomodationCategory.accomodationCategory))
+              $t(
+                `accomodation_categories[${
+                  accData.idAccomodationCategory.id - 1
+                }]`
+              )
             }}
-            {{
-              $t('linkers.in')
-            }}
+            {{ $t("linkers.in") }}
             {{ accData.idAccomodationLocation.direction }}
           </h2>
         </div>
@@ -199,12 +207,11 @@ onMounted(async () => {
           <span>{{ accomodationStore.stars }}</span>
         </div>
         <div class="accomodation-price-per-night">
-          <span>{{ accData.pricePerNight }} 
-            {{
-              $t('currency.symbol')
-            }}
+          <span
+            >{{ accData.pricePerNight }}
+            {{ $t("currency.symbol") }}
           </span>
-          <span>&nbsp; / {{$t('accomodation_thumbnail.night')}}</span>
+          <span>&nbsp; / {{ $t("accomodation_thumbnail.night") }}</span>
         </div>
       </div>
     </div>

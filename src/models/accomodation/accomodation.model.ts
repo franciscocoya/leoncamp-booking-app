@@ -25,6 +25,7 @@ export interface Accomodation {
     name: string;
     surname: string;
     profileImage: string;
+    createdAt: number[];
   };
   accomodationRules: string[];
   accomodationServices: string[];

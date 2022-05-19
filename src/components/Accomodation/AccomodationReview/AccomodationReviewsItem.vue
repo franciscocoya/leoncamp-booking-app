@@ -37,13 +37,7 @@ const showAllReviews = () => {
 <template>
   <div class="accomodation-reviews-container">
     <h2 v-t="'accomodation_reviews.title'"></h2>
-    <div
-      v-if="reviews.length > 0"
-      class="accomodation-star-average-container"
-      :title="`El alojamiento tiene una valoración media de ${
-        reviews.length
-      } ${reviews.length > 1 ? ' estrellas' : 'estrella'}`"
-    >
+    <div v-if="reviews.length > 0" class="accomodation-star-average-container">
       <span v-t="'accomodation_reviews.average'"></span>
       <svg
         width="24"
@@ -66,7 +60,10 @@ const showAllReviews = () => {
       </svg>
       <span class="star-average-count">({{ reviews.length }})</span>
     </div>
-    <h3 v-if="reviews.length == 0">No hay valoraciones</h3>
+    <h3
+      v-if="reviews.length == 0"
+      v-t="'accomodation_detail_view.reviews.not_review'"
+    ></h3>
     <ul v-else>
       <li v-for="(review, index) in reviews" :key="index">
         <SingleAccomodationReviewItem :review="review" />

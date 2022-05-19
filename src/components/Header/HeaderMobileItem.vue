@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUpdated } from "vue";
+import { ref, onMounted, onUpdated, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 // Componentes
@@ -48,6 +48,10 @@ const redirectToUserBookings = () => {
   });
 };
 
+onBeforeMount(async () => {
+  await authStore.loadCurrentUserData();
+});
+
 onMounted(async () => {
   userToken.value = JSON.parse(sessionStorage.getItem("user"))?.token;
 
@@ -57,13 +61,11 @@ onMounted(async () => {
     );
 
     isLogged.value = userToken.value !== null;
-
-    await authStore.loadCurrentUserData();
   }
 });
 
 onUpdated(() => {
-  isLogged.value = userToken.value !== null;
+  isLogged.value = authStore?.userData?.id !== null && userToken.value;
 });
 </script>
 
@@ -84,7 +86,7 @@ onUpdated(() => {
         </li>
 
         <!-- Icono guardados -->
-        <li v-if="isLogged == true">
+        <li v-if="authStore?.userData?.id">
           <MenuIcon
             v-once
             :icon="ICON_BOOKMARK"
@@ -95,7 +97,7 @@ onUpdated(() => {
         </li>
 
         <!-- Icono subir alojamiento -->
-        <li v-if="isLogged == true && authStore?.userData?.dni">
+        <li v-if="authStore?.userData?.dni">
           <MenuIcon
             v-once
             :icon="ICON_ADD"
@@ -107,7 +109,7 @@ onUpdated(() => {
         </li>
 
         <!-- Icono reservas -->
-        <li v-if="isLogged == true">
+        <li v-if="authStore?.userData?.id">
           <MenuIcon
             v-once
             :icon="ICON_MENU_CALENDAR_OUTLINE"
@@ -121,34 +123,36 @@ onUpdated(() => {
         <!-- Icono cuenta personal -->
         <li>
           <AccountIcon
-            v-if="isLogged == true"
+            v-if="authStore?.userData?.id"
             :width="50"
             :height="50"
-            :username="$tc('header.menu.profile_icon', {
-              name: authStore?.userData?.name
-            })"
+            :username="
+              $tc('header.menu.profile_icon', {
+                name: authStore?.userData?.name,
+              })
+            "
             :profileImage="userData?.profileImage"
             :isOnMenuMobile="true"
             :isUploading="false"
             @showMenu="handleShowMenuMobile"
           />
         </li>
-        <li v-if="isLogged == false">
+        <li v-if="!authStore?.userData?.id">
           <!-- Botón Registro -->
           <BaseButton
             :text="$t('components.buttons.register')"
             buttonWidth="140px"
             buttonStyle="baseButton-secondary--filled"
-            @click="router.push('/signup')"
+            @click="router.push({ name: 'signup' })"
           />
         </li>
-        <li v-if="isLogged == false">
+        <li v-if="!authStore?.userData?.id">
           <!-- Botón Iniciar sesión -->
           <BaseButton
             :text="$t('components.buttons.login')"
             buttonWidth="140px"
             buttonStyle="baseButton-primary--outlined"
-            @click="router.push('/signin')"
+            @click="router.push({ name: 'signin' })"
           />
         </li>
       </ul>
@@ -168,7 +172,7 @@ onUpdated(() => {
   // top: 89vh;
   bottom: 2%;
   background: transparent;
-  transition: all .5s linear;
+  transition: all 0.5s linear;
   z-index: $z-index-header;
 
   & > .header-mobile-wrapper {

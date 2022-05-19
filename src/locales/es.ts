@@ -79,11 +79,11 @@ export const es_msgs = {
       title: 'Detalles del anfitrión',
       verified: 'Identidad verficada',
       detail: {
-        created_at: 'Desde {date}'
+        created_at: 'Desde {date}',
       },
       button_show_profile: {
         user: 'Ver perfil',
-        current: 'Ir a tu perfil'
+        current: 'Ir a tu perfil',
       },
     },
     rules: {
@@ -92,6 +92,7 @@ export const es_msgs = {
     reviews: {
       title: 'Valoraciones',
       average: 'Valoración media: ({n})',
+      not_review: 'No hay valoraciones',
     },
   },
   upload_accomodation_view: {
@@ -116,12 +117,14 @@ export const es_msgs = {
     },
     step5: {
       title: 'Imágenes',
-      subtitle: 'Sube imágenes del alojamiento, hasta un máximo de {n} imágenes.',
+      subtitle:
+        'Sube imágenes del alojamiento, hasta un máximo de {n} imágenes.',
       dragArea: {
         title: 'Selecciona un o varios archivo/s o arrástralo/s aquí',
         image_format: 'jpg, jpeg, png, gif',
         image_max_size: 'Tamaño máximo: 500Kb',
-        infoIcon: 'Haz click o selecciona las imágenes del alojamiento directamente'
+        infoIcon:
+          'Haz click o selecciona las imágenes del alojamiento directamente',
       },
     },
   },
@@ -139,12 +142,12 @@ export const es_msgs = {
     },
     services: {
       title: 'Servicios',
-      subtitle: 'El alojamiento dispone de {n} servicios.'
+      subtitle: 'El alojamiento dispone de {n} servicios.',
     },
     rules: {
       title: 'Normas',
-      subtitle: 'El alojamiento tiene {n} normas.'
-    }
+      subtitle: 'El alojamiento tiene {n} normas.',
+    },
   },
   account_view: {
     user_profile_view: {
@@ -152,8 +155,8 @@ export const es_msgs = {
       legal_name: 'Nombre legal',
       contact_data: 'Datos de contacto',
       host_data: {
-        title: 'Datos del host'
-      }
+        title: 'Datos del host',
+      },
     },
     privacy_view: {
       title: 'Seguridad y privacidad',
@@ -204,7 +207,7 @@ export const es_msgs = {
     },
     verified: {
       title: 'Identidad verificada',
-      subtitle: '{name} ha confirmado'
+      subtitle: '{name} ha confirmado',
     },
     userType: {
       base: 'Base',
@@ -219,8 +222,8 @@ export const es_msgs = {
       tabs: {
         users: 'De los huéspedes',
         host: 'Del usuario',
-      }
-    }
+      },
+    },
   },
   accomodation_reviews: {
     title: 'Valoraciones',
@@ -229,15 +232,15 @@ export const es_msgs = {
   accomodation_thumbnail: {
     title_click: 'Haz click para ver el alojamiento',
     edit_button: {
-      title: 'Haz click aquí para editar el alojamient'
+      title: 'Haz click aquí para editar el alojamient',
     },
     delete_click: {
       title: 'Haz click aquí para eliminar el alojamiento',
     },
-    night: 'noche'
+    night: 'noche',
   },
   saved_icon: {
-    title: ['Guardar alojamiento', 'Alojamiento guardado']
+    title: ['Guardar alojamiento', 'Alojamiento guardado'],
   },
   search: {
     search_results: {
@@ -254,7 +257,7 @@ export const es_msgs = {
       home: 'Inicio',
       saved: 'Guardados',
       publish: {
-        title: 'Haz click para publicar un alojamiento'
+        title: 'Haz click para publicar un alojamiento',
       },
       bookings: 'Reservas',
       profile_icon: 'Perfil de {name}',
@@ -325,36 +328,109 @@ export const es_msgs = {
         default_option: 'Selecciona una opción',
       },
       messages: {
+        name: {
+          required: 'El nombre es obligatorio',
+          invalid: 'El nombre no es válido',
+        },
+        surname: {
+          required: 'Los apellidos son obligatorios',
+          invalid: 'Los apellidos no son válidos',
+        },
         email: {
-          required: 'El email es obligatorio'
+          required: 'El email es obligatorio',
+          invalid: 'El email no es válido',
+        },
+        dni: {
+          required: 'El DNI es obligatorio',
+          min: 'El DNI debe tener 8 dígitos y una letra',
+          invalid: 'El DNI no se corresponde con un DNI español válido',
+        },
+        direction: {
+          required: 'La dirección es obligatoria',
+          invalid: 'La dirección no es válida',
         },
         password: {
-          required: 'La contraseña es obligatoria'
+          required: 'La contraseña es obligatoria',
         },
         password_confirmation: {
-          required: 'La confirmación de la contraseña es obligatoria'
+          required: 'La confirmación de la contraseña es obligatoria',
         },
         password_confirmation_not_match: 'Las contraseñas no coinciden',
-      }
+        login: {
+          invalid: 'El email o la contraseña no son válidos',
+        },
+        default: 'Alguno de los campos no es válido',
+        user_already_exists: 'Ya existe un usuario con ese email',
+        user: {
+          update: {
+            success: 'Usuario actualizado correctamente',
+            error: 'Error al actualizar el usuario',
+          },
+        },
+      },
     },
   },
   modals: {
     services: {
-      title: 'Servicios del alojamiento'
+      title: 'Servicios del alojamiento',
     },
     accomodation_images: {
       title: 'Imágenes del alojamiento',
-    }
+    },
   },
   currency: {
     symbol: '€',
   },
   bookingStatus: 'PENDIENTE | CONFIRMADA | COMPLETADA | CANCELADA',
-  accomodation_categories: ['Apartamento', 'Loft', 'Chalet', 'Ático' , 'Dúplex' , 'Adosado' , 'Estudio'],
-  accomodation_amenities: ['Wifi', 'Calefacción', 'TV', 'Ropa de cama', 'Toallas', 'Detector de humo', 'Botiquín', 'Desayuno', 'Aparcamiento gratuito', 'Aire acondicionado', 'Agua caliente', 'Secador de pelo', 'Lavadora', 'Plancha', 'Vajilla', 'Admite mascotas', 'Apto para fumadores', 'Cuna', 'Productos de limpieza', 'Microondas', 'Cafetera', 'Accesible para minusválidos', 'Congelador', 'Horno', 'Lavavajillas', 'Terraza / patio', 'Ascensor', 'Bañera de hidromasaje', 'Piscina privada', 'Piscina compartida', 'Jardín', 'Zona para trabajar / Oficina'
+  accomodation_categories: [
+    'Apartamento',
+    'Loft',
+    'Chalet',
+    'Ático',
+    'Dúplex',
+    'Adosado',
+    'Estudio',
   ],
-  accomodation_rules: ['Prohibido fumar', 'No se admiten mascotas', 'Están totalmente prohibidas las fiestas y eventos'],
+  accomodation_amenities: [
+    'Wifi',
+    'Calefacción',
+    'TV',
+    'Ropa de cama',
+    'Toallas',
+    'Detector de humo',
+    'Botiquín',
+    'Desayuno',
+    'Aparcamiento gratuito',
+    'Aire acondicionado',
+    'Agua caliente',
+    'Secador de pelo',
+    'Lavadora',
+    'Plancha',
+    'Vajilla',
+    'Admite mascotas',
+    'Apto para fumadores',
+    'Cuna',
+    'Productos de limpieza',
+    'Microondas',
+    'Cafetera',
+    'Accesible para minusválidos',
+    'Congelador',
+    'Horno',
+    'Lavavajillas',
+    'Terraza / patio',
+    'Ascensor',
+    'Bañera de hidromasaje',
+    'Piscina privada',
+    'Piscina compartida',
+    'Jardín',
+    'Zona para trabajar / Oficina',
+  ],
+  accomodation_rules: [
+    'Prohibido fumar',
+    'No se admiten mascotas',
+    'Están totalmente prohibidas las fiestas y eventos',
+  ],
   linkers: {
     in: 'en',
-  }
+  },
 };

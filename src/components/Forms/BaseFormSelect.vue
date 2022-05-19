@@ -2,7 +2,6 @@
 // i18n
 import { translateCategory } from "@/helpers/i18nTranslations";
 
-
 const props = defineProps({
   inputLabel: {
     type: String,
@@ -13,6 +12,10 @@ const props = defineProps({
     default: () => [],
   },
   selectId: {
+    type: String,
+    default: "",
+  },
+  selectedOption: {
     type: String,
     default: "",
   },
@@ -44,11 +47,14 @@ const handleBlur = () => {
       @change="(e) => updateInputValue(e.target.value)"
       @blur="handleBlur"
     >
-      <option value="-" selected>{{$t('components.forms.select.default_option')}}</option>
+      <option value="-" selected v-if="selectedOption != ''">
+        {{ $t("components.forms.select.default_option") }}
+      </option>
       <option
         v-for="opt in options"
         :key="opt.id"
-        :value="$t(`accomodation_categories[${opt.id}]`)"
+        :selected="opt.id === selectedOption"
+        :value="$t(`accomodation_categories[${opt.id - 1}]`)"
       >
         {{ $t(`accomodation_categories[${opt.id - 1}]`) }}
       </option>

@@ -51,14 +51,16 @@ window.addEventListener("resize", () => {
 let prevScrollpos = window.pageYOffset;
 
 const handleShowMenuMobile = (e) => {
-  const header = document.querySelector("#header-mobile-item");
-  let currentScrollPos = window.pageYOffset;
-  if (prevScrollpos > currentScrollPos) {
-    header.style.top = '87vh';
-  } else {
-    header.style.top = "100%";
+  if (showMenuMobile.value === true) {
+    const header = document.querySelector("#header-mobile-item");
+    let currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      header.style.top = "87vh";
+    } else {
+      header.style.top = "100%";
+    }
+    prevScrollpos = currentScrollPos;
   }
-  prevScrollpos = currentScrollPos;
 };
 
 onMounted(() => {

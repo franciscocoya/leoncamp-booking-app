@@ -38,44 +38,44 @@ onMounted(async () => {
       <ul>
         <li id="menu-mobile-username">
           {{
-            $tc('header.menu_mobile.title', {
-            name: authStore?.userData?.name
-          })
+            $tc("header.menu_mobile.title", {
+              name: authStore?.userData?.name,
+            })
           }}
         </li>
         <li
           id="user-profile"
           @click.prevent="redirectAccountChildrenView('user-profile')"
         >
-          {{$t('header.menu_mobile.profile')}}
+          {{ $t("header.menu_mobile.profile") }}
         </li>
         <li
           id="user-account-security"
           @click.prevent="redirectAccountChildrenView('user-privacy')"
         >
-         {{$t('header.menu_mobile.security')}}
+          {{ $t("header.menu_mobile.security") }}
         </li>
         <li
           id="user-account-configuration"
           @click.prevent="redirectAccountChildrenView('user-configuration')"
         >
-          {{$t('header.menu_mobile.config')}}
+          {{ $t("header.menu_mobile.config") }}
         </li>
         <li
           id="user-bookings"
           @click.prevent="redirectAccountChildrenView('user-bookings')"
         >
-          {{$t('header.menu_mobile.bookings')}}
+          {{ $t("header.menu_mobile.bookings") }}
         </li>
         <li
           v-if="authStore?.userData?.dni"
           id="user-ads"
           @click.prevent="redirectAccountChildrenView('user-ads')"
         >
-          {{$t('header.menu_mobile.ads')}}
+          {{ $t("header.menu_mobile.ads") }}
         </li>
-        <li id="user-logout" @click.prevent="userStore.logout()">
-         {{$t('components.buttons.close_session')}}
+        <li id="user-logout" @click.prevent="authStore.logout()">
+          {{ $t("components.buttons.close_session") }}
         </li>
       </ul>
     </div>

@@ -42,7 +42,7 @@ const getUserDataById = async (id: number) => {
     return null;
   }
 
-  const { data }: any = await axios
+  const res: any = await axios
     .get(`${API_USERS}/${id}`, {
       headers: {
         Authorization: `Bearer ${
@@ -53,7 +53,7 @@ const getUserDataById = async (id: number) => {
     })
     .catch((err: Error) => handleError(err));
 
-  return data;
+  return res?.data;
 };
 
 /**
@@ -213,7 +213,7 @@ export const updateUserData = async (
   name: string,
   surname: string,
   email: string,
-  phone: string,
+  phone?: string,
   dni?: string,
   bio?: string,
   callback?: CallableFunction

@@ -87,6 +87,7 @@ const handleUpdateImage = async (img) => {
           : 'null'
       "
       :style="props.isLinked ? 'cursor: pointer' : ''"
+      :class="`${isLinked == true ? '--is-linked' : ''}`"
     />
 
     <!-- Subir imagen para actualizar -->
@@ -117,7 +118,7 @@ const handleUpdateImage = async (img) => {
   position: relative;
   cursor: pointer;
 
-  &:hover > img {
+  &:hover > img[class="--is-linked"] {
     opacity: 0.7;
     background: $color-tertiary-light;
   }

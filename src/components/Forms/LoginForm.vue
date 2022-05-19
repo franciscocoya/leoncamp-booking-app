@@ -36,17 +36,17 @@ const formCheck = () => {
   let isValid = true;
   // Comprobar que los campos no estén vacíos
   if (!checkFieldNotBlank(userStore.email)) {
-    authStore.errors.push($t('form.messages.email.required'));
+    authStore.errors.push("components.forms.messages.email.required");
     isValid = false;
   }
 
   if (!checkFieldNotBlank(userStore.password)) {
-    authStore.errors.push("La contraseña es obligatoria");
+    authStore.errors.push("components.forms.messages.password.required");
     isValid = false;
   }
 
   if (!checkValidEmail(userStore.email)) {
-    authStore.errors.push("El email no es válido");
+    authStore.errors.push("components.forms.messages.email.invalid");
     isValid = false;
   }
 
@@ -59,11 +59,11 @@ const showErrors = ref(false);
  * Manejador del evento submit del formulario.
  */
 const handleLogin = async () => {
+  authStore.errors = [];
   if (formCheck()) {
     const err = await userStore.login();
-    console.log(err);
     if (err !== null) {
-      authStore.errors.push(err);
+      authStore.errors.push("components.forms.messages.login.invalid");
     }
   }
   if (authStore.errors.length > 0) {
@@ -104,7 +104,7 @@ const handleLogin = async () => {
           <BaseMessageItem
             v-for="(err, index) in authStore.errors"
             :key="index"
-            :msg="err"
+            :msg="$t(err)"
             msgType="error"
             :autoClose="true"
           />

@@ -176,55 +176,6 @@ const useUserStore = defineStore({
     },
 
     /**
-     * Actualizar los datos del usuario
-     * @returns
-     */
-    async updateUserProfile() {
-      const updatedUserData = await updateUserData(
-        this?.id,
-        this?.name,
-        this?.surname,
-        this?.email,
-        this?.phone,
-        this?.datosHost?.dni,
-        this?.datosHost?.bio,
-        (err: any) => {
-          console.log(err);
-        }
-      );
-
-      this.name = updatedUserData?.name;
-      this.surname = updatedUserData?.surname;
-      this.email = updatedUserData?.email;
-      this.phone = updatedUserData?.phone;
-
-      // Si el usuario es host, se actualizan los siguientes datos.
-      if (this.datosHost) {
-        this.datosHost.dni = updatedUserData.dni;
-        this.datosHost.bio = updatedUserData.bio;
-      }
-    },
-
-    /**
-     * Si el usuario es host, se actualizan los datos respectivos (Dni, biografía, dirección, etc).
-     */
-    async updateUserHost() {
-      await updateUserHostData(
-        this.id,
-        this?.datosHost?.dni ?? '',
-        this?.datosHost?.bio ?? '',
-        this?.datosHost?.direction,
-        this?.datosHost?.emailVerified,
-        this?.datosHost?.dniVerified,
-        this?.datosHost?.phoneVerified,
-        this?.datosHost?.verified,
-        (err: Error) => {
-          console.log(err);
-        }
-      );
-    },
-
-    /**
      * Listado de todos los alojamientos de un usuario.
      */
     async loadUserAccomodations() {

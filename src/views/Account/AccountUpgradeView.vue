@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "@vue/runtime-core";
+import { onBeforeMount, ref } from "@vue/runtime-core";
 
 import { useRouter } from "vue-router";
 
@@ -43,17 +43,15 @@ const isFormFieldsValid = () => {
 
   // Validar campos no vacíos y que no contienen caracteres especiales
   if (!checkInputStringFieldIsValid(userDni, 9, 9, true)) {
-    formErrors.value.push("El campo DNI no es válido");
+    formErrors.value.push("components.forms.messages.dni.min");
     isValid = false;
   } else if (!checkValidDNI(userDni)) {
-    formErrors.value.push(
-      "El campo DNI no se corresponde con un DNI de España"
-    );
+    formErrors.value.push("components.forms.messages.dni.invalid");
     isValid = false;
   }
 
   if (!checkInputStringFieldIsValid(userDirection, 5, 100, false)) {
-    formErrors.value.push("El campo dirección no es válido");
+    formErrors.value.push("components.forms.messages.direction.invalid");
     isValid = false;
   }
 
@@ -84,8 +82,17 @@ const handleUpgradeAccount = async () => {
     const userDni = authStore?.userData?.dni;
     const userDirection = authStore?.userData?.direction;
 
-    const data = await upgradeBaseUserToHost(userId, userDni, userDirection);
+    const data = await upgradeBaseUserToHost(
+      userId,
+      userDni,
+      userDirection,
+      (err) => {
+        console.log(err);
+      }
+    );
     if (data) {
+      console.log(data);
+      await authStore.loadCurrentUserData(data.id);
       router.push({
         name: "user-profile",
         params: {
@@ -97,6 +104,10 @@ const handleUpgradeAccount = async () => {
 
   isUpdating.value = false;
 };
+
+onBeforeMount(async () => {
+  await authStore.loadCurrentUserData();
+});
 </script>
 
 <template>
@@ -129,7 +140,7 @@ const handleUpgradeAccount = async () => {
             <BaseMessageItem
               v-for="(errorMsg, index) in formErrors"
               :key="index"
-              :msg="errorMsg"
+              :msg="$t(errorMsg)"
               msgType="error"
             />
           </div>

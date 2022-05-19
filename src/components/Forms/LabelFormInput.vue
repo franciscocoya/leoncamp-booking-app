@@ -170,7 +170,8 @@ onMounted(() => {
     top: 2px;
     left: 8px;
     font-size: 11px;
-    color: grey;
+    // color: grey;
+    color: $color-dark;
     text-transform: capitalize;
   }
 
@@ -178,6 +179,9 @@ onMounted(() => {
     width: 100%;
     font-size: 14px;
     font-weight: 500;
+    &:focus {
+      outline: 2px solid $color-dark;
+    }
 
     &::placeholder {
       color: gray;
