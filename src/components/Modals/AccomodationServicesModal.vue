@@ -2,6 +2,9 @@
 // Utils
 import { getAccomodationServiceImageById } from "@/helpers/utils";
 
+// i18n
+import { translateAmenity } from "@/helpers/i18nTranslations";
+
 // Iconos
 import { ICON_CLOSE } from "@/helpers/iconConstants";
 
@@ -21,6 +24,7 @@ const emit = defineEmits(["close-modal"]);
 const closeModal = () => {
   emit("close-modal");
 };
+
 </script>
 
 <template>
@@ -33,9 +37,9 @@ const closeModal = () => {
         @click.prevent="closeModal"
         class="close-modal-button"
       />
-      <h2>Servicios del alojamiento</h2>
+      <h2 v-t="'modals.services.title'"></h2>
       <ul>
-        <li v-for="(service, index) in props.services" :key="index">
+        <li v-for="(service) in props.services" :key="service.accomodationAccServiceId.idAccomodationService.id">
           <img
             :src="
               getAccomodationServiceImageById(
@@ -48,8 +52,7 @@ const closeModal = () => {
           />
           <span>
             {{
-              service.accomodationAccServiceId.idAccomodationService
-                .denomination
+            $t(`accomodation_amenities[${translateAmenity(service.accomodationAccServiceId.idAccomodationService.denomination)}]`)
             }}
           </span>
         </li>

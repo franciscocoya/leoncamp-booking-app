@@ -87,12 +87,12 @@ onMounted(async () => {
     <div class="booking-detail__data">
       <div class="booking-detail_data__header">
         <h1>
-          Reserva alojamiento
+          {{ $t("booking_details_view.title") }}
           <span>{{ bookingData?.idAccomodation?.registerNumber }}</span>
         </h1>
         <!-- Botón ver anuncio alojamiento -->
         <BaseButton
-          text="Ver anuncio"
+          :text="$t('booking_details_view.button_show_ad')"
           buttonStyle="baseButton-primary--filled"
           :fullWidth="appContextStore.isMobile == true"
           @click="handleRedirectToAccomodation"
@@ -108,9 +108,10 @@ onMounted(async () => {
           "
           :sliderWidth="510"
           :sliderHeight="350"
+          slideWidth="100%"
         />
         <!-- Datos usuario host -->
-        <h2>Anfitrión</h2>
+        <h2 v-once v-t="'booking_details_view.host'"></h2>
         <UserAccountSummaryDataItem
           :name="userHostData?.name"
           :surname="userHostData?.surname"
@@ -120,17 +121,17 @@ onMounted(async () => {
 
         <!-- Sección fechas reserva -->
         <section class="booking_detail_data__dates">
-          <h2>Fechas reserva</h2>
+          <h2 v-once v-t="'booking_details_view.dates'"></h2>
           <div class="booking_detail_data__dates_container">
             <LabelFormInput
               :inputValue="formatArrayAsDate(bookingData.checkIn)"
               :isReadonly="true"
-              inputLabel="Check-In"
+              :inputLabel="$t('components.forms.checkIn')"
             />
             <LabelFormInput
               :inputValue="formatArrayAsDate(bookingData.checkOut)"
               :isReadonly="true"
-              inputLabel="Check-Out"
+              :inputLabel="$t('components.forms.checkOut')"
             />
           </div>
         </section>
@@ -138,39 +139,45 @@ onMounted(async () => {
         <!-- Sección resumen de coste y desglose de la reserva -->
         <section class="booking_detail_data__price_summary">
           <div class="booking_detail_data__price_summary__price">
-            <h2>Resumen pago</h2>
+            <h2 v-once v-t="'booking_details_view.price_summary.title'"></h2>
             <ul>
               <li>
-                <span>Precio / noche</span>
+                <span v-t="'booking_details_view.price_summary.price_per_night'"
+                  ></span
+                >
                 <span>
-                  {{ bookingData?.idAccomodation?.pricePerNight }} €
+                  {{bookingData?.idAccomodation?.pricePerNight}} {{$t('currency.symbol')}}
                 </span>
               </li>
               <li>
-                <span
-                  >Coste ( {{ bookingData?.idAccomodation?.pricePerNight }} € x
+                <span>
                   {{
-                    bookingData?.checkIn &&
-                    getDateDiffOnDays(
-                      convertArrayToDate(bookingData?.checkIn),
-                      convertArrayToDate(bookingData?.checkOut)
-                    )
+                    $tc("booking_details_view.price_summary.cost", {
+                      name: bookingData?.idAccomodation?.pricePerNight,
+                      nights: `
+                      ${
+                        bookingData?.checkIn &&
+                        getDateDiffOnDays(
+                          convertArrayToDate(bookingData?.checkIn),
+                          convertArrayToDate(bookingData?.checkOut)
+                        )
+                      }`,
+                    })
                   }}
-                  noches )
                 </span>
-                <span>{{ bookingData?.amount }} €</span>
+                <span>{{ bookingData?.amount }} {{$t('currency.symbol')}}</span>
               </li>
               <li>
-                <span>Comisión servicio</span>
-                <span>{{ bookingData?.serviceFee }} €</span>
+                <span v-once v-t="'booking_details_view.price_summary.service_fee'"></span>
+                <span>{{ bookingData?.serviceFee }} {{$t('currency.symbol')}}</span>
               </li>
               <li>
-                <span>Total</span>
-                <span>{{ bookingData?.total }} €</span>
+                <span v-t="'booking_details_view.price_summary.total'"></span>
+                <span>{{ bookingData?.total }} {{$t('currency.symbol')}}</span>
               </li>
             </ul>
             <IconButton
-              text="Descargar factura"
+              :text="$t('components.buttons.download_invoice')"
               buttonStyle="iconButton-primary--outlined"
               :buttonIcon="ICON_DOWNLOAD"
               buttonWidth="250px"
@@ -184,7 +191,7 @@ onMounted(async () => {
           v-if="appContextStore.isTablet"
           class="booking_detail_data__mobileMap"
         >
-          <h2>Ubicación</h2>
+          <h2 v-once v-t="'booking_details_view.location'"></h2>
           <p>
             {{ bookingData?.idAccomodation?.idAccomodationLocation.direction }},
             {{ bookingData?.idAccomodation?.idAccomodationLocation.city }} -

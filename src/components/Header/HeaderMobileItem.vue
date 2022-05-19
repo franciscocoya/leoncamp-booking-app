@@ -78,7 +78,7 @@ onUpdated(() => {
             v-once
             :icon="ICON_MENU_HOME"
             :iconSize="40"
-            title="Inicio"
+            :title="$t('header.menu.home')"
             path="/"
           />
         </li>
@@ -89,7 +89,7 @@ onUpdated(() => {
             v-once
             :icon="ICON_BOOKMARK"
             :iconSize="26"
-            title="Guardados"
+            :title="$t('header.menu.saved')"
             path="/saved"
           />
         </li>
@@ -101,6 +101,7 @@ onUpdated(() => {
             :icon="ICON_ADD"
             :path="`/account/${authStore?.userData?.name}-${authStore?.userData?.surname}${UPLOAD_ACCOMODATION_ROUTE}`"
             :iconSize="50"
+            :title="$t('header.menu.publish.title')"
             id="add-accomodation-menu-mobile"
           />
         </li>
@@ -111,7 +112,7 @@ onUpdated(() => {
             v-once
             :icon="ICON_MENU_CALENDAR_OUTLINE"
             :iconSize="40"
-            title="Reservas"
+            :title="$t('header.menu.bookings')"
             path="/bookings"
             @click="redirectToUserBookings"
           />
@@ -123,7 +124,9 @@ onUpdated(() => {
             v-if="isLogged == true"
             :width="50"
             :height="50"
-            username="Cuenta"
+            :username="$tc('header.menu.profile_icon', {
+              name: authStore?.userData?.name
+            })"
             :profileImage="userData?.profileImage"
             :isOnMenuMobile="true"
             :isUploading="false"
@@ -133,7 +136,7 @@ onUpdated(() => {
         <li v-if="isLogged == false">
           <!-- Botón Registro -->
           <BaseButton
-            text="Crear cuenta"
+            :text="$t('components.buttons.register')"
             buttonWidth="140px"
             buttonStyle="baseButton-secondary--filled"
             @click="router.push('/signup')"
@@ -142,7 +145,7 @@ onUpdated(() => {
         <li v-if="isLogged == false">
           <!-- Botón Iniciar sesión -->
           <BaseButton
-            text="Iniciar sesión"
+            :text="$t('components.buttons.login')"
             buttonWidth="140px"
             buttonStyle="baseButton-primary--outlined"
             @click="router.push('/signin')"
@@ -159,15 +162,17 @@ onUpdated(() => {
 
 .header-mobile {
   position: fixed;
-  height: 100%;
+  // height: 100vh;
   width: 100%;
   margin: 0 auto;
-  top: 87%;
+  // top: 89vh;
+  bottom: 2%;
   background: transparent;
+  transition: all .5s linear;
   z-index: $z-index-header;
 
   & > .header-mobile-wrapper {
-    height: 80px;
+    height: 100px;
     background-color: #fff;
     box-shadow: $global-box-shadow;
     border-radius: $global-border-radius;

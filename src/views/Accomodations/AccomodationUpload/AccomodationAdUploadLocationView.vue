@@ -150,13 +150,13 @@ onBeforeRouteLeave((from, to) => {
 
 <template>
   <div class="accomodation-upload-location-view">
-    <h2 v-once>Ubicación</h2>
+    <h2 v-once v-t="'upload_accomodation_view.step2.title'"></h2>
 
     <div class="accomodation-upload-location__wrapper">
       <div class="accomodation-upload-location__form">
         <div class="accomodation-upload-location-form__coords">
           <LabelFormInput
-            inputLabel="Latitud"
+            :inputLabel="$t('components.forms.lat')"
             inputType="text"
             :isReadonly="true"
             :inputValue="accomodationStore.accomodationLocation.coords.lat"
@@ -166,7 +166,7 @@ onBeforeRouteLeave((from, to) => {
             "
           />
           <LabelFormInput
-            inputLabel="Longitud"
+             :inputLabel="$t('components.forms.lng')"
             inputType="text"
             :isReadonly="true"
             :inputValue="accomodationStore.accomodationLocation.coords.lng"
@@ -178,7 +178,7 @@ onBeforeRouteLeave((from, to) => {
         </div>
         <div class="accomodation-upload-location-form__direction">
           <LabelFormInput
-            inputLabel="Dirección"
+             :inputLabel="$t('components.forms.direction')"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.direction"
             @handleInput="
@@ -190,7 +190,7 @@ onBeforeRouteLeave((from, to) => {
         </div>
         <div class="accomodation-upload-location-form__direction-city">
           <LabelFormInput
-            inputLabel="Ciudad"
+             :inputLabel="$t('components.forms.city')"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.city"
             @handleInput="
@@ -199,7 +199,7 @@ onBeforeRouteLeave((from, to) => {
             @handleBlur="checkAccomodationCity"
           />
           <LabelFormInput
-            inputLabel="Código Postal"
+             :inputLabel="$t('components.forms.zip')"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.zip"
             @handleInput="
@@ -208,7 +208,7 @@ onBeforeRouteLeave((from, to) => {
             @handleBlur="checkAccomodationZipCode"
           />
         </div>
-        <p>
+        <p v-once v-t="'upload_accomodation_view.step2.help'">
           * Puedes arrastrar el marcador del mapa para obtener rellenar los
           campos automáticamente.
         </p>

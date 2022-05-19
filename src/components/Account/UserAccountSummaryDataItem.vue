@@ -37,7 +37,7 @@ const props = defineProps({
       <p>
         <b>{{ props.name }} {{ props.surname }}</b>
       </p>
-      <p>{{ formatArrayAsSimpleStringDate(props.createdAt) }}</p>
+      <p>{{ formatArrayAsSimpleStringDate(props.createdAt, $i18n.locale) }}</p>
     </div>
   </div>
 </template>

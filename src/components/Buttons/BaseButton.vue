@@ -43,6 +43,7 @@ function handleClick() {
       :id="buttonId && buttonId"
       :disabled="isDisabled"
       :title="title"
+      type="button"
     >
       {{ text }}
     </button>

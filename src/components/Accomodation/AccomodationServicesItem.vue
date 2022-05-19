@@ -4,6 +4,9 @@ import { getAccomodationServiceImageById } from "@/helpers/utils";
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
+// i18n
+import { translateAmenity } from "@/helpers/i18nTranslations";
+
 const props = defineProps({
   services: {
     type: Array,
@@ -15,22 +18,21 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['show-modal']);
+const emit = defineEmits(["show-modal"]);
 
 const handleShowServiceModal = (event) => {
-  emit('show-modal', event);
+  emit("show-modal", event);
 };
-
 </script>
 
 <template>
   <div class="accomodation-services-container">
     <ul class="accomodation-services__list">
       <li
-        v-for="(service, index) in props.services.length > 8
+        v-for="service in props.services.length > 8
           ? props.services.slice(0, 8)
           : props.services"
-        :key="index"
+        :key="`service_${service.accomodationAccServiceId.idAccomodationService.id}`"
       >
         <img
           :src="
@@ -44,14 +46,14 @@ const handleShowServiceModal = (event) => {
         />
         <span>
           {{
-            service.accomodationAccServiceId.idAccomodationService.denomination
+            $t(`accomodation_amenities[${translateAmenity(service.accomodationAccServiceId.idAccomodationService.denomination)}]`)
           }}
         </span>
       </li>
     </ul>
     <BaseButton
       v-if="props.services.length > 8"
-      :text="`Mostrar los ${props.services.length} servicios`"
+      :text="$tc('accomodation_detail_view.amenities.button_show_more', {n: props.services.length})"
       buttonStyle="baseButton-dark--outlined"
       buttonWidth="250px"
       @click="handleShowServiceModal"
@@ -79,7 +81,7 @@ const handleShowServiceModal = (event) => {
     }
   }
 
-  #bt-show-all-services{
+  #bt-show-all-services {
     align-self: flex-start;
   }
 }

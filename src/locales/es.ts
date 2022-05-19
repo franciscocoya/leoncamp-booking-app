@@ -9,6 +9,9 @@ export const es_msgs = {
     button_register: 'Crear cuenta',
     login_redirect: '¿Ya tienes cuenta?',
   },
+  reset_password: {
+    title: 'Establecer contraseña',
+  },
   home: {},
   administrator: {
     title: 'Panel administración',
@@ -41,6 +44,7 @@ export const es_msgs = {
   },
   booking_details_view: {
     title: 'Reserva alojamiento {name}',
+    button_show_ad: 'Show accomodation',
     host: 'Anfitrión',
     dates: 'Fechas reserva',
     price_summary: {
@@ -49,27 +53,38 @@ export const es_msgs = {
       cost: 'Coste ({name} x {nights} noches)',
       service_fee: 'Comisión servicio',
       total: 'Total',
-      location: 'Ubicación',
     },
+    location: 'Ubicación',
   },
   accomodation_detail_view: {
     title: 'Detalles del alojamiento',
     imageGallery: {
+      no_images: 'No hay images',
       button: 'Ver todas',
     },
-    show_more: 'Mostrar más',
+    show_more: {
+      title: 'Mostrar más',
+      alt: 'Mostrar toda la descripción',
+    },
     button_book: 'Reservar',
     night: 'noche | noches',
-    services: {
-      title: 'Servicios que ofrece',
-      button_show_more: 'Mostrar los {n} servicios',
+    amenities: {
+      title: 'Amenities',
+      button_show_more: 'Show the {n} amenities',
     },
     location: {
-      title: 'Dónde se encuentra',
+      title: 'Dónde te alojarás',
     },
     host: {
       title: 'Detalles del anfitrión',
-      button_show_profile: 'Ver perfil',
+      verified: 'Identidad verficada',
+      detail: {
+        created_at: 'Desde {date}'
+      },
+      button_show_profile: {
+        user: 'Ver perfil',
+        current: 'Ir a tu perfil'
+      },
     },
     rules: {
       title: 'Normas del alojamiento',
@@ -81,6 +96,7 @@ export const es_msgs = {
   },
   upload_accomodation_view: {
     title: 'Publicar un alojamiento',
+    step_display: 'Paso {n1} de {n2}',
     step1: {
       title: 'Datos básicos',
     },
@@ -100,23 +116,45 @@ export const es_msgs = {
     },
     step5: {
       title: 'Imágenes',
-      subtitle: 'Sube imágenes del alojamiento, hasta un máximo de 8 imágenes.',
+      subtitle: 'Sube imágenes del alojamiento, hasta un máximo de {n} imágenes.',
       dragArea: {
         title: 'Selecciona un o varios archivo/s o arrástralo/s aquí',
         image_format: 'jpg, jpeg, png, gif',
         image_max_size: 'Tamaño máximo: 500Kb',
+        infoIcon: 'Haz click o selecciona las imágenes del alojamiento directamente'
       },
     },
+  },
+  edit_accommodation_view: {
+    title: 'Editar el alojamiento {name}',
+    images: {
+      title: 'Imágenes',
+      count: '{n} imágenes',
+    },
+    features: {
+      title: 'Características',
+    },
+    category: {
+      title: 'Categoría',
+    },
+    services: {
+      title: 'Servicios',
+      subtitle: 'El alojamiento dispone de {n} servicios.'
+    },
+    rules: {
+      title: 'Normas',
+      subtitle: 'El alojamiento tiene {n} normas.'
+    }
   },
   account_view: {
     user_profile_view: {
       title: 'Información personal',
       legal_name: 'Nombre legal',
+      contact_data: 'Datos de contacto',
+      host_data: {
+        title: 'Datos del host'
+      }
     },
-    user_bookings_view: {
-      status: 'PENDIENTE | CONFIRMADA | COMPLETADA | CANCELADA',
-    },
-
     privacy_view: {
       title: 'Seguridad y privacidad',
       reset_pass: {
@@ -125,7 +163,6 @@ export const es_msgs = {
         button: 'Restablecer',
       },
     },
-
     preferences: {
       title: 'Configuración y preferencias',
       currency: 'Moneda',
@@ -135,7 +172,9 @@ export const es_msgs = {
         english: 'Inglés (Reino Unido)',
       },
     },
-
+    account_ads: {
+      title: 'Mis alojamientos',
+    },
     help_view: {
       title: 'Ayuda',
       faq: {
@@ -144,28 +183,89 @@ export const es_msgs = {
           'Cómo publicar anuncios, pasos a seguir para reservar un alojamiento y más.',
       },
     },
-
     sidebar: {
       profile: 'Perfil',
       privacy: 'Seguridad y privacidad',
       config: 'Configuración y preferencias',
       bookings: 'Reservas',
+      ads: 'Anuncios',
+      upgrade_plan: 'Actualizar plan',
       help: 'Ayuda',
     },
   },
+  user_public_profile: {
+    title: 'Hola: Soy {name}',
+    about: {
+      title: 'Acerca de',
+      lang: {
+        title: 'Habla',
+        languages: ['Español', 'Inglés', '-'],
+      },
+    },
+    verified: {
+      title: 'Identidad verificada',
+      subtitle: '{name} ha confirmado'
+    },
+    userType: {
+      base: 'Base',
+      host: 'Anfitrión',
+    },
+    ads: {
+      title: 'Alojamientos publicados',
+      no_ads: 'No hay alojamientos publicados',
+    },
+    reviews: {
+      title: 'Valoraciones',
+      tabs: {
+        users: 'De los huéspedes',
+        host: 'Del usuario',
+      }
+    }
+  },
+  accomodation_reviews: {
+    title: 'Valoraciones',
+    average: 'Valoración media:',
+  },
+  accomodation_thumbnail: {
+    title_click: 'Haz click para ver el alojamiento',
+    edit_button: {
+      title: 'Haz click aquí para editar el alojamient'
+    },
+    delete_click: {
+      title: 'Haz click aquí para eliminar el alojamiento',
+    },
+    night: 'noche'
+  },
+  saved_icon: {
+    title: ['Guardar alojamiento', 'Alojamiento guardado']
+  },
   search: {
-    default_placeholder: 'León',
     search_results: {
       not_results: 'No se han encontrado resultados',
     },
+  },
+  baseCarousel: {
+    no_images: 'No hay imágenes',
   },
   header: {
     logo_alt: 'Leon Camp',
     search_placeholder: 'León',
     menu: {
+      home: 'Inicio',
       saved: 'Guardados',
+      publish: {
+        title: 'Haz click para publicar un alojamiento'
+      },
       bookings: 'Reservas',
       profile_icon: 'Perfil de {name}',
+    },
+    menu_mobile: {
+      title: 'Hola, {name}',
+      profile: 'Cuenta',
+      security: 'Seguridad y privacidad',
+      config: 'Configuración y preferencias',
+      bookings: 'Reservas',
+      ads: 'Anuncios',
     },
   },
   footer: {
@@ -175,22 +275,33 @@ export const es_msgs = {
     buttons: {
       view: 'Ver',
       edit: 'Editar',
-      update: 'Actualizar',
+      update: 'Actualizar | Actualizando...',
       delete: 'Eliminar',
       info: 'Más información',
+      register: 'Crear cuenta',
+      upload: 'Publicar',
+      add: 'Añadir',
       login: 'Iniciar sesión',
       close_session: 'Cerrar sesión',
       back: 'Volver | Anteriors',
       next: 'Siguiente',
       finish: 'Finalizar',
       view_ad: 'Ver anuncio',
+      reset: 'Restablecer',
       download_invoice: 'Descargar factura',
+      upload_image: 'Subir imagen',
     },
     forms: {
       name: 'Nombre',
       surname: 'Apellidos',
       email: 'Correo electrónico',
+      dni: 'DNI',
+      bio: 'Biografía',
+      phone: 'Número de teléfono',
       password: 'Contraseña',
+      current_password: 'Contraseña actual',
+      new_password: 'Nueva contraseña',
+      confirm_new_password: 'Confirmar contraseña',
       password_confirmation: 'Confirmar contraseña',
       checkIn: 'Llegada',
       checkOut: 'Salida',
@@ -204,15 +315,46 @@ export const es_msgs = {
       bathroom: 'baño | baños',
       bedroom: 'habitación | habitaciones',
       guests: 'huésped | huéspedes',
-      price: 'precio',
+      price: 'precio | precio / noche',
       lat: 'latitud',
       lng: 'longitud',
       address: 'dirección',
       city: 'ciudad',
       zip: 'código postal',
+      select: {
+        default_option: 'Selecciona una opción',
+      },
+      messages: {
+        email: {
+          required: 'El email es obligatorio'
+        },
+        password: {
+          required: 'La contraseña es obligatoria'
+        },
+        password_confirmation: {
+          required: 'La confirmación de la contraseña es obligatoria'
+        },
+        password_confirmation_not_match: 'Las contraseñas no coinciden',
+      }
     },
+  },
+  modals: {
+    services: {
+      title: 'Servicios del alojamiento'
+    },
+    accomodation_images: {
+      title: 'Imágenes del alojamiento',
+    }
   },
   currency: {
     symbol: '€',
   },
+  bookingStatus: 'PENDIENTE | CONFIRMADA | COMPLETADA | CANCELADA',
+  accomodation_categories: ['Apartamento', 'Loft', 'Chalet', 'Ático' , 'Dúplex' , 'Adosado' , 'Estudio'],
+  accomodation_amenities: ['Wifi', 'Calefacción', 'TV', 'Ropa de cama', 'Toallas', 'Detector de humo', 'Botiquín', 'Desayuno', 'Aparcamiento gratuito', 'Aire acondicionado', 'Agua caliente', 'Secador de pelo', 'Lavadora', 'Plancha', 'Vajilla', 'Admite mascotas', 'Apto para fumadores', 'Cuna', 'Productos de limpieza', 'Microondas', 'Cafetera', 'Accesible para minusválidos', 'Congelador', 'Horno', 'Lavavajillas', 'Terraza / patio', 'Ascensor', 'Bañera de hidromasaje', 'Piscina privada', 'Piscina compartida', 'Jardín', 'Zona para trabajar / Oficina'
+  ],
+  accomodation_rules: ['Prohibido fumar', 'No se admiten mascotas', 'Están totalmente prohibidas las fiestas y eventos'],
+  linkers: {
+    in: 'en',
+  }
 };

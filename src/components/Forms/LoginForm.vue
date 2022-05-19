@@ -36,7 +36,7 @@ const formCheck = () => {
   let isValid = true;
   // Comprobar que los campos no estén vacíos
   if (!checkFieldNotBlank(userStore.email)) {
-    authStore.errors.push("El email es obligatorio");
+    authStore.errors.push($t('form.messages.email.required'));
     isValid = false;
   }
 

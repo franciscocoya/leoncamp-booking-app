@@ -13,13 +13,13 @@ const authStore = useAuthStore();
 
 <template>
   <div class="account-security-privacy-view">
-    <h1>Seguridad y privacidad</h1>
+    <h1 v-once v-t="'account_view.privacy_view.title'"></h1>
     <div class="account-security-privacy__wrapper">
       <article class="account-security-privacy__resetPassword">
-        <h2>Inicio de sesión y seguridad</h2>
-        <p>Restablecer contraseña</p>
+        <h2 v-once v-t="'account_view.privacy_view.reset_pass.title'">Inicio de sesión y seguridad</h2>
+        <p v-once v-t="'account_view.privacy_view.reset_pass.subtitle'">Restablecer contraseña</p>
         <BaseButton
-          text="Restablecer"
+          :text="$t('components.buttons.reset')"
           buttonStyle="baseButton-dark--outlined"
           @click="
             router.push({

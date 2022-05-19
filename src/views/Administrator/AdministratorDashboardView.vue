@@ -43,7 +43,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="administrator-dashboard-view">
-    <h1 v-t="'administrator.title'"></h1>
+    <h1 v-t="'administrator.title'" role="banner"></h1>
     <div class="administrator-dashboard__wrapper">
       <AdministratorSidebar @showPanel="(opt) => handleShowPanelOption(opt)" />
       <AccomodationList

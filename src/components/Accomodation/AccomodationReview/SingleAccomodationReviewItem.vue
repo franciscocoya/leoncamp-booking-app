@@ -43,7 +43,7 @@ defineProps({
           <p>
             <b>{{ review.idUser.name }} {{ review.idUser.surname }}</b>
           </p>
-          <p>{{ formatArrayAsSimpleStringDate(review.createdAt) }}</p>
+          <p>{{ formatArrayAsSimpleStringDate(review.createdAt, $i18n.locale) }}</p>
         </div>
       </div>
       <div class="accomodation_review__content">

@@ -97,10 +97,10 @@ onMounted(async () => {
 
 <template>
   <div class="account-configuration-view">
-    <h1>Configuración y preferencias</h1>
+    <h1 v-once v-t="'account_view.preferences.title'"></h1>
     <div class="account-configuration-view__wrapper">
       <section class="account-configuration__currency">
-        <h2>Moneda</h2>
+        <h2 v-once v-t="'account_view.preferences.currency'"></h2>
         <select
           name="currency-selector"
           @change="(e) => handleCurrencySelection(e)"
@@ -123,7 +123,7 @@ onMounted(async () => {
       </section>
 
       <section class="account-configuration__language">
-        <h2>Idioma</h2>
+        <h2 v-once v-t="'account_view.preferences.lang.title'"></h2>
         <fieldset>
           <div>
             <input
@@ -138,7 +138,7 @@ onMounted(async () => {
               }`"
               @change="(e) => handleLanguageSelection(e)"
             />
-            <label for="select-language-esES">Español (España)</label>
+            <label for="select-language-esES" v-t="'account_view.preferences.lang.spanish'"></label>
           </div>
           <div>
             <input
@@ -153,7 +153,7 @@ onMounted(async () => {
               }`"
               @change="(e) => handleLanguageSelection(e)"
             />
-            <label for="select-language-enEN">Inglés (Reino Unido)</label>
+            <label for="select-language-enEN" v-t="'account_view.preferences.lang.english'"></label>
           </div>
         </fieldset>
       </section>
@@ -161,9 +161,9 @@ onMounted(async () => {
         :text="`${
           hasUserPreviuousConfig == true
             ? isExecution == true
-              ? 'Actualizando...'
-              : 'Actualizar'
-            : 'Establecer'
+              ? $tc('components.buttons.update', 2)
+              : $tc('components.buttons.update', 1)
+            : $t('components.buttons.add')
         }`"
         buttonStyle="baseButton-secondary--filled"
         :fullWidth="appContextStore.isMobile == true"

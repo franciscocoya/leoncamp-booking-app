@@ -1,13 +1,16 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import{ onBeforeRouteLeave} from 'vue-router';
 
 // Componentes
 import TextEditChip from "@/components/Chips/TextEditChip.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useFormErrorsStore } from "@/store/formErrors";
 
 const accomodationStore = useAccomodationStore();
+const formErrorsStore = useFormErrorsStore();
 
 const allAvailableRules = ref([]);
 
@@ -27,19 +30,29 @@ const handleRuleChipChange = (e, ruleToAdd) => {
 
 onMounted(async () => {
   allAvailableRules.value = await accomodationStore.getAllRules();
+  formErrorsStore.enableNextButton = true;
+});
+
+onBeforeRouteLeave((from, to) => {
+  if (
+    formErrorsStore.enableNextButton == false &&
+    !headerRoutes.includes(to.name)
+  ) {
+    return false;
+  }
 });
 </script>
 
 <template>
   <div class="accomodation-ad-upload-rules-view">
-    <h2 v-once>Normas</h2>
-    <p>Marca la casilla de las normas del alojamiento.</p>
+    <h2 v-once v-t="'upload_accomodation_view.step4.title'"></h2>
+    <p v-once v-t="'upload_accomodation_view.step4.subtitle'"></p>
     <div class="accomodation-ad-upload-rules__wrapper">
       <TextEditChip
         v-for="rule in allAvailableRules"
         :key="`rule-${rule.id}`"
         :chipTitle="`Haz click para eliminar la norma ${rule.rule}`"
-        :chipText="rule.rule"
+        :chipText="$tc(`accomodation_rules[${rule.id - 1}]`)"
         :isServiceEnabled="
           accomodationStore.accomodationRules.some(
             (r) => r.idAccomodationRule.id === rule.id

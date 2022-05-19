@@ -7,6 +7,9 @@ import TextEditChip from "@/components/Chips/TextEditChip.vue";
 import BaseFormInput from "@/components/Forms/BaseFormInput.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
+// i18n
+import { translateAmenity } from "@/helpers/i18nTranslations";
+
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useFormErrorsStore } from "@/store/formErrors";
@@ -75,8 +78,8 @@ onBeforeRouteLeave((from, to) => {
 
 <template>
   <div class="accomodation-ad-upload-services-view">
-    <h2 v-once>Servicios</h2>
-    <p>Marca la casilla de los servicios de los que dispone el alojamiento.</p>
+    <h2 v-once v-t="'upload_accomodation_view.step3.title'"></h2>
+    <p v-once v-t="'upload_accomodation_view.step3.subtitle'"></p>
     <BaseFormInput
       placeholder="Introduce el servicio a buscar"
       @handleInput="(value) => applyFilters(value)"
@@ -86,7 +89,7 @@ onBeforeRouteLeave((from, to) => {
         v-for="service in allAvaibleServices"
         :key="`service-${service.id}`"
         :chipTitle="`Haz click para eliminar el servicio ${service.denomination}`"
-        :chipText="service.denomination"
+        :chipText=" $t(`accomodation_amenities[${translateAmenity(service.denomination)}]`)"
         :serviceData="service"
         :showIcon="true"
         :isServiceEnabled="

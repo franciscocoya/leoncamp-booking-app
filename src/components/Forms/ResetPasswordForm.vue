@@ -72,7 +72,7 @@ onMounted(() => {
       <div class="form-group__current-password">
         <LabelFormInput
           inputType="password"
-          inputLabel="Contraseña actual"
+          :inputLabel="$t('components.forms.current_password')"
           inputStyleClass="base-input"
           @handleInput="
             (value) =>
@@ -85,7 +85,7 @@ onMounted(() => {
       <div class="form-group__new-password">
         <LabelFormInput
           inputType="password"
-          inputLabel="Nueva contraseña"
+          :inputLabel="$t('components.forms.new_password')"
           inputStyleClass="base-input"
           @handleInput="
             (value) =>
@@ -98,7 +98,7 @@ onMounted(() => {
       <div class="form-group__new-password-repeated">
         <LabelFormInput
           inputType="password"
-          inputLabel="Repetir nueva contraseña"
+          :inputLabel="$t('components.forms.confirm_new_password')"
           inputStyleClass="base-input"
           @handleInput="
             (value) =>
@@ -109,7 +109,7 @@ onMounted(() => {
         />
       </div>
       <BaseButton
-        text="Restablecer"
+        :text="$t('components.buttons.reset')"
         buttonStyle="baseButton-primary--filled"
         :fullWidth="appContextStore.isMobile == true"
         :isDisabled="isResetButtonEnabled == false"

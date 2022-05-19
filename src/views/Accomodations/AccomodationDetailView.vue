@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from "@vue/runtime-core";
+import { onBeforeMount, onMounted, onUpdated, ref } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
 
 // Componentes
@@ -14,6 +14,9 @@ import {
   cropTextByWordCount,
   formatArrayAsSimpleStringDate,
 } from "@/helpers/utils";
+
+// i18n
+import { translateCategory } from "@/helpers/i18nTranslations";
 
 // Iconos
 import { ICON_MAP_MARKER, ICON_VERIFIED_USER } from "@/helpers/iconConstants";
@@ -71,11 +74,10 @@ const handleRedirectToBooking = () => {
   });
 };
 
-onBeforeMount(() => {
-  isLoading.value = true;
-});
+const category = ref(0);
+const services = ref([]);
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const currentAccRegisterNumber =
     router.currentRoute.value.params.registerNumber;
 
@@ -84,6 +86,12 @@ onMounted(async () => {
   );
 
   isLoading.value = false;
+});
+
+onUpdated(() => {
+  category.value = translateCategory(
+    accomodationStore.category.accomodationCategory
+  );
 });
 </script>
 
@@ -117,7 +125,8 @@ onMounted(async () => {
         <!-- Seccion título y galería de imágenes -->
         <section class="accomodation-detail__header">
           <h1>
-            {{ accomodationStore.category.accomodationCategory }} en
+            {{ $t(`accomodation_categories[${category}]`) }}
+            {{ $t("linkers.in") }}
             {{ accomodationStore.accomodationLocation.city }}
           </h1>
 
@@ -136,7 +145,7 @@ onMounted(async () => {
         <section class="accomodation-detail__description">
           <div class="accomodation-detail_description__details">
             <BaseBadge
-              :text="accomodationStore.category.accomodationCategory"
+              :text="$t(`accomodation_categories[${category}]`)"
               backgroundColor="rgb(221, 221, 221)"
               color="#222222"
               badgeWidth="200px"
@@ -144,21 +153,39 @@ onMounted(async () => {
             />
             <p>
               {{ accomodationStore.numOfBeds }}
-              {{ accomodationStore.numOfBeds > 1 ? "camas" : "cama" }} ·
+              {{
+                $tc(
+                  "components.forms.beds",
+                  accomodationStore.numOfBeds > 1 ? 2 : 1
+                )
+              }}
+              ·
 
               {{ accomodationStore.numOfBathRooms }}
-              {{ accomodationStore.numOfBathRooms > 1 ? "baños" : "baño" }} ·
+              {{
+                $tc(
+                  "components.forms.bathroom",
+                  accomodationStore.numOfBathRooms > 1 ? 2 : 1
+                )
+              }}
+              ·
 
               {{ accomodationStore.numOfBedRooms }}
               {{
-                accomodationStore.numOfBedRooms > 1
-                  ? "dormitorios"
-                  : "dormitorio"
+                $tc(
+                  "components.forms.bedroom",
+                  accomodationStore.numOfBedRooms > 1 ? 2 : 1
+                )
               }}
               ·
               <b>
                 {{ accomodationStore.numOfGuests }}
-                {{ accomodationStore.numOfGuests > 1 ? "viajeros" : "viajero" }}
+                {{
+                  $tc(
+                    "components.forms.guests",
+                    accomodationStore.numOfGuests > 1 ? 2 : 1
+                  )
+                }}
               </b>
             </p>
             <p class="accomodation-description-text">
@@ -178,19 +205,23 @@ onMounted(async () => {
                   showAllDescription == false
                 "
                 class="link-show-more"
-                title="Mostrar toda la descripción"
+                :title="$t('accomodation_detail_view.show_more.title')"
                 @click.prevent="showAllDescription = true"
-                >Mostrar más</span
-              >
+                v-t="'accomodation_detail_view.show_more.title'"
+              ></span>
             </p>
           </div>
 
           <!-- Botón reservar alojamiento -->
           <div class="accomodation-detail_description__booking-price-container">
-            <span>{{ accomodationStore.pricePerNight }} € / noche</span>
+            <span>
+              {{ accomodationStore.pricePerNight }}
+              {{ $t("currency.symbol") }} /
+              {{ $tc("accomodation_detail_view.night", 1) }}</span
+            >
             <BaseButton
               v-if="accomodationStore.userHost.id !== currentUser.id"
-              text="Reservar"
+              :text="$t('accomodation_detail_view.button_book')"
               buttonStyle="baseButton-primary-gradient--filled"
               @click="handleRedirectToBooking"
             />
@@ -199,16 +230,16 @@ onMounted(async () => {
 
         <!-- Seccion servicios -->
         <section class="accomodation-detail__services">
-          <h2 v-once>Servicios que ofrece</h2>
+          <h2 v-once v-t="'accomodation_detail_view.amenities.title'"></h2>
           <AccomodationServicesItem
-            :services="accomodationStore.accomodationServices"
+            :services="accomodationStore?.accomodationServices"
             @show-modal="showServiceModal = true"
           />
         </section>
 
         <!-- Sección mapa ubicación alojamiento -->
         <section class="accomodation-detail__location">
-          <h2>Dónde se encuentra</h2>
+          <h2 v-t="'accomodation_detail_view.location.title'"></h2>
           <div class="accomodation-detail_location__direction">
             <img :src="ICON_MAP_MARKER" alt="" />
             <p>
@@ -226,7 +257,8 @@ onMounted(async () => {
 
         <!-- Sección detalles anfitrión -->
         <section class="accomodation-host">
-          <h2 v-once>Detalles del anfitrión</h2>
+          <h2 v-once v-t="'accomodation_detail_view.host.title'">
+          </h2>
           <div class="accomodation-host-summary">
             <div class="accomodation-host__info">
               <div class="accomodation-host_info__details">
@@ -241,12 +273,14 @@ onMounted(async () => {
                     {{ accomodationStore.userHost.name }}
                     {{ accomodationStore.userHost.surname }}
                   </p>
-                  <span
-                    >Usuario desde
+                  <span>
                     {{
-                      formatArrayAsSimpleStringDate(
-                        accomodationStore.userHost.createdAt
-                      )
+                      $tc("accomodation_detail_view.host.detail.created_at", {
+                        date: formatArrayAsSimpleStringDate(
+                          accomodationStore.userHost.createdAt,
+                          $i18n.locale
+                        ),
+                      })
                     }}</span
                   >
                 </div>
@@ -256,15 +290,17 @@ onMounted(async () => {
                 class="accomodation-host_info__verified"
               >
                 <img :src="ICON_VERIFIED_USER" alt="" />
-                <p>Identidad verificada</p>
+                <p v-t="'accomodation_detail_view.host.verified'"></p>
               </div>
             </div>
             <BaseButton
               v-once
               :text="`${
                 accomodationStore.userHost.id === currentUser.id
-                  ? 'Ir a tu perfil'
-                  : 'Ver perfil'
+                  ? $t('accomodation_detail_view.host.button_show_profile.user')
+                  : $t(
+                      'accomodation_detail_view.host.button_show_profile.current'
+                    )
               }`"
               buttonStyle="baseButton-primary--outlined"
               @click="handleUserProfileButtonClick"
@@ -274,14 +310,16 @@ onMounted(async () => {
 
         <!-- Sección normas del alojamiento -->
         <section class="accomodation-detail__rules">
-          <h2>Normas del alojamiento</h2>
+          <h2 v-t="'accomodation_detail_view.rules.title'"></h2>
           <div class="accomodation-detail_rules__details">
             <ul>
               <li
                 v-for="(rule, index) in accomodationStore.accomodationRules"
                 :key="index"
               >
-                {{ rule.accomodationAccRuleId.idAccomodationRule.rule }}
+              {{
+                $t(`accomodation_rules[${rule.accomodationAccRuleId.idAccomodationRule.id - 1}]`)
+              }}
               </li>
             </ul>
           </div>

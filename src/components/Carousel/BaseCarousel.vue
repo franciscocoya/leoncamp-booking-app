@@ -31,7 +31,7 @@ defineProps({
   },
   slideWidth: {
     type: String,
-    default: "300px",
+    default: "100%",
   },
 });
 </script>
@@ -63,7 +63,9 @@ defineProps({
         <img :src="img" alt="" />
       </swiper-slide>
     </swiper>
-    <div v-else class="carousel-no-images">No hay imágenes</div>
+    <div v-else class="carousel-no-images">
+      {{$t('baseCarousel.no_images')}}
+    </div>
   </div>
 </template>
 

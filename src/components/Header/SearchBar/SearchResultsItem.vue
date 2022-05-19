@@ -70,7 +70,7 @@ onMounted(() => {
           <p>{{ result }}</p>
         </li>
       </ul>
-      <h2 v-else>No hay resultados</h2>
+      <h2 v-else v-t="'search.search_results.not_results'"></h2>
     </div>
   </div>
 </template>
@@ -99,7 +99,6 @@ onMounted(() => {
 
   & > .search-results-container__wrapper {
     width: 400px;
-    // height: 300px;
     margin-top: 20px;
     padding: 50px;
     background-color: #fff;
@@ -119,7 +118,13 @@ onMounted(() => {
         border-radius: $global-border-radius;
         transition: background-color 0.2s ease-in;
 
+        & > p{
+          font-size: 1.2rem;
+        }
+
         & > svg {
+          width: 50px;
+          height: 50px;
           background-color: $color-tertiary-light;
           padding: 10px;
           border-radius: $global-border-radius;

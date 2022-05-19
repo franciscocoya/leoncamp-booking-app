@@ -99,36 +99,36 @@ onMounted(() => {
           id="user-profile"
           @click="redirectAccountChildrenView('user-profile')"
         >
-          Perfil
+          {{ $t("account_view.sidebar.profile") }}
         </li>
         <li
           id="user-account-security"
           @click.prevent="redirectAccountChildrenView('user-privacy')"
         >
-          Seguridad y privacidad
+          {{ $t("account_view.sidebar.privacy") }}
         </li>
         <li
           id="user-account-configuration"
           @click.prevent="redirectAccountChildrenView('user-configuration')"
         >
-          Configuración y preferencias
+         {{ $t("account_view.sidebar.config") }}
         </li>
         <li
           id="user-bookings"
           @click="redirectAccountChildrenView('user-bookings')"
         >
-          Reservas
+          {{ $t("account_view.sidebar.bookings") }}
         </li>
         <li
           v-if="authStore.userData.dni"
           id="user-ads"
           @click="redirectAccountChildrenView('user-ads')"
         >
-          Anuncios
+          {{ $t("account_view.sidebar.ads") }}
         </li>
-        <li id="app-help" @click.prevent="router.push('/help')">Ayuda</li>
-        <li v-if="userStore.datosHost == null">Actualizar plan</li>
-        <li id="user-logout" @click="userStore.logout()">Cerrar sesión</li>
+        <li id="app-help" @click.prevent="router.push('/help')">{{ $t("account_view.sidebar.help") }}</li>
+        <li v-if="userStore.datosHost == null">{{ $t("account_view.sidebar.upgrade_plan") }}</li>
+        <li id="user-logout" @click="userStore.logout()">{{ $t("components.buttons.close_session") }}</li>
       </ul>
     </div>
   </div>

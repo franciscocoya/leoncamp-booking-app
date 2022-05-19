@@ -20,7 +20,7 @@ defineProps({
   },
   title: {
     type: String,
-    default: "Haz click aquí para ir al contenido",
+    default: "",
   },
 
   iconSize: {

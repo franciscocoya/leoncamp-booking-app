@@ -52,7 +52,6 @@ const props = defineProps({
   } // Fin estilos card-container__wrapper
 
   &:hover{
-      border: 1px solid $color-tertiary-dark;
       box-shadow: $global-box-shadow;
   }
 }

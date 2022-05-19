@@ -21,7 +21,7 @@ const useAuthStore = defineStore({
   actions: {
     async loadCurrentUserData() {
       const userId =
-        this.userData.id ||
+        this.userData?.id ||
         JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
       const userDataResult = await getUserDataById(userId);
       this.userData = userDataResult;

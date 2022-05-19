@@ -52,10 +52,10 @@ const handleClick = async () => {
 onMounted(async () => {
   const savedAccomodation = await getSavedAccomodation(
     props.regNumber,
-    authStore.userData.id
+    authStore.userData?.id
   );
 
-  if (savedAccomodation) {
+  if (savedAccomodation !== null) {
     isIconActive.value = true;
   }
 });
@@ -73,7 +73,9 @@ onMounted(async () => {
       class="icon-save-accomodation"
       @click.prevent="handleClick"
     >
-      <title v-once>Alojamiento guardado</title>
+      <title v-once>
+        {{ $t(`saved_icon.title[${isIconActive == true ? 0 : 1}]`) }}
+      </title>
       <g
         id="Page-1"
         stroke="none"

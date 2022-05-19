@@ -86,8 +86,11 @@ el formato dd de MMMM . Por ejemplo, octubre de 2020
  * @param date
  * @returns
  */
-const formatArrayAsSimpleStringDate = (date: number[]): string | null => {
-  return date ? getMonthNameByNumber(date[1]) + ' de ' + date[0] : null;
+const formatArrayAsSimpleStringDate = (date: number[], locale?: string): string | null => {
+  const dateAsDateFormat = new Date(date[0], date[1], date[2]);
+  const month = dateAsDateFormat.toLocaleString(locale ?? 'es-ES', { month: "long" });
+
+  return date ? month + ' ' + date[0] : null;
 };
 
 /**

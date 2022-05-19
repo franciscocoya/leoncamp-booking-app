@@ -48,11 +48,26 @@ window.addEventListener("resize", () => {
   enableHeaderMobile.value = document.body.clientWidth < SCREEN_BREAKPOINTS.sm;
 });
 
+let prevScrollpos = window.pageYOffset;
+
+const handleShowMenuMobile = (e) => {
+  const header = document.querySelector("#header-mobile-item");
+  let currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    header.style.top = '87vh';
+  } else {
+    header.style.top = "100%";
+  }
+  prevScrollpos = currentScrollPos;
+};
+
 onMounted(() => {
   enableHeaderMobile.value = document.body.clientWidth < SCREEN_BREAKPOINTS.sm;
 
   appContextStore.isMobile = appContextStore.getIsMobile();
   appContextStore.isTablet = appContextStore.getIsTabletOrSmaller();
+
+  window.addEventListener("scroll", handleShowMenuMobile);
 });
 </script>
 
@@ -60,6 +75,7 @@ onMounted(() => {
   <!-- <BasePreloader /> -->
   <HeaderMobileItem
     v-if="enableHeaderMobile == true"
+    id="header-mobile-item"
     @showMenuMobile="showMenuMobile = !showMenuMobile"
   />
   <IconButton

@@ -39,8 +39,12 @@ onBeforeRouteLeave(() => {
 
 <template>
   <div class="accomodation-edit-view">
-    <h1>
-      Editar el alojamiento
+    <h1 >
+      {{
+        $tc('edit_accommodation_view.title', {
+          name: accomodationStore.registerNumber,
+        })
+      }}
       <span
         class="form-edit-main-features_properties__regNumber"
         title="Número de registro del alojamiento a editar"

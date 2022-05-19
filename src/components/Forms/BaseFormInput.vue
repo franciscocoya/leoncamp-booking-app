@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 defineProps({
   inputType: {
     type: String,
@@ -28,7 +28,10 @@ defineProps({
 
 const emit = defineEmits(["handleInput"]);
 
-function updateInputValue(value: string) {
+/**
+ * Manejador del evento input para actualizar el contenido de este.
+ */
+function updateInputValue(value) {
   emit("handleInput", value);
 }
 </script>
@@ -38,14 +41,13 @@ function updateInputValue(value: string) {
     <input
       :type="inputType"
       :id="inputId"
-      :placeholder="placeholder"
       :class="inputStyleClass"
       :value="inputValue"
       :readonly="isReadonly"
       autocomplete="on"
-      aria-autocomplete="list"
-      aria-label="input"
-      @input="(e) => updateInputValue((e.target as HTMLOutputElement)?.value)"
+      aria-autocomplete="on"
+      :aria-label="inputValue"
+      @input="(e) => updateInputValue(e.target.value)"
     />
   </div>
 </template>

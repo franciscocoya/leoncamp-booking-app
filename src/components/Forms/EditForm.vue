@@ -9,6 +9,10 @@ import BaseFormTextArea from "@/components/Forms/BaseFormTextArea.vue";
 import BaseFormSelect from "@/components/Forms/BaseFormSelect.vue";
 import UploadImageInputButton from "@/components/Buttons/UploadImageInputButton.vue";
 
+// i18n
+import { translateAmenity, translateCategory } from "@/helpers/i18nTranslations";
+
+
 // Chips
 import ImageEditChip from "@/components/Chips/ImageEditChip.vue";
 import TextEditChip from "@/components/Chips/TextEditChip.vue";
@@ -127,8 +131,14 @@ onMounted(async () => {
       <div class="form-edit-main-features">
         <!-- Sección imágenes -->
         <section class="form-edit-main-features__images">
-          <h2 v-once>Imágenes</h2>
-          <p>{{ accomodationStore.accomodationImages.length }} imágenes</p>
+          <h2 v-once v-t="'edit_accommodation_view.images.title'">Imágenes</h2>
+          <p>
+            {{
+              $tc('edit_accommodation_view.images.count', {
+                n: accomodationStore.accomodationImages.length,
+              })
+            }}
+          </p>
           <div class="form-edit-main-features-images__container">
             <div>
               <ImageEditChip
@@ -149,7 +159,7 @@ onMounted(async () => {
                 accomodationStore.accomodationImages.length >
                 MAX_ACCOMODATION_IMAGES
               "
-              text="Añadir"
+              :text="$t('components.buttons.upload_image')"
               :title="`Haz click aquí para añadir una nueva imagen, hasta un máximo de ${MAX_ACCOMODATION_IMAGES} imágenes.`"
               buttonStyle="baseButton-dark--outlined"
               @input="handleAddImage"
@@ -159,14 +169,13 @@ onMounted(async () => {
 
         <!-- Sección características -->
         <section class="form-edit-main-features__properties">
-          <h2 v-once>Características</h2>
+          <h2 v-once v-t="'edit_accommodation_view.features.title'"></h2>
           <!-- Descripción -->
           <fieldset class="form-edit-main-features_properties__description">
             <BaseFormTextArea
               inputType="text"
-              inputLabel="Descripción"
+              :inputLabel="$t('components.forms.description')"
               inputId="accomodation-description"
-              placeholder="Introduce la descripción"
               :textAreaContent="accomodationStore.description"
               @handleInput="(value) => (accomodationStore.description = value)"
             />
@@ -176,9 +185,8 @@ onMounted(async () => {
             <!-- Número de camas -->
             <LabelFormInput
               inputType="number"
-              inputLabel="Camas"
+              :inputLabel="$tc('components.forms.beds', 2)"
               inputId="accomodation-beds"
-              placeholder="Introduce el número de camas"
               :inputValue="accomodationStore.numOfBeds"
               @handleInput="(value) => (accomodationStore.numOfBeds = value)"
             />
@@ -186,9 +194,8 @@ onMounted(async () => {
             <!-- Número de habitaciones -->
             <LabelFormInput
               inputType="number"
-              inputLabel="Habitaciones"
+              :inputLabel="$tc('components.forms.bedroom', 2)"
               inputId="accomodation-bedrooms"
-              placeholder="Introduce el número de habitaciones"
               :inputValue="accomodationStore.numOfBedRooms"
               @handleInput="
                 (value) => (accomodationStore.numOfBedRooms = value)
@@ -198,9 +205,8 @@ onMounted(async () => {
             <!-- Número de baños -->
             <LabelFormInput
               inputType="number"
-              inputLabel="Baños"
+              :inputLabel="$tc('components.forms.bathroom', 2)"
               inputId="accomodation-bathrooms"
-              placeholder="Introduce el número de baños"
               :inputValue="accomodationStore.numOfBathRooms"
               @handleInput="
                 (value) => (accomodationStore.numOfBathRooms = value)
@@ -212,9 +218,8 @@ onMounted(async () => {
             <!-- Número de huéspedes -->
             <LabelFormInput
               inputType="number"
-              inputLabel="Huéspedes"
+              :inputLabel="$tc('components.forms.guests', 2)"
               inputId="accomodation-guests"
-              placeholder="Introduce el número de huéspedes"
               :inputValue="accomodationStore.numOfGuests"
               @handleInput="(value) => (accomodationStore.numOfGuests = value)"
             />
@@ -224,9 +229,8 @@ onMounted(async () => {
             <!-- Superficie -->
             <LabelFormInput
               inputType="number"
-              inputLabel="Superficie"
+              :inputLabel="$t('components.forms.area')"
               inputId="accomodation-area"
-              placeholder="Introduce la superficie"
               :inputValue="accomodationStore.area"
               @handleInput="(value) => (accomodationStore.area = value)"
             />
@@ -234,9 +238,8 @@ onMounted(async () => {
             <!-- Precio -->
             <LabelFormInput
               inputType="text"
-              inputLabel="Precio / noche"
+              :inputLabel="$tc('components.forms.price', 2)"
               inputId="accomodation-price"
-              placeholder="Introduce el precio"
               :inputValue="accomodationStore.pricePerNight"
               @handleInput="
                 (value) => (accomodationStore.pricePerNight = value)
@@ -246,7 +249,7 @@ onMounted(async () => {
           <!-- Botón editar alojamiento -->
           <BaseButton
             v-once
-            text="Editar"
+            :text="$t('components.buttons.edit')"
             buttonStyle="baseButton-primary--filled"
             id="button-edit-accomodation-main-properties"
             buttonTitle="Haz click aquí para editar los características del alojamiento."
@@ -258,11 +261,11 @@ onMounted(async () => {
 
       <!-- Categoría del alojamiento -->
       <section class="form-edit-accomodation-category">
-        <h3 v-once>Categoría</h3>
+        <h3 v-once v-t="'edit_accommodation_view.category.title'">Categoría</h3>
         <div class="form-edit-accomodation-category__wrapper">
           <!-- Categoría -->
           <BaseFormSelect
-            inputLabel="Categoría"
+            :inputLabel="$t('components.forms.category')"
             selectId="accomodation-category-select"
             :options="categories"
             @handleChange="(value) => (accomodationStore.category = value)"
@@ -280,17 +283,20 @@ onMounted(async () => {
 
       <!-- Servicios -->
       <div class="form-edit-services">
-        <h3 v-once>Servicios</h3>
+        <h3 v-once v-t="'edit_accommodation_view.services.title'"></h3>
         <p>
-          El alojamiento dispone de
-          {{ accomodationStore.accomodationServices.length }} servicios.
+          {{
+            $tc('edit_accommodation_view.services.subtitle', {
+              n: accomodationStore.accomodationServices.length
+            })
+          }}
         </p>
         <div class="form-edit-services__container">
           <TextEditChip
             v-for="service in allServices"
             :key="`service-${service.id}`"
             :chipTitle="`Haz click para eliminar el servicio ${service.denomination}`"
-            :chipText="service.denomination"
+            :chipText="$t(`accomodation_amenities[${translateAmenity(service.denomination)}]`)"
             :serviceData="service"
             :showIcon="true"
             :isServiceEnabled="
@@ -309,17 +315,20 @@ onMounted(async () => {
 
       <!-- Normas -->
       <div class="form-edit-rules">
-        <h3 v-once>Normas</h3>
+        <h3 v-once v-t="'edit_accommodation_view.rules.title'">Normas</h3>
         <p>
-          El alojamiento tiene
-          {{ accomodationStore.accomodationRules.length }} normas
+          {{
+            $tc('edit_accommodation_view.rules.subtitle', {
+              n: accomodationStore.accomodationRules.length
+            })
+          }}
         </p>
         <div class="form-edit-rules__container">
           <TextEditChip
             v-for="rule in allRules"
             :key="`rule-${rule.id}`"
             :chipTitle="`Haz click para eliminar el servicio ${rule.id}`"
-            :chipText="rule.rule"
+            :chipText="$t(`accomodation_rules[${rule.id - 1}]`)"
             :isServiceEnabled="
               accomodationStore.accomodationRules.some(
                 (r) => r.accomodationAccRuleId.idAccomodationRule.id === rule.id
@@ -335,7 +344,7 @@ onMounted(async () => {
         <!-- Botón cancelar cambios -->
         <BaseButton
           v-once
-          text="Volver"
+          :text="$tc('components.buttons.back', 1)"
           buttonStyle="baseButton-danger--filled"
           buttonTitle="Haz click aquí para cancelar los cambios realizados en el alojamiento"
           :fullWidth="appContextStore.isMobile"

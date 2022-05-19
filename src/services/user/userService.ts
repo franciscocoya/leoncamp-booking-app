@@ -379,7 +379,7 @@ const getAllUsers = async () => {
  * @param configData
  */
 const addUserConfigurationToUser = async (userId: number, configData: any) => {
-  let newConfig = await axios({
+  const newConfig = await axios({
     url: `${API_CONFIG}/new`,
     method: 'POST',
     headers: {
@@ -388,9 +388,7 @@ const addUserConfigurationToUser = async (userId: number, configData: any) => {
     data: configData,
   });
 
-  let newConfigId = await newConfig.data.id;
-
-  let newUserConfig = await axios({
+  await axios({
     url: `${API_USER_CONFIG}/${userId}`,
     method: 'POST',
     headers: {

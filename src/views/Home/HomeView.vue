@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
 // Componentes
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
@@ -18,12 +18,13 @@ let allAccomodations = ref([]);
 let accomodationMarkers = ref([]);
 let selectedMarkerRegNumber = ref("");
 
-onMounted(async () => {
-  allAccomodations.value = await getAllAccomodations();
+onBeforeMount(async() => {
+ allAccomodations.value = await getAllAccomodations();
 
   // Markers de los alojamientos del listado.
-  accomodationMarkers.value = await allAccomodations.value.map((acc) => {
+  accomodationMarkers.value = allAccomodations.value.map((acc) => {
     const { latitude, longitude } = acc.idAccomodationLocation;
+
     return {
       coords: {
         lat: latitude,
@@ -88,8 +89,8 @@ $home-section-margin: 50px;
   & > .home-view__wrapper {
     display: grid;
     height: calc(100vh - $header-height - 50px);
-    grid-template-columns: auto 60%;
-    gap: 20px;
+    grid-template-columns: auto 50%;
+    gap: 5px;
     margin: $home-section-margin 0 0 $home-section-margin;
     // Estilos para la lista de alojamientos
     & > .home-accomodations-list {

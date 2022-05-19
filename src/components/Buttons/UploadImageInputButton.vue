@@ -1,4 +1,7 @@
 <script setup>
+// i18n
+import { translateAmenity } from "@/helpers/i18nTranslations";
+
 defineProps({
   text: {
     type: String,
@@ -36,7 +39,7 @@ const handleInput = (fileValue) => {
 
 <template>
   <form class="button-upload-image">
-    <label for="">Subir imagen</label>
+    <label for="">{{text}}</label>
     <input
       type="file"
       accept="image/jpeg, image/png, iamge/gif"

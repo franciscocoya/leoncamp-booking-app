@@ -6,7 +6,7 @@ import ResetPasswordForm from "@/components/Forms/ResetPasswordForm.vue";
 <template>
   <div class="login-view">
     <div class="login-view-wrapper">
-      <ResetPasswordForm title="Restablecer contraseña" />
+      <ResetPasswordForm :title="$t('reset_password.title')" />
     </div>
   </div>
 </template>

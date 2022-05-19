@@ -68,7 +68,7 @@ onBeforeMount(async () => {
 <template>
   <div class="user-profile-view">
     <main>
-      <h1 v-once>Información personal</h1>
+      <h1 v-once v-t="'account_view.user_profile_view.title'"></h1>
       <BaseButton
       v-if="!authStore?.userData?.dni && authStore?.userData?.email !== adminEmail"
         text="Hazte anfitrión"
@@ -80,13 +80,13 @@ onBeforeMount(async () => {
       <div class="user-profile-view__wrapper">
         <form>
           <!-- Sección nombre y apellidos -->
-          <p v-once>Nombre legal</p>
+          <p v-once v-t="'account_view.user_profile_view.legal_name'">Nombre legal</p>
           <div class="user-profile-data__fullname">
             <!-- Nombre -->
             <LabelFormInput
               ref="name"
               type="text"
-              inputLabel="Nombre"
+              :inputLabel="$t('components.forms.name')"
               :isReadonly="false"
               :inputValue="authStore?.userData?.name"
               @handleInput="
@@ -98,7 +98,7 @@ onBeforeMount(async () => {
             <!-- Apellidos -->
             <LabelFormInput
               type="text"
-              inputLabel="Apellidos"
+              :inputLabel="$t('components.forms.surname')"
               :isReadonly="false"
               :inputValue="authStore?.userData?.surname"
               @handleInput="
@@ -108,13 +108,13 @@ onBeforeMount(async () => {
             />
           </div>
 
-          <p v-once>Datos de contacto</p>
+          <p v-once v-t="'account_view.user_profile_view.contact_data'">Datos de contacto</p>
           <!-- Sección teléfono e email -->
           <div class="user-profile-data__contact">
             <!-- Teléfono -->
             <LabelFormInput
               type="text"
-              inputLabel="Teléfono"
+              :inputLabel="$t('components.forms.phone')"
               :isReadonly="false"
               :inputValue="authStore?.userData?.phone"
               @handleInput="
@@ -125,7 +125,7 @@ onBeforeMount(async () => {
             <!-- Email -->
             <LabelFormInput
               type="text"
-              inputLabel="Correo electrónico"
+              :inputLabel="$t('components.forms.email')"
               :isReadonly="false"
               :inputValue="authStore?.userData?.email"
               @handleInput="
@@ -134,7 +134,7 @@ onBeforeMount(async () => {
             />
           </div>
           <BaseButton
-            :text="`${enableEditButton == true ? 'Actualizar' : 'Editar'}`"
+            :text="`${enableEditButton == true ? $t('components.buttons.update') : $t('components.buttons.edit')}`"
             buttonStyle="baseButton-danger--filled"
             class="btEditar-perfil-usuario"
             :isDisabled="enableEditButton == false"
@@ -147,11 +147,11 @@ onBeforeMount(async () => {
             v-if="authStore.userData?.dni || authStore?.userData?.bio"
             class="user-profile-data__host-data"
           >
-            <h2 v-once>Datos del host</h2>
+            <h2 v-once v-t="'account_view.user_profile_view.host_data.title'"></h2>
             <div class="user-profile-data__host-data__wrapper">
               <LabelFormInput
                 type="text"
-                inputLabel="DNI"
+                :inputLabel="$t('components.forms.dni')"
                 :isReadonly="false"
                 :inputValue="authStore?.userData?.dni"
                 @handleInput="
@@ -161,7 +161,7 @@ onBeforeMount(async () => {
               />
               <BaseFormTextArea
                 :textAreaContent="authStore?.userData?.bio"
-                inputLabel="Biografía"
+                :inputLabel="$t('components.forms.bio')"
                 @handleInput="
                   (value) =>
                     updateHostData(() => (authStore.userData.bio = value))
@@ -169,9 +169,7 @@ onBeforeMount(async () => {
               />
             </div>
             <BaseButton
-              :text="`${
-                enableEditHostButton == true ? 'Actualizar' : 'Editar'
-              }`"
+              :text="`${enableEditButton == true ? $t('components.buttons.update') : $t('components.buttons.edit')}`"
               buttonStyle="baseButton-danger--filled"
               class="btEditar-perfil-usuario"
               :isDisabled="enableEditHostButton == false"

@@ -21,11 +21,11 @@ const formErrorsStore = useFormErrorsStore();
 const props = defineProps({
   lat: {
     type: Number,
-    required: true,
+    default: 42.60613038790926,
   },
   lng: {
     type: Number,
-    required: true,
+    default: -5.579879833258864,
   },
   mapWidth: {
     type: String,

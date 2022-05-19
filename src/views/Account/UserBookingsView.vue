@@ -20,7 +20,7 @@ onMounted(async () => {
 
 <template>
   <div class="user-bookings-view">
-    <h1 v-once>Mis Reservas</h1>
+    <h1 v-once v-t="'bookings_view.title'"></h1>
     <div class="user-bookings-container" v-if="bookings.length > 0">
       <BookingSummaryItem
         v-for="booking in bookings"
@@ -34,8 +34,7 @@ onMounted(async () => {
       />
     </div>
     <div v-else class="not-booking-now">
-      <h2 v-once class="not-booking-now__title">
-        Aún no has realizado ninguna reserva
+      <h2 v-once class="not-booking-now__title" v-t="'bookings_view.not_bookings'">
       </h2>
       <img :src="GIF_CAMPFIRE" alt="" />
     </div>

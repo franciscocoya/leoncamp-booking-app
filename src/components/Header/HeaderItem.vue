@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onBeforeMount } from "vue";
 
 import { useRouter } from "vue-router";
 
@@ -14,27 +14,18 @@ import SearchBarItem from "./SearchBar/SearchBarItem.vue";
 import MenuDesktopItem from "./Menu/MenuDesktopItem.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
-import { useUserStore } from "@/store/user";
+import {useAuthStore} from "@/store/auth";
 import { useAppContextStore } from "@/store/appContext";
 
 const router = useRouter();
 
-// Store usuario
-const userStore = useUserStore();
-
+const authStore = useAuthStore();
 const appContextStore = useAppContextStore();
 
-// Nombre y apellidos del usuario
-const userData = ref({});
-
-onMounted(async () => {
-  if (userData.value.id) {
-    await userStore.loadUserData(userData.value.id);
-  }
-  userData.value = await userStore.getUserDataById(
-    JSON.parse(sessionStorage.getItem("user") || "{}")?.id
-  );
+onBeforeMount(async () => {
+  await authStore.loadCurrentUserData();
 });
+
 </script>
 
 <template>
@@ -47,28 +38,25 @@ onMounted(async () => {
       @hide-search-results="appContextStore.showSearchResults = false"
     />
 
-    <MenuDesktopItem v-if="userData" v-once />
-    <!-- Si el usuario está logeado -->
+    <MenuDesktopItem v-if="authStore?.userData" />
+
     <AccountIcon
-      v-if="userData"
+      v-if="authStore?.userData"
       width="54"
       height="54"
-      :username="`${userData?.name} ${userData?.surname}`"
-      :profileImage="`${
-        !userData?.profileImage
-          ? IMG_PROFILE_PLACEHOLDER
-          : userData?.profileImage
-      }`"
+      :username="`${authStore?.userData?.name} ${authStore?.userData?.surname}`"
+      :profileImage="
+        authStore?.userData?.profileImage ?? IMG_PROFILE_PLACEHOLDER 
+      "
       :isLinked="true"
     />
 
-    <!-- Si el usuario no está logeado -->
     <BaseButton
       v-else
       v-once
-      text="Iniciar sesión"
+      :text="$t('components.buttons.login')"
       buttonStyle="baseButton-secondary--filled"
-      @click="router.push('/signin')"
+      @click="router.push({name: 'signin'})"
     />
   </header>
 </template>

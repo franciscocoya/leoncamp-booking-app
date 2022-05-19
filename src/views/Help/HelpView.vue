@@ -6,22 +6,22 @@ import BaseCard from "@/components/Card/BaseCardItem.vue";
 <template>
   <div class="help-view">
     <div class="help-view-wrapper">
-      <h1 v-once>Ayuda</h1>
+      <h1 v-once v-t="$t('account_view.help_view.title')"></h1>
       <div class="help-options">
         <!-- Pricing -->
-        <BaseCard
+        <!-- <BaseCard
           v-once
           title="Planes y precios"
           buttonText="Ver planes"
           description="Actualiza al plan de Host para comenzar a subir anuncios de tus alojamientos."
-        />
+        /> -->
 
         <!-- FAQ -->
         <BaseCard
           v-once
-          title="FAQ"
-          buttonText="Más información"
-          description="Cómo publicar anuncios, pasos a seguir para reservar un alojamiento y más. "
+          :title="$t('account_view.help_view.faq.title')"
+          :buttonText="$t('components.buttons.info')"
+          :description="$t('account_view.help_view.faq.subtitle')"
         />
       </div>
     </div>
@@ -30,6 +30,7 @@ import BaseCard from "@/components/Card/BaseCardItem.vue";
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_mixins.scss";
+@import "@/assets/scss/_variables.scss";
 
 .help-view-wrapper {
   margin: 50px;
@@ -37,6 +38,19 @@ import BaseCard from "@/components/Card/BaseCardItem.vue";
   & > .help-options {
     @include flex-row-center;
     gap: 30px;
+  }
+}
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-sm) {
+  .help-view-wrapper {
+    margin: 30px;
+    text-align: center;
+
+    & > h1{
+      font-weight: 400;
+    }
   }
 }
 </style>

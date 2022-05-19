@@ -26,12 +26,11 @@ const handleSearchInput = (e) => {
 </script>
 
 <template>
-  <div class="searchBar--light">
+  <div class="searchBar--light" role="search">
     <img :src="ICON_MAP_MARKER" alt="" class="marker-search-icon" />
 
     <input
       type="text"
-      placeholder="León"
       @input="(e) => handleSearchInput(e)"
     />
 

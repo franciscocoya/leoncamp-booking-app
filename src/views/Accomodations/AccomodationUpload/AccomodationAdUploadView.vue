@@ -97,7 +97,7 @@ onMounted(async () => {
 <template>
   <div class="accomodation-upload-view">
     <div class="accomodation-upload-view__header">
-      <h1 v-once>Publicar un nuevo alojamiento</h1>
+      <h1 v-once v-t="'upload_accomodation_view.title'"></h1>
     </div>
     <div class="accomodation-upload-view__body">
       <Transition name="slide-right-fade">
@@ -106,7 +106,7 @@ onMounted(async () => {
       <div class="accomodation_upload_steps">
         <div class="accomodation_upload_steps__buttons">
           <BaseButton
-            text="Volver"
+            :text="$tc('components.buttons.back', 2)"
             buttonStyle="baseButton-dark--filled--small"
             :style="`opacity: ${
               router.currentRoute.value.name !== accomodationUploadSteps[0]
@@ -116,7 +116,7 @@ onMounted(async () => {
             @click="showPreviousStep"
           />
           <BaseButton
-            :text="`${currentUploadStepNum == 4 ? 'Finalizar' : 'Siguiente'}`"
+            :text="`${currentUploadStepNum == 4 ? $t('components.buttons.finish') : $t('components.buttons.next')}`"
             buttonStyle="baseButton-dark--filled--small"
             :isDisabled="formErrorsStore.enableNextButton == false"
             @click="
@@ -127,7 +127,12 @@ onMounted(async () => {
           />
         </div>
         <p v-if="appContextStore.isMobile == false">
-          Paso {{ currentUploadStepNum + 1 }} de 5
+          {{
+            $tc('upload_accomodation_view.step_display', {
+              n1: currentUploadStepNum + 1,
+              n2: accomodationUploadSteps.length,
+            })
+          }}
         </p>
       </div>
       <Transition name="fade">

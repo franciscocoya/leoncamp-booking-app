@@ -1,8 +1,11 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-// Formateador de fecha
+// Utils
 import { formatArrayAsDate } from "@/helpers/utils";
+
+// i18n
+import {translateBookingStatus} from '@/helpers/i18nTranslations'
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
@@ -77,12 +80,6 @@ const getPaymentType = () => {
   return paymentTypeIcon;
 };
 
-const getBookingStatus = () => {
-  console.log(props.bookingStatus);
-  return ["PENDIENTE", "CONFIRMADA", "COMPLETADA", "CANCELADA"].indexOf(
-    props.bookingStatus
-  );
-};
 </script>
 
 <template>
@@ -91,7 +88,7 @@ const getBookingStatus = () => {
       <div :class="`booking-status-icon --booking-${bookingStatus}`">
         <BaseBadge
           :text="
-            $tc(`account_view.user_bookings_view.status`, getBookingStatus())
+            $tc('bookingStatus', translateBookingStatus(bookingStatus))
           "
           :backgroundColor="
             getStyleBookingStatusBadge(bookingStatus).backgroundColor

@@ -172,10 +172,13 @@ const handleClickUploadImage = async (e) => {
 
 <template>
   <div class="accomodation-ad-upload-images-view">
-    <h2 v-once>Imágenes</h2>
+    <h2 v-once v-t="'upload_accomodation_view.step5.title'"></h2>
     <p>
-      Sube imágenes del alojamiento, hasta un máximo de
-      {{ MAX_IMAGES_UPLOAD }} imágenes.
+      {{
+        $tc('upload_accomodation_view.step5.subtitle', {
+          n: MAX_IMAGES_UPLOAD
+        })
+      }}
     </p>
 
     <div class="accomodation-ad-upload-images__wrapper">
@@ -201,12 +204,14 @@ const handleClickUploadImage = async (e) => {
             />
           </svg>
           <label for="">
-            {{ dragText }}
+            {{
+              $t('upload_accomodation_view.step5.dragArea.title')
+            }}
 
             <br />
-            <span>jpg, jpeg, png, gif</span>
+            <span v-once v-t="'upload_accomodation_view.step5.dragArea.image_format'">jpg, jpeg, png, gif</span>
             <br />
-            <span>Tamaño máximo por imagen: 500Kb</span>
+            <span v-once v-t="'upload_accomodation_view.step5.dragArea.image_max_size'">Tamaño máximo por imagen: 500Kb</span>
           </label>
           <input
             type="file"
@@ -218,7 +223,7 @@ const handleClickUploadImage = async (e) => {
         </form>
         <!-- Icono informatico del área -->
         <InfoIcon
-          text="Haz click o selecciona las imágenes del alojamiento directamente"
+          :text="$t('upload_accomodation_view.step5.dragArea.infoIcon')"
           id="info-icon-drag-area"
         />
       </div>

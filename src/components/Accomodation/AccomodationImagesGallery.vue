@@ -44,13 +44,13 @@ const props = defineProps({
     </div>
     <!-- Botón para mostrar todas las imágenes. Si hay más de 5 imágenes -->
     <BaseButton
-      text="Ver todas"
+      :text="$t('accomodation_detail_view.imageGallery.button')"
       buttonStyle="baseButton-white--filled"
       id="bt-show-all-accomodation-images"
       @click="handleShowAllAccomodationImages"
     />
   </div>
-  <div v-else>No hay imágenes</div>
+  <div v-else v-t="'accomodation_detail_view.imageGallery.no_images'">No hay imágenes</div>
 </template>
 
 
@@ -129,7 +129,7 @@ const props = defineProps({
     position: absolute;
     bottom: 5%;
     right: 5%;
-    z-index: $z-index-3;
+    z-index: $z-index-1;
   }
 }
 

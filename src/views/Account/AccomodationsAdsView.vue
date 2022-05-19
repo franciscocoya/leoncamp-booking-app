@@ -42,10 +42,10 @@ onMounted(async () => {
 <template>
   <div class="accomodations-ads-view">
     <div class="accomodations-ads-view__header">
-      <h1 v-once>Mis alojamientos</h1>
+      <h1 v-once v-t="'account_view.account_ads.title'"></h1>
       <BaseButton
         v-if="accomodations.length > 0"
-        text="Publicar"
+        :text="$t('components.buttons.upload')"
         buttonStyle="baseButton-dark--outlined--small"
         buttonId="bt-ads-upload-new"
         @click="handleClickUploadButton"

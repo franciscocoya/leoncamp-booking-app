@@ -186,7 +186,7 @@
   @include flex-row-center;
   width: 30px;
   height: 30px;
-  padding: 25px;
+  padding: 17px;
   border: none;
   transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
   border-radius: 100%;
@@ -284,23 +284,31 @@
   }
 }
 
+// Estilos botón atrás - Mobile
 .iconButton-return {
   @include flex-row-center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   outline: none;
-  border: 1px solid $color-tertiary-light;
+  border:none;
+  // border: 2px solid $color-dark;
   margin: 20px 0 0 20px;
   background: #fff;
-  border-radius: $global-border-radius;
-  box-shadow: $global-box-shadow;
+  border-radius: 50%;
+  // box-shadow: $global-box-shadow;
   z-index: $z-index-4;
+  transition: all .1s ease-in;
 
   & > img {
-    width: 18px;
+    width: 12px;
+    
   }
 
   & > p {
     display: none;
+  }
+
+  &:hover{
+    background-color: $color-tertiary-light;
   }
 }

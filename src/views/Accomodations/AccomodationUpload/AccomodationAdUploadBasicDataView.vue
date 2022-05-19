@@ -202,12 +202,12 @@ onBeforeRouteLeave((to) => {
 
 <template>
   <div class="accomodation-upload-basic-data-view">
-    <h2 v-once>Datos básicos</h2>
+    <h2 v-once v-t="'upload_accomodation_view.step1.title'">Datos básicos</h2>
     <div class="accomodation-upload-basic-data__wrapper">
       <div>
         <!-- Número de registro -->
         <LabelFormInput
-          inputLabel="Número de registro"
+          :inputLabel="$t('components.forms.registerNumber')"
           inputType="text"
           :inputValue="accomodationStore.registerNumber"
           :inputMinCharacters="2"
@@ -225,7 +225,7 @@ onBeforeRouteLeave((to) => {
 
         <!-- Descripción -->
         <BaseFormTextArea
-          inputLabel="Descripción"
+           :inputLabel="$t('components.forms.description')"
           inputTitle="Realiza una descripción lo más detallada posible para atraer a nuevos huéspedes y crecer en la comunidad. Puedes explicar más características y servicios que ofreces, que no se encuentran disponibles en la plataforma."
           :textAreaContent="accomodationStore.description"
           @handleInput="(value) => (accomodationStore.description = value)"
@@ -235,7 +235,7 @@ onBeforeRouteLeave((to) => {
         <div class="accomodation-upload-basic-data_wrapper__row3">
           <!-- Categoría -->
           <BaseFormSelect
-            inputLabel="Categoría"
+             :inputLabel="$t('components.forms.category')"
             inputTitle="Selecciona una de las opciones disponibles"
             :inputValue="accomodationStore.category"
             :options="[...allAvailableAccomodationCategories]"
@@ -245,7 +245,7 @@ onBeforeRouteLeave((to) => {
 
           <!-- Superficie -->
           <LabelFormInput
-            inputLabel="Superficie"
+             :inputLabel="$t('components.forms.area')"
             inputType="number"
             inputTitle="Superficie habitable del alojamiento (En metros cuadrados)"
             :inputValue="accomodationStore.area"
@@ -258,7 +258,7 @@ onBeforeRouteLeave((to) => {
         <div class="accomodation-upload-basic-data_wrapper__row4">
           <!-- Camas -->
           <LabelFormInput
-            inputLabel="Camas"
+             :inputLabel="$tc('components.forms.beds', 2)"
             inputType="number"
             :inputNumberMax="10"
             :inputValue="accomodationStore.numOfBeds"
@@ -268,7 +268,7 @@ onBeforeRouteLeave((to) => {
 
           <!-- Habitaciones -->
           <LabelFormInput
-            inputLabel="Habitaciones"
+             :inputLabel="$tc('components.forms.bedroom', 2)"
             inputType="number"
             :inputNumberMax="10"
             :inputValue="accomodationStore.numOfBedRooms"
@@ -278,7 +278,7 @@ onBeforeRouteLeave((to) => {
 
           <!-- Baños -->
           <LabelFormInput
-            inputLabel="Baños"
+             :inputLabel="$tc('components.forms.bathroom', 2)"
             inputType="number"
             :inputValue="accomodationStore.numOfBathRooms"
             :inputNumberMax="10"
@@ -290,7 +290,7 @@ onBeforeRouteLeave((to) => {
         <div class="accomodation-upload-basic-data_wrapper__row5">
           <!-- Huéspedes -->
           <LabelFormInput
-            inputLabel="Huéspedes"
+            :inputLabel="$tc('components.forms.guests', 2)"
             inputType="number"
             :inputNumberMax="100"
             inputTitle="Aforo máximo de huéspedes en el alojamiento."
@@ -301,7 +301,7 @@ onBeforeRouteLeave((to) => {
 
           <!-- Precio -->
           <LabelFormInput
-            inputLabel="Precio"
+            :inputLabel="$t('components.forms.price')"
             isPriceInput="true"
             inputTitle="Precio por noche del alojamiento"
             :inputValue="accomodationStore.pricePerNight"

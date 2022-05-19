@@ -1,4 +1,8 @@
 <script setup>
+// i18n
+import { translateCategory } from "@/helpers/i18nTranslations";
+
+
 const props = defineProps({
   inputLabel: {
     type: String,
@@ -40,13 +44,13 @@ const handleBlur = () => {
       @change="(e) => updateInputValue(e.target.value)"
       @blur="handleBlur"
     >
-      <option value="-" selected>-- Selecciona una opción --</option>
+      <option value="-" selected>{{$t('components.forms.select.default_option')}}</option>
       <option
         v-for="opt in options"
         :key="opt.id"
-        :value="opt.accomodationCategory"
+        :value="$t(`accomodation_categories[${opt.id}]`)"
       >
-        {{ opt.accomodationCategory }}
+        {{ $t(`accomodation_categories[${opt.id - 1}]`) }}
       </option>
     </select>
   </div>

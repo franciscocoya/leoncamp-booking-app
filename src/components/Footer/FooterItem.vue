@@ -2,8 +2,10 @@
 </script>
 
 <template>
-  <footer v-once>
-    <p v-t="'footer.copyright'"></p>
+  <footer>
+    <p>
+      {{ $t('footer.copyright') }}
+    </p>
   </footer>
 </template>
 

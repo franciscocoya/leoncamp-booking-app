@@ -171,6 +171,7 @@ onMounted(() => {
     left: 8px;
     font-size: 11px;
     color: grey;
+    text-transform: capitalize;
   }
 
   & > input {

@@ -5,6 +5,9 @@ import { useRouter } from "vue-router";
 // Iconos
 import { ICON_EDIT, ICON_DELETE } from "@/helpers/iconConstants";
 
+// i18n
+import { translateCategory} from '@/helpers/i18nTranslations';
+
 // Componentes
 import BaseCarousel from "@/components/Carousel/BaseCarousel.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
@@ -104,7 +107,7 @@ onMounted(async () => {
     <!-- Detalles del alojamiento -->
     <div
       class="accomodation-thumbnail-detail-container"
-      title="Haz click para el alojamiento"
+      :title="$t('accomodation_thumbnail.title_click')"
     >
       <div class="accomodation-thumbnail-detail-container__header">
         <div
@@ -115,12 +118,17 @@ onMounted(async () => {
         >
           <!-- Categoría del alojamiento -->
           <BaseBadge
-            :text="accData.idAccomodationCategory.accomodationCategory"
+            :text="$tc('accomodation_categories', translateCategory(accData.idAccomodationCategory.accomodationCategory))"
             backgroundColor="#F0F0F0"
           />
           <!-- Nombre del alojamiento -->
           <h2>
-            {{ accData.idAccomodationCategory.accomodationCategory }} en
+            {{
+              $tc('accomodation_categories', translateCategory(accData.idAccomodationCategory.accomodationCategory))
+            }}
+            {{
+              $t('linkers.in')
+            }}
             {{ accData.idAccomodationLocation.direction }}
           </h2>
         </div>
@@ -137,7 +145,7 @@ onMounted(async () => {
               :buttonIcon="ICON_DELETE"
               buttonStyle="iconButton-accomodation-action--delete"
               class="bt-delete-accomodation"
-              title="Haz click aquí para eliminar el alojamiento"
+              :title="$t('accomodation_thumbnail.delete_button.title')"
               @click="handleDeleteAccomodation"
             />
 
@@ -147,7 +155,7 @@ onMounted(async () => {
               :buttonIcon="ICON_EDIT"
               buttonStyle="iconButton-accomodation-action"
               class="bt-edit-accomodation"
-              title="Haz click aquí para editar el alojamiento"
+              :title="$t('accomodation_thumbnail.edit_button.title')"
               @click="
                 router.push({
                   name: 'accomodation-edit',
@@ -191,8 +199,12 @@ onMounted(async () => {
           <span>{{ accomodationStore.stars }}</span>
         </div>
         <div class="accomodation-price-per-night">
-          <span>{{ accData.pricePerNight }} €</span>
-          <span>&nbsp; / noche</span>
+          <span>{{ accData.pricePerNight }} 
+            {{
+              $t('currency.symbol')
+            }}
+          </span>
+          <span>&nbsp; / {{$t('accomodation_thumbnail.night')}}</span>
         </div>
       </div>
     </div>

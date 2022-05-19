@@ -9,6 +9,9 @@ export const en_msgs = {
     button_register: 'Sign Up',
     login_redirect: 'Have an account?',
   },
+  reset_password: {
+    title: 'Reset Password',
+  },
   home: {},
   administrator: {
     title: 'Administration panel',
@@ -41,35 +44,47 @@ export const en_msgs = {
   },
   booking_details_view: {
     title: 'Booking of accomodation {name}',
+    button_show_ad: 'Show accomodation',
     host: 'Host',
     dates: 'Booking dates',
     price_summary: {
       title: 'Payment summary',
       price_per_night: 'Price / night',
-      cost: 'Cost ({name} x {nights} night)',
+      cost: 'Cost ({name} x {nights} nights)',
       service_fee: 'Service fee',
       total: 'Total',
-      location: 'Location',
     },
+    location: 'Location',
   },
   accomodation_detail_view: {
-    title: 'Booking details',
+    title: 'Accomodation details',
     imageGallery: {
+      no_images: 'No images',
       button: 'Show all',
     },
-    show_more: 'Show more',
-    button_book: 'Reserve',
+    show_more: {
+      title: 'Show more',
+      alt: 'Show all description',
+    },
+    button_book: 'Book',
     night: 'night | nights',
-    services: {
-      title: 'Services',
-      button_show_more: 'Show the {n} services',
+    amenities: {
+      title: 'Amenities',
+      button_show_more: 'Show all {n} amenities',
     },
     location: {
-      title: 'Where it is located',
+      title: 'Where you’ll be',
     },
     host: {
       title: 'Host details',
-      button_show_profile: 'Show profile',
+      verified: 'Verified',
+      detail: {
+        created_at: 'Since {date}'
+      },
+      button_show_profile: {
+        user: 'Show profile',
+        current: 'Go to your profile',
+      },
     },
     rules: {
       title: 'Accomodation rules',
@@ -80,7 +95,8 @@ export const en_msgs = {
     },
   },
   upload_accomodation_view: {
-    title: 'Post new accomodation',
+    title: 'Upload new accomodation',
+    step_display: 'Step {n1} of {n2}',
     step1: {
       title: 'Basic data',
     },
@@ -95,37 +111,58 @@ export const en_msgs = {
     },
     step4: {
       title: 'Rules',
-      subtitle: 'Check the box of the rules of the accomodation rules.',
+      subtitle: 'Check the box of the rules of the accommodation rules.',
     },
     step5: {
       title: 'Images',
       subtitle:
-        'Upload the images of the accommodation, up to a maximum of 8 images.',
+        'Upload the images of the accommodation, up to a maximum of {n} images.',
       dragArea: {
         title: 'Select a file(s) or drag it/them here',
         image_format: 'jpg, jpeg, png, gif',
         image_max_size: 'Max. file size: 500Kb',
+        infoIcon: 'Click on or directly select the images of the accommodation'
       },
     },
   },
+  edit_accommodation_view: {
+    title: 'Edit the accommodation {name}',
+    images: {
+      title: 'Images',
+      count: '{n} images',
+    },
+    features: {
+      title: 'Features',
+    },
+    category: {
+      title: 'Category',
+    },
+    services: {
+      title: 'Amenities',
+      subtitle: 'This accommodation has {n} amenities.'
+    },
+    rules: {
+      title: 'Rules',
+      subtitle: 'This accommodation has {n} rules.'
+    }
+  },
   account_view: {
     user_profile_view: {
-      title: 'Personal data',
+      title: 'Personal information',
       legal_name: 'Legal name',
+      contact_data: 'Contact data',
+      host_data: {
+        title: 'Host data'
+      }
     },
-    user_bookings_view: {
-      status: 'PENDING | CONFIRMED | COMPLETED | CANCELLED',
-    },
-
     privacy_view: {
       title: 'Security & privacy',
       reset_pass: {
         title: 'Login & privacy',
-        subtitle: 'Reset passwords',
+        subtitle: 'Reset password',
         button: 'Reset',
       },
     },
-
     preferences: {
       title: 'Configuration & preferences',
       currency: 'Currency',
@@ -135,12 +172,14 @@ export const en_msgs = {
         english: 'English (United Kingdom)',
       },
     },
-
+    account_ads: {
+      title: 'My accomodations',
+    },
     help_view: {
       title: 'Help',
       faq: {
         title: 'FAQ',
-        subtitle: 'How to place ads, steps to book accommodation and more.',
+        subtitle: 'How to upload ads, steps to book accommodation and more.',
       },
     },
     sidebar: {
@@ -148,22 +187,84 @@ export const en_msgs = {
       privacy: 'Security & privacy',
       config: 'Configuration & preferences',
       bookings: 'Bookings',
+      ads: 'Accomodation ads',
+      upgrade_plan: 'Upgade plan',
       help: 'Help',
     },
   },
+  user_public_profile: {
+    title: 'Hello: I\'m {name}',
+    about: {
+      title: 'About',
+      lang: {
+        title: 'Speaks',
+        languages: ['Spanish', 'English', '-'],
+      },
+    },
+    verified: {
+      title: 'Identity verified',
+      subtitle: '{name} confirmed'
+    },
+    userType: {
+      base: 'Base',
+      host: 'Host',
+    },
+    ads: {
+      title: 'Accomodation listings',
+      no_ads: 'No ads published',
+    },
+    reviews: {
+      title: 'Reviews',
+      tabs: {
+        users: 'From Guests',
+        host: 'From user',
+      }
+    }
+  },
+  accomodation_thumbnail: {
+    title_click: 'Click here to see the accomodation',
+    edit_button: {
+      title: 'Click here to edit the accomodation',
+    },
+    delete_click: {
+      title: 'Click here to delete the accomodation',
+    },
+    night: 'night'
+  },
+  saved_icon: {
+    title: ['Save accomodation', 'Accomodation saved']
+  },
+  accomodation_reviews: {
+    title: 'Reviews',
+    average: 'Average rating:',
+  },
   search: {
-    default_placeholder: 'León',
     search_results: {
       not_results: 'No results found',
     },
+  },
+  baseCarousel: {
+    no_images: 'No images',
   },
   header: {
     logo_alt: 'Leon Camp',
     search_placeholder: 'León',
     menu: {
+      home: 'Home',
       saved: 'Saved',
+      publish: {
+        title: 'Click here to publish an accomodation',
+      },
       bookings: 'Bookings',
       profile_icon: "{name}'s profile",
+    },
+    menu_mobile: {
+      title: 'Hi, {name}',
+      profile: 'Account',
+      security: 'Security & privacy',
+      config: 'Configuration & preferences',
+      bookings: 'Bookings',
+      ads: 'Ads',
     },
   },
   footer: {
@@ -173,22 +274,33 @@ export const en_msgs = {
     buttons: {
       view: 'See',
       edit: 'Edit ',
-      update: 'Update',
+      update: 'Update | Updating...',
       delete: 'Delete',
       info: 'More information',
       login: 'Sing In',
+      register: 'Sign Up',
+      upload: 'Publish',
+      add: 'Add',
       close_session: 'Close session',
       back: 'Return | Previous',
       next: 'Next',
       finish: 'Finish',
       view_ad: 'See ad',
+      reset: 'Reset',
       download_invoice: 'Download invoice',
+      upload_image: 'Upload image',
     },
     forms: {
       name: 'Name',
       surname: 'Surname',
-      email: 'Email',
+      email: 'Email address',
+      dni: 'ID Card',
+      bio: 'Biography',
+      phone: 'Phone number',
       password: 'Password',
+      current_password: 'Current password',
+      new_password: 'New password',
+      confirm_new_password: 'Confirm new password',
       password_confirmation: 'Confirm password',
       checkIn: 'Check-In',
       checkOut: 'Check-Out',
@@ -198,19 +310,49 @@ export const en_msgs = {
       description: 'Description',
       category: 'Category',
       area: 'Area',
-      beds: 'Bed | Beds',
-      bathroom: 'Bathroom | Bathrooms',
-      bedroom: 'Bedroom | Bedrooms',
-      guests: 'Guest | Guests',
-      price: 'Price',
+      beds: 'bed | beds',
+      bathroom: 'bathroom | bathrooms',
+      bedroom: 'bedroom | bedrooms',
+      guests: 'guest | guests',
+      price: 'price | price / night',
       lat: 'Latitude',
       lng: 'Longitude',
       address: 'Address',
       city: 'City',
       zip: 'Zip code',
+      select: {
+        default_option: 'Select an option',
+      },
+      messages: {
+        email: {
+          required: 'Email is required',
+        },
+        password: {
+          required: 'Password is required'
+        },
+        password_confirmation: {
+          required: 'Password confirmation is required',
+        },
+        password_confirmation_not_match: 'Password confirmation does not match',
+      }
     },
+  },
+  modals: {
+    services: {
+      title: 'Accomodation amenities'
+    },
+    accomodation_images: {
+      title: 'Accomodation images',
+    }
   },
   currency: {
     symbol: '£',
   },
+  bookingStatus: 'PENDING | CONFIRMED | COMPLETED | CANCELLED',
+  accomodation_categories: ['Apartament' , 'Loft' , 'Cottage' , 'Penthouse' , 'Duplex','Terraced house' ,'Studio apartment'],
+  accomodation_amenities: ['Wifi', 'Heating', 'TV', 'Bed sheets', 'Towels', 'Smoke alarm', 'First ait kit', 'Breakfast', 'Free parking', 'Air conditioning', 'Hot water', 'Hair dryer', 'Washing machine', 'Iron', 'Dishes', 'Pets allowed', 'Smokers allowed', 'Cot', 'Cleaning products', 'Microwave', 'Coffee maker', 'Accesible for the disabled', 'Freezer', 'Oven', 'Dishwasher', 'Balcony / patio', 'Lift', 'Jacuzzi', 'Private pool', 'Shared pool', 'Garden', 'Work area / Office'],
+  accomodation_rules: ['No smoking', 'Pets not allowed', 'No parties or events'],
+  linkers: {
+    in: 'in',
+  }
 };
