@@ -121,7 +121,7 @@ onMounted(() => {
         <BaseMessageItem
           v-for="(msgError, index) in authStore.errors"
           :key="index"
-          :msg="msgError"
+          :msg="$t(msgError)"
           msgType="error"
         />
       </div>
@@ -129,7 +129,7 @@ onMounted(() => {
     <Transition name="fade">
       <div v-if="showSuccessMessage == true">
         <BaseMessageItem
-          msg="La contraseña se ha restablecido correctamente"
+          :msg="$t('components.forms.messages.password_updated.success')"
           msgType="success"
         />
       </div>

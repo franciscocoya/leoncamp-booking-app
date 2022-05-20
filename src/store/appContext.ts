@@ -12,6 +12,7 @@ const useAppContextStore = defineStore({
     appCurrencies: [],
     userConfiguration: {},
     showSearchResults: false,
+    isGeolocationSupported: false
   }),
 
   actions: {

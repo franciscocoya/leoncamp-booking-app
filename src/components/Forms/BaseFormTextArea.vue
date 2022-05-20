@@ -72,7 +72,7 @@ function handleBlur() {
 
   & > label {
     font-size: 11px;
-    color: gray;
+    color: $color-dark;
     position: absolute;
     top: 5px;
     left: 10px;
@@ -84,6 +84,10 @@ function handleBlur() {
     height: 250px;
     padding-top: 20px;
     outline: none;
+
+    &:focus{
+      outline: 2px solid $color-dark;
+    }
   }
 }
 

@@ -100,6 +100,18 @@ export const es_msgs = {
     step_display: 'Paso {n1} de {n2}',
     step1: {
       title: 'Datos básicos',
+      description: {
+        title: 'Realiza una descripción lo más detallada posible para atraer a nuevos huéspedes y crecer en la comunidad. Puedes explicar más características y servicios que ofreces, que no se encuentran disponibles en la plataforma.'
+      },
+      category: {
+        title: 'Selecciona un categoría',
+      },
+      area: {
+        title: 'Accomodation area'
+      },
+      guests: {
+        title: 'Maximum guests',
+      }
     },
     step2: {
       title: 'Ubicación',
@@ -345,17 +357,66 @@ export const es_msgs = {
           min: 'El DNI debe tener 8 dígitos y una letra',
           invalid: 'El DNI no se corresponde con un DNI español válido',
         },
+        registerNumber: {
+          required: 'El número de registro es obligatorio',
+          invalid: 'El número de registro no es válido',
+          exists: 'Ya existe un alojamiento con el número de registro introducido'
+        },
+        description: {
+          invalid: 'La descripción no es válida',
+        },
+        area: {
+          invalid: 'La superficie no es válida',
+        },
+        numOfBeds: {
+          invalid: 'El número de camas no es válido',
+        },
+        numOfBathrooms:{
+          invalid: 'El número de baños no es válido',
+        },
+        numOfBedrooms: {
+          invalid: 'El número de habitaciones no es válido',
+        },
+        price: {
+          invalid: 'El precio no es válido',
+        },
+        guests: {
+          invalid: 'El número de huéspedes no es válido',
+        },
+        category: {
+          required: 'Selecciona una categoría',
+        },
         direction: {
           required: 'La dirección es obligatoria',
           invalid: 'La dirección no es válida',
         },
+        location: {
+          city: {
+            invalid: 'La ciudad no es válida',
+          },
+          zip: {
+            invalid: 'El código postal no es válido',
+            not_spanish_zip: 'El código postal no se corresponde con un código postal español',
+          },
+          geolocation_not_supported: 'La geolocalización no está soportada en este navegador',
+        },
         password: {
           required: 'La contraseña es obligatoria',
+        },
+        current_password: {
+          required: 'La contraseña actual es obligatoria',
+          invalid: 'La contraseña actual no es correcta',
+        },
+        new_password: {
+          required: 'La nueva contraseña es obligatoria',
         },
         password_confirmation: {
           required: 'La confirmación de la contraseña es obligatoria',
         },
         password_confirmation_not_match: 'Las contraseñas no coinciden',
+        password_updated: {
+          success: 'La contraseña se ha actualizado correctamente',
+        },
         login: {
           invalid: 'El email o la contraseña no son válidos',
         },
@@ -367,6 +428,15 @@ export const es_msgs = {
             error: 'Error al actualizar el usuario',
           },
         },
+        images: {
+          mime: 'La imagen no tiene un formato válido (jpg, jpeg, png, webp o gif)',
+          invalid: 'La imagen no es válida',
+          success: 'Imagen subida correctamente',
+          multiple_success: 'Imágenes subidas correctamente',
+          loading: 'Subiendo imagen...',
+          size: 'La imagen no puede superar los {size} {unit}',
+          maxImages: 'Puede subir hasta un máximo de {max} imágenes',
+        }
       },
     },
   },

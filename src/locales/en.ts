@@ -100,6 +100,18 @@ export const en_msgs = {
     step_display: 'Step {n1} of {n2}',
     step1: {
       title: 'Basic data',
+      description: {
+        title: 'Make your description as detailed as possible to attract new visitors and grow your community. You can explain more features and services you offer that are not yet available on the platform.'
+      },
+      category: {
+        title: 'Category',
+      },
+      area: {
+        title: 'Superficie habitable del alojamiento (En metros cuadrados)'
+      },
+      guests: {
+        title: 'Aforo máximo de huéspedes en el alojamiento.'
+      }
     },
     step2: {
       title: 'Location',
@@ -342,17 +354,66 @@ export const en_msgs = {
           min: 'ID Card must be at least 8 digits and 1 letter',
           invalid: 'ID Card is not a valid Spanish ID card',
         },
+        registerNumber: {
+          required: 'Register number is required',
+          invalid: 'Number register is invalid',
+          exists: 'An accommodation with the entered registration number already exists.'
+        },
+        description: {
+          invalid: 'Description is invalid',
+        },
+        area: {
+          invalid: 'Area is invalid',
+        },
+        numOfBeds: {
+          invalid: 'Number of beds is invalid',
+        },
+        numOfBathrooms:{
+          invalid: 'Number of bathrooms is invalid',
+        },
+        numOfBedrooms: {
+          invalid: 'Number of bedrooms is invalid',
+        },
+        price: {
+          invalid: 'Price is invalid',
+        },
+        guests: {
+          invalid: 'Number of guests is invalid',
+        },
+        category: {
+          required: 'Select a category',
+        },
         direction: {
           required: 'Direction is required',
           invalid: 'Direction is invalid',
         },
+        location: {
+          city: {
+            invalid: 'City is invalid',
+          },
+          zip: {
+            invalid: 'Zip code is invalid',
+            not_spanish_zip: 'Zip code is not a valid Spanish zip code',
+          },
+          geolocation_not_supported: 'Geolocation is not supported by this browser.',
+        },
         password: {
           required: 'Password is required',
+        },
+        current_password: {
+          required: 'Current password is required',
+          invalid: 'Current password is invalid',
+        },
+        new_password: {
+          required: 'New password is required',
         },
         password_confirmation: {
           required: 'Password confirmation is required',
         },
         password_confirmation_not_match: 'Password confirmation does not match',
+        password_updated: {
+          success: 'Password reset successfully',
+        },
         login: {
           invalid: 'Email or password are invalid',
         },
@@ -364,6 +425,15 @@ export const en_msgs = {
             error: 'Error updating user',
           },
         },
+        images: {
+          mime: 'Image must be a valid image (jpg, jpeg, png, webp or gif)',
+          invalid: 'Image is invalid',
+          success: 'Image uploaded successfully',
+          multiple_success: 'Images uploaded successfully',
+          loading: 'Uploading image...',
+          size: 'Image size must be less than {size} {unit}',
+          maxImages: 'You can upload a maximum of {max} images',
+        }
       },
     },
   },

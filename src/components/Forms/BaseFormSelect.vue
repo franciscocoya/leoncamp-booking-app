@@ -73,7 +73,7 @@ const handleBlur = () => {
     top: 2px;
     left: 8px;
     font-size: 11px;
-    color: grey;
+    color: $color-dark;
   }
 }
 
@@ -84,6 +84,10 @@ const handleBlur = () => {
   .label-select-container {
     & > select {
       width: 100%;
+
+      &:focus{
+      outline: 2px solid $color-dark;
+    }
     }
   }
 }

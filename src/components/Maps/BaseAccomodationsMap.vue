@@ -1,11 +1,13 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 
 import { useRouter } from "vue-router";
 
 import mapboxgl from "mapbox-gl";
 
 import i18n from "@/i18n";
+
+let map = ref({});
 
 const router = useRouter();
 
@@ -24,10 +26,21 @@ const props = defineProps({
   },
 });
 
-onMounted(async () => {
-  const map = await new mapboxgl.Map({
+const createAccomodationThumnail = (lat, lng, regNumber, thumb) => {
+  return `
+  <div id=${regNumber}>
+  <img src="${thumb}"
+    <h3>${key}</h3>
+    <p>${lat}</p>
+    <p>${lng}</p>
+    
+  </div>	`;
+};
+
+onMounted(() => {
+  map = new mapboxgl.Map({
     accessToken: import.meta.env.VITE_MAPBOX_API_TOKEN,
-    container: "map",
+    container: "map-1",
     style: "mapbox://styles/mapbox/streets-v11",
     center: [
       props?.markers[0]?.coords?.lng ?? -5.579879833258864,
@@ -38,18 +51,77 @@ onMounted(async () => {
   }).addControl(new mapboxgl.NavigationControl(), "top-right");
 
   map.on("load", () => {
-    map.setLayoutProperty("country-label", "text-field", [
-      "get",
-      `name_${i18n.locale}`,
-    ]);
+    props.markers.forEach((markerToAdd) => {
+      const priceMark = document.createElement("div");
+      priceMark.id = `marker_${markerToAdd.registerNumber}`;
+
+      const isMarkerSelected =
+        props.selectedMarker === markerToAdd.registerNumber;
+
+      // Estilos marker
+      priceMark.style.width = "max-content";
+      priceMark.style.textAlign = "center";
+      priceMark.style.backgroundColor =
+        isMarkerSelected == true ? "#222222" : "#FFFFFF";
+      priceMark.style.color = isMarkerSelected == true ? "#FFFFFF" : "#222222";
+      priceMark.style.fontSize = "1.1rem";
+      priceMark.style.fontWeight = "700";
+      priceMark.style.border = "1px solid rgb(221, 221, 221)";
+      priceMark.style.borderRadius = "50px";
+      priceMark.style.padding = "5px 10px";
+      priceMark.style.cursor = "pointer";
+      priceMark.style.transition = "all 0.3s ease-in";
+
+      priceMark.innerText = `${markerToAdd.price} €`;
+
+      // Redirección a la vista de detalle del alojamiento
+      priceMark.addEventListener("click", () => {
+        router.push({
+          name: "accomodation-detail",
+          params: {
+            registerNumber: markerToAdd.registerNumber,
+          },
+        });
+      });
+
+      priceMark.addEventListener("mouseover", () => {
+        priceMark.style.backgroundColor = "#222222";
+        priceMark.style.color = "#FFFFFF";
+      });
+
+      priceMark.addEventListener("mouseleave", () => {
+        priceMark.style.backgroundColor = "#FFFFFF";
+        priceMark.style.color = "#222222";
+      });
+
+      new mapboxgl.Marker(priceMark)
+        .setLngLat([markerToAdd.coords.lng, markerToAdd.coords.lat])
+        .addTo(map);
+    });
+
+    map.flyTo({
+      center: [
+        props?.markers[0]?.coords?.lng ?? -5.579879833258864,
+        props?.markers[0]?.coords?.lat ?? 42.60613038790926,
+      ],
+      zoom: 14,
+      speed: 0.8,
+      curve: 1,
+      easing(t) {
+        return t;
+      },
+    });
   });
+});
 
+onUpdated(() => {
   // Representar los markers en el mapa.
-  await props.markers.forEach((marker) => {
+  props.markers.forEach((markerToAdd) => {
     const priceMark = document.createElement("div");
-    priceMark.id = `marker_${marker.registerNumber}`;
+    priceMark.id = `marker_${markerToAdd.registerNumber}`;
 
-    const isMarkerSelected = props.selectedMarker === marker.registerNumber;
+    const isMarkerSelected =
+      props.selectedMarker === markerToAdd.registerNumber;
 
     // Estilos marker
     priceMark.style.width = "max-content";
@@ -66,14 +138,14 @@ onMounted(async () => {
     priceMark.style.cursor = "pointer";
     priceMark.style.transition = "all 0.3s ease-in";
 
-    priceMark.innerText = `${marker.price} €`;
+    priceMark.innerText = `${markerToAdd.price} €`;
 
     // Redirección a la vista de detalle del alojamiento
     priceMark.addEventListener("click", () => {
       router.push({
         name: "accomodation-detail",
         params: {
-          registerNumber: marker.registerNumber,
+          registerNumber: markerToAdd.registerNumber,
         },
       });
     });
@@ -89,14 +161,14 @@ onMounted(async () => {
     });
 
     new mapboxgl.Marker(priceMark)
-      .setLngLat([marker.coords.lng, marker.coords.lat])
+      .setLngLat([markerToAdd.coords.lng, markerToAdd.coords.lat])
       .addTo(map);
   });
 });
 </script>
 
 <template>
-  <div id="map"></div>
+  <div id="map-1"></div>
 </template>
 
 <style lang="scss" scoped>

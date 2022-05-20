@@ -10,11 +10,11 @@ import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
 const props = defineProps({
   lat: {
     type: Number,
-    default: 0,
+    default: 42.60613038790926,
   },
   lng: {
     type: Number,
-    default: 0,
+    default: -5.579879833258864,
   },
   mapWidth: {
     type: String,

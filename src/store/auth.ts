@@ -37,38 +37,72 @@ const useAuthStore = defineStore({
      * Restablece la contraseña del usuario, si éste está en sesión.
      */
     async resetPasswordLoggedUser() {
-      const userId = JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
+      const userId = this?.userData?.id ?? JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
       await resetPassword(
         userId,
         this.password,
         this.newPassword,
         this.repeatedPassword,
         (err: any) => {
+          console.log(err.data);
           if (err.data.message) {
-            this.errors.push(err.data.message as string);
-
-            if (err.data.errors) {
-              err.data.errors.forEach((errMsg: any) => {
-                this.errors.push(errMsg?.defaultMessage);
-              });
-            }
+            this.errors.push(this.translateErrorMessages(err.data.message));
+            //this.errors.push('components.forms.messages.current_password.invalid');
           }
         }
       );
+    },
+
+    /**
+     * i18n errores del formulario - 
+     * 
+     * @param errMsg 
+     * @returns 
+     */
+    translateErrorMessages(errMsg: any) {
+      let translateMessage = '';
+      const baseMessagePath = 'components.forms.messages';
+      switch (errMsg) {
+        case 'La contraseña actual es obligatoria':
+          translateMessage = `${baseMessagePath}.current_password.required`;
+          break;
+
+        case 'La nueva contraseña es obligatoria':
+          translateMessage = `${baseMessagePath}.new_password.required`;
+          break;
+
+        case 'Es obligatorio repetir la nueva contraseña':
+          translateMessage = `${baseMessagePath}.password_confirmation.required`;
+          break;
+
+        case 'La contraseña actual es incorrecta':
+          translateMessage = `${baseMessagePath}.current_password.invalid`;
+          break;
+
+        case 'Las contraseñas no coinciden':
+          translateMessage = `${baseMessagePath}.password_confirmation_not_match`;
+          break;
+
+        default:
+          translateMessage = 'components.forms.messages.default';
+          break;
+      }
+
+      return translateMessage;
     },
     /**
      * Actualizar los datos del usuario
      * @returns
      */
     async updateUserProfile() {
-      const updatedUserData = await updateUserData(
+      const updatedUserData: User = await updateUserData(
         this?.userData?.id,
         this?.userData?.name,
         this?.userData?.surname,
         this?.userData?.email,
         this?.userData?.phone,
-        this?.userData?.dni,
-        this?.userData?.bio,
+        this?.userData?.datosHost?.dni,
+        this?.userData?.datosHost?.bio,
         (err: any) => {
           return err;
         }
@@ -80,9 +114,9 @@ const useAuthStore = defineStore({
       this.userData.phone = updatedUserData?.phone;
 
       // Si el usuario es host, se actualizan los siguientes datos.
-      if (this.userData.dni) {
-        this.userData.dni = updatedUserData.dni;
-        this.userData.bio = updatedUserData.bio;
+      if (this.userData.datosHost?.dni && this.userData.datosHost?.bio) {
+        this.userData.datosHost.dni = updatedUserData?.datosHost?.dni!;
+        this.userData.datosHost.bio = updatedUserData?.datosHost?.bio!;
       }
     },
 
@@ -91,14 +125,14 @@ const useAuthStore = defineStore({
      */
     async updateUserHost() {
       await updateUserHostData(
-        this.userData.id,
-        this.userData.dni,
-        this.userData.bio,
-        this.userData.direction,
-        this.userData.emailVerified,
-        this.userData.dniVerified,
-        this.userData.phoneVerified,
-        this.userData.verified,
+        this.userData?.id,
+        this.userData?.datosHost?.dni ?? '',
+        this.userData?.datosHost?.bio ?? '',
+        this.userData?.datosHost?.direction,
+        this.userData?.datosHost?.emailVerified,
+        this.userData?.datosHost?.dniVerified,
+        this.userData?.datosHost?.phoneVerified,
+        this.userData?.datosHost?.verified,
         (err: any) => {
           return err;
         }
@@ -109,7 +143,7 @@ const useAuthStore = defineStore({
      * Cierre de sesión del
      */
     logout() {
-      this.userData = {};
+      this.userData = {} as User;
       sessionStorage.removeItem('user');
       sessionStorage.removeItem('data');
       window.location.href = '/';

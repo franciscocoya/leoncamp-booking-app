@@ -18,7 +18,7 @@ import { checkFileSize, checkImageMimeType } from "@/helpers/formValidator";
 
 const accomodationStore = useAccomodationStore();
 
-const dragText = ref("Selecciona uno o varios archivo/s o arrástralo/s aquí");
+const dragText = ref("upload_accomodation_view.step5.dragArea.title");
 
 /**
  * Manejador del evento de subida de imágenes mediante drag & drop.
@@ -30,56 +30,52 @@ const handleDragImages = async (e) => {
   e.preventDefault();
 
   if (e.dataTransfer.items) {
-    // Usar la interfaz DataTransferItemList para acceder a el/los archivos)
-    for (let i = 0; i < e.dataTransfer.items.length; i++) {
-      // Si los elementos arrastrados no son ficheros, rechazarlos
-      console.log(e.dataTransfer.items[i].kind);
-      if (
-        e.dataTransfer.items[i].kind === "file" &&
-        e.dataTransfer.items[i].type.match(/image.*/)
-      ) {
-        dragText.value = "Cargando...";
-        let file = await e.dataTransfer.items[i].getAsFile();
+    if (e.dataTransfer.items.length > MAX_IMAGES_UPLOAD) {
+      showImageMessage("components.forms.messages.images.maxImages");
+    } else {
+      // Usar la interfaz DataTransferItemList para acceder a el/los archivos)
+      for (let i = 0; i < e.dataTransfer.items.length; i++) {
+        // Si los elementos arrastrados no son ficheros, rechazarlos
+        if (
+          e.dataTransfer.items[i].kind === "file"
+        ) {
+          dragText.value = "components.forms.messages.images.loading";
+          let file = await e.dataTransfer.items[i].getAsFile();
 
-        // Comprobar que la imagen no supera el tamaño máximo
-        // y que su MIME type es válido.
-        if (checkFileSize(file) && checkImageMimeType(file)) {
-          let imageBase64 = await convertImageToBase64(file);
+          // Comprobar que la imagen no supera el tamaño máximo
+          // y que su MIME type es válido.
+          if (checkFileSize(file)) {
+            if (checkImageMimeType(file)) {
+              let imageBase64 = await convertImageToBase64(file);
 
-          let accomodationImageToAdd = {
-            idAccomodation: accomodationStore.registerNumber,
-            idAccomodationImage: {
-              id: i,
-              imageUrl: imageBase64,
-            },
-          };
+              let accomodationImageToAdd = {
+                idAccomodation: accomodationStore.registerNumber,
+                idAccomodationImage: {
+                  id: i,
+                  imageUrl: imageBase64,
+                },
+              };
 
-          await accomodationStore.accomodationImages.push(
-            accomodationImageToAdd
-          );
+              await accomodationStore.accomodationImages.push(
+                accomodationImageToAdd
+              );
 
-          dragText.value = "Imagen cargada";
-          document
-            .getElementById("drag_and_drop_area_container")
-            .classList.add("--drag-area-success");
+              dragText.value = "components.forms.messages.images.success";
+              document
+                .getElementById("drag_and_drop_area_container")
+                .classList.add("--drag-area-success");
 
-          setTimeout(() => {
-            document
-              .getElementById("drag_and_drop_area_container")
-              .classList.remove("--drag-area-success");
-          }, 4000);
-        } else {
-          e.preventDefault();
-          dragText.value = "Archivo no válido";
-          document
-            .getElementById("drag_and_drop_area_container")
-            .classList.add("--drag-area-error");
-
-          setTimeout(() => {
-            document
-              .getElementById("drag_and_drop_area_container")
-              .classList.remove("--drag-area-error");
-          }, 4000);
+              setTimeout(() => {
+                document
+                  .getElementById("drag_and_drop_area_container")
+                  .classList.remove("--drag-area-success");
+              }, 4000);
+            } else {
+              showImageMessage("components.forms.messages.images.mime");
+            }
+          } else {
+            showImageMessage("components.forms.messages.images.size");
+          }
         }
       }
     }
@@ -90,42 +86,29 @@ const handleDragImages = async (e) => {
       if (
         e.dataTransfer.files[i].kind === "file" &&
         e.dataTransfer.files[i].type.match(/image.*/) &&
-        checkFileSize(file) &&
-        checkImageMimeType(file)
+        checkFileSize(file)
       ) {
-        let imageBase64 = await convertImageToBase64(e.dataTransfer.files[i]);
+        if (checkImageMimeType(file)) {
+          let imageBase64 = await convertImageToBase64(e.dataTransfer.files[i]);
 
-        let accomodationImageToAdd = {
-          idAccomodation: accomodationStore.registerNumber,
-          idAccomodationImage: {
-            id: i,
-            imageUrl: imageBase64,
-          },
-        };
+          let accomodationImageToAdd = {
+            idAccomodation: accomodationStore.registerNumber,
+            idAccomodationImage: {
+              id: i,
+              imageUrl: imageBase64,
+            },
+          };
 
-        accomodationStore.accomodationImages.push(accomodationImageToAdd);
-        document
-          .getElementById("drag_and_drop_area_container")
-          .classList.add("--drag-area-success");
-
-        setTimeout(() => {
-          document
-            .getElementById("drag_and_drop_area_container")
-            .classList.remove("--drag-area-success");
-        }, 4000);
+          accomodationStore.accomodationImages.push(accomodationImageToAdd);
+          showImageMessage(
+            "components.forms.messages.images.success",
+            "success"
+          );
+        } else {
+          showImageMessage("components.forms.messages.images.mime", "error");
+        }
       } else {
-        e.preventDefault();
-
-        dragText.value = "Archivo no válido";
-        document
-          .getElementById("drag_and_drop_area_container")
-          .classList.add("--drag-area-error");
-
-        setTimeout(() => {
-          document
-            .getElementById("drag_and_drop_area_container")
-            .classList.remove("--drag-area-error");
-        }, 4000);
+        showImageMessage("components.forms.messages.images.size", "error");
       }
     }
   }
@@ -154,19 +137,52 @@ const removeDragImages = (e) => {
 const handleClickUploadImage = async (e) => {
   let uploadedFiles = e.target.files;
 
-  for (let i = 0; i < uploadedFiles.length; i++) {
-    let imageBase64 = await convertImageToBase64(uploadedFiles[i]);
+  if (uploadedFiles.length > MAX_IMAGES_UPLOAD) {
+    showImageMessage("components.forms.messages.images.maxImages", "error");
+  } else {
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      if (checkFileSize(uploadedFiles[i])) {
+        if (checkImageMimeType(uploadedFiles[i])) {
+          let imageBase64 = await convertImageToBase64(uploadedFiles[i]);
 
-    let accomodationImageToAdd = {
-      idAccomodation: accomodationStore.registerNumber,
-      idAccomodationImage: {
-        id: i,
-        imageUrl: imageBase64,
-      },
-    };
+          let accomodationImageToAdd = {
+            idAccomodation: accomodationStore.registerNumber,
+            idAccomodationImage: {
+              id: i,
+              imageUrl: imageBase64,
+            },
+          };
 
-    await accomodationStore.accomodationImages.push(accomodationImageToAdd);
+          await accomodationStore.accomodationImages.push(
+            accomodationImageToAdd
+          );
+        } else {
+          showImageMessage("components.forms.messages.images.mime", "error");
+        }
+      } else {
+        showImageMessage("components.forms.messages.images.size", "error");
+      }
+    }
   }
+};
+
+/**
+ * Método auxiliar para mostrar un error al subir una imagen en el área de subida (click o drag)
+ */
+const showImageMessage = (msg, type = "error") => {
+  dragText.value = msg;
+
+  document
+    .getElementById("drag_and_drop_area_container")
+    .classList.add(`--drag-area-${type}`);
+
+  setTimeout(() => {
+    document
+      .getElementById("drag_and_drop_area_container")
+      .classList.remove(`--drag-area-${type}`);
+
+      dragText.value = 'upload_accomodation_view.step5.dragArea.title';
+  }, 4000);
 };
 </script>
 
@@ -175,8 +191,8 @@ const handleClickUploadImage = async (e) => {
     <h2 v-once v-t="'upload_accomodation_view.step5.title'"></h2>
     <p>
       {{
-        $tc('upload_accomodation_view.step5.subtitle', {
-          n: MAX_IMAGES_UPLOAD
+        $tc("upload_accomodation_view.step5.subtitle", {
+          n: MAX_IMAGES_UPLOAD,
         })
       }}
     </p>
@@ -188,7 +204,9 @@ const handleClickUploadImage = async (e) => {
         id="drag_and_drop_area_container"
         @drop="(e) => handleDragImages(e)"
         @dragover.stop
-        @dragend="dragText = 'Imágenes subidas'"
+        @dragend="
+          dragText = 'components.forms.messages.images.multiple_success'
+        "
       >
         <form>
           <!-- Icono subida archivos -->
@@ -205,13 +223,20 @@ const handleClickUploadImage = async (e) => {
           </svg>
           <label for="">
             {{
-              $t('upload_accomodation_view.step5.dragArea.title')
+              $tc(dragText, {
+                size: 500,
+                unit: "Kb",
+              })
             }}
 
             <br />
-            <span v-once v-t="'upload_accomodation_view.step5.dragArea.image_format'">jpg, jpeg, png, gif</span>
+            <span
+              v-t="'upload_accomodation_view.step5.dragArea.image_format'"
+            ></span>
             <br />
-            <span v-once v-t="'upload_accomodation_view.step5.dragArea.image_max_size'">Tamaño máximo por imagen: 500Kb</span>
+            <span
+              v-t="'upload_accomodation_view.step5.dragArea.image_max_size'"
+            ></span>
           </label>
           <input
             type="file"

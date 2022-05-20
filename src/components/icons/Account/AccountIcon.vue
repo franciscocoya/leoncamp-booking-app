@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import {
@@ -9,11 +10,16 @@ import {
 // Utils
 import { convertImageToBase64 } from "@/helpers/utils";
 
+import { checkFileSize, checkImageMimeType } from "@/helpers/formValidator";
+
 // Servicios
 import { uploadUserProfileImage } from "@/services/user/userService";
 
+import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
+
 // Store
 import { useUserStore } from "@/store/user";
+import { onUpdated } from "@vue/runtime-core";
 const userStore = useUserStore();
 
 const router = useRouter();
@@ -52,6 +58,9 @@ const props = defineProps({
 
 const emit = defineEmits(["showMenu"]);
 
+const uploadErrors = ref([]);
+const showUploadErrorMessage = ref(false);
+
 const showMenuMobile = () => {
   emit("showMenu");
 };
@@ -66,10 +75,28 @@ const redirectToUserProfile = () => {
 };
 
 const handleUpdateImage = async (img) => {
-  const imgEncoded = await convertImageToBase64(img);
-  const newImg = await uploadUserProfileImage(userStore.id, imgEncoded);
-  userStore.profileImage = decodeURI(newImg);
-  window.location.reload();
+  uploadErrors.value = [];
+
+  console.log(checkImageMimeType(img));
+  if (checkFileSize(img)) {
+    if (checkImageMimeType(img)) {
+      const imgEncoded = await convertImageToBase64(img);
+      const newImg = await uploadUserProfileImage(userStore.id, imgEncoded);
+      userStore.profileImage = decodeURI(newImg);
+
+      window.location.reload();
+    } else {
+      uploadErrors.value.push("components.forms.messages.images.mime");
+      showUploadErrorMessage.value = true;
+    }
+  } else {
+    uploadErrors.value.push("components.forms.messages.images.size");
+    showUploadErrorMessage.value = true;
+  }
+
+  setTimeout(() => {
+    showUploadErrorMessage.value = false;
+  }, 3000);
 };
 </script>
 
@@ -105,6 +132,19 @@ const handleUpdateImage = async (img) => {
         @input="handleUpdateImage($event.target.files[0])"
       />
     </form>
+    <Transition name="fade">
+      <div v-if="props.isUploading == true && showUploadErrorMessage == true" id="upload_profile_image_error">
+        <BaseMessageItem
+          v-for="(msgError, index) in uploadErrors"
+          :key="index"
+          :msg="$tc(msgError, {
+            size: 500,
+            unit: 'Kb'
+          })"
+          msgType="error"
+        />
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -148,6 +188,13 @@ const handleUpdateImage = async (img) => {
       opacity: 0;
       cursor: pointer;
     }
+  }
+
+  & #upload_profile_image_error {
+    width: 250px;
+    margin-top: 20px;
+    position: absolute;
+    bottom: -30px;
   }
 }
 </style>

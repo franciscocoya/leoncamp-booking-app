@@ -6,18 +6,20 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseFormTextArea from "@/components/Forms/BaseFormTextArea.vue";
 import BaseFormSelect from "@/components/Forms/BaseFormSelect.vue";
+import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useFormErrorsStore } from "@/store/formErrors";
+import {useAppContextStore} from "@/store/appContext";
 
 // Service
 import { getAccomodationLocationByCoords } from "@/services/accomodation/AccomodationService";
 
 // Rutas permitidas
-import { headerRoutes } from "@/helpers/appRoutes";
+import { uploadAccomodationRoutes } from "@/helpers/appRoutes";
 
 // Validaciones
 import {
@@ -34,6 +36,7 @@ const currentCoords = ref({
 
 const accomodationStore = useAccomodationStore();
 const formErrorsStore = useFormErrorsStore();
+const appContextStore = useAppContextStore();
 
 /**
  * Valida la dirección del alojamiento
@@ -46,7 +49,7 @@ const checkAccomodationDirection = () => {
       100
     )
   ) {
-    formErrorsStore.errors.push("La dirección introducida no es válida");
+    formErrorsStore.errors.push("components.forms.messages.direction.invalid");
   }
 
   showNextButton();
@@ -63,7 +66,9 @@ const checkAccomodationCity = () => {
       30
     )
   ) {
-    formErrorsStore.errors.push("La ciudad introducida no es válida");
+    formErrorsStore.errors.push(
+      "components.forms.messages.location.city.invalid"
+    );
   }
 
   showNextButton();
@@ -73,6 +78,7 @@ const checkAccomodationCity = () => {
  * Valida el código postal introducido.
  */
 const checkAccomodationZipCode = () => {
+
   if (
     !checkInputStringFieldIsValid(
       accomodationStore?.accomodationLocation.zip,
@@ -80,14 +86,16 @@ const checkAccomodationZipCode = () => {
       4
     )
   ) {
-    formErrorsStore.errors.push("El código postal no es válido");
+    formErrorsStore.errors.push(
+      "components.forms.messages.location.zip.invalid"
+    );
   } else {
     // Si no está vacío
     if (
       !checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip)
     ) {
       formErrorsStore.errors.push(
-        "El código postal no se corresponde con ninguna provincia"
+        "components.forms.messages.location.zip.not_spanish_zip"
       );
     }
   }
@@ -97,23 +105,24 @@ const checkAccomodationZipCode = () => {
 
 const showNextButton = () => {
   formErrorsStore.enableNextButton =
-    checkInputStringFieldIsValid(
-      accomodationStore?.accomodationLocation.direction
-    ) &&
-    checkInputStringFieldIsValid(
-      accomodationStore?.accomodationLocation.city
-    ) &&
-    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip) &&
+    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.direction, 2, 100) &&
+    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.city, 2, 30) &&
+    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip, 4, 4) &&
     checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip);
 
   if (formErrorsStore.enableNextButton) {
     formErrorsStore.errors = [];
+  }else{
+    setTimeout(() => {
+      formErrorsStore.errors = [];
+    }, 6000);
   }
 };
 
 onMounted(async () => {
+  formErrorsStore.enableNextButton = false;
   if (!navigator.geolocation) {
-    console.log("El navegador no sorporta geolocalización.");
+    appContextStore.isGeolocationSupported = false;
   }
 
   // Si el navegador soporta geolocalización, obtener las coordenadas actuales y reflejarlas en el mapa.
@@ -140,7 +149,7 @@ onMounted(async () => {
 onBeforeRouteLeave((from, to) => {
   if (
     formErrorsStore.enableNextButton == false &&
-    !headerRoutes.includes(to.name)
+    uploadAccomodationRoutes.includes(from.name)
   ) {
     return false;
   }
@@ -166,7 +175,7 @@ onBeforeRouteLeave((from, to) => {
             "
           />
           <LabelFormInput
-             :inputLabel="$t('components.forms.lng')"
+            :inputLabel="$t('components.forms.lng')"
             inputType="text"
             :isReadonly="true"
             :inputValue="accomodationStore.accomodationLocation.coords.lng"
@@ -178,7 +187,7 @@ onBeforeRouteLeave((from, to) => {
         </div>
         <div class="accomodation-upload-location-form__direction">
           <LabelFormInput
-             :inputLabel="$t('components.forms.direction')"
+            :inputLabel="$t('components.forms.direction')"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.direction"
             @handleInput="
@@ -190,7 +199,7 @@ onBeforeRouteLeave((from, to) => {
         </div>
         <div class="accomodation-upload-location-form__direction-city">
           <LabelFormInput
-             :inputLabel="$t('components.forms.city')"
+            :inputLabel="$t('components.forms.city')"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.city"
             @handleInput="
@@ -199,7 +208,7 @@ onBeforeRouteLeave((from, to) => {
             @handleBlur="checkAccomodationCity"
           />
           <LabelFormInput
-             :inputLabel="$t('components.forms.zip')"
+            :inputLabel="$t('components.forms.zip')"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.zip"
             @handleInput="
@@ -221,6 +230,11 @@ onBeforeRouteLeave((from, to) => {
         />
       </div>
     </div>
+    <Transition name="fade">
+      <div v-if="appContextStore.isGeolocationSupported == true">
+        <BaseMessageItem :msg="$t('components.forms.messages.location.geolocation_not_supported')" msgType="warning"/>
+      </div>
+    </Transition>
   </div>
 </template>
 

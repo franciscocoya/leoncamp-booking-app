@@ -35,10 +35,11 @@ const authRoutes = [
     '/password/reset'
 ];
 
-const headerRoutes = ['saved', 'home', 'user-bookings', 
-'error-404', 'account', 'user-profile',
-'user-ads', 'user-configuration', 'user-privacy', 'reset-password'];
+const headerRoutes = ['saved', 'home', 'user-bookings',
+    'error-404', 'account', 'user-profile',
+    'user-ads', 'user-configuration', 'user-privacy', 'reset-password'];
 
+const uploadAccomodationRoutes = ['accomodation-upload-basic-data', 'accomodation-upload-location', 'accomodation-upload-services', 'accomodation-upload-rules', 'accomodation-upload-images']
 
 const publicRoutes = [
     '/'
@@ -48,6 +49,7 @@ export {
     publicRoutes,
     authRoutes,
     headerRoutes,
+    uploadAccomodationRoutes,
     USER_SIGNIN_ROUTE,
     USER_SIGNUP_ROUTE,
     ADMINISTRATOR_ROUTE,

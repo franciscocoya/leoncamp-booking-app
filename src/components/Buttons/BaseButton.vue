@@ -25,6 +25,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  type: {
+    type: String,
+    default: "button",
+  }
 });
 
 const emit = defineEmits(["click"]);
@@ -43,7 +47,7 @@ function handleClick() {
       :id="buttonId && buttonId"
       :disabled="isDisabled"
       :title="title"
-      type="button"
+      :type="type"
     >
       {{ text }}
     </button>

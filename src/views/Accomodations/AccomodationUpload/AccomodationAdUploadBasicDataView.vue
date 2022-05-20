@@ -16,8 +16,8 @@ import { getAllAccomodationCategories } from "@/services/accomodation/Accomodati
 import { useAccomodationStore } from "@/store/accomodation";
 import { useFormErrorsStore } from "@/store/formErrors";
 
-// Rutas
-import { headerRoutes } from "@/helpers/appRoutes";
+// Rutas permitidas
+import { uploadAccomodationRoutes } from "@/helpers/appRoutes";
 
 // Validaciones
 import {
@@ -41,7 +41,9 @@ const allAvailableAccomodationCategories = ref([]);
  */
 const checkRegisterNumber = async () => {
   if (!checkInputStringFieldIsValid(accomodationStore?.registerNumber, 1, 20)) {
-    formErrorsStore.errors.push("El número de registro no es válido");
+    formErrorsStore.errors.push(
+      "components.forms.messages.registerNumber.invalid"
+    );
   } else {
     const existsAccomodation = await checkAccomodationExistsByRegNumber(
       accomodationStore?.registerNumber
@@ -49,7 +51,7 @@ const checkRegisterNumber = async () => {
 
     if (existsAccomodation) {
       formErrorsStore.errors.push(
-        "Ya existe un alojamiento con el número de registro introducido"
+        "components.forms.messages.registerNumber.exists"
       );
     }
   }
@@ -62,7 +64,9 @@ const checkRegisterNumber = async () => {
  */
 const checkAccomodationDescription = () => {
   if (!checkInputStringFieldIsValid(accomodationStore?.description, 1, 10000)) {
-    formErrorsStore.errors.push("La descripción introducida no es válida");
+    formErrorsStore.errors.push(
+      "components.forms.messages.description.invalid"
+    );
   }
 
   showNextButton();
@@ -73,7 +77,7 @@ const checkAccomodationDescription = () => {
  */
 const checkAccomodationArea = () => {
   if (!checkInputNumberFieldIsValid(accomodationStore?.area, 1, 100000)) {
-    formErrorsStore.errors.push("La superficie introducida no es válida");
+    formErrorsStore.errors.push("components.forms.messages.area.invalid");
   }
 
   showNextButton();
@@ -84,7 +88,7 @@ const checkAccomodationArea = () => {
  */
 const checkAccomodationNumOfBeds = () => {
   if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBeds, 1, 100)) {
-    formErrorsStore.errors.push("El número de camas introducido no es válido");
+    formErrorsStore.errors.push("components.forms.messages.numOfbeds.invalid");
   }
 
   showNextButton();
@@ -94,8 +98,10 @@ const checkAccomodationNumOfBeds = () => {
  * Valida el número de baños introducido.
  */
 const checkAccomodationNumOfBathRooms = () => {
-  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBathRooms, 1, 50)) {
-    formErrorsStore.errors.push("El número de baños introducido no es válido");
+  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBathrooms, 1, 50)) {
+    formErrorsStore.errors.push(
+      "components.forms.messages.numOfBathrooms.invalid"
+    );
   }
 
   showNextButton();
@@ -105,9 +111,9 @@ const checkAccomodationNumOfBathRooms = () => {
  * Valida el número de habitaciones introducido.
  */
 const checkAccomodationNumOfBedRooms = () => {
-  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBedRooms, 1, 50)) {
+  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBedrooms, 1, 50)) {
     formErrorsStore.errors.push(
-      "El número de habitaciones introducido no es válido"
+      "components.forms.messages.numOfBedrooms.invalid"
     );
   }
 
@@ -121,7 +127,7 @@ const checkAccomodationPrice = () => {
   if (
     !checkInputNumberFieldIsValid(accomodationStore?.pricePerNight, 1, 100000)
   ) {
-    formErrorsStore.errors.push("El precio introducido no es válido");
+    formErrorsStore.errors.push("components.forms.messages.price.invalid");
   }
 
   showNextButton();
@@ -138,9 +144,7 @@ const checkAccomodationNumOfGuests = () => {
       accomodationStore?.numOfGuests
     )
   ) {
-    formErrorsStore.errors.push(
-      "El número de huéspedes introducido no es válido"
-    );
+    formErrorsStore.errors.push("components.forms.messages.guests.invalid");
   }
 
   showNextButton();
@@ -148,7 +152,7 @@ const checkAccomodationNumOfGuests = () => {
 
 const checkAccomodationCategory = () => {
   if (accomodationStore?.category === "" || !accomodationStore?.category) {
-    formErrorsStore.errors.push("Selecciona una categoría");
+    formErrorsStore.errors.push("components.forms.messages.category.required");
   }
 
   showNextButton();
@@ -172,8 +176,6 @@ const showNextButton = async () => {
     accomodationStore?.category !== null &&
     !existsAccomodation;
 
-  console.log(formErrorsStore.enableNextButton);
-
   if (formErrorsStore.enableNextButton) {
     formErrorsStore.errors = [];
   } else {
@@ -190,10 +192,11 @@ onMounted(async () => {
   formErrorsStore.enableNextButton = false;
 });
 
-onBeforeRouteLeave((to) => {
+onBeforeRouteLeave((to, from) => {
   if (
     formErrorsStore.enableNextButton == false &&
-    !headerRoutes.includes(to.name)
+    (uploadAccomodationRoutes.includes(from.name) ||
+      uploadAccomodationRoutes.includes(to.name))
   ) {
     return false;
   }
@@ -202,7 +205,7 @@ onBeforeRouteLeave((to) => {
 
 <template>
   <div class="accomodation-upload-basic-data-view">
-    <h2 v-once v-t="'upload_accomodation_view.step1.title'">Datos básicos</h2>
+    <h2 v-once v-t="'upload_accomodation_view.step1.title'"></h2>
     <div class="accomodation-upload-basic-data__wrapper">
       <div>
         <!-- Número de registro -->
@@ -225,8 +228,8 @@ onBeforeRouteLeave((to) => {
 
         <!-- Descripción -->
         <BaseFormTextArea
-           :inputLabel="$t('components.forms.description')"
-          inputTitle="Realiza una descripción lo más detallada posible para atraer a nuevos huéspedes y crecer en la comunidad. Puedes explicar más características y servicios que ofreces, que no se encuentran disponibles en la plataforma."
+          :inputLabel="$t('components.forms.description')"
+          :inputTitle="$t('upload_accomodation_view.step1.description.title')"
           :textAreaContent="accomodationStore.description"
           @handleInput="(value) => (accomodationStore.description = value)"
           @handleBlur="checkAccomodationDescription"
@@ -235,8 +238,8 @@ onBeforeRouteLeave((to) => {
         <div class="accomodation-upload-basic-data_wrapper__row3">
           <!-- Categoría -->
           <BaseFormSelect
-             :inputLabel="$t('components.forms.category')"
-            inputTitle="Selecciona una de las opciones disponibles"
+            :inputLabel="$t('components.forms.category')"
+            :inputTitle="$t('upload_accomodation_view.step1.category.title')"
             :inputValue="accomodationStore.category"
             :options="[...allAvailableAccomodationCategories]"
             @handleChange="(value) => (accomodationStore.category = value)"
@@ -245,9 +248,9 @@ onBeforeRouteLeave((to) => {
 
           <!-- Superficie -->
           <LabelFormInput
-             :inputLabel="$t('components.forms.area')"
+            :inputLabel="$t('components.forms.area')"
             inputType="number"
-            inputTitle="Superficie habitable del alojamiento (En metros cuadrados)"
+            :inputTitle="$t('upload_accomodation_view.step1.area.title')"
             :inputValue="accomodationStore.area"
             :inputNumberMax="100000"
             @handleInput="(value) => (accomodationStore.area = value)"
@@ -258,7 +261,7 @@ onBeforeRouteLeave((to) => {
         <div class="accomodation-upload-basic-data_wrapper__row4">
           <!-- Camas -->
           <LabelFormInput
-             :inputLabel="$tc('components.forms.beds', 2)"
+            :inputLabel="$tc('components.forms.beds', 2)"
             inputType="number"
             :inputNumberMax="10"
             :inputValue="accomodationStore.numOfBeds"
@@ -268,7 +271,7 @@ onBeforeRouteLeave((to) => {
 
           <!-- Habitaciones -->
           <LabelFormInput
-             :inputLabel="$tc('components.forms.bedroom', 2)"
+            :inputLabel="$tc('components.forms.bedroom', 2)"
             inputType="number"
             :inputNumberMax="10"
             :inputValue="accomodationStore.numOfBedRooms"
@@ -278,7 +281,7 @@ onBeforeRouteLeave((to) => {
 
           <!-- Baños -->
           <LabelFormInput
-             :inputLabel="$tc('components.forms.bathroom', 2)"
+            :inputLabel="$tc('components.forms.bathroom', 2)"
             inputType="number"
             :inputValue="accomodationStore.numOfBathRooms"
             :inputNumberMax="10"
@@ -293,7 +296,7 @@ onBeforeRouteLeave((to) => {
             :inputLabel="$tc('components.forms.guests', 2)"
             inputType="number"
             :inputNumberMax="100"
-            inputTitle="Aforo máximo de huéspedes en el alojamiento."
+            :inputTitle="$t('upload_accomodation_view.step1.guests.title')"
             :inputValue="accomodationStore.numOfGuests"
             @handleInput="(value) => (accomodationStore.numOfGuests = value)"
             @handleBlur="checkAccomodationNumOfGuests"
@@ -303,7 +306,6 @@ onBeforeRouteLeave((to) => {
           <LabelFormInput
             :inputLabel="$t('components.forms.price')"
             isPriceInput="true"
-            inputTitle="Precio por noche del alojamiento"
             :inputValue="accomodationStore.pricePerNight"
             :inputNumberMax="100000"
             @handleInput="(value) => (accomodationStore.pricePerNight = value)"

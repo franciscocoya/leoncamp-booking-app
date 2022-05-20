@@ -176,6 +176,7 @@ const handleRegister = async () => {
         buttonStyle="baseButton-primary--filled"
         @click="handleRegister"
         :fullWidth="true"
+        type="submit"
       />
 
       <Transition name="fade">
@@ -207,7 +208,7 @@ const handleRegister = async () => {
 
 .register-form-container {
   @include flex-column-center;
-  @include full-width;
+    height: max-content;
 
   & > h1 {
     color: $color-dark;

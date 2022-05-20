@@ -116,6 +116,7 @@ const handleLogin = async () => {
         buttonStyle="baseButton-primary--filled"
         @click="handleLogin"
         :fullWidth="true"
+        type="submit"
       />
       <BaseButton
         :text="$t('login_view.button_register')"

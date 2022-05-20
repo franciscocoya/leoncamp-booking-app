@@ -140,7 +140,7 @@ onMounted(async () => {
           <BaseMessageItem
             v-for="(errorMsg, index) in formErrorsStore.errors"
             :key="index"
-            :msg="errorMsg"
+            :msg="$t(errorMsg)"
             msgType="error"
           />
         </div>

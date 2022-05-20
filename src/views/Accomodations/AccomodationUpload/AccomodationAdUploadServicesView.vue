@@ -15,7 +15,7 @@ import { useAccomodationStore } from "@/store/accomodation";
 import { useFormErrorsStore } from "@/store/formErrors";
 
 // Rutas permitidas
-import { headerRoutes } from "@/helpers/appRoutes";
+import { uploadAccomodationRoutes } from "@/helpers/appRoutes";
 
 const accomodationStore = useAccomodationStore();
 const formErrorsStore = useFormErrorsStore();
@@ -69,7 +69,8 @@ onMounted(async () => {
 onBeforeRouteLeave((from, to) => {
   if (
     formErrorsStore.enableNextButton == false &&
-    !headerRoutes.includes(to.name)
+    (uploadAccomodationRoutes.includes(from.name) ||
+      uploadAccomodationRoutes.includes(to.name))
   ) {
     return false;
   }
@@ -89,7 +90,11 @@ onBeforeRouteLeave((from, to) => {
         v-for="service in allAvaibleServices"
         :key="`service-${service.id}`"
         :chipTitle="`Haz click para eliminar el servicio ${service.denomination}`"
-        :chipText=" $t(`accomodation_amenities[${translateAmenity(service.denomination)}]`)"
+        :chipText="
+          $t(
+            `accomodation_amenities[${translateAmenity(service.denomination)}]`
+          )
+        "
         :serviceData="service"
         :showIcon="true"
         :isServiceEnabled="

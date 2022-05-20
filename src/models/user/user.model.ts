@@ -17,7 +17,7 @@ export interface User {
   };
   profileImage?: string;
   datosHost?: {
-    dni?: string;
+    dni: string;
     bio?: string;
     direction?: string;
     emailVerified?: boolean;

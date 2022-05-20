@@ -50,7 +50,6 @@ onMounted(() => {
     accessToken: import.meta.env.VITE_MAPBOX_API_TOKEN,
     container: "map", // container ID
     style: "mapbox://styles/mapbox/streets-v11", // style URL
-    // starting position [lng, lat]
     center: [props.lng, props.lat],
     minzoom: 1.3,
     zoom: props.mapZoom, // starting zoom
@@ -88,7 +87,7 @@ onMounted(() => {
     accomodationStore.accomodationLocation.city = resultLocation.city;
     accomodationStore.accomodationLocation.zip = resultLocation.cp;
 
-    formErrorsStore.enableNextButton = formErrorsStore.errors.length == 0;
+    formErrorsStore.enableNextButton = accomodationStore.accomodationLocation !== null;
   }
 });
 </script>

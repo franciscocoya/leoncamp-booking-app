@@ -21,19 +21,23 @@ let selectedMarkerRegNumber = ref("");
 onBeforeMount(async() => {
  allAccomodations.value = await getAllAccomodations();
 
-  // Markers de los alojamientos del listado.
-  accomodationMarkers.value = allAccomodations.value.map((acc) => {
-    const { latitude, longitude } = acc.idAccomodationLocation;
+   accomodationMarkers.value = allAccomodations.value.map((acc) => {
+    //const { latitude, longitude } = acc.idAccomodationLocation;
 
     return {
       coords: {
-        lat: latitude,
-        lng: longitude,
+        lat: acc.idAccomodationLocation.latitude,
+        lng: acc.idAccomodationLocation.longitude,
       },
       price: acc.pricePerNight,
       registerNumber: acc.registerNumber,
     };
   });
+
+});
+
+onMounted(async () => {
+// Markers de los alojamientos del listado.
 });
 
 const highLightSelectedMarker = (val) => {

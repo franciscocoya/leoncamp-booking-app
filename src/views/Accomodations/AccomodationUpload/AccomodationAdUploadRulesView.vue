@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import{ onBeforeRouteLeave} from 'vue-router';
+import { onBeforeRouteLeave } from "vue-router";
 
 // Componentes
 import TextEditChip from "@/components/Chips/TextEditChip.vue";
@@ -8,6 +8,9 @@ import TextEditChip from "@/components/Chips/TextEditChip.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useFormErrorsStore } from "@/store/formErrors";
+
+// Rutas permitidas
+import { uploadAccomodationRoutes } from "@/helpers/appRoutes";
 
 const accomodationStore = useAccomodationStore();
 const formErrorsStore = useFormErrorsStore();
@@ -36,7 +39,8 @@ onMounted(async () => {
 onBeforeRouteLeave((from, to) => {
   if (
     formErrorsStore.enableNextButton == false &&
-    !headerRoutes.includes(to.name)
+    (uploadAccomodationRoutes.includes(from.name) ||
+      uploadAccomodationRoutes.includes(to.name))
   ) {
     return false;
   }
