@@ -62,7 +62,7 @@ export const addNewBooking = async (
       paymentSelected,
       bookingData.idPayment,
       (err: any) => {
-        if (err.response && callback) {
+        if (err && callback) {
           callback(err);
         }
       }
@@ -72,8 +72,8 @@ export const addNewBooking = async (
       await axios.post(
         `${API_BOOKINGS}/new`,
         {
-          checkIn: bookingData.checkIn,
-          checkOut: bookingData.checkOut,
+          checkIn: bookingData.checkInDate,
+          checkOut: bookingData.checkOutDate,
           numOfGuests: bookingData.numOfGuests,
           disccount: bookingData.disccount,
           amount: bookingData.amount,
@@ -91,7 +91,7 @@ export const addNewBooking = async (
       );
     }
   } catch (err: any) {
-    if (err.response) {
+    if (err.response && callback) {
       callback(err.response);
     }
   }

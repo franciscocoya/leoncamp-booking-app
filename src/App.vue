@@ -51,7 +51,7 @@ window.addEventListener("resize", () => {
 let prevScrollpos = window.pageYOffset;
 
 const handleShowMenuMobile = (e) => {
-  if (showMenuMobile.value === true) {
+  if (appContextStore.isMobile === true) {
     const header = document.querySelector("#header-mobile-item");
     let currentScrollPos = window.pageYOffset;
     if (prevScrollpos > currentScrollPos) {
@@ -74,7 +74,6 @@ onMounted(() => {
 </script>
 
 <template class="app-root">
-  <!-- <BasePreloader /> -->
   <HeaderMobileItem
     v-if="enableHeaderMobile == true"
     id="header-mobile-item"

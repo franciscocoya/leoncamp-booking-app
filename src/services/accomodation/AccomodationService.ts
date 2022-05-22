@@ -397,18 +397,25 @@ export async function getLatestAccomodationReviewsByRegisterNumber(
  */
 export async function checkPromocodeIsValid(
   regNumber: string,
-  promoCodeToCheck: string
+  promoCodeToCheck: string,
+  callback?: CallableFunction
 ) {
-  let res: any = await axios.get(`${API_PROMO_CODES}/${regNumber}/exists`, {
-    headers: {
-      Authorization: `Bearer ${apiJwtToken}`,
-    },
-    params: {
-      code: promoCodeToCheck,
-    },
-  });
+  let res: any = await axios
+    .get(`${API_PROMO_CODES}/${regNumber}/exists`, {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+      params: {
+        code: promoCodeToCheck,
+      },
+    })
+    .catch((err) => {
+      if (err.response && callback) {
+        callback(err.response);
+      }
+    });
 
-  return res.data;
+  return res?.data;
 }
 
 /**

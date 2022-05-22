@@ -1,5 +1,6 @@
 <script setup>
 import { onBeforeMount, onMounted, ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 
 // Service
 import {
@@ -30,6 +31,8 @@ import {
 // Utils
 import { getDateDiffOnDays, formatDateType1 } from "@/helpers/utils";
 
+const router = useRouter();
+
 const accomodationStore = useAccomodationStore();
 const bookingStore = useBookingStore();
 const appContextStore = useAppContextStore();
@@ -53,7 +56,10 @@ let range = ref({
 
 let promoCode = reactive({
   value: "",
+  data: {},
   isValid: false,
+  showMessage: false,
+  errorMessage: "components.forms.messages.promoCode.invalid",
 });
 
 /**
@@ -61,6 +67,12 @@ let promoCode = reactive({
  */
 const clearSelectedDates = () => {
   range.value = null;
+  bookingStore.amount = 0;
+  bookingStore.serviceFee = 0;
+  bookingStore.total = 0;
+  bookingStore.disccount = 0;
+  promoCode.data = {};
+  promoCode.value = "";
 };
 
 /**
@@ -82,16 +94,23 @@ const getBookingNights = () => {
  * Manejador de la selección de fechas y cálculo dinámico de precios.
  */
 const handleSelectedDates = () => {
-  let pricePerNight = accomodationStore.pricePerNight;
-  let amount = pricePerNight * getBookingNights();
-  let bookingFee = amount * 0.1;
-  let totalCost = amount + bookingFee;
+  if (
+    bookingStore.checkInDate !== new Date() &&
+    bookingStore.checkOutDate !== new Date()
+  ) {
+    let pricePerNight = accomodationStore.pricePerNight;
+    let amount = pricePerNight * getBookingNights();
+    let bookingFee = amount * 0.1;
+    let totalCost = amount + bookingFee;
 
-  bookingStore.amount = amount.toFixed(2);
-  bookingStore.serviceFee = bookingFee.toFixed(2);
-  bookingStore.totalPrice = totalCost.toFixed(2);
-  bookingStore.checkIn = range.value.start;
-  bookingStore.checkOut = range.value.end;
+    bookingStore.amount = amount.toFixed(2);
+    bookingStore.serviceFee = bookingFee.toFixed(2);
+    bookingStore.totalPrice = totalCost.toFixed(2);
+    bookingStore.checkInDate = range.value.start;
+    bookingStore.checkOutDate = range.value.end;
+  } else {
+    clearSelectedDates();
+  }
 };
 
 /**
@@ -108,6 +127,35 @@ const showPaymentMethodInput = (methodNum) => {
   paymentMethodToShow.value = methodNum;
 };
 
+const translatePaymentError = (originalMessage) => {
+  let localeMessage = "";
+
+  const baseErrorPath = "components.forms.messages.payment";
+  switch (originalMessage) {
+    case "El número de la tarjeta de crédito tiene que tener como mínimo 12 dígitos":
+      localeMessage = `${baseErrorPath}.credit_card.min`;
+      break;
+
+    case "El número de tarjeta no es válido.":
+      localeMessage = `${baseErrorPath}.credit_card.invalid`;
+      break;
+
+    case "Introduce el número de la tarjeta de crédito":
+      localeMessage = `${baseErrorPath}.credit_card.required`;
+      break;
+
+    case "Alguno de los valores introducidos para la cuenta de PayPal no es válido.":
+      localeMessage = `${baseErrorPath}.paypal.invalid`;
+      break;
+
+    default:
+      localeMessage = `${baseErrorPath}.default`;
+      break;
+  }
+
+  return localeMessage;
+};
+
 /**
  * Manejador del evento click de botón confirmar reserva.
  */
@@ -117,15 +165,27 @@ const handleConfirmBooking = async () => {
       bookingStore.$state,
       paymentMethodToShow.value,
       (err) => {
-        bookingErrors.value.push(err.data.message);
+        console.log(err.data.message);
+        bookingErrors.value.push(translatePaymentError(err.data.message));
         showBookingErrors.value = true;
+
+        setTimeout(() => {
+          showBookingErrors.value = false;
+        }, 4000);
       }
-    );
+    ).then(() => {
+      router.push({
+        name: "user-bookings",
+        params: {
+          username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
+        },
+      });
+    });
   } else {
     if (showBookingErrors.value) {
       setTimeout(() => {
         showBookingErrors.value = false;
-      }, 6000);
+      }, 4000);
     }
   }
 };
@@ -139,39 +199,43 @@ const checkBookingData = () => {
 
   // Validar fechas seleccionadas
   if (!range.value?.start) {
-    bookingErrors.value.push("Selecciona una fecha de entrada");
+    bookingErrors.value.push(
+      "components.forms.messages.dates.checkIn.required"
+    );
     isValid = false;
   }
 
   if (!range.value?.end) {
-    bookingErrors.value.push("Selecciona una fecha de salida");
+    bookingErrors.value.push(
+      "components.forms.messages.dates.checkOut.required"
+    );
     isValid = false;
   }
 
   // Validar número de huéspedes
   if (!bookingStore.numOfGuests) {
-    bookingErrors.value.push("Selecciona el número de huéspedes");
+    bookingErrors.value.push("components.forms.messages.guests.required");
     isValid = false;
   }
   // Validar método de pago
   if (paymentMethodToShow.value === 1) {
     if (!bookingStore.idPayment.cardNumber) {
-      bookingErrors.value.push("Introduce el número de la tarjeta de crédito");
+      bookingErrors.value.push(
+        "components.forms.messages.payment.credit_card.required"
+      );
       isValid = false;
     }
   } else if (paymentMethodToShow.value === 2) {
     if (!bookingStore.idPayment.accountEmail) {
       bookingErrors.value.push(
-        "Introduce el correo electrónico de tu cuenta PayPal"
+        "components.forms.messages.payment.paypal.required"
       );
       isValid = false;
     }
   }
 
   if (bookingStore.numOfGuests > accomodationStore.numOfGuests) {
-    bookingErrors.value.push(
-      `El número de huéspedes máximo es de ${accomodationStore.numOfGuests}`
-    );
+    bookingErrors.value.push("components.forms.messages.guests.max");
     isValid = false;
   }
 
@@ -199,11 +263,26 @@ const disableReservedDates = async (regNumber) => {
  * Manejador de click del boton que comprueba si existe el código promocional, si es así, se aplica el descuento.
  */
 const checkPromoCode = async () => {
-  promoCode.isValid = await checkPromocodeIsValid(
+  const promoCodeRes = await checkPromocodeIsValid(
     bookingStore.accomodation.registerNumber,
     promoCode.value
   );
-  console.log(promoCode.isValid);
+
+  if (promoCodeRes) {
+    promoCode.data = promoCodeRes;
+
+    bookingStore.disccount = (
+      bookingStore.amount *
+      (promoCodeRes.amountPercentange / 100)
+    ).toFixed(2);
+
+    bookingStore.totalPrice -= bookingStore.disccount;
+  } else {
+    promoCode.showMessage = true;
+    setTimeout(() => {
+      promoCode.showMessage = false;
+    }, 2000);
+  }
 };
 
 onBeforeMount(async () => {
@@ -230,8 +309,11 @@ onMounted(async () => {
 <template>
   <div class="booking-task-view">
     <h2>
-      Reserva para el alojamiento
-      <span>{{ accomodationStore.registerNumber }}</span>
+      {{
+        $tc("booking_task_view.title", {
+          name: accomodationStore.registerNumber,
+        })
+      }}
     </h2>
     <div class="booking-task-view__wrapper">
       <!-- Columna izquierda -->
@@ -244,7 +326,7 @@ onMounted(async () => {
           alt=""
         />
         <div>
-          <h3 v-once>Detalles del precio</h3>
+          <h3 v-once v-t="'booking_task_view.pricing_details'"></h3>
           <ul>
             <!-- Precio noche x días -->
             <li>
@@ -264,63 +346,110 @@ onMounted(async () => {
                     ? bookingStore.amount
                     : "-"
                 }}
-                <span v-once>€</span>
+                <span>{{ $t("currency.symbol") }}</span>
               </p>
             </li>
             <!-- Comisión aplicada -->
             <li>
-              <p v-once>Comisión servicio</p>
+              <p v-once v-t="'booking_task_view.service_fee'"></p>
               <p>
                 {{
                   bookingStore.serviceFee > 0 && range !== null
                     ? bookingStore.serviceFee
                     : "-"
                 }}
-                <span>€</span>
+                <span>{{ $t("currency.symbol") }}</span>
+              </p>
+            </li>
+            <!-- Descuento -->
+            <li>
+              <p>
+                {{
+                  $tc("booking_task_view.disccount", {
+                    disc:
+                      promoCode?.data?.amountPercentange > 0
+                        ? promoCode?.data?.amountPercentange
+                        : "",
+                  })
+                }}
+
+                <span v-if="promoCode?.data?.amountPercentange > 0"
+                  >({{ promoCode?.data?.amountPercentange }})</span
+                >
+              </p>
+              <p>
+                {{
+                  bookingStore.disccount > 0 && range !== null
+                    ? bookingStore.disccount
+                    : "-"
+                }}
+                <span>{{ $t("currency.symbol") }}</span>
               </p>
             </li>
             <!-- Precio total (EUR) -->
             <li>
-              <p v-once>Total(EUR)</p>
+              <p v-once v-t="'booking_task_view.total'"></p>
               <p>
                 {{
                   bookingStore.totalPrice > 0 && range !== null
                     ? bookingStore.totalPrice
                     : "-"
                 }}
-                <span v-once>€</span>
+                <span>{{ $t("currency.symbol") }}</span>
               </p>
             </li>
           </ul>
         </div>
-        <div class="promo_code_checker_container">
-          <LabelFormInput
-            inputLabel="Código promocional"
-            inputType="text"
-            :inputValue="promoCode.value"
-            id="input-booking-check-in"
-            @handleInput="(value) => (promoCode.value = value)"
-          />
-          <BaseButton
-            text="Aplicar"
-            buttonStyle="baseButton-dark--filled"
-            @click="checkPromoCode"
-          />
-        </div>
+        <Transition name="fade">
+          <div
+            v-if="bookingStore?.amount > 0 && bookingStore?.disccount == 0"
+            class="promo_code_checker_container"
+          >
+            <LabelFormInput
+              :inputLabel="$t('components.forms.promo_code')"
+              inputType="text"
+              :inputValue="promoCode.value"
+              id="input-booking-check-in"
+              @handleInput="(value) => (promoCode.value = value)"
+            />
+            <BaseButton
+              text="Aplicar"
+              buttonStyle="baseButton-dark--filled"
+              :fullWidth="appContextStore.isMobile == true"
+              @click="checkPromoCode"
+            />
+          </div>
+        </Transition>
+        <Transition name="fade">
+          <div v-if="promoCode.showMessage == true">
+            <BaseMessage msgType="error" :msg="$t(promoCode.errorMessage)" />
+          </div>
+        </Transition>
       </div>
 
       <!-- Columna derecha -->
       <div class="accomodation_details">
         <ul class="accomodation_details__simplified_data">
           <li>
-            {{ accomodationStore.category.accomodationCategory }} en
+            {{
+              $t(
+                `accomodation_categories[${
+                  accomodationStore?.category?.id - 1
+                }]`
+              )
+            }}
+            {{ $t("linkers.in") }}
             {{ accomodationStore.accomodationLocation.city }}
           </li>
           <li>
             {{ accomodationStore.accomodationLocation.direction }}
           </li>
           <li>
-            Hasta un máximo de {{ accomodationStore.numOfGuests }} huéspedes.
+            {{
+              $tc("booking_task_view.guest_max", {
+                guest: accomodationStore.numOfGuests,
+              })
+            }}
           </li>
         </ul>
 
@@ -341,7 +470,7 @@ onMounted(async () => {
           id="data-picker-booking-dates"
         />
         <BaseButton
-          text="Limpiar fechas"
+          :text="$t('booking_task_view.button_clear_dates')"
           buttonStyle="baseButton-dark--outlined"
           @click="clearSelectedDates"
           id="bt-clear-selected-booking-dates"
@@ -351,14 +480,14 @@ onMounted(async () => {
         <div class="booking-data-summary">
           <div class="booking-data-summary__dates">
             <LabelFormInput
-              inputLabel="Check-In"
+              :inputLabel="$t('components.forms.checkIn')"
               inputType="text"
               :inputValue="range?.start ? formatDateType1(range.start) : ''"
               :isReadonly="true"
               id="input-booking-check-in"
             />
             <LabelFormInput
-              inputLabel="Check-Out"
+              :inputLabel="$t('components.forms.checkOut')"
               inputType="text"
               :isReadonly="true"
               :inputValue="range?.end ? formatDateType1(range.end) : ''"
@@ -366,20 +495,19 @@ onMounted(async () => {
             />
           </div>
           <LabelFormInput
-            inputLabel="Húespedes"
+            :inputLabel="$tc('components.forms.guests', 2)"
             inputType="number"
             :inputNumberMax="accomodationStore.numOfGuests"
             :inputValue="bookingStore.numOfGuests"
-            @handleInput="(value) => handleGuestsInput(value)"
+            @handleInput="(value) => handleGuestsInput(Number(value))"
           />
           <!-- Contenedor métodos de pago disponibles -->
           <div class="booking-payment-method-container">
-            <p>Método de pago:</p>
-            <p class="payment-booking-info">
-              Los datos no serán tratados hasta el día de checkIn de la reserva.
-              En caso de cancelarse, los datos de pago (Número de tarjeta o
-              correo electrónico de PayPal) se borrarán del sistema.
-            </p>
+            <p v-once v-t="'booking_task_view.payment_method'"></p>
+            <p
+              class="payment-booking-info"
+              v-t="'booking_task_view.payment_info'"
+            ></p>
             <div class="booking-payment-method-container__radios">
               <div>
                 <input
@@ -389,7 +517,7 @@ onMounted(async () => {
                   checked
                   :isPasteAvailable="true"
                 />
-                <label>Tarjeta de crétito/débito</label>
+                <label v-t="'components.forms.cardNumber'"></label>
                 <img
                   :src="ICON_PAYMENT_CREDIT_CARD"
                   alt="Pagar con tarjeta de crédito"
@@ -401,25 +529,24 @@ onMounted(async () => {
                   name="paymethod-type"
                   @change="showPaymentMethodInput(2)"
                 />
-                <label>PayPal</label>
+                <label v-t="'components.forms.paypalAccount'">PayPal</label>
                 <img :src="ICON_PAYMENT_PAYPAL" alt="Pagar con Paypal" />
               </div>
             </div>
             <div>
               <LabelFormInput
                 v-if="paymentMethodToShow === 1"
-                inputLabel="Número de tarjeta"
-                inputType="number"
+                :inputLabel="$t('components.forms.cardNumber')"
+                inputType="text"
                 :inputMaxCharacters="16"
-                :inputMinCharacters="16"
                 :inputValue="bookingStore?.idPayment?.cardNumber"
                 @handleInput="
-                  (value) => (bookingStore.idPayment.cardNumber = value)
+                  (value) => (bookingStore.idPayment.cardNumber = Number(value))
                 "
               />
               <LabelFormInput
                 v-if="paymentMethodToShow === 2"
-                inputLabel="Correo Cuenta PayPal"
+                :inputLabel="$t('components.forms.paypalAccount')"
                 inputType="email"
                 :inputMaxCharacters="70"
                 :inputValue="bookingStore?.idPayment?.accountEmail"
@@ -430,19 +557,23 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <!-- Mensajes de error -->
         <Transition name="fade">
-          <div v-if="showBookingErrors">
+          <div v-if="showBookingErrors == true">
             <BaseMessage
               msgType="error"
               v-for="(msgContent, index) in bookingErrors"
               :key="index"
-              :msg="msgContent"
+              :msg="
+                $tc(msgContent, {
+                  numOfGuests: accomodationStore.numOfGuests,
+                  cardDigits: 12,
+                })
+              "
             />
           </div>
         </Transition>
         <BaseButton
-          text="Confirmar reservar"
+          :text="$t('booking_task_view.button_confirm_booking')"
           buttonStyle="baseButton-secondary--filled"
           @click="handleConfirmBooking"
         />
@@ -510,6 +641,16 @@ onMounted(async () => {
         @include flex-row;
         gap: 10px;
         justify-content: space-between;
+        margin-bottom: 10px;
+
+        & > div {
+          &:first-child {
+            flex: 60%;
+          }
+          &:last-child {
+            flex: 30%;
+          }
+        }
       }
     } // Fin estilos accomodation_image_thumbnail
 
@@ -584,6 +725,10 @@ onMounted(async () => {
       & > .accomodation_image_thumbnail {
         & > img {
           width: 100%;
+        }
+
+        & > .promo_code_checker_container {
+          @include flex-column;
         }
       } // Fin accomodation_image_thumbnail
 

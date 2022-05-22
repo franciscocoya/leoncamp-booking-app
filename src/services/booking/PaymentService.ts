@@ -6,16 +6,22 @@ import { API_PAYMENTS } from '@/helpers/apiRoutes';
 export const addNewPayment = async (
   paymentType: number,
   paymentData: any,
-  callback: CallableFunction
+  callback?: CallableFunction
 ) => {
   // Crear pago
-  const lastPaymentId = await axios.get(`${API_PAYMENTS}/lastPaymentId`, {
-    headers: {
-      Authorization: `Bearer ${
-        JSON.parse(sessionStorage.getItem('user') || '{}').token
-      }`,
-    },
-  });
+  const lastPaymentId = await axios
+    .get(`${API_PAYMENTS}/lastPaymentId`, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
+      },
+    })
+    .catch((err) => {
+      if (err.response && callback) {
+        callback(err.response);
+      }
+    });
 
   let newPayment = null;
 
@@ -37,13 +43,19 @@ export const addNewPayment = async (
     );
   } catch (err: any) {
     if (err.response.status === 404) {
-      await axios.delete(`${API_PAYMENTS}/${newPaymentId}`, {
-        headers: {
-          Authorization: `Bearer ${
-            JSON.parse(sessionStorage.getItem('user') || '{}').token
-          }`,
-        },
-      });
+      await axios
+        .delete(`${API_PAYMENTS}/${newPaymentId}`, {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(sessionStorage.getItem('user') || '{}').token
+            }`,
+          },
+        })
+        .catch((err) => {
+          if (err.response && callback) {
+            callback(err.response);
+          }
+        });
     }
   }
 
@@ -65,6 +77,10 @@ export const addNewPayment = async (
             idPayment: newPayment.data.idPayment,
             cardNumber: paymentData.cardNumber,
           },
+        }).catch((err) => {
+          if (err.response && callback) {
+            callback(err.response);
+          }
         });
       } else if (paymentType === 2) {
         // Si el tipo es PayPal
@@ -80,10 +96,16 @@ export const addNewPayment = async (
             idPayment: newPayment.data.idPayment,
             accountEmail: paymentData.accountEmail,
           },
+        }).catch((err) => {
+          if (err.response && callback) {
+            callback(err.response);
+          }
         });
       }
     } catch (err: any) {
-      callback(err.response);
+      if (err.response && callback) {
+        callback(err.response);
+      }
     }
   }
 

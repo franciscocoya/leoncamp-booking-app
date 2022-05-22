@@ -25,7 +25,7 @@ const useBookingStore = defineStore({
     serviceFee: 0,
     bookingStatus: '',
     totalPrice: 0,
-    paymentId: {} as Payment,
+    idPayment: {} as Payment,
     createdAt: new Date(),
   }),
 

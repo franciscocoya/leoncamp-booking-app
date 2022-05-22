@@ -33,9 +33,11 @@ export const es_msgs = {
     title: 'Reserva para el alojamiento {name}',
     pricing_details: 'Detalles del precio',
     service_fee: 'Comisión servicio',
-    total: 'Total ({name})',
+    disccount: 'Descuento',
+    total: 'Total',
+    guest_max: 'Hasta un máximo de {guest} personas',
     button_clear_dates: 'Borrar fechas',
-    payment_mehtod: 'Método de pago',
+    payment_method: 'Método de pago',
     payment_info:
       'Los datos no serán tratados hasta el día de checkIn de la reserva. En caso de cancelarse, los datos de pago (Número de tarjeta o correo electrónico de PayPal) se borrarán del sistema.',
     credit_Card: 'Tarjeta de crédito',
@@ -101,17 +103,18 @@ export const es_msgs = {
     step1: {
       title: 'Datos básicos',
       description: {
-        title: 'Realiza una descripción lo más detallada posible para atraer a nuevos huéspedes y crecer en la comunidad. Puedes explicar más características y servicios que ofreces, que no se encuentran disponibles en la plataforma.'
+        title:
+          'Realiza una descripción lo más detallada posible para atraer a nuevos huéspedes y crecer en la comunidad. Puedes explicar más características y servicios que ofreces, que no se encuentran disponibles en la plataforma.',
       },
       category: {
         title: 'Selecciona un categoría',
       },
       area: {
-        title: 'Accomodation area'
+        title: 'Accomodation area',
       },
       guests: {
         title: 'Maximum guests',
-      }
+      },
     },
     step2: {
       title: 'Ubicación',
@@ -336,6 +339,7 @@ export const es_msgs = {
       address: 'dirección',
       city: 'ciudad',
       zip: 'código postal',
+      promo_code: 'código promocional',
       select: {
         default_option: 'Selecciona una opción',
       },
@@ -360,7 +364,8 @@ export const es_msgs = {
         registerNumber: {
           required: 'El número de registro es obligatorio',
           invalid: 'El número de registro no es válido',
-          exists: 'Ya existe un alojamiento con el número de registro introducido'
+          exists:
+            'Ya existe un alojamiento con el número de registro introducido',
         },
         description: {
           invalid: 'La descripción no es válida',
@@ -371,7 +376,7 @@ export const es_msgs = {
         numOfBeds: {
           invalid: 'El número de camas no es válido',
         },
-        numOfBathrooms:{
+        numOfBathrooms: {
           invalid: 'El número de baños no es válido',
         },
         numOfBedrooms: {
@@ -382,6 +387,8 @@ export const es_msgs = {
         },
         guests: {
           invalid: 'El número de huéspedes no es válido',
+          required: 'Introduce el número de huéspedes',
+          max: 'El número de huéspedes no puede ser superior a {numOfGuests}',
         },
         category: {
           required: 'Selecciona una categoría',
@@ -396,9 +403,36 @@ export const es_msgs = {
           },
           zip: {
             invalid: 'El código postal no es válido',
-            not_spanish_zip: 'El código postal no se corresponde con un código postal español',
+            not_spanish_zip:
+              'El código postal no se corresponde con un código postal español',
           },
-          geolocation_not_supported: 'La geolocalización no está soportada en este navegador',
+          geolocation_not_supported:
+            'La geolocalización no está soportada en este navegador',
+        },
+        payment: {
+          credit_card: {
+            required: 'Introduce el número de la tarjeta de crédito',
+            invalid: 'El número de tarjeta de crédito no es válido',
+            min: 'El número de tarjeta de crédito debe tener {cardDigits} dígitos',
+          },
+          paypal: {
+            required: 'Introduce el correo electrónico de PayPsal',
+            invalid: 'El correo de PayPal no es válido',
+          },
+          default: 'El método de pago introducido no es válido',
+        },
+        dates: {
+          checkIn: {
+            required: 'Selecciona la fecha de entrada',
+            invalid: 'La fecha de entrada no es válida',
+          },
+          checkOut: {
+            required: 'Selecciona la fecha de salida',
+            invalid: 'La fecha de salida no es válida',
+          },
+        },
+        promoCode: {
+          invalid: 'El código promocional no es válido',
         },
         password: {
           required: 'La contraseña es obligatoria',
@@ -436,7 +470,7 @@ export const es_msgs = {
           loading: 'Subiendo imagen...',
           size: 'La imagen no puede superar los {size} {unit}',
           maxImages: 'Puede subir hasta un máximo de {max} imágenes',
-        }
+        },
       },
     },
   },

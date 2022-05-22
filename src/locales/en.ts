@@ -33,9 +33,11 @@ export const en_msgs = {
     title: 'Booking for accomodation {name}',
     pricing_details: 'Price details',
     service_fee: 'Service fee',
-    total: 'Total ({name})',
-    button_clear_dates: 'Clean dates',
-    payment_mehtod: 'Payment method',
+    disccount: 'Disccount',
+    total: 'Total',
+    guest_max: 'Maximun of {guest} guests',
+    button_clear_dates: 'Clear dates',
+    payment_method: 'Payment method',
     payment_info:
       'Payment data will not be processed until the booking check-In. In case of cancellation, the payment data (card number or PayPal email) will be deleted from the system.',
     credit_Card: 'Credir card',
@@ -101,17 +103,18 @@ export const en_msgs = {
     step1: {
       title: 'Basic data',
       description: {
-        title: 'Make your description as detailed as possible to attract new visitors and grow your community. You can explain more features and services you offer that are not yet available on the platform.'
+        title:
+          'Make your description as detailed as possible to attract new visitors and grow your community. You can explain more features and services you offer that are not yet available on the platform.',
       },
       category: {
         title: 'Category',
       },
       area: {
-        title: 'Superficie habitable del alojamiento (En metros cuadrados)'
+        title: 'Superficie habitable del alojamiento (En metros cuadrados)',
       },
       guests: {
-        title: 'Aforo máximo de huéspedes en el alojamiento.'
-      }
+        title: 'Aforo máximo de huéspedes en el alojamiento.',
+      },
     },
     step2: {
       title: 'Location',
@@ -333,6 +336,7 @@ export const en_msgs = {
       address: 'Address',
       city: 'City',
       zip: 'Zip code',
+      promo_code: 'Promo code',
       select: {
         default_option: 'Select an option',
       },
@@ -357,7 +361,8 @@ export const en_msgs = {
         registerNumber: {
           required: 'Register number is required',
           invalid: 'Number register is invalid',
-          exists: 'An accommodation with the entered registration number already exists.'
+          exists:
+            'An accommodation with the entered registration number already exists.',
         },
         description: {
           invalid: 'Description is invalid',
@@ -368,7 +373,7 @@ export const en_msgs = {
         numOfBeds: {
           invalid: 'Number of beds is invalid',
         },
-        numOfBathrooms:{
+        numOfBathrooms: {
           invalid: 'Number of bathrooms is invalid',
         },
         numOfBedrooms: {
@@ -379,6 +384,8 @@ export const en_msgs = {
         },
         guests: {
           invalid: 'Number of guests is invalid',
+          required: 'Number of guests is required',
+          max: 'Number of guests must be less than or equal to {numOfGuests}',
         },
         category: {
           required: 'Select a category',
@@ -395,7 +402,33 @@ export const en_msgs = {
             invalid: 'Zip code is invalid',
             not_spanish_zip: 'Zip code is not a valid Spanish zip code',
           },
-          geolocation_not_supported: 'Geolocation is not supported by this browser.',
+          geolocation_not_supported:
+            'Geolocation is not supported by this browser.',
+        },
+        payment: {
+          credit_card: {
+            required: 'Credit card number is required',
+            invalid: 'Credit card number is invalid',
+            min: 'Credit card number must be at least {cardDigits} digits',
+          },
+          paypal: {
+            required: 'PayPal account is required',
+            invalid: 'PayPal account is invalid',
+          },
+          default: 'Payment method is invalid',
+        },
+        dates: {
+          checkIn: {
+            required: 'Check-In is required',
+            invalid: 'Check-In is invalid',
+          },
+          checkOut: {
+            required: 'Check-Out is required',
+            invalid: 'Check-Out is invalid',
+          },
+        },
+        promoCode: {
+          invalid: 'Promo code is invalid',
         },
         password: {
           required: 'Password is required',
@@ -433,7 +466,7 @@ export const en_msgs = {
           loading: 'Uploading image...',
           size: 'Image size must be less than {size} {unit}',
           maxImages: 'You can upload a maximum of {max} images',
-        }
+        },
       },
     },
   },
