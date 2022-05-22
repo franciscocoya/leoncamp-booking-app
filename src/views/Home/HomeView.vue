@@ -18,10 +18,10 @@ let allAccomodations = ref([]);
 let accomodationMarkers = ref([]);
 let selectedMarkerRegNumber = ref("");
 
-onBeforeMount(async() => {
- allAccomodations.value = await getAllAccomodations();
+onBeforeMount(async () => {
+  allAccomodations.value = await getAllAccomodations();
 
-   accomodationMarkers.value = allAccomodations.value.map((acc) => {
+  accomodationMarkers.value = allAccomodations.value.map((acc) => {
     //const { latitude, longitude } = acc.idAccomodationLocation;
 
     return {
@@ -33,11 +33,6 @@ onBeforeMount(async() => {
       registerNumber: acc.registerNumber,
     };
   });
-
-});
-
-onMounted(async () => {
-// Markers de los alojamientos del listado.
 });
 
 const highLightSelectedMarker = (val) => {

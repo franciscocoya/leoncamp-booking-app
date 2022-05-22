@@ -110,7 +110,7 @@ const handleLogin = async () => {
           />
         </div>
       </Transition>
-      <!-- <RouterLink to="/password/reset">He olvidado mi contraseña</RouterLink> -->
+      <a href="/password/reset">He olvidado mi contraseña</a>
       <BaseButton
         :text="$t('login_view.button_login')"
         buttonStyle="baseButton-primary--filled"

@@ -1,11 +1,13 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref, reactive } from "vue";
 
 // Service
 import {
   listAccomodationBookingDates,
   addNewBooking,
 } from "@/services/booking/BookingService";
+
+import { checkPromocodeIsValid } from "@/services/accomodation/AccomodationService";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
@@ -48,6 +50,12 @@ let range = ref({
   start: null,
   end: null,
 });
+
+let promoCode = reactive({
+  value: "",
+  isValid: false,
+});
+
 /**
  * Borra las fechas seleccionadas.
  */
@@ -187,6 +195,17 @@ const disableReservedDates = async (regNumber) => {
   });
 };
 
+/**
+ * Manejador de click del boton que comprueba si existe el código promocional, si es así, se aplica el descuento.
+ */
+const checkPromoCode = async () => {
+  promoCode.isValid = await checkPromocodeIsValid(
+    bookingStore.accomodation.registerNumber,
+    promoCode.value
+  );
+  console.log(promoCode.isValid);
+};
+
 onBeforeMount(async () => {
   // Usuario en sesión
   await authStore.loadCurrentUserData();
@@ -273,6 +292,20 @@ onMounted(async () => {
               </p>
             </li>
           </ul>
+        </div>
+        <div class="promo_code_checker_container">
+          <LabelFormInput
+            inputLabel="Código promocional"
+            inputType="text"
+            :inputValue="promoCode.value"
+            id="input-booking-check-in"
+            @handleInput="(value) => (promoCode.value = value)"
+          />
+          <BaseButton
+            text="Aplicar"
+            buttonStyle="baseButton-dark--filled"
+            @click="checkPromoCode"
+          />
         </div>
       </div>
 
@@ -379,7 +412,7 @@ onMounted(async () => {
                 inputType="number"
                 :inputMaxCharacters="16"
                 :inputMinCharacters="16"
-                :inputValue="bookingStore.idPayment.cardNumber"
+                :inputValue="bookingStore?.idPayment?.cardNumber"
                 @handleInput="
                   (value) => (bookingStore.idPayment.cardNumber = value)
                 "
@@ -389,7 +422,7 @@ onMounted(async () => {
                 inputLabel="Correo Cuenta PayPal"
                 inputType="email"
                 :inputMaxCharacters="70"
-                :inputValue="bookingStore.idPayment.accountEmail"
+                :inputValue="bookingStore?.idPayment?.accountEmail"
                 @handleInput="
                   (value) => (bookingStore.idPayment.accountEmail = value)
                 "
@@ -471,6 +504,12 @@ onMounted(async () => {
             border-top: 1px solid $color-tertiary-light;
           }
         }
+      }
+
+      & > .promo_code_checker_container {
+        @include flex-row;
+        gap: 10px;
+        justify-content: space-between;
       }
     } // Fin estilos accomodation_image_thumbnail
 

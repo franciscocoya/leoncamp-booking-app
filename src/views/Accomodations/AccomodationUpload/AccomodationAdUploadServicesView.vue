@@ -66,15 +66,15 @@ onMounted(async () => {
     accomodationStore.accomodationServices.length > 0;
 });
 
-onBeforeRouteLeave((from, to) => {
-  if (
-    formErrorsStore.enableNextButton == false &&
-    (uploadAccomodationRoutes.includes(from.name) ||
-      uploadAccomodationRoutes.includes(to.name))
-  ) {
-    return false;
-  }
-});
+// onBeforeRouteLeave((from, to) => {
+//   if (
+//     formErrorsStore.enableNextButton == false &&
+//     (uploadAccomodationRoutes.includes(from.name) ||
+//       uploadAccomodationRoutes.includes(to.name))
+//   ) {
+//     return false;
+//   }
+// });
 </script>
 
 <template>

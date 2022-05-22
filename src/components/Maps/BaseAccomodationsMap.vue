@@ -134,7 +134,6 @@ onUpdated(() => {
     priceMark.style.border = "1px solid rgb(221, 221, 221)";
     priceMark.style.borderRadius = "50px";
     priceMark.style.padding = "5px 10px";
-    priceMark.style.boxShadow = "rgb(0 0 0 / 12%) 0px 6px 16px";
     priceMark.style.cursor = "pointer";
     priceMark.style.transition = "all 0.3s ease-in";
 

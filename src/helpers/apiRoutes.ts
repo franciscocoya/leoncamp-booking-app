@@ -44,7 +44,9 @@ const API_ACCOMODATION_RULES = `${API_BASE_URL}${
   import.meta.env.VITE_API_ACCOMODATION_RULES
 }`;
 
-const API_ACCOMODATION_LOCATIONS = `${API_BASE_URL}${import.meta.env.VITE_API_ACCOMODATION_LOCATION}`;
+const API_ACCOMODATION_LOCATIONS = `${API_BASE_URL}${
+  import.meta.env.VITE_API_ACCOMODATION_LOCATION
+}`;
 
 // -----------------------------------------------------------------------------
 
@@ -55,6 +57,13 @@ const API_BOOKINGS = `${API_BASE_URL}${import.meta.env.VITE_API_BOOKINGS}`;
 // -- Rutas de reservas
 
 const API_PAYMENTS = `${API_BASE_URL}${import.meta.env.VITE_API_PAYMENTS}`;
+// -----------------------------------------------------------------------------
+
+// -- Rutas códigos promocionales
+
+const API_PROMO_CODES = `${API_BASE_URL}${
+  import.meta.env.VITE_API_PROMO_CODES
+}`;
 // -----------------------------------------------------------------------------
 
 export {
@@ -71,5 +80,6 @@ export {
   API_ACCOMODATION_RULES,
   API_ACCOMODATION_LOCATIONS,
   API_BOOKINGS,
-  API_PAYMENTS
+  API_PAYMENTS,
+  API_PROMO_CODES,
 };

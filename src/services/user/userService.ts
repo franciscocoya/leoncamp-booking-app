@@ -15,19 +15,39 @@ const apiJwtToken: string = JSON.parse(
  * @returns
  */
 const checkExistsUser = async (emailToCheck: string) => {
-  return await axios
-    .get(`${API_USERS}/load/${emailToCheck}`, {
+  let res: any = await axios
+    .get(`${API_USERS}/exists`, {
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(sessionStorage.getItem('user') || '{}').token
-        }`,
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+      params: {
+        email: emailToCheck,
       },
     })
-    .then((res) => res.data)
-    .then((data) => {
-      return data;
+    .catch((err) => handleError(err));
+
+  return res?.data;
+};
+
+/**
+ * Devuelve el id del usuario con el email pasado como parámetro.
+ *
+ * @param emailToCheck
+ * @returns
+ */
+const getUserIdByEmail = async (emailToCheck: string) => {
+  let res: any = await axios
+    .get(`${API_USERS}/load`, {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+      params: {
+        email: emailToCheck,
+      },
     })
     .catch((err) => handleError(err));
+
+  return res?.data;
 };
 
 /**
@@ -400,6 +420,7 @@ const addUserConfigurationToUser = async (userId: number, configData: any) => {
 
 export {
   checkExistsUser,
+  getUserIdByEmail,
   getUserDataById,
   getUserConfigurationByUserId,
   updateUserConfiguration,

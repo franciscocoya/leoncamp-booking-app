@@ -71,6 +71,12 @@ const router = createRouter({
       component: () => import('@/views/Home/HomeView.vue'),
     },
     {
+      // Restablecer contraseña
+      path: RESET_PASSWORD_ROUTE,
+      name: 'reset-password',
+      component: () => import('@/views/Auth/ForgotPasswordView.vue'),
+    },
+    {
       // Alojamientos guardados por el usuario en sesión
       path: SAVED_ACCOMODATIONS_ROUTE,
       name: 'saved',
@@ -130,12 +136,6 @@ const router = createRouter({
           name: 'user-privacy',
           component: () =>
             import('@/views/Account/AccountPrivacySecurityView.vue'),
-        },
-        {
-          // Restablecer contraseña
-          path: RESET_PASSWORD_ROUTE,
-          name: 'reset-password',
-          component: () => import('@/views/Auth/ForgotPasswordView.vue'),
         },
         {
           path: USER_ACCOUNT_UPGRADE,

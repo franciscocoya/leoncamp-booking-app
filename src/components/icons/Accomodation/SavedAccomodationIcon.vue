@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 
 // Service
 import {
@@ -35,28 +35,35 @@ const props = defineProps({
 
 const authStore = useAuthStore();
 
-let isIconActive = ref(false);
+let isIconActive = reactive({
+  isActive: false,
+});
 
 /**
  * Al hacer click se cambia el estado isActive y se añade el alojamiento
  * a la lista de alojamientos guardados del usuario.
  */
 const handleClick = async () => {
-  isIconActive.value
+  isIconActive.isActive
     ? await removeSavedAccomodation(props.regNumber, authStore.userData.id)
     : await saveAccomodation(props.regNumber, authStore.userData.id);
 
-  isIconActive.value = !isIconActive.value;
+  isIconActive.isActive = !isIconActive.isActive;
 };
 
 onMounted(async () => {
   const savedAccomodation = await getSavedAccomodation(
     props.regNumber,
-    authStore.userData?.id
+    authStore.userData?.id,
+    (err) => {
+      if (err.data) {
+        isIconActive.isActive = false;
+      }
+    }
   );
 
-  if (savedAccomodation !== null) {
-    isIconActive.value = true;
+  if (savedAccomodation?.id) {
+    isIconActive.isActive = true;
   }
 });
 </script>
@@ -73,8 +80,8 @@ onMounted(async () => {
       class="icon-save-accomodation"
       @click.prevent="handleClick"
     >
-      <title v-once>
-        {{ $t(`saved_icon.title[${isIconActive == true ? 0 : 1}]`) }}
+      <title>
+        {{ $t(`saved_icon.title[${isIconActive.isActive === true ? 1 : 0}]`) }}
       </title>
       <g
         id="Page-1"
@@ -98,7 +105,7 @@ onMounted(async () => {
             :stroke="iconColor"
             stroke-width="2"
             stroke-linecap="round"
-            :fill="isIconActive == true ? iconColor : 'none'"
+            :fill="isIconActive.isActive == true ? iconColor : 'none'"
           ></path>
         </g>
       </g>

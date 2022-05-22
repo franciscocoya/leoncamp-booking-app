@@ -36,15 +36,17 @@ const useAuthStore = defineStore({
     /**
      * Restablece la contraseña del usuario, si éste está en sesión.
      */
-    async resetPasswordLoggedUser() {
-      const userId = this?.userData?.id ?? JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
+    async resetPasswordLoggedUser(idToSearch?: number) {
+      const userId =
+        this?.userData?.id ??
+        JSON.parse(sessionStorage.getItem('user') || '{}')?.id ??
+        idToSearch;
       await resetPassword(
         userId,
         this.password,
         this.newPassword,
         this.repeatedPassword,
         (err: any) => {
-          console.log(err.data);
           if (err.data.message) {
             this.errors.push(this.translateErrorMessages(err.data.message));
             //this.errors.push('components.forms.messages.current_password.invalid');
@@ -54,10 +56,10 @@ const useAuthStore = defineStore({
     },
 
     /**
-     * i18n errores del formulario - 
-     * 
-     * @param errMsg 
-     * @returns 
+     * i18n errores del formulario -
+     *
+     * @param errMsg
+     * @returns
      */
     translateErrorMessages(errMsg: any) {
       let translateMessage = '';

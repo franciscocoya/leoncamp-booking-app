@@ -5,7 +5,7 @@ const USER_SIGNIN_ROUTE = '/signin';
 const USER_SIGNUP_ROUTE = '/signup';
 const ADMINISTRATOR_ROUTE = '/administrator';
 const SAVED_ACCOMODATIONS_ROUTE = '/saved';
-const RESET_PASSWORD_ROUTE = 'password/reset';
+const RESET_PASSWORD_ROUTE = '/password/reset';
 const USER_CONFIGURATION = 'config';
 const USER_ACCOUNT_UPGRADE = 'upgrade';
 const USER_PRIVACY = 'privacy';
@@ -29,48 +29,53 @@ const ERROR_404_ROUTE = '/404';
 const ERROR_500_ROUTE = '/500';
 const ERROR_503_ROUTE = '/503';
 
-const authRoutes = [
-    USER_SIGNIN_ROUTE,
-    USER_SIGNUP_ROUTE,
-    '/password/reset'
+const authRoutes = [USER_SIGNIN_ROUTE, USER_SIGNUP_ROUTE];
+
+const headerRoutes = [
+  'saved',
+  'home',
+  'user-bookings',
+  'error-404',
+  'account',
+  'user-profile',
+  'user-ads',
+  'user-configuration',
+  'user-privacy',
 ];
 
-const headerRoutes = ['saved', 'home', 'user-bookings',
-    'error-404', 'account', 'user-profile',
-    'user-ads', 'user-configuration', 'user-privacy', 'reset-password'];
-
-const uploadAccomodationRoutes = ['accomodation-upload-basic-data', 'accomodation-upload-location', 'accomodation-upload-services', 'accomodation-upload-rules', 'accomodation-upload-images']
-
-const publicRoutes = [
-    '/'
+const uploadAccomodationRoutes = [
+  'accomodation-upload-basic-data',
+  'accomodation-upload-location',
+  'accomodation-upload-services',
+  'accomodation-upload-rules',
+  'accomodation-upload-images',
 ];
+
+const publicRoutes = ['/', 'passwod/reset'];
 
 export {
-    publicRoutes,
-    authRoutes,
-    headerRoutes,
-    uploadAccomodationRoutes,
-    USER_SIGNIN_ROUTE,
-    USER_SIGNUP_ROUTE,
-    ADMINISTRATOR_ROUTE,
-    RESET_PASSWORD_ROUTE,
-    USER_ACCOUNT_UPGRADE,
-    USER_PRIVACY,
-    USER_CONFIGURATION,
-    SAVED_ACCOMODATIONS_ROUTE,
-    UPLOAD_ACCOMODATION_ROUTE,
-
-    UPLOAD_ACCOMODATION_BASIC_DATA,
-    UPLOAD_ACCOMODATION_LOCATION,
-    UPLOAD_ACCOMODATION_SERVICES,
-    UPLOAD_ACCOMODATION_RULES,
-    UPLOAD_ACCOMODATION_IMAGES,
-
-    BOOKING_ACCOMODATION_ROUTE,
-
-    HELP_ROUTE,
-    ERROR_401_ROUTE,
-    ERROR_404_ROUTE,
-    ERROR_500_ROUTE,
-    ERROR_503_ROUTE
-}
+  publicRoutes,
+  authRoutes,
+  headerRoutes,
+  uploadAccomodationRoutes,
+  USER_SIGNIN_ROUTE,
+  USER_SIGNUP_ROUTE,
+  ADMINISTRATOR_ROUTE,
+  RESET_PASSWORD_ROUTE,
+  USER_ACCOUNT_UPGRADE,
+  USER_PRIVACY,
+  USER_CONFIGURATION,
+  SAVED_ACCOMODATIONS_ROUTE,
+  UPLOAD_ACCOMODATION_ROUTE,
+  UPLOAD_ACCOMODATION_BASIC_DATA,
+  UPLOAD_ACCOMODATION_LOCATION,
+  UPLOAD_ACCOMODATION_SERVICES,
+  UPLOAD_ACCOMODATION_RULES,
+  UPLOAD_ACCOMODATION_IMAGES,
+  BOOKING_ACCOMODATION_ROUTE,
+  HELP_ROUTE,
+  ERROR_401_ROUTE,
+  ERROR_404_ROUTE,
+  ERROR_500_ROUTE,
+  ERROR_503_ROUTE,
+};

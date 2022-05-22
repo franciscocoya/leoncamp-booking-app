@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onUpdated, reactive } from "vue";
 
 // Componentes
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
@@ -8,10 +8,19 @@ import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThu
 import { useAccomodationStore } from "@/store/accomodation";
 const accomodationStore = useAccomodationStore();
 
-let savedAccomodations = ref([]);
+// let savedAccomodations = ref([]);
+
+let savedAccomodations = reactive({
+  all: [],
+});
 
 onMounted(async () => {
-  savedAccomodations.value =
+  savedAccomodations.all =
+    await accomodationStore.getAllUserSavedAccomodations();
+});
+
+onUpdated(async () => {
+  savedAccomodations.all =
     await accomodationStore.getAllUserSavedAccomodations();
 });
 </script>
@@ -19,9 +28,9 @@ onMounted(async () => {
 <template>
   <div class="saved-accomodations-view">
     <h1 v-once v-t="'saved_view.title'"></h1>
-    <div v-if="savedAccomodations.length > 0">
+    <div v-if="savedAccomodations.all.length > 0">
       <AccomodationThumbnailItem
-        v-for="accomodation in savedAccomodations"
+        v-for="accomodation in savedAccomodations.all"
         :key="accomodation.idAccomodation.registerNumber"
         :savedAccId="accomodation.id"
         :accData="accomodation.idAccomodation"

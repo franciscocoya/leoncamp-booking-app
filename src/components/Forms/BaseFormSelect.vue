@@ -1,6 +1,7 @@
 <script setup>
+import { ref } from "vue";
 // i18n
-import { translateCategory } from "@/helpers/i18nTranslations";
+import { translateCategory, categories } from "@/helpers/i18nTranslations";
 
 const props = defineProps({
   inputLabel: {
@@ -22,15 +23,16 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["handleChange", "handleBlur"]);
-
+let isSelecselectedOptionted = ref(false);
 /**
  * Envia al emit la opción de categoría seleccionada.
  */
 const updateInputValue = (value) => {
-  const selectedOption = props.options
+  console.log(value);
+  const seletedOpt = props.options
     .filter((opt) => opt.accomodationCategory === value)
     .shift();
-  emit("handleChange", selectedOption);
+  emit("handleChange", seletedOpt);
 };
 
 const handleBlur = () => {
@@ -47,14 +49,14 @@ const handleBlur = () => {
       @change="(e) => updateInputValue(e.target.value)"
       @blur="handleBlur"
     >
-      <option value="-" selected v-if="selectedOption != ''">
+      <option value="-" selected v-if="selectedOption === ''">
         {{ $t("components.forms.select.default_option") }}
       </option>
       <option
         v-for="opt in options"
         :key="opt.id"
-        :selected="opt.id === selectedOption"
-        :value="$t(`accomodation_categories[${opt.id - 1}]`)"
+        :selected="opt.accomodationCategory === props.selectedOption"
+        :value="categories[opt.id - 1]"
       >
         {{ $t(`accomodation_categories[${opt.id - 1}]`) }}
       </option>
@@ -85,9 +87,9 @@ const handleBlur = () => {
     & > select {
       width: 100%;
 
-      &:focus{
-      outline: 2px solid $color-dark;
-    }
+      &:focus {
+        outline: 2px solid $color-dark;
+      }
     }
   }
 }

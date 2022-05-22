@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
+
 // Iconos
 import InfoIcon from "@/components/icons/InfoIcon.vue";
 
@@ -9,6 +11,7 @@ import AccomodationImagePreviewItem from "@/components/Accomodation/Accomodation
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useFormErrorsStore } from "@/store/formErrors";
 
 // Conversor imagen a base64
 import { convertImageToBase64, MAX_IMAGES_UPLOAD } from "@/helpers/utils";
@@ -17,6 +20,7 @@ import { convertImageToBase64, MAX_IMAGES_UPLOAD } from "@/helpers/utils";
 import { checkFileSize, checkImageMimeType } from "@/helpers/formValidator";
 
 const accomodationStore = useAccomodationStore();
+const formErrorsStore = useFormErrorsStore();
 
 const dragText = ref("upload_accomodation_view.step5.dragArea.title");
 
@@ -36,9 +40,7 @@ const handleDragImages = async (e) => {
       // Usar la interfaz DataTransferItemList para acceder a el/los archivos)
       for (let i = 0; i < e.dataTransfer.items.length; i++) {
         // Si los elementos arrastrados no son ficheros, rechazarlos
-        if (
-          e.dataTransfer.items[i].kind === "file"
-        ) {
+        if (e.dataTransfer.items[i].kind === "file") {
           dragText.value = "components.forms.messages.images.loading";
           let file = await e.dataTransfer.items[i].getAsFile();
 
@@ -181,7 +183,7 @@ const showImageMessage = (msg, type = "error") => {
       .getElementById("drag_and_drop_area_container")
       .classList.remove(`--drag-area-${type}`);
 
-      dragText.value = 'upload_accomodation_view.step5.dragArea.title';
+    dragText.value = "upload_accomodation_view.step5.dragArea.title";
   }, 4000);
 };
 </script>

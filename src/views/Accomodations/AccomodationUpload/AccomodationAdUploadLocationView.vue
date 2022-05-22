@@ -13,7 +13,7 @@ import ThumbnailMap from "@/components/Maps/ThumbnailMap.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useFormErrorsStore } from "@/store/formErrors";
-import {useAppContextStore} from "@/store/appContext";
+import { useAppContextStore } from "@/store/appContext";
 
 // Service
 import { getAccomodationLocationByCoords } from "@/services/accomodation/AccomodationService";
@@ -78,7 +78,6 @@ const checkAccomodationCity = () => {
  * Valida el código postal introducido.
  */
 const checkAccomodationZipCode = () => {
-
   if (
     !checkInputStringFieldIsValid(
       accomodationStore?.accomodationLocation.zip,
@@ -105,14 +104,26 @@ const checkAccomodationZipCode = () => {
 
 const showNextButton = () => {
   formErrorsStore.enableNextButton =
-    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.direction, 2, 100) &&
-    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.city, 2, 30) &&
-    checkInputStringFieldIsValid(accomodationStore?.accomodationLocation.zip, 4, 4) &&
+    checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.direction,
+      2,
+      100
+    ) &&
+    checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.city,
+      2,
+      30
+    ) &&
+    checkInputStringFieldIsValid(
+      accomodationStore?.accomodationLocation.zip,
+      4,
+      4
+    ) &&
     checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip);
 
   if (formErrorsStore.enableNextButton) {
     formErrorsStore.errors = [];
-  }else{
+  } else {
     setTimeout(() => {
       formErrorsStore.errors = [];
     }, 6000);
@@ -146,14 +157,14 @@ onMounted(async () => {
   accomodationStore.accomodationLocation.zip = accomodationLocation.cp;
 });
 
-onBeforeRouteLeave((from, to) => {
-  if (
-    formErrorsStore.enableNextButton == false &&
-    uploadAccomodationRoutes.includes(from.name)
-  ) {
-    return false;
-  }
-});
+// onBeforeRouteLeave((from, to) => {
+//   if (
+//     formErrorsStore.enableNextButton == false &&
+//     uploadAccomodationRoutes.includes(from.name)
+//   ) {
+//     return false;
+//   }
+// });
 </script>
 
 
@@ -232,7 +243,12 @@ onBeforeRouteLeave((from, to) => {
     </div>
     <Transition name="fade">
       <div v-if="appContextStore.isGeolocationSupported == true">
-        <BaseMessageItem :msg="$t('components.forms.messages.location.geolocation_not_supported')" msgType="warning"/>
+        <BaseMessageItem
+          :msg="
+            $t('components.forms.messages.location.geolocation_not_supported')
+          "
+          msgType="warning"
+        />
       </div>
     </Transition>
   </div>

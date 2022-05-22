@@ -24,10 +24,12 @@ import {
   API_ACCOMODATION_SERVICES,
   API_ACCOMODATION_RULES,
   API_ACCOMODATION_LOCATIONS,
+  API_PROMO_CODES,
 } from '@/helpers/apiRoutes';
 
 // Rutas de las reservas API: /api/bookings
 import { BOKINGS_BASE_PATH } from './BookingRoutesEnum';
+import { callbackify } from 'util';
 
 // Ruta alojamientos: /api/accomodations
 const baseUri: string = import.meta.env.VITE_API_URI;
@@ -338,21 +340,27 @@ export async function getUserSavedAccomodationsByUserId(userId: number) {
 /**
  * Valoración media (En estrellas) de un alojamiento.
  */
-export async function getAccomodationStarAverage(regNumber: string) {
+export async function getAccomodationStarAverage(
+  regNumber: string,
+  callback?: CallableFunction
+) {
   if (!regNumber) {
     return null;
   }
 
-  const { data }: any = await axios.get(
-    `${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`,
-    {
+  let res: any = await axios
+    .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
       },
-    }
-  );
+    })
+    .catch((err) => {
+      if (err.response && callback) {
+        callback(err.response);
+      }
+    });
 
-  return data;
+  return res.data;
 }
 
 // ---------------------------------------------------------------
@@ -379,6 +387,28 @@ export async function getLatestAccomodationReviewsByRegisterNumber(
   );
 
   return data;
+}
+
+/**
+ * Comprueba si el código promocional pasado como parámetro existe y es válido.
+ *
+ * @param promoCodeToCheck
+ * @returns
+ */
+export async function checkPromocodeIsValid(
+  regNumber: string,
+  promoCodeToCheck: string
+) {
+  let res: any = await axios.get(`${API_PROMO_CODES}/${regNumber}/exists`, {
+    headers: {
+      Authorization: `Bearer ${apiJwtToken}`,
+    },
+    params: {
+      code: promoCodeToCheck,
+    },
+  });
+
+  return res.data;
 }
 
 /**
@@ -715,20 +745,27 @@ export async function removeSavedAccomodation(
  */
 export async function getSavedAccomodation(
   idAccomodation: string,
-  idUser: number
+  idUser: number,
+  callback?: CallableFunction
 ) {
   if (!idAccomodation || !idUser) {
     return null;
   }
 
-  const { data }: any = await axios.get(
-    `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,
-    {
-      headers: {
-        Authorization: `Bearer ${apiJwtToken}`,
-      },
-    }
-  );
+  const { data }: any = await axios
+    .get(
+      `${baseUri}${ACCOMODATIONS_BASE_PATH}/saved/${idAccomodation}/${idUser}`,
+      {
+        headers: {
+          Authorization: `Bearer ${apiJwtToken}`,
+        },
+      }
+    )
+    .catch((err) => {
+      if (err.response && callback) {
+        callback(err.response);
+      }
+    });
 
   return data;
 }

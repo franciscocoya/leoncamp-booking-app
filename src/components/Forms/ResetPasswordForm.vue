@@ -6,6 +6,8 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
+import { checkExistsUser, getUserIdByEmail } from "@/services/user/userService";
+
 // Store
 import { useAuthStore } from "@/store/auth";
 import { useAppContextStore } from "@/store/appContext";
@@ -24,12 +26,26 @@ defineProps({
   },
 });
 
+const updateUserId = async (value) => {
+  const userEmail = await checkExistsUser(value);
+  if (userEmail) {
+    const userIdNotLoging = await getUserIdByEmail(value);
+
+    if (!authStore?.userData) {
+      authStore.userData = {
+        id: userIdNotLoging,
+      };
+    }
+  }
+};
+
 /**
  * Manejador del evento submit del formulario.
  */
 const handleResetPassword = async () => {
   authStore.errors = [];
-  await authStore.resetPasswordLoggedUser();
+
+  await authStore.resetPasswordLoggedUser(authStore?.userData?.id);
   showErrorMessages.value = authStore.errors.length > 0;
   showSuccessMessage.value = authStore.errors.length == 0;
 
@@ -52,7 +68,8 @@ const enablePasswordFields = (callback) => {
   isResetButtonEnabled.value =
     authStore.password !== "" &&
     authStore.newPassword !== "" &&
-    authStore.repeatedPassword !== "";
+    authStore.repeatedPassword !== "" &&
+    authStore.email !== "";
 };
 
 onMounted(() => {
@@ -60,6 +77,7 @@ onMounted(() => {
   authStore.password = "";
   authStore.newPassword = "";
   authStore.repeatedPassword = "";
+  authStore.email = "";
 
   isResetButtonEnabled.value = false;
 });
@@ -69,11 +87,26 @@ onMounted(() => {
   <div class="login-form">
     <h1>{{ title }}</h1>
     <form id="form-login">
+      <LabelFormInput
+        v-if="!authStore?.userData?.id"
+        inputType="email"
+        :inputLabel="$t('components.forms.email')"
+        inputStyleClass="base-input"
+        :inputMaxCharacters="100"
+        @handleInput="
+          (value) =>
+            enablePasswordFields(
+              () => (authStore.email = value.replace(' ', ''))
+            )
+        "
+        @handleBlur="(value) => updateUserId(value)"
+      />
       <div class="form-group__current-password">
         <LabelFormInput
           inputType="password"
           :inputLabel="$t('components.forms.current_password')"
           inputStyleClass="base-input"
+          :inputMaxCharacters="50"
           @handleInput="
             (value) =>
               enablePasswordFields(
@@ -87,6 +120,7 @@ onMounted(() => {
           inputType="password"
           :inputLabel="$t('components.forms.new_password')"
           inputStyleClass="base-input"
+          :inputMaxCharacters="50"
           @handleInput="
             (value) =>
               enablePasswordFields(
@@ -100,6 +134,7 @@ onMounted(() => {
           inputType="password"
           :inputLabel="$t('components.forms.confirm_new_password')"
           inputStyleClass="base-input"
+          :inputMaxCharacters="50"
           @handleInput="
             (value) =>
               enablePasswordFields(

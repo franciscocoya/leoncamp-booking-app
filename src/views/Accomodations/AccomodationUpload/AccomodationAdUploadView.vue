@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
@@ -8,6 +8,8 @@ import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // Servicios
 import { addNewAccomodation } from "@/services/accomodation/AccomodationService";
+
+import { uploadAccomodationRoutes } from "@/helpers/appRoutes";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
@@ -71,7 +73,7 @@ const showPreviousStep = () => {
     currentUploadStepNum.value = 0;
   }
 
-  if (formErrorsStore.enableNextButton == true) {
+  if (formErrorsStore.enablePreviousButton == true) {
     currentUploadStepNum.value--;
     currentUploadStepRoute.value =
       accomodationUploadSteps[currentUploadStepNum.value];
@@ -90,8 +92,15 @@ onMounted(async () => {
   formErrorsStore.enableNextButton = false;
 
   accomodationStore.$state = {};
+  await authStore.loadCurrentUserData();
   accomodationStore.userHost = authStore?.userData;
 });
+
+// onBeforeRouteLeave((from, to) => {
+//   if (!uploadAccomodationRoutes.includes(to.name)) {
+//     return false;
+//   }
+// });
 </script>
 
 <template>
@@ -108,6 +117,7 @@ onMounted(async () => {
           <BaseButton
             :text="$tc('components.buttons.back', 2)"
             buttonStyle="baseButton-dark--filled--small"
+            :isDisabled="formErrorsStore.enablePreviousButton == false"
             :style="`opacity: ${
               router.currentRoute.value.name !== accomodationUploadSteps[0]
                 ? '1'
@@ -116,7 +126,11 @@ onMounted(async () => {
             @click="showPreviousStep"
           />
           <BaseButton
-            :text="`${currentUploadStepNum == 4 ? $t('components.buttons.finish') : $t('components.buttons.next')}`"
+            :text="`${
+              currentUploadStepNum == 4
+                ? $t('components.buttons.finish')
+                : $t('components.buttons.next')
+            }`"
             buttonStyle="baseButton-dark--filled--small"
             :isDisabled="formErrorsStore.enableNextButton == false"
             @click="
@@ -128,7 +142,7 @@ onMounted(async () => {
         </div>
         <p v-if="appContextStore.isMobile == false">
           {{
-            $tc('upload_accomodation_view.step_display', {
+            $tc("upload_accomodation_view.step_display", {
               n1: currentUploadStepNum + 1,
               n2: accomodationUploadSteps.length,
             })

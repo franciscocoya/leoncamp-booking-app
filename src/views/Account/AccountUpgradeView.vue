@@ -3,6 +3,8 @@ import { onBeforeMount, ref } from "@vue/runtime-core";
 
 import { useRouter } from "vue-router";
 
+import { login } from "@/services/auth/AuthService";
+
 // Componentes
 import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
@@ -91,14 +93,16 @@ const handleUpgradeAccount = async () => {
       }
     );
     if (data) {
-      console.log(data);
-      await authStore.loadCurrentUserData(data.id);
-      router.push({
-        name: "user-profile",
-        params: {
-          username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
-        },
-      });
+      // authStore.userData.id = data.id;
+      window.confirm("Para aplicar los cambios debe cerrar sesión");
+      authStore.logout();
+
+      // router.push({
+      //   name: "user-profile",
+      //   params: {
+      //     username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
+      //   },
+      // });
     }
   }
 

@@ -46,14 +46,13 @@ const props = defineProps({
     default: false,
   },
 });
-
-const currentUser = JSON.parse(sessionStorage.getItem("user"))?.id;
-
 const loadingView = ref(true);
 
+let starAverage = ref(0);
+
 const getAccomodationStarAverage = async () => {
-  accomodationStore.stars = await accomodationStore.getStarAverage(
-    accomodationStore.registerNumber
+  starAverage.value = await accomodationStore.getStarAverage(
+    props.accData?.registerNumber
   );
 };
 
@@ -73,17 +72,13 @@ const handleMouseLeave = () => {
 
 onBeforeMount(async () => {
   loadingView.value = true;
-  await authStore.loadCurrentUserData();
+
+  // await authStore.loadCurrentUserData();
 });
 
 onMounted(async () => {
   accomodationStore.registerNumber = props.accData?.registerNumber;
-  getAccomodationStarAverage();
-
-  if (currentUser) {
-    await userStore.loadUserData();
-  }
-
+  await getAccomodationStarAverage();
   loadingView.value = false;
 });
 </script>
@@ -187,7 +182,7 @@ onMounted(async () => {
         <div class="accomodation-star-average-container">
           <!-- Icono de estrella -->
           <svg
-            v-if="accomodationStore.stars > 0"
+            v-if="starAverage > 0"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -204,7 +199,7 @@ onMounted(async () => {
               stroke-linecap="round"
             />
           </svg>
-          <span>{{ accomodationStore.stars }}</span>
+          <span>{{ starAverage }}</span>
         </div>
         <div class="accomodation-price-per-night">
           <span

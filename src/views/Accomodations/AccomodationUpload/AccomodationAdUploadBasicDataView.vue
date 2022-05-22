@@ -45,14 +45,16 @@ const checkRegisterNumber = async () => {
       "components.forms.messages.registerNumber.invalid"
     );
   } else {
-    const existsAccomodation = await checkAccomodationExistsByRegNumber(
-      accomodationStore?.registerNumber
-    );
-
-    if (existsAccomodation) {
-      formErrorsStore.errors.push(
-        "components.forms.messages.registerNumber.exists"
+    if (accomodationStore?.registerNumber !== "") {
+      const existsAccomodation = await checkAccomodationExistsByRegNumber(
+        accomodationStore?.registerNumber
       );
+
+      if (existsAccomodation) {
+        formErrorsStore.errors.push(
+          "components.forms.messages.registerNumber.exists"
+        );
+      }
     }
   }
 
@@ -159,9 +161,13 @@ const checkAccomodationCategory = () => {
 };
 
 const showNextButton = async () => {
-  const existsAccomodation = await checkAccomodationExistsByRegNumber(
-    accomodationStore?.registerNumber
-  );
+  let existsAccomodation = false;
+
+  if (accomodationStore?.registerNumber) {
+    existsAccomodation = await checkAccomodationExistsByRegNumber(
+      accomodationStore?.registerNumber
+    );
+  }
 
   formErrorsStore.enableNextButton =
     checkInputStringFieldIsValid(accomodationStore?.registerNumber, 1, 20) &&
@@ -172,17 +178,12 @@ const showNextButton = async () => {
     checkInputNumberFieldIsValid(accomodationStore?.numOfBedRooms, 1, 50) &&
     checkInputNumberFieldIsValid(accomodationStore?.pricePerNight, 1, 100000) &&
     checkInputNumberFieldIsValid(accomodationStore?.numOfGuests, 1, 100) &&
-    accomodationStore?.category !== "" &&
-    accomodationStore?.category !== null &&
+    accomodationStore?.category &&
     !existsAccomodation;
 
-  if (formErrorsStore.enableNextButton) {
+  setTimeout(() => {
     formErrorsStore.errors = [];
-  } else {
-    setTimeout(() => {
-      formErrorsStore.errors = [];
-    }, 5000);
-  }
+  }, 5000);
 };
 
 onMounted(async () => {
@@ -192,15 +193,14 @@ onMounted(async () => {
   formErrorsStore.enableNextButton = false;
 });
 
-onBeforeRouteLeave((to, from) => {
-  if (
-    formErrorsStore.enableNextButton == false &&
-    (uploadAccomodationRoutes.includes(from.name) ||
-      uploadAccomodationRoutes.includes(to.name))
-  ) {
-    return false;
-  }
-});
+// onBeforeRouteLeave((to, from) => {
+//   if (
+//     formErrorsStore.enableNextButton == false &&
+//     uploadAccomodationRoutes.includes(to.name)
+//   ) {
+//     return false;
+//   }
+// });
 </script>
 
 <template>
@@ -253,7 +253,7 @@ onBeforeRouteLeave((to, from) => {
             :inputTitle="$t('upload_accomodation_view.step1.area.title')"
             :inputValue="accomodationStore.area"
             :inputNumberMax="100000"
-            @handleInput="(value) => (accomodationStore.area = value)"
+            @handleInput="(value) => (accomodationStore.area = Number(value))"
             @handleBlur="checkAccomodationArea"
           />
         </div>
@@ -265,7 +265,9 @@ onBeforeRouteLeave((to, from) => {
             inputType="number"
             :inputNumberMax="10"
             :inputValue="accomodationStore.numOfBeds"
-            @handleInput="(value) => (accomodationStore.numOfBeds = value)"
+            @handleInput="
+              (value) => (accomodationStore.numOfBeds = Number(value))
+            "
             @handleBlur="checkAccomodationNumOfBeds"
           />
 
@@ -275,7 +277,9 @@ onBeforeRouteLeave((to, from) => {
             inputType="number"
             :inputNumberMax="10"
             :inputValue="accomodationStore.numOfBedRooms"
-            @handleInput="(value) => (accomodationStore.numOfBedRooms = value)"
+            @handleInput="
+              (value) => (accomodationStore.numOfBedRooms = Number(value))
+            "
             @handleBlur="checkAccomodationNumOfBedRooms"
           />
 
@@ -285,7 +289,9 @@ onBeforeRouteLeave((to, from) => {
             inputType="number"
             :inputValue="accomodationStore.numOfBathRooms"
             :inputNumberMax="10"
-            @handleInput="(value) => (accomodationStore.numOfBathRooms = value)"
+            @handleInput="
+              (value) => (accomodationStore.numOfBathRooms = Number(value))
+            "
             @handleBlur="checkAccomodationNumOfBathRooms"
           />
         </div>
@@ -298,7 +304,9 @@ onBeforeRouteLeave((to, from) => {
             :inputNumberMax="100"
             :inputTitle="$t('upload_accomodation_view.step1.guests.title')"
             :inputValue="accomodationStore.numOfGuests"
-            @handleInput="(value) => (accomodationStore.numOfGuests = value)"
+            @handleInput="
+              (value) => (accomodationStore.numOfGuests = Number(value))
+            "
             @handleBlur="checkAccomodationNumOfGuests"
           />
 
@@ -308,7 +316,9 @@ onBeforeRouteLeave((to, from) => {
             isPriceInput="true"
             :inputValue="accomodationStore.pricePerNight"
             :inputNumberMax="100000"
-            @handleInput="(value) => (accomodationStore.pricePerNight = value)"
+            @handleInput="
+              (value) => (accomodationStore.pricePerNight = Number(value))
+            "
             @handleBlur="checkAccomodationPrice"
           />
         </div>
