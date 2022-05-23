@@ -171,6 +171,10 @@ onMounted(async () => {
                 <span v-once v-t="'booking_details_view.price_summary.service_fee'"></span>
                 <span>{{ bookingData?.serviceFee }} {{$t('currency.symbol')}}</span>
               </li>
+              <li v-if="bookingData?.disccount > 0">
+                <span v-t="'booking_details_view.price_summary.disccount'"></span>
+                <span>{{ bookingData?.disccount }} {{$t('currency.symbol')}}</span>
+              </li>
               <li>
                 <span v-t="'booking_details_view.price_summary.total'"></span>
                 <span>{{ bookingData?.total }} {{$t('currency.symbol')}}</span>

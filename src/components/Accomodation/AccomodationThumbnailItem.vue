@@ -138,7 +138,7 @@ onMounted(async () => {
         <div>
           <!-- Icono guardar alojamiento -->
           <SavedAccomodationIcon
-            v-if="authStore?.userData?.id !== accData?.idUserHost?.id"
+            v-if="authStore?.userData?.id && authStore?.userData?.id !== accData?.idUserHost?.id"
             :regNumber="accData?.registerNumber"
           />
           <div class="accomodation-icons">

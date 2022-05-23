@@ -36,7 +36,9 @@ const showAllReviews = () => {
 
 <template>
   <div class="accomodation-reviews-container">
-    <h2 v-t="'accomodation_reviews.title'"></h2>
+    <h2>
+      {{$t('accomodation_reviews.title')}}
+    </h2>
     <div v-if="reviews.length > 0" class="accomodation-star-average-container">
       <span v-t="'accomodation_reviews.average'"></span>
       <svg

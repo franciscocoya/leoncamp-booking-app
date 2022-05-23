@@ -21,4 +21,5 @@ app.use(InstantSearch);
 
 app.mount('#app');
 
-i18n.global.locale = 'en';
+i18n.global.locale = 'es';
+sessionStorage.setItem('lang', 'es');

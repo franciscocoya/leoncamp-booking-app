@@ -10,6 +10,7 @@ const useAppContextStore = defineStore({
     isMobile: false,
     isTablet: false,
     appCurrencies: [],
+    selectedLanguage: {},
     userConfiguration: {},
     showSearchResults: false,
     isGeolocationSupported: false

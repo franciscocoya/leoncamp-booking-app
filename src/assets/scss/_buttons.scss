@@ -312,3 +312,49 @@
     background-color: $color-tertiary-light;
   }
 }
+
+// Estilos botones selección número de elementos en la ventana de filtros.
+
+.filter_number_selector_button,
+.filter_number_selector_button--delete,
+.filter_number_selector_button__all{
+  padding: 10px 20px;
+  // background-color: $color-tertiary-light;
+  border: 1px solid $color-tertiary-dark;
+  border-radius: $global-border-radius;
+  transition: all .1s cubic-bezier(0.075, 0.82, 0.165, 1);
+  text-align: center;
+  cursor: pointer;
+
+  &:hover{
+    background-color: $color-tertiary-dark;
+  }
+}
+
+.filter_number_selector_button--delete{
+  background-color: $color-danger;
+  color: #FFF;
+  &:hover{
+    background-color: $color-danger;
+  }
+}
+
+.filter_number_selector_button.--filter-button-active{
+  background-color: $color-dark;
+  color: #fff;
+}
+
+.filter_number_selector_button__all{
+  background-color: $color-dark;
+  color: #FFF;
+
+  &:hover{
+    background-color: $color-dark;
+  }
+}
+
+.filter_number_selector_button__all.--no-show-all-active{
+  background-color: transparent;
+  border: 1px solid $color-tertiary-dark;
+  color: $color-dark;
+}

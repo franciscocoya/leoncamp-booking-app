@@ -19,10 +19,10 @@ onMounted(async () => {
     await accomodationStore.getAllUserSavedAccomodations();
 });
 
-onUpdated(async () => {
-  savedAccomodations.all =
-    await accomodationStore.getAllUserSavedAccomodations();
-});
+// onUpdated(async () => {
+//   savedAccomodations.all =
+//     await accomodationStore.getAllUserSavedAccomodations();
+// });
 </script>
 
 <template>

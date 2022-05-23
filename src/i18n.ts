@@ -9,7 +9,7 @@ const messages = {
 };
 
 export default createI18n({
-  locale: import.meta.env.VITE_APP_I18N_LOCALE || 'es',
+  locale: sessionStorage.getItem('lang') || import.meta.env.VITE_APP_I18N_LOCALE || 'es',
   fallbackLocale: import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages,
 });

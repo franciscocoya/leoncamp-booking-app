@@ -234,7 +234,7 @@ onUpdated(() => {
 
         <!-- Seccion servicios -->
         <section class="accomodation-detail__services">
-          <h2 v-once v-t="'accomodation_detail_view.amenities.title'"></h2>
+          <h2 v-t="'accomodation_detail_view.amenities.title'"></h2>
           <AccomodationServicesItem
             :services="accomodationStore?.accomodationServices"
             @show-modal="showServiceModal = true"
@@ -261,7 +261,7 @@ onUpdated(() => {
 
         <!-- Sección detalles anfitrión -->
         <section class="accomodation-host">
-          <h2 v-once v-t="'accomodation_detail_view.host.title'"></h2>
+          <h2 v-t="'accomodation_detail_view.host.title'"></h2>
           <div class="accomodation-host-summary">
             <div class="accomodation-host__info">
               <div class="accomodation-host_info__details">
@@ -296,7 +296,7 @@ onUpdated(() => {
               </div>
             </div>
             <BaseButton
-              v-once
+            
               :text="`${
                 accomodationStore?.userHost?.id === authStore?.userData?.id
                   ? $t(
@@ -394,7 +394,8 @@ onUpdated(() => {
       & > .accomodation-detail_description__booking-price-container {
         @include flex-column;
         gap: 20px;
-        border: 1px solid $color-tertiary-dark;
+        // border: 1px solid $color-tertiary-dark;
+        text-align: center;
         border-radius: $global-border-radius;
         padding: 10px;
       }

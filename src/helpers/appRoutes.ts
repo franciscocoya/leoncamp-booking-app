@@ -51,7 +51,7 @@ const uploadAccomodationRoutes = [
   'accomodation-upload-images',
 ];
 
-const publicRoutes = ['/', 'passwod/reset'];
+const publicRoutes = ['/', 'passwod/reset', '/accomodation/search'];
 
 export {
   publicRoutes,

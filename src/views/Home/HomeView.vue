@@ -1,24 +1,30 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 
 // Componentes
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";
 import BaseAccomodationsMap from "@/components/Maps/BaseAccomodationsMap.vue";
 import SearchBarItem from "@/components/Header/SearchBar/SearchBarItem.vue";
-
 // Servicios
 import { getAllAccomodations } from "@/services/accomodation/AccomodationService";
 
 // Store
 import { useAppContextStore } from "@/store/appContext";
 
+// Modals
+import AccomodationSearchFiltersModal from "@/components/Modals/AccomodationSearchFiltersModal.vue";
+
+// Iconos
+import { ICON_FILTER } from "@/helpers/iconConstants";
+
 const appContextStore = useAppContextStore();
 
 let allAccomodations = ref([]);
 let accomodationMarkers = ref([]);
 let selectedMarkerRegNumber = ref("");
+let showSearchFiltersModel = ref(false);
 
-onBeforeMount(async () => {
+onMounted(async () => {
   allAccomodations.value = await getAllAccomodations();
 
   accomodationMarkers.value = allAccomodations.value.map((acc) => {
@@ -55,6 +61,23 @@ const deselectMarker = () => {
         @hide-search-results="appContextStore.showSearchResults = false"
       />
     </section>
+    <Transition name="fade">
+      <div v-if="showSearchFiltersModel == true">
+        <AccomodationSearchFiltersModal
+          @closeModal="() => (showSearchFiltersModel = false)"
+        />
+      </div>
+    </Transition>
+    <section role="toolbar" class="home-view__accomodation-filters">
+      <div
+        class="filter_accomodation_button"
+        role="button"
+        @click.prevent="() => (showSearchFiltersModel = true)"
+      >
+        <img :src="ICON_FILTER" alt="" />
+        <span>{{ $t("components.buttons.filter") }}</span>
+      </div>
+    </section>
     <section class="home-view__wrapper">
       <section class="home-accomodations-list">
         <AccomodationThumbnailItem
@@ -85,12 +108,41 @@ $home-section-margin: 50px;
 
 .home-view {
   @include flex-column;
+  gap: 20px;
+
+    & > .home-view__accomodation-filters {
+      margin: 10px 0 0 50px;
+
+      & > .filter_accomodation_button {
+        @include flex-row;
+        gap: 10px;
+        width: 100px;
+        background-color: $color-tertiary-light;
+        padding: 10px;
+        border-radius: $global-border-radius;
+        cursor: pointer;
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background-color: $color-tertiary-dark;
+        }
+
+        & > img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
   & > .home-view__wrapper {
     display: grid;
-    height: calc(100vh - $header-height - 50px);
+    height: calc(100vh - $header-height - 70px);
     grid-template-columns: auto 50%;
     gap: 5px;
-    margin: $home-section-margin 0 0 $home-section-margin;
+    margin-left: $home-section-margin;
+    background-color: none;
+
+
     // Estilos para la lista de alojamientos
     & > .home-accomodations-list {
       @include flex-column;

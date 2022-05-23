@@ -24,6 +24,8 @@ const ICON_HOME = `${IMG_PATH}icons/home-icon.svg`;
 const ICON_INFO = `${IMG_PATH}icons/info-icon.svg`;
 const ICON_RETURN = `${IMG_PATH}icons/return-icon.svg`;
 const ICON_DOWNLOAD = `${IMG_PATH}icons/download-icon.svg`;
+const ICON_LANGUAGE = `${IMG_PATH}icons/language-icon.svg`;
+const ICON_FILTER = `${IMG_PATH}icons/filter-icon.svg`;
 
 // Iconos menú
 const ICON_MENU_HOME = `${IMG_PATH}icons/home-menu-icon.svg`;
@@ -72,6 +74,8 @@ export {
   ICON_INFO,
   ICON_RETURN,
   ICON_DOWNLOAD,
+  ICON_LANGUAGE,
+  ICON_FILTER,
   // Iconos menú mobile
   ICON_MENU_HOME,
   ICON_MENU_BOOKMARK_OUTLINE,

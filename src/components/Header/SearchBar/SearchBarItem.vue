@@ -21,6 +21,9 @@ const hideSearchResults = () => {
 const handleSearchInput = (e) => {
   searchStore.searchResults = [];
   e.target.value.length > 0 ? showSearchResults() : hideSearchResults();
+
+  searchStore.setSearchResults(e.target.value);
+
   searchStore.searchQuery = e.target.value;
 };
 </script>

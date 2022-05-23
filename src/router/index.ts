@@ -36,6 +36,7 @@ const publicRoutesNames: string[] = [
   'error-500',
   'home',
   'accomodation-city-list',
+  'accomodation-search-results'
 ];
 
 /**
@@ -93,6 +94,11 @@ const router = createRouter({
       name: 'accomodation-city-list',
       component: () =>
         import('@/views/Accomodations/AccomodationSearchResultsView.vue'),
+    },
+    {
+      path: '/accomodation/search',
+      name: 'accomodation-search-results',
+      component : () => import('@/views/SearchResults/AccomodationSearchResultsFilteredView.vue'),
     },
     {
       // Perfil del usuario en sesión

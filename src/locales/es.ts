@@ -54,6 +54,7 @@ export const es_msgs = {
       price_per_night: 'Precio / noche',
       cost: 'Coste ({name} x {nights} noches)',
       service_fee: 'Comisión servicio',
+      disccount: 'Descuento',
       total: 'Total',
     },
     location: 'Ubicación',
@@ -71,7 +72,7 @@ export const es_msgs = {
     button_book: 'Reservar',
     night: 'noche | noches',
     amenities: {
-      title: 'Amenities',
+      title: 'Servicios',
       button_show_more: 'Show the {n} amenities',
     },
     location: {
@@ -177,13 +178,13 @@ export const es_msgs = {
       title: 'Seguridad y privacidad',
       reset_pass: {
         title: 'Inicio de sesión y seguridad',
-        subtitle: 'Restablecer contraseñas',
+        subtitle: 'Restablecer contraseña',
         button: 'Restablecer',
       },
     },
     preferences: {
       title: 'Configuración y preferencias',
-      currency: 'Moneda',
+      currency: 'Divisa',
       lang: {
         title: 'Idioma',
         spanish: 'Español (España)',
@@ -210,6 +211,23 @@ export const es_msgs = {
       upgrade_plan: 'Actualizar plan',
       help: 'Ayuda',
     },
+  },
+  accommodation_search_results_view: {
+    title: 'Alojamientos en {city}',
+  },
+  accommodation_results_filtered_view: {
+    title: 'Resultados de búsqueda',
+    filters: {
+      price: {
+        min: 'Desde {n} {symbol}',
+        max: 'Hasta {n} {symbol}',
+      },
+      beds: '{n} camas',
+      bedrooms: '{n} habitaciones',
+      bathrooms: '{n} baños',
+      guests: '{n} huéspedes',
+    },
+    no_results: 'No se encontraron resultados',
   },
   user_public_profile: {
     title: 'Hola: Soy {name}',
@@ -308,6 +326,9 @@ export const es_msgs = {
       reset: 'Restablecer',
       download_invoice: 'Descargar factura',
       upload_image: 'Subir imagen',
+      filter: 'Filtrar',
+      clear: 'Borrar',
+      all: 'Todos',
     },
     forms: {
       name: 'Nombre',
@@ -481,6 +502,18 @@ export const es_msgs = {
     accomodation_images: {
       title: 'Imágenes del alojamiento',
     },
+    accomodation_search_filters: {
+      title: 'Filtros de búsqueda',
+      price: {
+        title: 'Rango de precios',
+        min: 'Desde',
+        max: 'Hasta',
+      },
+      beds: 'Número de camas',
+      bathrooms: 'Número de baños',
+      bedrooms: 'Número de habitaciones',
+      guests: 'Número de huéspedes',
+    }
   },
   currency: {
     symbol: '€',

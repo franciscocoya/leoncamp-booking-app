@@ -15,7 +15,9 @@ const getCitiesMatchWithSearchWord = async (
 ): Promise<string[]> => {
   const cities = await getAllCities();
 
-  return cities.filter((city: string) => city.toLowerCase().includes(searchWord.toLocaleLowerCase()));
+  console.log(cities);
+
+  return cities.filter((city: string) => city.toLowerCase().includes(searchWord.toLowerCase()));
 };
 
 export { getCitiesMatchWithSearchWord };

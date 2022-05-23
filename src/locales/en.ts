@@ -54,6 +54,7 @@ export const en_msgs = {
       price_per_night: 'Price / night',
       cost: 'Cost ({name} x {nights} nights)',
       service_fee: 'Service fee',
+      disccount: 'Disccount',
       total: 'Total',
     },
     location: 'Location',
@@ -208,6 +209,23 @@ export const en_msgs = {
       help: 'Help',
     },
   },
+  accommodation_search_results_view: {
+    title: 'Accomodations in {city}',
+  },
+  accommodation_results_filtered_view: {
+    title: 'Search results',
+    filters: {
+      price: {
+        min: 'From {n} {symbol}',
+        max: 'To {n} {symbol}',
+      },
+      beds: '{n} beds',
+      bedrooms: '{n} bedrooms',
+      bathrooms: '{n} bathrooms',
+      guests: '{n} guests',
+    },
+    no_results: 'No accomodations found',
+  },
   user_public_profile: {
     title: "Hello: I'm {name}",
     about: {
@@ -305,6 +323,9 @@ export const en_msgs = {
       reset: 'Reset',
       download_invoice: 'Download invoice',
       upload_image: 'Upload image',
+      filter: 'Filter',
+      clear: 'Clear',
+      all: 'All',
     },
     forms: {
       name: 'Name',
@@ -477,6 +498,18 @@ export const en_msgs = {
     accomodation_images: {
       title: 'Accomodation images',
     },
+    accomodation_search_filters: {
+      title: 'Search filters',
+      price: {
+        title: 'Price range',
+        min: 'From',
+        max: 'To',
+      },
+      beds: 'Beds number',
+      bathrooms: 'Bathrooms number',
+      bedrooms: 'Bedrooms number',
+      guests: 'Guests number',
+    }
   },
   currency: {
     symbol: '£',

@@ -70,7 +70,7 @@ onMounted(() => {
           <p>{{ result }}</p>
         </li>
       </ul>
-      <h2 v-else v-t="'search.search_results.not_results'"></h2>
+      <h2 v-else>{{$t('search.search_results.not_results')}}</h2>
     </div>
   </div>
 </template>

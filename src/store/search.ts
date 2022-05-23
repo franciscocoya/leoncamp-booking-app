@@ -8,6 +8,16 @@ const useSearchStore = defineStore({
   state: () => ({
     searchResults: [],
     searchQuery: '',
+    filter: {
+      price: {
+        min: 0,
+        max: 0,
+      },
+      beds: 0,
+      bedrooms: 0,
+      bathrooms: 0,
+      guests: 0,
+    }
   }),
 
   actions: {

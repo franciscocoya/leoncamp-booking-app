@@ -36,7 +36,13 @@ onBeforeMount(async () => {
 
 <template>
   <div class="accomodation-city-results-view">
-    <h1>Alojamientos en {{ route.params.city }}</h1>
+    <h1>
+      {{
+        $tc('accommodation_search_results_view.title', {
+          city: route.params.city,
+        })
+      }}
+    </h1>
     <div class="accomodation-city-results__wrapper">
       <section class="home-accomodations-list">
         <AccomodationThumbnailItem
