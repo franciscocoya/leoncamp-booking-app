@@ -3,6 +3,8 @@ import { onMounted, onUpdated, ref } from "vue";
 
 import { useRouter } from "vue-router";
 
+import { useAppContextStore } from "@/store/appContext";
+
 import mapboxgl from "mapbox-gl";
 
 import i18n from "@/i18n";
@@ -10,6 +12,8 @@ import i18n from "@/i18n";
 let map = ref({});
 
 const router = useRouter();
+
+const appContextStore = useAppContextStore();
 
 const props = defineProps({
   markers: {
@@ -72,7 +76,15 @@ onMounted(() => {
       priceMark.style.cursor = "pointer";
       priceMark.style.transition = "all 0.3s ease-in";
 
-      priceMark.innerText = `${markerToAdd.price} €`;
+      priceMark.innerText = `${markerToAdd.price} ${
+        appContextStore?.selectedLanguage == "es" ||
+        appContextStore?.selectedLanguage == "es-es"
+          ? "€"
+          : appContextStore?.selectedLanguage == "en" ||
+            appContextStore?.selectedLanguage == "en-en"
+          ? "£"
+          : ""
+      }`;
 
       // Redirección a la vista de detalle del alojamiento
       priceMark.addEventListener("click", () => {

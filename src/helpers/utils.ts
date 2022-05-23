@@ -169,19 +169,26 @@ const getStyleBookingStatusBadge = (bookingStatus: string) => {
   switch (bookingStatus) {
     case 'PENDIENTE':
       style = {
-        backgroundColor: 'orange',
+        backgroundColor: '#f5562a',
         color: '#FFF',
       };
       break;
     case 'CONFIRMADA':
       style = {
-        backgroundColor: 'green',
+        backgroundColor: 'rgb(54, 216, 54)',
         color: '#FFF',
       };
       break;
     case 'CANCELADA':
       style = {
         backgroundColor: 'red',
+        color: '#FFF',
+      };
+      break;
+
+    case 'COMPLETADA':
+      style = {
+        backgroundColor: '#0d353f',
         color: '#FFF',
       };
       break;

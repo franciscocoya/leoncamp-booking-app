@@ -8,6 +8,7 @@ import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 import BaseFormTextArea from "@/components/Forms/BaseFormTextArea.vue";
 import BaseFormSelect from "@/components/Forms/BaseFormSelect.vue";
 import UploadImageInputButton from "@/components/Buttons/UploadImageInputButton.vue";
+import BaseMessageItem from "@/components/Forms/Messages/BaseMessageItem.vue";
 
 // i18n
 import {
@@ -22,6 +23,7 @@ import TextEditChip from "@/components/Chips/TextEditChip.vue";
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
 import { useAppContextStore } from "@/store/appContext";
+import { useAuthStore } from "@/store/auth";
 
 // Utils
 import { convertImageToBase64 } from "@/helpers/utils";
@@ -36,6 +38,10 @@ const router = useRouter();
 
 const accomodationStore = useAccomodationStore();
 const appContextStore = useAppContextStore();
+const authStore = useAuthStore();
+
+let showAccomodationUpdateSuccessMessage = ref(false);
+let showUpdateAccomodationCategorySuccessMessage = ref(false);
 
 const MAX_ACCOMODATION_IMAGES = 8;
 
@@ -69,10 +75,12 @@ const handleAddImage = async (val) => {
  * Manejador de click para editar las características principales del alojamiento.
  */
 const handleApplyAccomodationChanges = async () => {
-  await updateAccomodationCategory(
-    accomodationStore.registerNumber,
-    accomodationStore.category
-  );
+  await accomodationStore.updateAccomodation();
+  showAccomodationUpdateSuccessMessage.value = true;
+
+  setTimeout(() => {
+    showAccomodationUpdateSuccessMessage.value = false;
+  }, 3000);
 };
 
 /**
@@ -80,6 +88,11 @@ const handleApplyAccomodationChanges = async () => {
  */
 const handleEditAccomodationCategory = async () => {
   await accomodationStore.updateAccomodationCategory();
+  showUpdateAccomodationCategorySuccessMessage.value = true;
+
+  setTimeout(() => {
+    showUpdateAccomodationCategorySuccessMessage.value = false;
+  }, 3000);
 };
 
 /**
@@ -119,6 +132,27 @@ const handleRuleChipChange = async (e, ruleId) => {
     // Si no se selcciona el servicio, eliminar de la lista
     await accomodationStore.deleteAccomodationRule(ruleId);
   }
+};
+
+/**
+ * Manejador de click del botón de eliminar el alojamiento.
+ */
+const handleRemoveCurrentAccomodation = async () => {
+  const confirmRemove = window.confirm(
+    "¿Estás seguro de que quieres eliminar este alojamiento?"
+  );
+
+  if (!confirmRemove) {
+    return false;
+  }
+
+  accomodationStore.removeAccomodation();
+  router.push({
+    name: "user-profile",
+    params: {
+      username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
+    },
+  });
 };
 
 onMounted(async () => {
@@ -190,7 +224,9 @@ onMounted(async () => {
               :inputLabel="$tc('components.forms.beds', 2)"
               inputId="accomodation-beds"
               :inputValue="accomodationStore.numOfBeds"
-              @handleInput="(value) => (accomodationStore.numOfBeds = value)"
+              @handleInput="
+                (value) => (accomodationStore.numOfBeds = Number(value))
+              "
             />
 
             <!-- Número de habitaciones -->
@@ -200,7 +236,7 @@ onMounted(async () => {
               inputId="accomodation-bedrooms"
               :inputValue="accomodationStore.numOfBedRooms"
               @handleInput="
-                (value) => (accomodationStore.numOfBedRooms = value)
+                (value) => (accomodationStore.numOfBedRooms = Number(value))
               "
             />
 
@@ -211,7 +247,7 @@ onMounted(async () => {
               inputId="accomodation-bathrooms"
               :inputValue="accomodationStore.numOfBathRooms"
               @handleInput="
-                (value) => (accomodationStore.numOfBathRooms = value)
+                (value) => (accomodationStore.numOfBathRooms = Number(value))
               "
             />
           </fieldset>
@@ -223,7 +259,9 @@ onMounted(async () => {
               :inputLabel="$tc('components.forms.guests', 2)"
               inputId="accomodation-guests"
               :inputValue="accomodationStore.numOfGuests"
-              @handleInput="(value) => (accomodationStore.numOfGuests = value)"
+              @handleInput="
+                (value) => (accomodationStore.numOfGuests = Number(value))
+              "
             />
           </fieldset>
 
@@ -234,23 +272,22 @@ onMounted(async () => {
               :inputLabel="$t('components.forms.area')"
               inputId="accomodation-area"
               :inputValue="accomodationStore.area"
-              @handleInput="(value) => (accomodationStore.area = value)"
+              @handleInput="(value) => (accomodationStore.area = Number(value))"
             />
 
             <!-- Precio -->
             <LabelFormInput
-              inputType="text"
+              inputType="number"
               :inputLabel="$tc('components.forms.price', 2)"
               inputId="accomodation-price"
               :inputValue="accomodationStore.pricePerNight"
               @handleInput="
-                (value) => (accomodationStore.pricePerNight = value)
+                (value) => (accomodationStore.pricePerNight = Number(value))
               "
             />
           </fieldset>
           <!-- Botón editar alojamiento -->
           <BaseButton
-            v-once
             :text="$t('components.buttons.edit')"
             buttonStyle="baseButton-primary--filled"
             id="button-edit-accomodation-main-properties"
@@ -259,6 +296,16 @@ onMounted(async () => {
             @click="handleApplyAccomodationChanges"
           />
         </section>
+        <Transition name="fade">
+          <div v-if="showAccomodationUpdateSuccessMessage == true">
+            <BaseMessageItem
+              :msg="
+                $t('edit_accommodation_view.edit_basic_data_success_message')
+              "
+              msgType="success"
+            />
+          </div>
+        </Transition>
       </div>
 
       <!-- Categoría del alojamiento -->
@@ -281,6 +328,16 @@ onMounted(async () => {
             :fullWidth="appContextStore.isMobile"
             @click="handleEditAccomodationCategory"
           />
+          <Transition name="fade">
+            <div v-if="showUpdateAccomodationCategorySuccessMessage == true">
+              <BaseMessageItem
+                :msg="
+                  $t('edit_accommodation_view.edit_category_success_message')
+                "
+                msgType="success"
+              />
+            </div>
+          </Transition>
         </div>
       </section>
 
@@ -352,12 +409,16 @@ onMounted(async () => {
       <div class="form-edit-buttons">
         <!-- Botón cancelar cambios -->
         <BaseButton
-          v-once
           :text="$tc('components.buttons.back', 1)"
-          buttonStyle="baseButton-danger--filled"
-          buttonTitle="Haz click aquí para cancelar los cambios realizados en el alojamiento"
+          buttonStyle="baseButton-dark--outlined"
           :fullWidth="appContextStore.isMobile"
           @click="router.go(-1)"
+        />
+        <BaseButton
+          :text="$tc('components.buttons.delete', 1)"
+          buttonStyle="baseButton-danger--filled"
+          :fullWidth="appContextStore.isMobile"
+          @click="handleRemoveCurrentAccomodation"
         />
       </div>
     </form>
@@ -492,6 +553,11 @@ onMounted(async () => {
         flex-wrap: wrap;
       }
     }
+
+    & > .form-edit-buttons {
+      @include flex-row;
+      gap: 10px;
+    }
   } // Fin form-edit-container
 }
 
@@ -543,6 +609,15 @@ onMounted(async () => {
         // Estilos selector de categoría
         & > div:first-child {
           width: 100%;
+        }
+      }
+
+      & > .form-edit-buttons {
+        @include flex-column;
+        gap: 10px;
+
+        & > div {
+          flex: 1;
         }
       }
     }

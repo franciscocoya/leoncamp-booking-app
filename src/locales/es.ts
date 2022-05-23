@@ -28,6 +28,10 @@ export const es_msgs = {
   bookings_view: {
     title: 'Mis reservas',
     not_bookings: 'Aún no has realizado ninguna reserva',
+    tabs: {
+      host: 'Realizadas por mí',
+      guests: 'De mis alojamientos',
+    },
   },
   booking_task_view: {
     title: 'Reserva para el alojamiento {name}',
@@ -47,6 +51,7 @@ export const es_msgs = {
   booking_details_view: {
     title: 'Reserva alojamiento {name}',
     button_show_ad: 'Show accomodation',
+    guests: 'Para {n} huéspedes',
     host: 'Anfitrión',
     dates: 'Fechas reserva',
     price_summary: {
@@ -62,7 +67,7 @@ export const es_msgs = {
   accomodation_detail_view: {
     title: 'Detalles del alojamiento',
     imageGallery: {
-      no_images: 'No hay images',
+      no_images: 'No hay imágenes disponibles',
       button: 'Ver todas',
     },
     show_more: {
@@ -164,6 +169,10 @@ export const es_msgs = {
       title: 'Normas',
       subtitle: 'El alojamiento tiene {n} normas.',
     },
+    edit_basic_data_success_message:
+      'El alojamiento se ha actualizado correctamente',
+    edit_category_success_message:
+      'La categoría se ha actualizado correctamente',
   },
   account_view: {
     user_profile_view: {
@@ -329,6 +338,11 @@ export const es_msgs = {
       filter: 'Filtrar',
       clear: 'Borrar',
       all: 'Todos',
+      booking: {
+        cancel: 'Cancelar',
+        confirm: 'Confirmar',
+        complete: 'Completar',
+      },
     },
     forms: {
       name: 'Nombre',
@@ -342,6 +356,7 @@ export const es_msgs = {
       new_password: 'Nueva contraseña',
       confirm_new_password: 'Confirmar contraseña',
       password_confirmation: 'Confirmar contraseña',
+      forgot_password: 'He olvidado mi contraseña',
       checkIn: 'Llegada',
       checkOut: 'Salida',
       cardNumber: 'Número de tarjeta',
@@ -513,12 +528,12 @@ export const es_msgs = {
       bathrooms: 'Número de baños',
       bedrooms: 'Número de habitaciones',
       guests: 'Número de huéspedes',
-    }
+    },
   },
   currency: {
     symbol: '€',
   },
-  bookingStatus: 'PENDIENTE | CONFIRMADA | COMPLETADA | CANCELADA',
+  bookingStatus: ['PENDIENTE', 'CONFIRMADA', 'COMPLETADA', 'CANCELADA'],
   accomodation_categories: [
     'Apartamento',
     'Loft',

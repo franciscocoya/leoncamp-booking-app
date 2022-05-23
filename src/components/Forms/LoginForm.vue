@@ -110,7 +110,7 @@ const handleLogin = async () => {
           />
         </div>
       </Transition>
-      <a href="/password/reset">He olvidado mi contraseña</a>
+      <a href="/password/reset">{{ $t("components.forms.forgot_password") }}</a>
       <BaseButton
         :text="$t('login_view.button_login')"
         buttonStyle="baseButton-primary--filled"

@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted } from "vue";
 
+import i18n from "@/i18n";
+
 // Servicio
 import { getUserConfigurationByUserId } from "@/services/user/userService";
 
@@ -46,13 +48,13 @@ const handleLanguageChange = (lang, callback) => {
 };
 
 onMounted(async () => {
-  if(authStore?.userData?.id){
+  if (authStore?.userData?.id) {
     const userConfig = await getUserConfigurationByUserId(
       authStore?.userData?.id
     );
-  
+
     sessionStorage.lang = userConfig?.idLanguage?.language.toLowerCase();
-  }else{
+  } else {
     sessionStorage.lang = navigator.language.toLowerCase();
   }
 });
@@ -64,7 +66,7 @@ onMounted(async () => {
       <span
         id="language_switch__spanish"
         :class="`${
-          this.$i18n.locale === 'es' ||
+          i18n.global.locale === 'es' ||
           appContextStore.selectedLanguage === 'es' ||
           sessionStorage?.getItem('lang') === 'es'
             ? '--selectedLanguage'
@@ -72,7 +74,7 @@ onMounted(async () => {
         }`"
         @click.prevent="
           handleLanguageChange('ES', () => {
-            this.$i18n.locale = 'es';
+            i18n.global.locale = 'es';
             appContextStore.selectedLanguage = 'es';
           })
         "
@@ -81,7 +83,7 @@ onMounted(async () => {
       <span
         id="language_switch__english"
         :class="`${
-          this.$i18n.locale === 'en' ||
+          i18n.global.locale === 'en' ||
           appContextStore.selectedLanguage === 'en' ||
           sessionStorage?.getItem('lang') === 'en'
             ? '--selectedLanguage'
@@ -89,7 +91,7 @@ onMounted(async () => {
         }`"
         @click.prevent="
           handleLanguageChange('EN', () => {
-            this.$i18n.locale = 'en';
+            i18n.global.locale = 'en';
             appContextStore.selectedLanguage = 'en';
           })
         "

@@ -97,4 +97,75 @@ export const addNewBooking = async (
   }
 };
 
+/**
+ * Listado de todas las reservas de los alojamientos de un usuario host con el
+ * id pasado como parámetro.
+ *
+ * @param userId
+ */
+export const listAllBookingsFromUserHostAccomodations = async (
+  userId: number,
+  callback?: CallableFunction
+) => {
+  let res: any = await axios
+    .get(`${API_BOOKINGS}/${userId}/received`, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
+      },
+    })
+    .catch((err) => {
+      if (err.response && callback) {
+        callback(err.response);
+      }
+    });
+
+  return res?.data;
+};
+
+/**
+ * Actualiza el estado de una reserva realizada.
+ *
+ * @param bookingId
+ * @param newBookingStatus
+ * @param callback
+ *
+ * @returns
+ */
+export const updateBookingStatus = async (
+  bookingId: number,
+  newBookingStatus: string,
+  callback?: CallableFunction
+) => {
+  const bookingStatusValid = [
+    'PENDIENTE',
+    'CONFIRMADA',
+    'COMPLETADA',
+    'CANCELADA',
+  ];
+
+  if (!bookingStatusValid.includes(newBookingStatus.toUpperCase())) {
+    return;
+  }
+
+  await axios({
+    url: `${API_BOOKINGS}/${bookingId}/status`,
+    method: 'PATCH',
+    params: {
+      value: newBookingStatus,
+    },
+
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(sessionStorage.getItem('user') || '{}').token
+      }`,
+    },
+  }).catch((err) => {
+    if (err.response && callback) {
+      callback(err.response);
+    }
+  });
+};
+
 export { getBookingDataByBookingId, listAccomodationBookingDates };

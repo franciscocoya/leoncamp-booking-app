@@ -1,19 +1,19 @@
 <script setup>
 import { useRouter } from "vue-router";
 
+// Servicios
+import { updateBookingStatus } from "@/services/booking/BookingService";
+
 // Utils
-import { formatArrayAsDate } from "@/helpers/utils";
+import { formatArrayAsDate, getStyleBookingStatusBadge } from "@/helpers/utils";
 
 // i18n
-import {translateBookingStatus} from '@/helpers/i18nTranslations'
+import { translateBookingStatus } from "@/helpers/i18nTranslations";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 import DateBadgeIcon from "@/components/icons/DateBadgeIcon.vue";
 import BaseBadge from "@/components/Accomodation/Badge/BaseBadge.vue";
-
-// Utils
-import { getStyleBookingStatusBadge } from "@/helpers/utils";
 
 // Iconos
 import {
@@ -55,7 +55,29 @@ const props = defineProps({
     type: String,
     default: "PENDIENTE",
   },
+  showComleteButton: {
+    type: Boolean,
+    default: false,
+  },
+  showCancelButton: {
+    type: Boolean,
+    default: false,
+  },
+  showConfirmButton: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+/**
+ * Manejador del evento click de los botones de cambio de estado de las reservas.
+ */
+const handleChangeBookingStatus = async (bookingId, bookingStatus) => {
+  await updateBookingStatus(bookingId, bookingStatus, (err) => {
+    console.log(err);
+  });
+  window.location.reload();
+};
 
 /**
  * Redireccionamiento a la página de detalle de la reserva.
@@ -79,7 +101,6 @@ const getPaymentType = () => {
   }
   return paymentTypeIcon;
 };
-
 </script>
 
 <template>
@@ -87,9 +108,7 @@ const getPaymentType = () => {
     <div class="booking-summary-item__status">
       <div :class="`booking-status-icon --booking-${bookingStatus}`">
         <BaseBadge
-          :text="
-            $tc('bookingStatus', translateBookingStatus(bookingStatus))
-          "
+          :text="$tc(`bookingStatus[${translateBookingStatus(bookingStatus)}]`)"
           :backgroundColor="
             getStyleBookingStatusBadge(bookingStatus).backgroundColor
           "
@@ -115,13 +134,37 @@ const getPaymentType = () => {
         <img :src="getPaymentType()" alt="" />
       </div>
       <p class="booking-total-price" title="Precio total de la reserva">
-        {{ props.totalPrice }} €
+        {{ props.totalPrice }} {{ $t("currency.symbol") }}
       </p>
-      <BaseButton
-        :text="$t('components.buttons.view')"
-        buttonStyle="baseButton-dark--outlined--small"
-        @click="redirectToBookingDetail()"
-      />
+      <div class="booking_summary_buttons_container">
+        <!-- Ver -->
+        <BaseButton
+          :text="$t('components.buttons.view')"
+          buttonStyle="baseButton-dark--outlined--small"
+          @click="redirectToBookingDetail()"
+        />
+        <!-- Completar -->
+        <BaseButton
+          v-if="showComleteButton == true"
+          :text="$t('components.buttons.booking.complete')"
+          buttonStyle="baseButton-primary--outlined--small"
+          @click="handleChangeBookingStatus(bookingId, 'COMPLETADA')"
+        />
+        <!-- Confirmar -->
+        <BaseButton
+          v-if="showConfirmButton == true"
+          :text="$t('components.buttons.booking.confirm')"
+          buttonStyle="baseButton-success--outlined--small"
+          @click="handleChangeBookingStatus(bookingId, 'CONFIRMADA')"
+        />
+        <!-- Cancelar -->
+        <BaseButton
+          v-if="showCancelButton == true"
+          :text="$t('components.buttons.booking.cancel')"
+          buttonStyle="baseButton-danger--outlined--small"
+          @click="handleChangeBookingStatus(bookingId, 'CANCELADA')"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -143,6 +186,7 @@ const getPaymentType = () => {
 
   & > .booking-summary-item__status {
     @include flex-row-center;
+    width: 100px;
     height: 100%;
 
     & > .booking-status-badge {
@@ -164,6 +208,12 @@ const getPaymentType = () => {
 
     & > .booking-total-price {
       font-size: 18px;
+    }
+
+    & > .booking_summary_buttons_container {
+      @include flex-row;
+      flex-wrap: wrap;
+      gap: 10px;
     }
   }
 } // fin booking-summary-item

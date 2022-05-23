@@ -22,6 +22,7 @@ import {
   addNewImageToAccomodation,
   updateAccomodationData,
   getAllAvailableRules,
+  removeAccomodationByRegisterNumber,
 } from '@/services/accomodation/AccomodationService';
 
 import {
@@ -214,6 +215,13 @@ const useAccomodationStore = defineStore({
     async updateAccomodation() {
       await updateAccomodationData(this);
       // window.location.reload();
+    },
+
+    /**
+     * Elimina el alojamiento actual. Todas sus imágenes, servicios, normas y valoraciones.
+     */
+    async removeAccomodation() {
+      await removeAccomodationByRegisterNumber(this.registerNumber);
     },
 
     /**

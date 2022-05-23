@@ -97,6 +97,7 @@ onMounted(async () => {
           :fullWidth="appContextStore.isMobile == true"
           @click="handleRedirectToAccomodation"
         />
+        <p>{{ $tc("booking_details_view.guests") }}</p>
       </div>
       <div class="booking_detail_data__wrapper">
         <!-- Imágenes del alojamiento -->
@@ -111,7 +112,7 @@ onMounted(async () => {
           slideWidth="100%"
         />
         <!-- Datos usuario host -->
-        <h2 v-once v-t="'booking_details_view.host'"></h2>
+        <h2>{{ $t("booking_details_view.host") }}</h2>
         <UserAccountSummaryDataItem
           :name="userHostData?.name"
           :surname="userHostData?.surname"
@@ -121,7 +122,7 @@ onMounted(async () => {
 
         <!-- Sección fechas reserva -->
         <section class="booking_detail_data__dates">
-          <h2 v-once v-t="'booking_details_view.dates'"></h2>
+          <h2>{{ $t("booking_details_view.dates") }}</h2>
           <div class="booking_detail_data__dates_container">
             <LabelFormInput
               :inputValue="formatArrayAsDate(bookingData.checkIn)"
@@ -139,14 +140,15 @@ onMounted(async () => {
         <!-- Sección resumen de coste y desglose de la reserva -->
         <section class="booking_detail_data__price_summary">
           <div class="booking_detail_data__price_summary__price">
-            <h2 v-once v-t="'booking_details_view.price_summary.title'"></h2>
+            <h2>{{ $t("booking_details_view.price_summary.title") }}</h2>
             <ul>
               <li>
-                <span v-t="'booking_details_view.price_summary.price_per_night'"
-                  ></span
-                >
+                <span>{{
+                  $t("booking_details_view.price_summary.price_per_night")
+                }}</span>
                 <span>
-                  {{bookingData?.idAccomodation?.pricePerNight}} {{$t('currency.symbol')}}
+                  {{ bookingData?.idAccomodation?.pricePerNight }}
+                  {{ $t("currency.symbol") }}
                 </span>
               </li>
               <li>
@@ -165,19 +167,35 @@ onMounted(async () => {
                     })
                   }}
                 </span>
-                <span>{{ bookingData?.amount }} {{$t('currency.symbol')}}</span>
+                <span
+                  >{{ bookingData?.amount }} {{ $t("currency.symbol") }}</span
+                >
               </li>
               <li>
-                <span v-once v-t="'booking_details_view.price_summary.service_fee'"></span>
-                <span>{{ bookingData?.serviceFee }} {{$t('currency.symbol')}}</span>
+                <span>{{
+                  $t("booking_details_view.price_summary.service_fee")
+                }}</span>
+                <span
+                  >{{ bookingData?.serviceFee }}
+                  {{ $t("currency.symbol") }}</span
+                >
               </li>
               <li v-if="bookingData?.disccount > 0">
-                <span v-t="'booking_details_view.price_summary.disccount'"></span>
-                <span>{{ bookingData?.disccount }} {{$t('currency.symbol')}}</span>
+                <span>{{
+                  $t("booking_details_view.price_summary.disccount")
+                }}</span>
+                <span
+                  >{{ bookingData?.disccount }}
+                  {{ $t("currency.symbol") }}</span
+                >
               </li>
               <li>
-                <span v-t="'booking_details_view.price_summary.total'"></span>
-                <span>{{ bookingData?.total }} {{$t('currency.symbol')}}</span>
+                <span>{{
+                  $t("booking_details_view.price_summary.total")
+                }}</span>
+                <span
+                  >{{ bookingData?.total }} {{ $t("currency.symbol") }}</span
+                >
               </li>
             </ul>
             <IconButton
@@ -195,7 +213,7 @@ onMounted(async () => {
           v-if="appContextStore.isTablet"
           class="booking_detail_data__mobileMap"
         >
-          <h2 v-once v-t="'booking_details_view.location'"></h2>
+          <h2>{{ $t("booking_details_view.location") }}</h2>
           <p>
             {{ bookingData?.idAccomodation?.idAccomodationLocation.direction }},
             {{ bookingData?.idAccomodation?.idAccomodationLocation.city }} -

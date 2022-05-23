@@ -43,6 +43,38 @@
   }
 }
 
+.baseButton-primary--filled--small {
+  @include baseButton--filled($color-primary, #fff);
+  width: 90px;
+  height: 35px;
+  font-size: 1rem;
+
+  &:disabled {
+    background-color: $color-tertiary-light;
+    color: gray;
+    cursor: no-drop;
+  }
+}
+
+.baseButton-primary--outlined--small {
+  @include baseButton--outlined($color-primary, $color-primary);
+  width: 90px;
+  height: 35px;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $color-primary;
+    color: #fff;
+  }
+
+  &:disabled {
+    background-color: $color-tertiary-light;
+    color: gray;
+    cursor: no-drop;
+  }
+}
+
 .baseButton-secondary--filled {
   @include baseButton--filled($color-secondary, #fff);
 }
@@ -197,6 +229,19 @@
   }
 }
 
+.baseButton-success--outlined--small {
+  @include baseButton--outlined($color-success, $color-success);
+  width: 80px;
+  height: 35px;
+  font-size: 12px;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+
+  &:hover {
+    background: $color-success;
+    color: #fff;
+  }
+}
+
 // --------------------------------------
 // Estilos globales para un botón con icono (IconButton)
 // --------------------------------------
@@ -290,25 +335,24 @@
   width: 40px;
   height: 40px;
   outline: none;
-  border:none;
+  border: none;
   // border: 2px solid $color-dark;
   margin: 20px 0 0 20px;
   background: #fff;
   border-radius: 50%;
   // box-shadow: $global-box-shadow;
   z-index: $z-index-4;
-  transition: all .1s ease-in;
+  transition: all 0.1s ease-in;
 
   & > img {
     width: 12px;
-    
   }
 
   & > p {
     display: none;
   }
 
-  &:hover{
+  &:hover {
     background-color: $color-tertiary-light;
   }
 }
@@ -317,43 +361,43 @@
 
 .filter_number_selector_button,
 .filter_number_selector_button--delete,
-.filter_number_selector_button__all{
+.filter_number_selector_button__all {
   padding: 10px 20px;
   // background-color: $color-tertiary-light;
   border: 1px solid $color-tertiary-dark;
   border-radius: $global-border-radius;
-  transition: all .1s cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
   text-align: center;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background-color: $color-tertiary-dark;
   }
 }
 
-.filter_number_selector_button--delete{
+.filter_number_selector_button--delete {
   background-color: $color-danger;
-  color: #FFF;
-  &:hover{
+  color: #fff;
+  &:hover {
     background-color: $color-danger;
   }
 }
 
-.filter_number_selector_button.--filter-button-active{
+.filter_number_selector_button.--filter-button-active {
   background-color: $color-dark;
   color: #fff;
 }
 
-.filter_number_selector_button__all{
+.filter_number_selector_button__all {
   background-color: $color-dark;
-  color: #FFF;
+  color: #fff;
 
-  &:hover{
+  &:hover {
     background-color: $color-dark;
   }
 }
 
-.filter_number_selector_button__all.--no-show-all-active{
+.filter_number_selector_button__all.--no-show-all-active {
   background-color: transparent;
   border: 1px solid $color-tertiary-dark;
   color: $color-dark;

@@ -28,6 +28,10 @@ export const en_msgs = {
   bookings_view: {
     title: 'My bookings',
     not_bookings: 'You have no bookings',
+    tabs: {
+      host: 'From my accomodations',
+      guests: 'Made by guests',
+    },
   },
   booking_task_view: {
     title: 'Booking for accomodation {name}',
@@ -47,6 +51,7 @@ export const en_msgs = {
   booking_details_view: {
     title: 'Booking of accomodation {name}',
     button_show_ad: 'Show accomodation',
+    guests: 'For {n} guests',
     host: 'Host',
     dates: 'Booking dates',
     price_summary: {
@@ -62,7 +67,7 @@ export const en_msgs = {
   accomodation_detail_view: {
     title: 'Accomodation details',
     imageGallery: {
-      no_images: 'No images',
+      no_images: 'No images available',
       button: 'Show all',
     },
     show_more: {
@@ -162,6 +167,10 @@ export const en_msgs = {
       title: 'Rules',
       subtitle: 'This accommodation has {n} rules.',
     },
+    edit_basic_data_success_message:
+      'The accommodation has been updated successfully.',
+    edit_category_success_message:
+      'Accomodation category has been updated successfully.',
   },
   account_view: {
     user_profile_view: {
@@ -326,6 +335,11 @@ export const en_msgs = {
       filter: 'Filter',
       clear: 'Clear',
       all: 'All',
+      booking: {
+        cancel: 'Cancel',
+        confirm: 'Confirm',
+        complete: 'Complete',
+      },
     },
     forms: {
       name: 'Name',
@@ -339,6 +353,7 @@ export const en_msgs = {
       new_password: 'New password',
       confirm_new_password: 'Confirm new password',
       password_confirmation: 'Confirm password',
+      forgot_password: "I'm lost my password",
       checkIn: 'Check-In',
       checkOut: 'Check-Out',
       cardNumber: 'Card number',
@@ -509,7 +524,7 @@ export const en_msgs = {
       bathrooms: 'Bathrooms number',
       bedrooms: 'Bedrooms number',
       guests: 'Guests number',
-    }
+    },
   },
   currency: {
     symbol: '£',

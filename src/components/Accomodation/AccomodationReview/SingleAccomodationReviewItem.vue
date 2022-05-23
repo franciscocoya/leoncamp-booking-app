@@ -43,7 +43,9 @@ defineProps({
           <p>
             <b>{{ review.idUser.name }} {{ review.idUser.surname }}</b>
           </p>
-          <p>{{ formatArrayAsSimpleStringDate(review.createdAt, $i18n.locale) }}</p>
+          <p>
+            {{ formatArrayAsSimpleStringDate(review.createdAt, $i18n.locale) }}
+          </p>
         </div>
       </div>
       <div class="accomodation_review__content">
@@ -80,8 +82,8 @@ defineProps({
     >
       <img
         :src="
-          review.idAccomodation.accomodationImages[0].accomodationAccImageId
-            .idAccomodationImage.imageUrl
+          review?.idAccomodation?.accomodationImages[0]?.accomodationAccImageId
+            ?.idAccomodationImage?.imageUrl
         "
         alt=""
         @click.prevent="

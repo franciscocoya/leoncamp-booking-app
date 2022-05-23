@@ -9,7 +9,7 @@ export const addNewPayment = async (
   callback?: CallableFunction
 ) => {
   // Crear pago
-  const lastPaymentId = await axios
+  const lastPaymentId: any = await axios
     .get(`${API_PAYMENTS}/lastPaymentId`, {
       headers: {
         Authorization: `Bearer ${
@@ -25,7 +25,7 @@ export const addNewPayment = async (
 
   let newPayment = null;
 
-  const newPaymentId = await lastPaymentId.data;
+  const newPaymentId = await lastPaymentId?.data;
 
   try {
     newPayment = await axios.post(

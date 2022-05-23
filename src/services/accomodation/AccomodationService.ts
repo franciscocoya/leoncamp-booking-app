@@ -29,7 +29,6 @@ import {
 
 // Rutas de las reservas API: /api/bookings
 import { BOKINGS_BASE_PATH } from './BookingRoutesEnum';
-import { callbackify } from 'util';
 
 // Ruta alojamientos: /api/accomodations
 const baseUri: string = import.meta.env.VITE_API_URI;
@@ -264,47 +263,47 @@ export const getAllAccomodationsByCity = async (
 /**
  * Listado filtrado de alojamientos por rango de precios, número de camas,
  * número de habitaciones, número de baños, número de huéspedes.
- * 
+ *
  * Devuelve un array vacío si no hay resultados.
- * 
- * @param minPrice 
- * @param maxPrice 
- * @param beds 
- * @param bedrooms 
- * @param bathrooms 
- * @param guests 
- * @param callback 
- * 
- * @returns 
+ *
+ * @param minPrice
+ * @param maxPrice
+ * @param beds
+ * @param bedrooms
+ * @param bathrooms
+ * @param guests
+ * @param callback
+ *
+ * @returns
  */
 export const getAccomodationMultipleFilter = async (
-  minprice?: number,
-  maxprice?: number,
-  beds?: number,
-  bedrooms?: number,
-  bathrooms?: number,
-  guests?: number,
+  minprice: number,
+  maxprice: number,
+  beds: number,
+  bedrooms: number,
+  bathrooms: number,
+  guests: number,
   callback?: CallableFunction
 ) => {
-
-  let res: any = await axios.get(
-    `${baseUri}${ACCOMODATIONS_BASE_PATH}/all/filter`, {
-    params: {
-      minprice: minprice > 0 ? minprice : null,
-      maxprice: maxprice > 0 ? maxprice : null,
-      beds: beds > 0 ? beds : null,
-      bedrooms: bedrooms > 0 ? bedrooms : null,
-      bathrooms: bathrooms > 0 ? bathrooms : null,
-      guests: guests > 0 ? guests : null,
-    },
-    // headers: {
-    //   Authorization: `Bearer ${apiJwtToken}`,
-    // }
-  }).catch(err => {
-    if (err.response && callback) {
-      callback(err.response);
-    }
-  });
+  let res: any = await axios
+    .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/all/filter`, {
+      params: {
+        minprice: minprice > 0 ? minprice : null,
+        maxprice: maxprice > 0 ? maxprice : null,
+        beds: beds > 0 ? beds : null,
+        bedrooms: bedrooms > 0 ? bedrooms : null,
+        bathrooms: bathrooms > 0 ? bathrooms : null,
+        guests: guests > 0 ? guests : null,
+      },
+      // headers: {
+      //   Authorization: `Bearer ${apiJwtToken}`,
+      // }
+    })
+    .catch((err) => {
+      if (err.response && callback) {
+        callback(err.response);
+      }
+    });
 
   return res?.data;
 };
@@ -728,7 +727,8 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
   const accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
 
   const { data }: any = await axios.get(
-    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${import.meta.env.VITE_POSITION_STACK_API_TOKEN
+    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${
+      import.meta.env.VITE_POSITION_STACK_API_TOKEN
     }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
   );
 

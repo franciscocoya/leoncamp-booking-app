@@ -51,7 +51,9 @@ onBeforeMount(async () => {
 
 <template>
   <div class="accomodation-filter-results-view">
-    <h1 v-once v-t="'accommodation_results_filtered_view.title'"></h1>
+    <h1>
+      {{ $t("accommodation_results_filtered_view.title") }}
+    </h1>
     <div class="accomodation_results_columns">
       <div class="accomodation-results__wrapper">
         <div class="accomodation_results_filters_container">
@@ -143,10 +145,9 @@ onBeforeMount(async () => {
             />
           </section>
           <div v-else class="no_accomodation_results_container">
-            <h2
-              v-t="'accommodation_results_filtered_view.no_results'"
-              class="no_results_found"
-            ></h2>
+            <h2 class="no_results_found">
+              {{ $t("accommodation_results_filtered_view.no_results") }}
+            </h2>
           </div>
         </Transition>
       </div>
@@ -172,23 +173,23 @@ onBeforeMount(async () => {
     text-align: center;
   }
 
-  & > .accomodation_results_columns{
+  & > .accomodation_results_columns {
     & > .accomodation-results__wrapper {
       @include flex-column;
       gap: 40px;
       margin: 0 50px;
-  
+
       & > .accomodation_results_filters_container {
         @include flex-row;
         gap: 10px;
         flex-wrap: wrap;
       }
-  
+
       & > .results-accomodations-list {
         @include flex-column;
         gap: 50px;
       }
-  
+
       & > .no_accomodation_results_container {
         margin-top: 30px;
         & > h2 {
@@ -199,6 +200,5 @@ onBeforeMount(async () => {
       }
     }
   }
-
 }
 </style>
