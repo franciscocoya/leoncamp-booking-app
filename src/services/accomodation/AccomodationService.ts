@@ -285,7 +285,7 @@ export const getAccomodationMultipleFilter = async (
   guests: number,
   callback?: CallableFunction
 ) => {
-  let res: any = await axios
+  const res: any = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/all/filter`, {
       params: {
         minprice: minprice > 0 ? minprice : null,
@@ -395,7 +395,7 @@ export async function getAccomodationStarAverage(
     return null;
   }
 
-  let res: any = await axios
+  const res: any = await axios
     .get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/reviews/${regNumber}/stars`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
@@ -447,7 +447,7 @@ export async function checkPromocodeIsValid(
   promoCodeToCheck: string,
   callback?: CallableFunction
 ) {
-  let res: any = await axios
+  const res: any = await axios
     .get(`${API_PROMO_CODES}/${regNumber}/exists`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
@@ -724,7 +724,7 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
     distanceAccuracy: number;
   }
 
-  const mapboxGeo: string = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?types=place%2Cpostcode%2Caddress&limit=1&access_token=${import.meta.env.VITE_MAPBOX_API_TOKEN}`
+  const mapboxGeo = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?types=place%2Cpostcode%2Caddress&limit=1&access_token=${import.meta.env.VITE_MAPBOX_API_TOKEN}`
 
   let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
 

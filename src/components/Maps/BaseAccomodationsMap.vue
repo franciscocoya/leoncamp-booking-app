@@ -30,17 +30,6 @@ const props = defineProps({
   },
 });
 
-const createAccomodationThumnail = (lat, lng, regNumber, thumb) => {
-  return `
-  <div id=${regNumber}>
-  <img src="${thumb}"
-    <h3>${key}</h3>
-    <p>${lat}</p>
-    <p>${lng}</p>
-    
-  </div>	`;
-};
-
 onMounted(() => {
   map = new mapboxgl.Map({
     accessToken: import.meta.env.VITE_MAPBOX_API_TOKEN,
@@ -54,7 +43,7 @@ onMounted(() => {
     zoom: 14, // starting zoom
   }).addControl(new mapboxgl.NavigationControl(), "top-right");
 
-  map.on("load", () => {
+  map.value.on("load", () => {
     props.markers.forEach((markerToAdd) => {
       const priceMark = document.createElement("div");
       priceMark.id = `marker_${markerToAdd.registerNumber}`;
@@ -111,7 +100,7 @@ onMounted(() => {
         .addTo(map);
     });
 
-    map.flyTo({
+    map.value.flyTo({
       center: [
         props?.markers[0]?.coords?.lng ?? -5.579879833258864,
         props?.markers[0]?.coords?.lat ?? 42.60613038790926,

@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from "vue";
 
 // Servicios
 import { listAllBookingsFromUserHostAccomodations } from "@/services/booking/BookingService";
+import { checkUserIsHost } from "@/services/user/userService";
 
 // Componentes
 import BookingSummaryItem from "@/components/Booking/BookingSummaryItem.vue";
@@ -28,11 +29,19 @@ const tabs = reactive({
   activeTab: 0,
 });
 
+let isUserHost = ref(false);
+
 onMounted(async () => {
   bookings.all = await accomodationStore.getAllUserBookings();
 
-  allUserAccomodationBookings.all =
-    await listAllBookingsFromUserHostAccomodations(authStore?.userData?.id);
+  isUserHost.value = await checkUserIsHost(authStore?.userData?.id);
+
+  tabs.activeTab = isUserHost.value == true ? 0 : 1;
+
+  if (isUserHost.value) {
+    allUserAccomodationBookings.all =
+      await listAllBookingsFromUserHostAccomodations(authStore?.userData?.id);
+  }
 });
 </script>
 
@@ -49,6 +58,7 @@ onMounted(async () => {
     >
       <div class="bookings_container__tabs">
         <span
+          v-if="isUserHost == true"
           role="tab"
           :class="`${tabs.activeTab == 0 ? '--is-tab-active' : ''}`"
           @click.prevent="tabs.activeTab = 0"
@@ -56,7 +66,9 @@ onMounted(async () => {
         >
         <span
           role="tab"
-          :class="`${tabs.activeTab == 1 ? '--is-tab-active' : ''}`"
+          :class="`${
+            tabs.activeTab == 1 || isUserHost == false ? '--is-tab-active' : ''
+          }`"
           @click.prevent="tabs.activeTab = 1"
           >{{ $t("bookings_view.tabs.host") }}</span
         >

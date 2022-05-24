@@ -198,7 +198,7 @@ export const es_msgs = {
         title: 'Idioma',
         spanish: 'Español (España)',
         english: 'Inglés (Reino Unido)',
-      }
+      },
     },
     account_ads: {
       title: 'Mis alojamientos',
@@ -475,6 +475,8 @@ export const es_msgs = {
             required: 'Selecciona la fecha de salida',
             invalid: 'La fecha de salida no es válida',
           },
+          not_equal:
+            'La fecha de salida debe ser posterior a la fecha de entrada',
         },
         promoCode: {
           invalid: 'El código promocional no es válido',

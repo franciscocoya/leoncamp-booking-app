@@ -98,7 +98,7 @@ const handleSelectedDates = () => {
     bookingStore.checkInDate !== new Date() &&
     bookingStore.checkOutDate !== new Date()
   ) {
-    let pricePerNight = accomodationStore.pricePerNight;
+    let pricePerNight = accomodationStore?.pricePerNight;
     let amount = pricePerNight * getBookingNights();
     let bookingFee = amount * 0.1;
     let totalCost = amount + bookingFee;
@@ -161,7 +161,7 @@ const translatePaymentError = (originalMessage) => {
  */
 const handleConfirmBooking = async () => {
   if (checkBookingData()) {
-    await addNewBooking(
+    const newBooking = await addNewBooking(
       bookingStore.$state,
       paymentMethodToShow.value,
       (err) => {
@@ -173,16 +173,15 @@ const handleConfirmBooking = async () => {
           showBookingErrors.value = false;
         }, 4000);
       }
-    ).catch((err) => {
-      if (!err.response) {
-        router.push({
-          name: "user-bookings",
-          params: {
-            username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
-          },
-        });
-      }
-    });
+    );
+    if (newBooking == true) {
+      router.push({
+        name: "user-bookings",
+        params: {
+          username: `${authStore?.userData?.name} ${authStore?.userData?.surname}`,
+        },
+      });
+    }
   } else {
     if (showBookingErrors.value) {
       setTimeout(() => {
@@ -211,6 +210,15 @@ const checkBookingData = () => {
     bookingErrors.value.push(
       "components.forms.messages.dates.checkOut.required"
     );
+    isValid = false;
+  }
+
+  // Validar que la fecha de salida sea mayor que la de entrada, mínimo de estancia de 1 noche
+  if (
+    new Date(range.value?.start).getTime() >=
+    new Date(range.value?.end).getTime()
+  ) {
+    bookingErrors.value.push("components.forms.messages.dates.not_equal");
     isValid = false;
   }
 
@@ -250,10 +258,15 @@ const checkBookingData = () => {
  * Deshabilita las fechas reservedas en el calendario.
  */
 const disableReservedDates = async (regNumber) => {
-  const datesToDisable = await listAccomodationBookingDates(regNumber);
+  const datesToDisable = await listAccomodationBookingDates(
+    regNumber,
+    (err) => {
+      console.log(err);
+    }
+  );
 
   // Deshabilitar las fechas reservadas en el calendario.
-  datesToDisable.map((dateRange) => {
+  datesToDisable?.map((dateRange) => {
     notAvailableBookingDates.value.push({
       start: new Date(dateRange[0][0], dateRange[0][1] - 1, dateRange[0][2]),
       end: new Date(dateRange[1][0], dateRange[1][1] - 1, dateRange[1][2]),
@@ -287,17 +300,14 @@ const checkPromoCode = async () => {
   }
 };
 
-onBeforeMount(async () => {
-  // Usuario en sesión
-  await authStore.loadCurrentUserData();
+onBeforeMount(() => {
+  bookingStore.userHost = authStore?.userData;
 });
 
 onMounted(async () => {
   let params = new URLSearchParams(window.location.search);
   await accomodationStore.getAccomodationByRegisterNumber(params.get("regnum"));
   await disableReservedDates(params.get("regnum"));
-
-  bookingStore.userHost = authStore?.userData;
 
   const currentAccomodation =
     await accomodationStore.getAccomodationByRegisterNumber(
@@ -641,6 +651,7 @@ onMounted(async () => {
 
       & > .promo_code_checker_container {
         @include flex-row;
+        flex-wrap: wrap;
         gap: 10px;
         justify-content: space-between;
         margin-bottom: 10px;

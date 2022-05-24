@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 // Store
 import { useAppContextStore } from "@/store/appContext";
 import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
 import { useBookingStore } from "@/store/booking";
 
 // Componentes
@@ -30,6 +31,7 @@ import {
 
 const bookingStore = useBookingStore();
 const appContextStore = useAppContextStore();
+const authStore = useAuthStore();
 const userStore = useUserStore();
 
 const bookingData = ref({});
@@ -77,7 +79,7 @@ onMounted(async () => {
   );
 
   currentUserData.value = await userStore.getUserDataById(
-    JSON.parse(sessionStorage.getItem("user")).id
+    authStore?.userData?.id
   );
 });
 </script>
@@ -237,14 +239,8 @@ onMounted(async () => {
     <!-- Mapa ubicación alojamiento -->
     <div class="booking-detail_map" v-if="!appContextStore.isTablet">
       <SingleAccomodationMap
-        :lat="
-          bookingData &&
-          bookingData?.idAccomodation?.idAccomodationLocation?.latitude
-        "
-        :lng="
-          bookingData &&
-          bookingData?.idAccomodation?.idAccomodationLocation?.longitude
-        "
+        :lat="bookingData?.idAccomodation?.idAccomodationLocation?.latitude"
+        :lng="bookingData?.idAccomodation?.idAccomodationLocation?.longitude"
         :mapZoom="18"
       />
       <div class="booking-detail_map__direction">

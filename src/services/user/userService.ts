@@ -15,7 +15,7 @@ const apiJwtToken: string = JSON.parse(
  * @returns
  */
 const checkExistsUser = async (emailToCheck: string) => {
-  let res: any = await axios
+  const res: any = await axios
     .get(`${API_USERS}/exists`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
@@ -36,7 +36,7 @@ const checkExistsUser = async (emailToCheck: string) => {
  * @returns
  */
 const getUserIdByEmail = async (emailToCheck: string) => {
-  let res: any = await axios
+  const res: any = await axios
     .get(`${API_USERS}/load`, {
       headers: {
         Authorization: `Bearer ${apiJwtToken}`,
@@ -418,6 +418,25 @@ const addUserConfigurationToUser = async (userId: number, configData: any) => {
   });
 };
 
+/**
+ * Comprueba si el usuario con el id <code>userId</code> es host.
+
+ * @param userId
+ * @returns
+ */
+const checkUserIsHost = async (userId: number) => {
+  const res: any = await axios
+    .get(`${API_USERS}/hosts/${userId}/exists`, {
+      headers: {
+        Authorization: `Bearer ${apiJwtToken}`,
+      },
+    })
+    .catch((err: Error) => {
+      return err;
+    });
+  return res.data;
+};
+
 export {
   checkExistsUser,
   getUserIdByEmail,
@@ -429,4 +448,5 @@ export {
   getAllAvailableCurrencies,
   getAllUsers,
   addUserConfigurationToUser,
+  checkUserIsHost,
 };

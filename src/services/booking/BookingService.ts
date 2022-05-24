@@ -35,16 +35,25 @@ const getBookingDataByBookingId = async (bookingId: string) => {
  * @param regNumber
  * @returns
  */
-const listAccomodationBookingDates = async (regNumber: string) => {
-  const { data } = await axios.get(`${API_BOOKINGS}/${regNumber}/dates`, {
-    headers: {
-      Authorization: `Bearer ${
-        JSON.parse(sessionStorage.getItem('user') || '{}').token
-      }`,
-    },
-  });
+const listAccomodationBookingDates = async (
+  regNumber: string,
+  callback?: CallableFunction
+) => {
+  const res: any = await axios
+    .get(`${API_BOOKINGS}/${regNumber}/dates`, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(sessionStorage.getItem('user') || '{}').token
+        }`,
+      },
+    })
+    .catch((err) => {
+      if (err.response && callback) {
+        callback(err.response.data);
+      }
+    });
 
-  return data;
+  return res?.data;
 };
 
 /**
@@ -57,6 +66,8 @@ export const addNewBooking = async (
   paymentSelected: number,
   callback: CallableFunction
 ) => {
+  let bookingAdded = false;
+
   try {
     const newPayment = await addNewPayment(
       paymentSelected,
@@ -69,7 +80,7 @@ export const addNewBooking = async (
     );
 
     if (newPayment) {
-      await axios.post(
+      const newBooking: any = await axios.post(
         `${API_BOOKINGS}/new`,
         {
           checkIn: bookingData.checkInDate,
@@ -89,12 +100,18 @@ export const addNewBooking = async (
           },
         }
       );
+
+      if (newBooking) {
+        bookingAdded = true;
+      }
     }
   } catch (err: any) {
     if (err.response && callback) {
       callback(err.response);
     }
   }
+
+  return bookingAdded;
 };
 
 /**
@@ -107,7 +124,7 @@ export const listAllBookingsFromUserHostAccomodations = async (
   userId: number,
   callback?: CallableFunction
 ) => {
-  let res: any = await axios
+  const res: any = await axios
     .get(`${API_BOOKINGS}/${userId}/received`, {
       headers: {
         Authorization: `Bearer ${

@@ -471,6 +471,8 @@ export const en_msgs = {
             required: 'Check-Out is required',
             invalid: 'Check-Out is invalid',
           },
+          not_equal:
+            'Check-In and Check-Out must be different and not be in the past',
         },
         promoCode: {
           invalid: 'Promo code is invalid',

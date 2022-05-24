@@ -3,9 +3,11 @@ import { onMounted } from "vue";
 
 import mapboxgl from "mapbox-gl";
 
-// import BaseMarker from "@/components/Maps/Marker/BaseMarker.vue";
+import { useBookingStore } from "@/store/booking";
 
 import { ICON_MAP_MARKER_TENTH } from "@/helpers/iconConstants";
+
+const bookingStore = useBookingStore();
 
 const props = defineProps({
   lat: {
@@ -30,17 +32,15 @@ const props = defineProps({
   },
 });
 
-// Componentes
-
 onMounted(() => {
   const map = new mapboxgl.Map({
     accessToken: import.meta.env.VITE_MAPBOX_API_TOKEN,
-    container: "map", // container ID
+    container: "map-2", // container ID
     style: "mapbox://styles/mapbox/streets-v11", // style URL
     center: [props.lng, props.lat], // starting position [lng, lat]
     minzoom: 1.3,
     zoom: props.mapZoom, // starting zoom
-  }).addControl(new mapboxgl.NavigationControl(), "top-right");
+  });
 
   const myMark = document.createElement("div");
   myMark.style.backgroundImage = `url(${ICON_MAP_MARKER_TENTH})`;
@@ -57,24 +57,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="map" :style="`width: ${mapWidth}; height: ${mapHeight};`"></div>
+  <div>
+    <div id="map-2" :style="`width: ${mapWidth}; height: ${mapHeight};`"></div>
+  </div>
 </template>
-
-<style lang="scss" scoped>
-// #map {
-//   position: sticky;
-// }
-
-.marker {
-  background-color: #ff0000 !important;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 1;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-  z-index: 1;
-}
-</style>
