@@ -20,6 +20,8 @@ import { useAppContextStore } from "@/store/appContext";
 
 const router = useRouter();
 
+const adminEmail = import.meta.env.VITE_API_ADMIN_EMAIL;
+
 const authStore = useAuthStore();
 const appContextStore = useAppContextStore();
 
@@ -40,7 +42,13 @@ onBeforeMount(async () => {
     />
 
     <div class="header_left_side">
-    <MenuDesktopItem v-if="authStore?.userData" />
+    <MenuDesktopItem v-if="authStore?.userData && authStore?.userData?.email !== 'admin@leoncamp.es'"/>
+            <BaseButton
+        v-if="authStore?.userData?.email === adminEmail"
+        :text="$t('components.buttons.dashboard')"
+        buttonStyle="baseButton-dark--filled"
+        @click="router.push({ name: 'administrator' })"
+      />
       <LanguageSwitchItem />
       <AccountIcon
         v-if="authStore?.userData"

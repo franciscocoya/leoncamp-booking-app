@@ -76,6 +76,7 @@ function handleBlur() {
     position: absolute;
     top: 5px;
     left: 10px;
+    text-transform: capitalize;
   }
 
   & > textarea {

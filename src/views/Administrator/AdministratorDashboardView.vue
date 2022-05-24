@@ -64,6 +64,7 @@ onBeforeMount(async () => {
   margin: 30px 50px;
 
   & > h1 {
+    text-align: center;
     font-weight: 400;
   }
 
@@ -71,5 +72,18 @@ onBeforeMount(async () => {
     @include flex-row;
     gap: 20px;
   }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .administrator-dashboard-view {
+
+  & > .administrator-dashboard__wrapper {
+    @include flex-column;
+    gap: 20px;
+  }
+}
 }
 </style>

@@ -182,6 +182,7 @@ onMounted(() => {
   & > h1 {
     color: $color-dark;
     font-size: $heading-2-fontSize;
+    text-align: center;
   }
 }
 

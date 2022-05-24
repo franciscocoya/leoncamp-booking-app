@@ -3,8 +3,10 @@ import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Store
 import { useUserStore } from "@/store/user";
+import { useAppContextStore } from "@/store/appContext";
 
 const userStore = useUserStore();
+const appContextStore = useAppContextStore();
 
 const emit = defineEmits(["showPanel", "hidePanel"]);
 
@@ -51,6 +53,8 @@ const handleShowPanels = (panelOpt) => {
         text="Cerrar sesión"
         buttonStyle="baseButton-dark--outlined"
         @click="userStore.logout()"
+        :fullWidth="appContextStore.isMobile == true"
+        id="bt-logout-dashboard"
       />
     </div>
   </div>
@@ -99,6 +103,36 @@ const handleShowPanels = (panelOpt) => {
         position: absolute;
       }
     }
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .administrator-sidebar {
+    align-items: center;
+    width: 100%;
+
+    & > ul {
+      @include flex-row;
+
+      & > li.--menu-item-active {
+        &:after {
+          content: "";
+          height: 5px;
+          width: 100%;
+          border-bottom: 5px solid $color-dark;
+          left: 0;
+          bottom: -15px;
+          border-radius: 10px;
+          position: absolute;
+        }
+      }
+    }
+  }
+  #bt-logout-dashboard {
+    font-size: 0.8rem;
   }
 }
 </style>

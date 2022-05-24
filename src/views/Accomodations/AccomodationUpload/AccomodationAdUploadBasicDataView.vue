@@ -100,7 +100,7 @@ const checkAccomodationNumOfBeds = () => {
  * Valida el número de baños introducido.
  */
 const checkAccomodationNumOfBathRooms = () => {
-  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBathrooms, 1, 50)) {
+  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBathRooms, 1, 50)) {
     formErrorsStore.errors.push(
       "components.forms.messages.numOfBathrooms.invalid"
     );
@@ -113,7 +113,7 @@ const checkAccomodationNumOfBathRooms = () => {
  * Valida el número de habitaciones introducido.
  */
 const checkAccomodationNumOfBedRooms = () => {
-  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBedrooms, 1, 50)) {
+  if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBedRooms, 1, 50)) {
     formErrorsStore.errors.push(
       "components.forms.messages.numOfBedrooms.invalid"
     );

@@ -340,6 +340,7 @@ export const en_msgs = {
         confirm: 'Confirm',
         complete: 'Complete',
       },
+      dashboard: 'Dashboard',
     },
     forms: {
       name: 'Name',
@@ -440,6 +441,14 @@ export const en_msgs = {
           },
           geolocation_not_supported:
             'Geolocation is not supported by this browser.',
+          coords: {
+            lat: {
+              invalid: 'Latitude is invalid',
+            },
+            lng: {
+              invalid: 'Longitude is invalid',
+            },
+          },
         },
         payment: {
           credit_card: {

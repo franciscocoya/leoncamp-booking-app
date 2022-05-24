@@ -25,6 +25,7 @@ import { uploadAccomodationRoutes } from "@/helpers/appRoutes";
 import {
   checkInputStringFieldIsValid,
   checkValidSpanishZipCode,
+  checkFieldNotBlank,
 } from "@/helpers/formValidator";
 
 // Si el usuario no acepta el uso de la geolocalizacion, se muestran por defecto
@@ -81,8 +82,8 @@ const checkAccomodationZipCode = () => {
   if (
     !checkInputStringFieldIsValid(
       accomodationStore?.accomodationLocation.zip,
-      4,
-      4
+      5,
+      5
     )
   ) {
     formErrorsStore.errors.push(
@@ -102,6 +103,32 @@ const checkAccomodationZipCode = () => {
   showNextButton();
 };
 
+/**
+ * Valida la latitud introducida.
+ */
+const checkAccomodationCoordsLat = () => {
+  if (!checkFieldNotBlank(accomodationStore?.accomodationLocation.coords.lat)) {
+    formErrorsStore.errors.push(
+      "components.forms.messages.location.coords.lat.invalid"
+    );
+  }
+
+  showNextButton();
+};
+
+/**
+ * Valida la longitud introducida.
+ */
+const checkAccomodationCoordsLng = () => {
+  if (!checkFieldNotBlank(accomodationStore?.accomodationLocation.coords.lng)) {
+    formErrorsStore.errors.push(
+      "components.forms.messages.location.coords.lng.invalid"
+    );
+  }
+
+  showNextButton();
+};
+
 const showNextButton = () => {
   formErrorsStore.enableNextButton =
     checkInputStringFieldIsValid(
@@ -116,17 +143,20 @@ const showNextButton = () => {
     ) &&
     checkInputStringFieldIsValid(
       accomodationStore?.accomodationLocation.zip,
-      4,
-      4
+      5,
+      5
     ) &&
-    checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip);
+    checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip) &&
+    checkFieldNotBlank(accomodationStore?.accomodationLocation?.coords.lat) &&
+    checkFieldNotBlank(accomodationStore?.accomodationLocation?.coords.lng);
 
   if (formErrorsStore.enableNextButton) {
     formErrorsStore.errors = [];
+    
   } else {
     setTimeout(() => {
       formErrorsStore.errors = [];
-    }, 6000);
+    }, 4000);
   }
 };
 
@@ -137,14 +167,14 @@ onMounted(async () => {
   }
 
   // Si el navegador soporta geolocalización, obtener las coordenadas actuales y reflejarlas en el mapa.
-  navigator.geolocation.getCurrentPosition((pos) => {
-    accomodationStore.accomodationLocation.coords.lat = navigator.geolocation
-      ? pos.coords.latitude
-      : currentCoords.value.lat;
-    accomodationStore.accomodationLocation.coords.lng = navigator.geolocation
-      ? pos.coords.longitude
-      : currentCoords.value.lng;
-  });
+  // navigator.geolocation.getCurrentPosition((pos) => {
+  //   accomodationStore.accomodationLocation.coords.lat = navigator.geolocation
+  //     ? pos.coords.latitude
+  //     : currentCoords.value.lat;
+  //   accomodationStore.accomodationLocation.coords.lng = navigator.geolocation
+  //     ? pos.coords.longitude
+  //     : currentCoords.value.lng;
+  // });
 
   const accomodationLocation = await getAccomodationLocationByCoords({
     lat: accomodationStore.accomodationLocation.coords.lat,
@@ -156,15 +186,6 @@ onMounted(async () => {
   accomodationStore.accomodationLocation.city = accomodationLocation.city;
   accomodationStore.accomodationLocation.zip = accomodationLocation.cp;
 });
-
-// onBeforeRouteLeave((from, to) => {
-//   if (
-//     formErrorsStore.enableNextButton == false &&
-//     uploadAccomodationRoutes.includes(from.name)
-//   ) {
-//     return false;
-//   }
-// });
 </script>
 
 
@@ -178,27 +199,27 @@ onMounted(async () => {
           <LabelFormInput
             :inputLabel="$t('components.forms.lat')"
             inputType="text"
-            :isReadonly="true"
             :inputValue="accomodationStore.accomodationLocation.coords.lat"
             @handleInput="
               (value) =>
                 (accomodationStore.accomodationLocation.coords.lat = value)
             "
+            @handleBlur="checkAccomodationCoordsLat"
           />
           <LabelFormInput
             :inputLabel="$t('components.forms.lng')"
             inputType="text"
-            :isReadonly="true"
             :inputValue="accomodationStore.accomodationLocation.coords.lng"
             @handleInput="
               (value) =>
                 (accomodationStore.accomodationLocation.coords.lng = value)
             "
+            @handleBlur="checkAccomodationCoordsLng"
           />
         </div>
         <div class="accomodation-upload-location-form__direction">
           <LabelFormInput
-            :inputLabel="$t('components.forms.direction')"
+            :inputLabel="$t('components.forms.address')"
             inputType="text"
             :inputValue="accomodationStore.accomodationLocation.direction"
             @handleInput="

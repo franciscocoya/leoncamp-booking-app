@@ -126,7 +126,7 @@ onMounted(() => {
         >
           {{ $t("account_view.sidebar.ads") }}
         </li>
-        <li id="app-help" @click.prevent="router.push('/help')">{{ $t("account_view.sidebar.help") }}</li>
+        <!-- <li id="app-help" @click.prevent="router.push('/help')">{{ $t("account_view.sidebar.help") }}</li> -->
         <li v-if="userStore.datosHost == null">{{ $t("account_view.sidebar.upgrade_plan") }}</li>
         <li id="user-logout" @click="userStore.logout()">{{ $t("components.buttons.close_session") }}</li>
       </ul>

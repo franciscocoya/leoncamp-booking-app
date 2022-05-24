@@ -724,26 +724,40 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
     distanceAccuracy: number;
   }
 
-  const accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
+  const mapboxGeo: string = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?types=place%2Cpostcode%2Caddress&limit=1&access_token=${import.meta.env.VITE_MAPBOX_API_TOKEN}`
 
-  const { data }: any = await axios.get(
-    `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${
-      import.meta.env.VITE_POSITION_STACK_API_TOKEN
-    }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
-  );
+  let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
+
+  const {data}: any = await axios.get(mapboxGeo);
+
+  const dataResponse = data.features[0];
+
+  accomodationLocationToReturn = {
+    address: dataResponse.text,
+    city: dataResponse.context[1].text,
+    cp: dataResponse.context[0].text,
+    distanceAccuracy: 0
+  };
+
+
+  // const { data }: any = await axios.get(
+  //   `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${
+  //     import.meta.env.VITE_POSITION_STACK_API_TOKEN
+  //   }&query=${coords.lat},${coords.lng}&limit=${MAX_RESULTS}`
+  // );
 
   // Se obtienen dos resultados, por si no se encuentra la dirección en las coordenadas especificadas
-  const dataResponse = data.data[0] || data.data[1];
+  // const dataResponse = data.data[0] || data.data[1];
 
-  accomodationLocationToReturn.address =
-    dataResponse.name ?? dataResponse.street;
-  accomodationLocationToReturn.city =
-    dataResponse.locality ??
-    dataResponse.administrative_area ??
-    dataResponse.region;
-  accomodationLocationToReturn.cp =
-    dataResponse.postal_code ?? data.data[1].postal_code;
-  accomodationLocationToReturn.distanceAccuracy = dataResponse.distance;
+  // accomodationLocationToReturn.address =
+  //   dataResponse.name ?? dataResponse.street;
+  // accomodationLocationToReturn.city =
+  //   dataResponse.locality ??
+  //   dataResponse.administrative_area ??
+  //   dataResponse.region;
+  // accomodationLocationToReturn.cp =
+  //   dataResponse.postal_code ?? data.data[1].postal_code;
+  // accomodationLocationToReturn.distanceAccuracy = dataResponse.distance;
 
   return accomodationLocationToReturn;
 }

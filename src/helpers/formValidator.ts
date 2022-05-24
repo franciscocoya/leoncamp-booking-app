@@ -140,7 +140,7 @@ const checkInputStringFieldIsValid = (
   containSpecialCharacters?: boolean
 ): boolean => {
   const cond1 =
-    containSpecialCharacters == true
+    containSpecialCharacters == false
       ? checkFieldNotContainSpecialCharacters(value)
       : true;
   return (

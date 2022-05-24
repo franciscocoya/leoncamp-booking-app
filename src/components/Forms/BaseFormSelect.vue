@@ -76,6 +76,7 @@ const handleBlur = () => {
     left: 8px;
     font-size: 11px;
     color: $color-dark;
+    text-transform: capitalize;
   }
 }
 

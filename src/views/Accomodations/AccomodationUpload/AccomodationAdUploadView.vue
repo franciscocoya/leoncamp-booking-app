@@ -62,7 +62,9 @@ const showNextStep = () => {
  * de los 5 pasos (Datos básicos, ubicación, servicios, reglas e imagenes)
  */
 const handleUploadAccomodation = async () => {
-  await addNewAccomodation(accomodationStore.$state);
+  if (accomodationStore.accomodationImages.length > 0) {
+    await addNewAccomodation(accomodationStore.$state);
+  }
 };
 
 /**
@@ -90,8 +92,6 @@ onMounted(async () => {
   );
 
   formErrorsStore.enableNextButton = false;
-
-  accomodationStore.$state = {};
   await authStore.loadCurrentUserData();
   accomodationStore.userHost = authStore?.userData;
 });
@@ -132,7 +132,10 @@ onMounted(async () => {
                 : $t('components.buttons.next')
             }`"
             buttonStyle="baseButton-dark--filled--small"
-            :isDisabled="formErrorsStore.enableNextButton == false"
+            :isDisabled="
+              formErrorsStore.enableNextButton == false ||
+              (currentUploadStepNum == 4 && accomodationStore?.accomodationImages?.length == 0)
+            "
             @click="
               currentUploadStepNum == 4
                 ? handleUploadAccomodation()

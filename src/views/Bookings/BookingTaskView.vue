@@ -173,13 +173,15 @@ const handleConfirmBooking = async () => {
           showBookingErrors.value = false;
         }, 4000);
       }
-    ).then(() => {
-      router.push({
-        name: "user-bookings",
-        params: {
-          username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
-        },
-      });
+    ).catch((err) => {
+      if (!err.response) {
+        router.push({
+          name: "user-bookings",
+          params: {
+            username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
+          },
+        });
+      }
     });
   } else {
     if (showBookingErrors.value) {

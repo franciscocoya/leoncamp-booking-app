@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import BaseButton from "@/components/Buttons/BaseButton.vue";
 
 // Servicios
-import {removeAccomodationByRegisterNumber} from "@/services/accomodation/AccomodationService";
+import { removeAccomodationByRegisterNumber } from "@/services/accomodation/AccomodationService";
 
 // Utils
 import { formatArrayAsDate } from "@/helpers/utils";
@@ -30,15 +30,14 @@ const handleShowAccomodation = (registerNumber) => {
  * Manejador click eliminar alojamiento.
  */
 const handleRemoveAccomodation = async (registerNumber) => {
-    const opt = window.confirm("¿Estás seguro de eliminar este alojamiento?");
+  const opt = window.confirm("¿Estás seguro de eliminar este alojamiento?");
 
-    if(!opt){
-        return;
-    }
+  if (!opt) {
+    return;
+  }
 
-    await removeAccomodationByRegisterNumber(registerNumber);
+  await removeAccomodationByRegisterNumber(registerNumber);
 };
-
 
 defineProps({
   accomodations: {
@@ -104,6 +103,18 @@ defineProps({
         gap: 10px;
         color: $color-dark;
       }
+    }
+  }
+}
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .accomodation-list-item {
+    & > ul {
+       & > li {
+         flex-wrap: wrap;
+       }
     }
   }
 }

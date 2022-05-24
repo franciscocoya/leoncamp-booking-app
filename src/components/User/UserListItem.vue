@@ -1,5 +1,5 @@
 <script setup>
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
@@ -89,13 +89,26 @@ defineProps({
       & > img {
         width: 50px;
         height: auto;
-        border-radius: $global-border-radius;
+        border-radius: 50%;
       }
 
       & > span {
         @include flex-column-center;
         gap: 10px;
         color: $color-dark;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------
+// -- Responsive design
+// ---------------------------------------------------------------
+@media (max-width: $breakpoint-sm) {
+  .user-list-item {
+    & > ul {
+      & > li {
+        flex-wrap: wrap;
       }
     }
   }

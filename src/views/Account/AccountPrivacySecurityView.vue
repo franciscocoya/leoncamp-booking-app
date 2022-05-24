@@ -13,14 +13,14 @@ const authStore = useAuthStore();
 
 <template>
   <div class="account-security-privacy-view">
-    <h1 v-once v-t="'account_view.privacy_view.title'"></h1>
+    <h1>{{$t('account_view.privacy_view.title')}}</h1>
     <div class="account-security-privacy__wrapper">
       <article class="account-security-privacy__resetPassword">
-        <h2 v-once v-t="'account_view.privacy_view.reset_pass.title'">
-          Inicio de sesión y seguridad
+        <h2 >
+          {{$t('account_view.privacy_view.reset_pass.title')}}
         </h2>
-        <p v-once v-t="'account_view.privacy_view.reset_pass.subtitle'">
-          Restablecer contraseña
+        <p>
+          {{$t('account_view.privacy_view.reset_pass.subtitle')}}
         </p>
         <BaseButton
           :text="$t('components.buttons.reset')"
@@ -44,6 +44,10 @@ const authStore = useAuthStore();
 .account-security-privacy-view {
   @include flex-column;
   gap: 10px;
+  
+  & > h1{
+    text-align: center;
+  }
 
   & > .account-security-privacy__wrapper {
     @include flex-column;

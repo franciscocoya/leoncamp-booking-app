@@ -198,7 +198,7 @@ export const es_msgs = {
         title: 'Idioma',
         spanish: 'Español (España)',
         english: 'Inglés (Reino Unido)',
-      },
+      }
     },
     account_ads: {
       title: 'Mis alojamientos',
@@ -328,7 +328,7 @@ export const es_msgs = {
       add: 'Añadir',
       login: 'Iniciar sesión',
       close_session: 'Cerrar sesión',
-      back: 'Volver | Anteriors',
+      back: 'Volver | Anterior',
       next: 'Siguiente',
       finish: 'Finalizar',
       view_ad: 'Ver anuncio',
@@ -343,6 +343,7 @@ export const es_msgs = {
         confirm: 'Confirmar',
         complete: 'Completar',
       },
+      dashboard: 'Dashboard',
     },
     forms: {
       name: 'Nombre',
@@ -441,6 +442,14 @@ export const es_msgs = {
             invalid: 'El código postal no es válido',
             not_spanish_zip:
               'El código postal no se corresponde con un código postal español',
+          },
+          coords: {
+            lat: {
+              invalid: 'La latitud no es válida',
+            },
+            lng: {
+              invalid: 'La longitud no es válida',
+            },
           },
           geolocation_not_supported:
             'La geolocalización no está soportada en este navegador',
