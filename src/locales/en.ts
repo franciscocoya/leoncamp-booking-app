@@ -130,6 +130,7 @@ export const en_msgs = {
       title: 'Services',
       subtitle: 'Check the box of the services offered by the accommodation.',
       service_search_placeholder: 'Enter the service to be search for',
+      loading: 'Loading services...',
     },
     step4: {
       title: 'Rules',
@@ -266,9 +267,11 @@ export const en_msgs = {
   },
   user_upgrade_account_view: {
     title: 'Upgrade your account to host',
-    confirm_changes: 'In order to confirm your changes, you will be logged out.',
-    subtitle: 'Publish accomodations, view your finances and get the maximum benefit.',
-    upgrade_status_button: '🔥 Upgrading... | Upgrade account'
+    confirm_changes:
+      'In order to confirm your changes, you will be logged out.',
+    subtitle:
+      'Publish accomodations, view your finances and get the maximum benefit.',
+    upgrade_status_button: '🔥 Upgrading... | Upgrade account',
   },
   accomodation_thumbnail: {
     title_click: 'Click here to see the accomodation',

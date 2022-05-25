@@ -41,7 +41,7 @@ const amenities: string[] = [
   'Productos de limpieza',
   'Microondas',
   'Cafetera',
-  'Accesible para minusválidos',
+  'Accesible a minusválidos',
   'Congelador',
   'Horno',
   'Lavavajillas',

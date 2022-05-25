@@ -22,6 +22,7 @@ const formErrorsStore = useFormErrorsStore();
 
 let allAvaibleServices = ref([]);
 let originalServices = ref([]);
+let isLoadingServices = ref(true);
 
 /**
  * Manejador del evento change de los checkbox de los servicios.
@@ -62,19 +63,11 @@ onMounted(async () => {
   allAvaibleServices.value = await accomodationStore.getAllServices();
   originalServices.value = [...allAvaibleServices.value];
 
+  isLoadingServices.value = false;
+
   formErrorsStore.enableNextButton =
     accomodationStore.accomodationServices.length > 0;
 });
-
-// onBeforeRouteLeave((from, to) => {
-//   if (
-//     formErrorsStore.enableNextButton == false &&
-//     (uploadAccomodationRoutes.includes(from.name) ||
-//       uploadAccomodationRoutes.includes(to.name))
-//   ) {
-//     return false;
-//   }
-// });
 </script>
 
 <template>
@@ -85,7 +78,10 @@ onMounted(async () => {
       placeholder="Introduce el servicio a buscar"
       @handleInput="(value) => applyFilters(value)"
     />
-    <div class="accomodation-ad-upload-services__wrapper">
+    <div
+      class="accomodation-ad-upload-services__wrapper"
+      v-if="isLoadingServices === false"
+    >
       <TextEditChip
         v-for="service in allAvaibleServices"
         :key="`service-${service.id}`"
@@ -104,6 +100,9 @@ onMounted(async () => {
         "
         @handleCheckBoxChange="(e) => handleServiceChipChange(e, service)"
       />
+    </div>
+    <div>
+      <p>{{ $t("upload_accomodation_view.step3.loading") }}</p>
     </div>
   </div>
 </template>

@@ -131,6 +131,7 @@ export const es_msgs = {
       subtitle:
         'Marca la casilla de los servicios de los que dispone el alojamiento.',
       service_search_placeholder: 'Introduce el servicio a buscar',
+      loading: 'Cargando servicios...',
     },
     step4: {
       title: 'Normas',
@@ -269,9 +270,10 @@ export const es_msgs = {
   },
   user_upgrade_account_view: {
     title: 'Actualiza tu cuenta a anfitrión',
-    subtitle: 'Publica alojamientos, revisa tus cuentas y obtén el máximo beneficio.',
+    subtitle:
+      'Publica alojamientos, revisa tus cuentas y obtén el máximo beneficio.',
     confirm_changes: 'Para aplicar los cambios se cerrará la sesión',
-    upgrade_status_button: '🔥 Actualizando... | Actualizar cuenta'
+    upgrade_status_button: '🔥 Actualizando... | Actualizar cuenta',
   },
   accomodation_reviews: {
     title: 'Valoraciones',

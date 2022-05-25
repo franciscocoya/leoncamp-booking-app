@@ -97,7 +97,7 @@ export const addNewAccomodation = async (
       city: accomodationLocation.city,
       zip: accomodationLocation.zip,
     },
-  }).catch((err) => console.log(err));
+  });
 
   // Creación del alojamiento
   if (location) {
@@ -129,32 +129,32 @@ export const addNewAccomodation = async (
     });
   }
 
-  // Añadir las imágenes del alojamiento
-    // Añadir servicios al alojamiento
-    accomodationServices.map(async (service) => {
-      await addServiceToExistingAccomodation(
-        newAccomodation.data.registerNumber,
-        service.idAccomodationService.id
-      );
-    });
-
-    // Añadir normas al alojamiento
-    accomodationRules.map(async (rule) => {
-      await addRuleToExistingAccomodation(
-        newAccomodation.data.registerNumber,
-        rule.idAccomodationRule.id
-      );
-    });
-
+  Promise.all([
     // Añadir todas las imágenes al alojamiento creado
-    accomodationImages.map(async (image) => {
+    await accomodationImages.map(async (image) => {
       await addNewImageToAccomodation(
         newAccomodation.data.registerNumber,
         image.idAccomodationImage.imageUrl
       );
-    });
-
+    }),
+    // Añadir servicios al alojamiento
+    await accomodationServices.map(async (service) => {
+      await addServiceToExistingAccomodation(
+        newAccomodation.data.registerNumber,
+        service.idAccomodationService.id
+      );
+    }),
+    // Añadir normas al alojamiento
+    await accomodationRules.map(async (rule) => {
+      await addRuleToExistingAccomodation(
+        newAccomodation.data.registerNumber,
+        rule.idAccomodationRule.id
+      );
+    }),
+  ]);
+  setTimeout(() => {
     window.location.href = `/account/${userDataStorage.name}-${userDataStorage.surname}/accomodations`;
+  }, 1000);
 };
 
 /**
@@ -569,15 +569,12 @@ export async function getAllCities(): Promise<string[]> {
 /**
  * Listado de todas las ciudades que coinciden con el criterio de búsqueda.
  */
- export async function getAllCitiesMatches(wordToSearch: string): Promise<any> {
-  let res: any = await axios.get(
-    `${baseUri}${ACCOMODATIONS_BASE_PATH}/city`,
-    {
-      params: {
-        q: wordToSearch,
-      }
-    }
-  );
+export async function getAllCitiesMatches(wordToSearch: string): Promise<any> {
+  let res: any = await axios.get(`${baseUri}${ACCOMODATIONS_BASE_PATH}/city`, {
+    params: {
+      q: wordToSearch,
+    },
+  });
 
   return res.data;
 }
@@ -708,29 +705,37 @@ export async function updateAccomodationData(accomodationData: any) {
  * @returns
  */
 export async function getAccomodationLocationByCoords(coords: Coordinate) {
-    interface LocationResponse {
+  interface LocationResponse {
     address: string;
     city: string;
     cp: number;
     distanceAccuracy: number;
   }
 
-  const mapboxGeo = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?types=place%2Cpostcode%2Caddress&limit=1&access_token=${import.meta.env.VITE_MAPBOX_API_TOKEN}`
+  const mapboxGeo = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
+    coords.lng
+  },${coords.lat}.json?types=place%2Cpostcode%2Caddress&limit=1&access_token=${
+    import.meta.env.VITE_MAPBOX_API_TOKEN
+  }`;
 
   let accomodationLocationToReturn: LocationResponse = {} as LocationResponse;
 
-  const {data}: any = await axios.get(mapboxGeo);
+  const { data }: any = await axios.get(mapboxGeo);
 
-  const dataResponse = data?.features[0];
+  const dataResponse: any = data?.features[0];
 
   accomodationLocationToReturn = {
-    address: dataResponse?.context.filter(c => c.id.includes('neighborhood'))[0]?.text
-    ?? dataResponse?.text ?? dataResponse?.place_name,
-    city: dataResponse?.context.filter(c => c.id.includes('place'))[0]?.text,
-    cp: dataResponse?.context.filter(c => c.id.includes('postcode'))[0]?.text,
-    distanceAccuracy: 0
+    address:
+      dataResponse?.context.filter((c: any) => c.id.includes('neighborhood'))[0]
+        ?.text ??
+      dataResponse?.text ??
+      dataResponse?.place_name,
+    city: dataResponse?.context.filter((c: any) => c.id.includes('place'))[0]
+      ?.text,
+    cp: dataResponse?.context.filter((c: any) => c.id.includes('postcode'))[0]
+      ?.text,
+    distanceAccuracy: 0,
   };
-
 
   // const { data }: any = await axios.get(
   //   `${import.meta.env.VITE_POSITION_STACK_ENDPOINT}reverse?access_key=${

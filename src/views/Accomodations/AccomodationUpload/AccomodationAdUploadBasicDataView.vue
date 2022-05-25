@@ -90,7 +90,7 @@ const checkAccomodationArea = () => {
  */
 const checkAccomodationNumOfBeds = () => {
   if (!checkInputNumberFieldIsValid(accomodationStore?.numOfBeds, 1, 100)) {
-    formErrorsStore.errors.push("components.forms.messages.numOfbeds.invalid");
+    formErrorsStore.errors.push("components.forms.messages.numOfBeds.invalid");
   }
 
   showNextButton();
