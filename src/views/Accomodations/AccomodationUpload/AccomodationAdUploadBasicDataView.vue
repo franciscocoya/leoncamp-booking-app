@@ -153,7 +153,11 @@ const checkAccomodationNumOfGuests = () => {
 };
 
 const checkAccomodationCategory = () => {
-  if (accomodationStore?.category === "" || !accomodationStore?.category) {
+  if (
+    accomodationStore?.category === "" ||
+    !accomodationStore?.category ||
+    accomodationStore?.category === "Selecciona una opción"
+  ) {
     formErrorsStore.errors.push("components.forms.messages.category.required");
   }
 
