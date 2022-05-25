@@ -28,13 +28,6 @@ import {
   checkFieldNotBlank,
 } from "@/helpers/formValidator";
 
-// Si el usuario no acepta el uso de la geolocalizacion, se muestran por defecto
-// las coordenadas del centro de León.
-const currentCoords = ref({
-  lat: 42.598283859657776,
-  lng: -5.570953032164213,
-});
-
 const accomodationStore = useAccomodationStore();
 const formErrorsStore = useFormErrorsStore();
 const appContextStore = useAppContextStore();
@@ -107,7 +100,7 @@ const checkAccomodationZipCode = () => {
  * Valida la latitud introducida.
  */
 const checkAccomodationCoordsLat = () => {
-  if (!checkFieldNotBlank(accomodationStore?.accomodationLocation.coords.lat)) {
+  if (!checkFieldNotBlank(accomodationStore?.accomodationLocation.latitude)) {
     formErrorsStore.errors.push(
       "components.forms.messages.location.coords.lat.invalid"
     );
@@ -120,7 +113,7 @@ const checkAccomodationCoordsLat = () => {
  * Valida la longitud introducida.
  */
 const checkAccomodationCoordsLng = () => {
-  if (!checkFieldNotBlank(accomodationStore?.accomodationLocation.coords.lng)) {
+  if (!checkFieldNotBlank(accomodationStore?.accomodationLocation.longitude)) {
     formErrorsStore.errors.push(
       "components.forms.messages.location.coords.lng.invalid"
     );
@@ -147,8 +140,8 @@ const showNextButton = () => {
       5
     ) &&
     checkValidSpanishZipCode(accomodationStore?.accomodationLocation.zip) &&
-    checkFieldNotBlank(accomodationStore?.accomodationLocation?.coords.lat) &&
-    checkFieldNotBlank(accomodationStore?.accomodationLocation?.coords.lng);
+    checkFieldNotBlank(accomodationStore?.accomodationLocation?.latitude) &&
+    checkFieldNotBlank(accomodationStore?.accomodationLocation?.longitude);
 
   if (formErrorsStore.enableNextButton) {
     formErrorsStore.errors = [];
@@ -177,8 +170,8 @@ onMounted(async () => {
   // });
 
   const accomodationLocation = await getAccomodationLocationByCoords({
-    lat: accomodationStore.accomodationLocation.coords.lat,
-    lng: accomodationStore.accomodationLocation.coords.lng,
+    lat: accomodationStore.accomodationLocation.latitude,
+    lng: accomodationStore.accomodationLocation.longitude,
   });
 
   accomodationStore.accomodationLocation.direction =
@@ -199,20 +192,20 @@ onMounted(async () => {
           <LabelFormInput
             :inputLabel="$t('components.forms.lat')"
             inputType="text"
-            :inputValue="accomodationStore.accomodationLocation.coords.lat"
+            :inputValue="accomodationStore.accomodationLocation.latitude"
             @handleInput="
               (value) =>
-                (accomodationStore.accomodationLocation.coords.lat = value)
+                (accomodationStore.accomodationLocation.latitude = value)
             "
             @handleBlur="checkAccomodationCoordsLat"
           />
           <LabelFormInput
             :inputLabel="$t('components.forms.lng')"
             inputType="text"
-            :inputValue="accomodationStore.accomodationLocation.coords.lng"
+            :inputValue="accomodationStore.accomodationLocation.longitude"
             @handleInput="
               (value) =>
-                (accomodationStore.accomodationLocation.coords.lng = value)
+                (accomodationStore.accomodationLocation.longitude = value)
             "
             @handleBlur="checkAccomodationCoordsLng"
           />
@@ -249,15 +242,14 @@ onMounted(async () => {
             @handleBlur="checkAccomodationZipCode"
           />
         </div>
-        <p v-once v-t="'upload_accomodation_view.step2.help'">
-          * Puedes arrastrar el marcador del mapa para obtener rellenar los
-          campos automáticamente.
+        <p>
+          {{$t('upload_accomodation_view.step2.help')}}
         </p>
       </div>
       <div class="accomodation-upload-location__map">
         <ThumbnailMap
-          :lat="currentCoords.lat"
-          :lng="currentCoords.lng"
+          :lat="accomodationStore.accomodationLocation.latitude"
+          :lng="accomodationStore.accomodationLocation.latitude"
           :isMarkerDraggable="true"
         />
       </div>

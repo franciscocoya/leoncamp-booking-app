@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 // Servicios
-import { getCitiesMatchWithSearchWord } from '@/services/search/searchService';
+import { getAllCitiesMatches } from '@/services/accomodation/AccomodationService';
 
 const useSearchStore = defineStore({
   id: 'search',
@@ -27,7 +27,7 @@ const useSearchStore = defineStore({
      * @param searchWord
      */
     async setSearchResults(wordToSearch: string): Promise<void> {
-      const results: any = await getCitiesMatchWithSearchWord(wordToSearch);
+      const results: any = await getAllCitiesMatches(wordToSearch);
       this.searchResults = results;
     },
 

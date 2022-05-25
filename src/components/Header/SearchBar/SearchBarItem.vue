@@ -22,9 +22,10 @@ const handleSearchInput = (e) => {
   searchStore.searchResults = [];
   e.target.value.length > 0 ? showSearchResults() : hideSearchResults();
 
-  searchStore.setSearchResults(e.target.value);
-
-  searchStore.searchQuery = e.target.value;
+  if (e.target.value !== "") {
+    searchStore.setSearchResults(e.target.value);
+    searchStore.searchQuery = e.target.value;
+  }
 };
 </script>
 
@@ -32,12 +33,9 @@ const handleSearchInput = (e) => {
   <div class="searchBar--light" role="search">
     <img :src="ICON_MAP_MARKER" alt="" class="marker-search-icon" />
 
-    <input
-      type="text"
-      @input="(e) => handleSearchInput(e)"
-    />
+    <input type="text" @input="(e) => handleSearchInput(e)" />
 
-    <img :src="ICON_SEARCH" alt="Buscar" class="search-icon--primary" />
+    <!-- <img :src="ICON_SEARCH" alt="Buscar" class="search-icon--primary" /> -->
   </div>
 </template>
 

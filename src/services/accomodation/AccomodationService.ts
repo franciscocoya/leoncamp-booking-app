@@ -70,7 +70,8 @@ export const addNewAccomodation = async (
     area: string;
     category: string;
     accomodationLocation: {
-      coords: Coordinate;
+      latitude: Number;
+      longitude: Number;
       direction: string;
       city: string;
       zip: string;
@@ -90,8 +91,8 @@ export const addNewAccomodation = async (
       Authorization: `Bearer ${apiJwtToken}`,
     },
     data: {
-      latitude: accomodationLocation.coords.lat,
-      longitude: accomodationLocation.coords.lng,
+      latitude: accomodationLocation.latitude,
+      longitude: accomodationLocation.longitude,
       direction: accomodationLocation.direction,
       city: accomodationLocation.city,
       zip: accomodationLocation.zip,
@@ -129,8 +130,6 @@ export const addNewAccomodation = async (
   }
 
   // Añadir las imágenes del alojamiento
-
-  if (newAccomodation) {
     // Añadir servicios al alojamiento
     accomodationServices.map(async (service) => {
       await addServiceToExistingAccomodation(
@@ -156,7 +155,6 @@ export const addNewAccomodation = async (
     });
 
     window.location.href = `/account/${userDataStorage.name}-${userDataStorage.surname}/accomodations`;
-  }
 };
 
 /**
@@ -171,28 +169,6 @@ export async function removeAccomodationByRegisterNumber(
     },
   });
 }
-
-/**
- * Añade una nueva ubicación
- * @param accomodationLocation
- * @returns
- */
-// const addNewLocation = async (accomodationLocation: any): Promise<any> => {
-//   return await axios({
-//     url: `${API_ACCOMODATION_LOCATIONS}/new`,
-//     method: 'POST',
-//     headers: {
-//       Authorization: `Bearer ${apiJwtToken}`,
-//     },
-//     data: {
-//       latitude: accomodationLocation.coords.lat,
-//       longitude: accomodationLocation.coords.lng,
-//       direction: accomodationLocation.direction,
-//       city: accomodationLocation.city,
-//       zip: accomodationLocation.zip,
-//     },
-//   }).catch((err) => console.log(err));
-// };
 
 /**
  * Comprueba si existe el alojamiento con el número de registro pasado como parámetro.
@@ -590,6 +566,22 @@ export async function getAllCities(): Promise<string[]> {
   return data;
 }
 
+/**
+ * Listado de todas las ciudades que coinciden con el criterio de búsqueda.
+ */
+ export async function getAllCitiesMatches(wordToSearch: string): Promise<any> {
+  let res: any = await axios.get(
+    `${baseUri}${ACCOMODATIONS_BASE_PATH}/city`,
+    {
+      params: {
+        q: wordToSearch,
+      }
+    }
+  );
+
+  return res.data;
+}
+
 // ---------------------------------------------------------------
 // -- Imágenes de alojamientos
 // ---------------------------------------------------------------
@@ -716,8 +708,7 @@ export async function updateAccomodationData(accomodationData: any) {
  * @returns
  */
 export async function getAccomodationLocationByCoords(coords: Coordinate) {
-  const MAX_RESULTS = 2;
-  interface LocationResponse {
+    interface LocationResponse {
     address: string;
     city: string;
     cp: number;
@@ -730,12 +721,13 @@ export async function getAccomodationLocationByCoords(coords: Coordinate) {
 
   const {data}: any = await axios.get(mapboxGeo);
 
-  const dataResponse = data.features[0];
+  const dataResponse = data?.features[0];
 
   accomodationLocationToReturn = {
-    address: dataResponse.text,
-    city: dataResponse.context[1].text,
-    cp: dataResponse.context[0].text,
+    address: dataResponse?.context.filter(c => c.id.includes('neighborhood'))[0]?.text
+    ?? dataResponse?.text ?? dataResponse?.place_name,
+    city: dataResponse?.context.filter(c => c.id.includes('place'))[0]?.text,
+    cp: dataResponse?.context.filter(c => c.id.includes('postcode'))[0]?.text,
     distanceAccuracy: 0
   };
 

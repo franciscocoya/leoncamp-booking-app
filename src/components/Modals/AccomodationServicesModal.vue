@@ -1,6 +1,10 @@
 <script setup>
+import { onMounted, onUnmounted } from "vue";
+
 // Utils
 import { getAccomodationServiceImageById } from "@/helpers/utils";
+
+import { useAppContextStore } from "@/store/appContext";
 
 // i18n
 import { translateAmenity } from "@/helpers/i18nTranslations";
@@ -19,11 +23,21 @@ const props = defineProps({
   },
 });
 
+const appContextStore = useAppContextStore();
+
 const emit = defineEmits(["close-modal"]);
 
 const closeModal = () => {
   emit("close-modal");
 };
+
+onMounted(() => {
+  appContextStore.isModalOpen = true;
+});
+
+onUnmounted(() => {
+  appContextStore.isModalOpen = false;
+});
 
 </script>
 
@@ -68,7 +82,7 @@ const closeModal = () => {
 .base-modal-window {
   @include flex-column;
   gap: 20px;
-  width: 30%;
+  width: 40%;
   height: 80%;
   padding: 20px 50px;
   background-color: #fff;
@@ -116,7 +130,6 @@ ul {
   .base-modal-window {
     width: 90%;
     height: 80vh;
-    margin-bottom: 20%;
     z-index: $z-index-1;
 
     & > h2 {

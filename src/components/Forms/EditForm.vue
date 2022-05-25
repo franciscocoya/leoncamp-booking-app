@@ -167,7 +167,7 @@ onMounted(async () => {
       <div class="form-edit-main-features">
         <!-- Sección imágenes -->
         <section class="form-edit-main-features__images">
-          <h2 v-once v-t="'edit_accommodation_view.images.title'"></h2>
+          <h2>{{$t('edit_accommodation_view.images.title')}}</h2>
           <p>
             {{
               $tc("edit_accommodation_view.images.count", {
@@ -317,7 +317,7 @@ onMounted(async () => {
             :inputLabel="$t('components.forms.category')"
             selectId="accomodation-category-select"
             :options="categories"
-            :selectedOption="accomodationStore.category.id"
+            :selectedOption="accomodationStore.category.accomodationCategory"
             @handleChange="(value) => (accomodationStore.category = value)"
           />
           <BaseButton

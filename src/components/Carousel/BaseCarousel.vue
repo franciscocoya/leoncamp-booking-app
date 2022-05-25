@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination } from "swiper";
 
@@ -6,9 +7,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
+
+
 const modules = [Navigation, Pagination];
 
-defineProps({
+const props = defineProps({
   images: {
     type: Array,
     default: () => [],
@@ -22,14 +25,18 @@ defineProps({
     default: 0,
   },
   sliderWidth: {
-    type: Number,
-    default: 300,
+    type: String,
+    default: '400px',
   },
   sliderHeight: {
-    type: Number,
-    default: 200,
+    type: String,
+    default: "250px",
   },
   slideWidth: {
+    type: String,
+    default: "100%",
+  },
+  slideHeight: {
     type: String,
     default: "100%",
   },
@@ -52,18 +59,19 @@ defineProps({
       :slidesPerView="slidesPerView"
       :spaceBetween="spaceBetween"
       :autoHeight="false"
-      :style="`width: ${sliderWidth}px; height: ${sliderHeight}px;`"
+      :style="`width: ${sliderWidth}; height: ${sliderHeight};`"
       class="myswiper"
     >
       <swiper-slide
         v-for="(img, index) in images"
         :key="index"
-        :style="`width: ${slideWidth}`"
+        :style="`width: ${slideWidth}; height: ${slideHeight};`"
       >
         <img :src="img" alt="" />
       </swiper-slide>
     </swiper>
-    <div v-else class="carousel-no-images">
+    <div v-else class="carousel-no-images"
+    :style="`width: ${sliderWidth}; height: ${sliderHeight};`">
       {{$t('baseCarousel.no_images')}}
     </div>
   </div>
@@ -77,7 +85,6 @@ defineProps({
   border-radius: 10px;
 }
 .swiper-slide {
-  height: auto;
   text-align: center;
   font-size: 18px;
   background: #fff;
@@ -95,7 +102,6 @@ defineProps({
   align-items: center;
 
   & img {
-    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;

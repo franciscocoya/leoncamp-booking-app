@@ -109,8 +109,8 @@ onMounted(async () => {
               (img) => img.accomodationAccImageId?.idAccomodationImage.imageUrl
             )
           "
-          :sliderWidth="510"
-          :sliderHeight="350"
+          :sliderWidth="`${appContextStore.isMobile ? '100%' : '500px'}`"
+          :sliderHeight="`${appContextStore.isMobile ? '250px' : '350px'}`"
           slideWidth="100%"
         />
         <!-- Datos usuario host -->
@@ -223,11 +223,9 @@ onMounted(async () => {
           </p>
           <ThumbnailMap
             :lat="
-              bookingData &&
               bookingData?.idAccomodation?.idAccomodationLocation?.latitude
             "
             :lng="
-              bookingData &&
               bookingData?.idAccomodation?.idAccomodationLocation?.longitude
             "
             mapWidth="100%"
@@ -378,6 +376,13 @@ onMounted(async () => {
         gap: 10px;
         padding: 0 25px;
 
+        & > h1{
+          @include flex-column;
+          gap: 5px;
+          & > span{
+            font-size: 1.2rem;
+          }
+        }
         & > span {
           margin-top: 10px;
         }

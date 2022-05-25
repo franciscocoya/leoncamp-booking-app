@@ -58,16 +58,16 @@ onMounted(async () => {
     >
       <div class="bookings_container__tabs">
         <span
-          v-if="isUserHost == true"
+          v-if="isUserHost == true && allUserAccomodationBookings?.all?.length > 0"
           role="tab"
-          :class="`${tabs.activeTab == 0 ? '--is-tab-active' : ''}`"
+          :class="`${tabs.activeTab == 0 && allUserAccomodationBookings?.all?.length > 0 ? '--is-tab-active' : ''}`"
           @click.prevent="tabs.activeTab = 0"
           >{{ $t("bookings_view.tabs.guests") }}</span
         >
         <span
           role="tab"
           :class="`${
-            tabs.activeTab == 1 || isUserHost == false ? '--is-tab-active' : ''
+            tabs.activeTab == 1 || isUserHost == false || allUserAccomodationBookings?.all?.length == 0 ? '--is-tab-active' : ''
           }`"
           @click.prevent="tabs.activeTab = 1"
           >{{ $t("bookings_view.tabs.host") }}</span
@@ -76,7 +76,7 @@ onMounted(async () => {
 
       <!-- Reservas recibidas de los alojamientos del usuario -->
       <Transition name="fade">
-        <div v-if="tabs.activeTab == 0" class="bookings_container__guests">
+        <div v-if="tabs.activeTab == 0 && allUserAccomodationBookings?.all?.length > 0" class="bookings_container__guests">
           <BookingSummaryItem
             v-for="booking in allUserAccomodationBookings?.all"
             :key="booking.registerNumber"
@@ -103,7 +103,7 @@ onMounted(async () => {
 
       <!-- Reservas realizadas por el usuario -->
       <Transition name="fade">
-        <div v-if="tabs.activeTab == 1" class="bookings_container__user">
+        <div v-if="tabs.activeTab == 1 || allUserAccomodationBookings?.all?.length == 0" class="bookings_container__user">
           <BookingSummaryItem
             v-for="booking in bookings?.all"
             :key="booking.registerNumber"

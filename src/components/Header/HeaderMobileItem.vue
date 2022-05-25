@@ -166,10 +166,10 @@ onUpdated(() => {
 
 .header-mobile {
   position: fixed;
-  // height: 100vh;
+  height: 100vh;
   width: 100%;
   margin: 0 auto;
-  // top: 89vh;
+  top: 87vh;
   bottom: 2%;
   background: transparent;
   transition: all 0.5s linear;
@@ -183,7 +183,7 @@ onUpdated(() => {
     width: 90%;
     margin: 0 auto;
     padding: 5px 5px;
-    position: sticky;
+
 
     & > ul {
       @include flex-row;
@@ -205,6 +205,21 @@ onUpdated(() => {
         background-color: $color-tertiary-dark;
         padding: 10px;
         border-radius: $global-border-radius;
+      }
+    }
+  }
+}
+
+// -------------------------------------------------
+// -- Responsive design
+// -------------------------------------------------
+@media screen and (max-width: $breakpoint-sm) {
+  .header-mobile {
+    & > .header-mobile-wrapper {
+      height: max-content;
+      padding: 20px 0;
+      & > ul {
+        align-items: center;
       }
     }
   }

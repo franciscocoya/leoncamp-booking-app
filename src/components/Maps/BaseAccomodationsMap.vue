@@ -43,7 +43,7 @@ onMounted(() => {
     zoom: 14, // starting zoom
   }).addControl(new mapboxgl.NavigationControl(), "top-right");
 
-  map.value.on("load", () => {
+  map.value?.on("load", () => {
     props.markers.forEach((markerToAdd) => {
       const priceMark = document.createElement("div");
       priceMark.id = `marker_${markerToAdd.registerNumber}`;

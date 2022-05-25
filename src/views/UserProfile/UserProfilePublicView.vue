@@ -80,7 +80,11 @@ onBeforeMount(async () => {
 
       <!-- User Host detalles -->
       <div class="user_profile_sidebar__details">
-        <p v-if="isHostUser" v-once v-t="'user_public_profile.userType.host'"></p>
+        <p
+          v-if="isHostUser"
+          v-once
+          v-t="'user_public_profile.userType.host'"
+        ></p>
         <div
           v-if="userData?.verified"
           class="user_profile_sidebar_details__fullVerified"
@@ -90,7 +94,9 @@ onBeforeMount(async () => {
             :src="ICON_FULL_VERIFIED"
             alt="El usuario ha verificado DNI, correo electrónico y teléfono"
           />
-          <p v-once v-t="'user_public_profile.verified.title'">Identidad verificada</p>
+          <p v-once v-t="'user_public_profile.verified.title'">
+            Identidad verificada
+          </p>
         </div>
 
         <!-- Verificaciones del usuario -->
@@ -104,8 +110,8 @@ onBeforeMount(async () => {
         >
           <h2>
             {{
-              $tc('user_public_profile.verified.subtitle', {
-                name: `${userData?.name} ${userData?.surname}`
+              $tc("user_public_profile.verified.subtitle", {
+                name: `${userData?.name} ${userData?.surname}`,
               })
             }}
           </h2>
@@ -128,8 +134,8 @@ onBeforeMount(async () => {
       <!-- Nombre completo del usuario -->
       <h2>
         {{
-          $tc('user_public_profile.title', {
-            name: `${userData?.name} ${userData?.surname}`
+          $tc("user_public_profile.title", {
+            name: `${userData?.name} ${userData?.surname}`,
           })
         }}
       </h2>
@@ -146,16 +152,15 @@ onBeforeMount(async () => {
         <div class="user-profile-data_biography__lang">
           <img :src="ICON_USER_LANGUAGE" alt="" />
           <p>
+            {{ $t("user_public_profile.about.lang.title") }}:
             {{
-              $t('user_public_profile.about.lang.title')
-            }}: {{
               $t(`user_public_profile.about.lang.languages[
               ${
                 userLang?.idLanguage?.language == "ES"
-                ? 0
-                : userLang?.idLanguage?.language == "EN"
-                ? 1
-                : 2
+                  ? 0
+                  : userLang?.idLanguage?.language == "EN"
+                  ? 1
+                  : 2
               }]`)
             }}
           </p>
@@ -196,8 +201,7 @@ onBeforeMount(async () => {
               showUserReviewsReceived = true;
             "
             v-t="'user_public_profile.reviews.tabs.users'"
-            ></span
-          >
+          ></span>
           <span
             title="Valoraciones realizadas por el usuario en otros alojamientos"
             role="tab"
@@ -207,8 +211,7 @@ onBeforeMount(async () => {
               showUserReviewsSent = true;
             "
             v-t="'user_public_profile.reviews.tabs.host'"
-            ></span
-          >
+          ></span>
         </div>
 
         <!-- Valoraciones recibidas -->
@@ -358,8 +361,8 @@ onBeforeMount(async () => {
       gap: 20px;
 
       & > .user-profile-data_ads__wrapper {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        @include flex-row;
+        flex-wrap: wrap;
         gap: 20px;
       }
     }
@@ -434,6 +437,7 @@ onBeforeMount(async () => {
 
         & > .user-profile-data_ads__wrapper {
           @include flex-column;
+          width: 450px;
           gap: 20px;
         }
       }

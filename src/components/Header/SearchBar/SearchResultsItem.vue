@@ -19,10 +19,10 @@ const handleHideSearchResults = () => {
  */
 const handleSearchAccomodationsByQuery = async (city) => {
   router.push({
-    name: 'accomodation-city-list',
+    name: "accomodation-city-list",
     params: {
-      city
-    }
+      city,
+    },
   });
   handleHideSearchResults();
 };
@@ -46,9 +46,9 @@ onMounted(() => {
           @click.prevent="handleSearchAccomodationsByQuery(result)"
         >
           <svg
-            width="30"
-            height="30"
-            viewBox="0 0 48 48"
+            width="50"
+            height="50"
+            viewBox="0 0 50 50"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -67,10 +67,14 @@ onMounted(() => {
               stroke-linecap="round"
             />
           </svg>
-          <p>{{ result }}</p>
+          <p>
+            {{ result }}
+          </p>
         </li>
       </ul>
-      <h2 v-else>{{$t('search.search_results.not_results')}}</h2>
+      <h2 v-else class="no-search-results-found">
+        {{ $t("search.search_results.not_results") }}
+      </h2>
     </div>
   </div>
 </template>
@@ -118,8 +122,8 @@ onMounted(() => {
         border-radius: $global-border-radius;
         transition: background-color 0.2s ease-in;
 
-        & > p{
-          font-size: 1.2rem;
+        & > p {
+          font-size: 1.1rem;
         }
 
         & > svg {
@@ -141,9 +145,10 @@ onMounted(() => {
       }
     } // Fin estilos ul
 
-    & > h2 {
+    & > .no-search-results-found {
       font-weight: 400;
       color: $color-primary;
+      text-align: center;
     }
   }
 }
@@ -162,15 +167,24 @@ onMounted(() => {
       height: max-content;
 
       & > ul {
+        @include flex-column;
+        gap: 20px;
         & > li {
+          display: grid;
+          grid-template-columns: 60px auto;
           & > p {
-            font-size: 1.5rem;
+            hyphens: auto;
+            margin: 0;
+            font-size: 1.3rem;
           }
           & > svg {
             width: 60px;
             height: 60px;
           }
         }
+      }
+      & > .no-search-results-found {
+        font-size: 1.3rem;
       }
     }
   }

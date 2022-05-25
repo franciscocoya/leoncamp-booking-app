@@ -4,6 +4,8 @@ import { useUserStore } from "@/store/user";
 import { useAuthStore } from "@/store/auth";
 
 import { useRouter } from "vue-router";
+import { ICON_CLOSE } from "@/helpers/iconConstants";
+
 const router = useRouter();
 
 const userStore = useUserStore();
@@ -35,6 +37,9 @@ onMounted(async () => {
   <div class="menu-mobile-responsive">
     <div class="menu-mobile-responsive__overlay"></div>
     <div class="menu-mobile-responsive__wrapper">
+      <div @click.prevent="handleHideMenu" id="icon_close_menu_mobile">
+        <img :src="ICON_CLOSE" alt="">
+      </div>
       <ul>
         <li id="menu-mobile-username">
           {{
@@ -105,6 +110,7 @@ onMounted(async () => {
   }
 
   & > .menu-mobile-responsive__wrapper {
+    @include flex-column;
     width: 90%;
     height: 70%;
     background-color: rgba(255, 255, 255, 1);
@@ -113,9 +119,23 @@ onMounted(async () => {
     box-shadow: $global-box-shadow;
     z-index: $z-index-4;
 
+    & > #icon_close_menu_mobile{
+      @include flex-row;
+      justify-content: flex-end;
+      padding: 10px 10px 0 0;
+      & > img{
+        width: 50px;
+        height: 50px;
+        background-color: $color-tertiary-light;
+        padding: 10px;
+        border-radius: $global-border-radius;
+      }
+    }
+
     & > ul {
       @include flex-column-center;
       height: 100%;
+      width: 100%;
       justify-content: space-evenly;
       list-style: none;
       padding: 20px;

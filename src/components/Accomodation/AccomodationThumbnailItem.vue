@@ -17,10 +17,12 @@ import IconButton from "@/components/Buttons/IconButton.vue";
 
 // Store
 import { useAccomodationStore } from "@/store/accomodation";
+import { useAppContextStore } from "@/store/appContext";
 import { useUserStore } from "@/store/user";
 import { useAuthStore } from "@/store/auth";
 
 const accomodationStore = useAccomodationStore();
+const appContextStore = useAppContextStore();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 
@@ -97,6 +99,8 @@ onMounted(async () => {
           (img) => img.accomodationAccImageId.idAccomodationImage.imageUrl
         )
       "
+      :sliderWidth="`${appContextStore.isMobile ? '100%' : '400px'}`"
+      :sliderHeight="`${appContextStore.isMobile ? '300px' : '250px'}`"
     />
 
     <!-- Detalles del alojamiento -->
@@ -175,7 +179,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="accomodation-thumbnail-detail-container__body">
-        <p>{{ accData.idAccomodationLocation.direction }}</p>
+        <p>{{ accData.idAccomodationLocation.city }} - {{ accData.idAccomodationLocation.zip }}</p>
         <div class="accomodation-thumbnail-detail-container__services"></div>
       </div>
       <div class="accomodation-thumbnail-detail-container__footer">

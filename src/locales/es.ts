@@ -50,7 +50,7 @@ export const es_msgs = {
   },
   booking_details_view: {
     title: 'Reserva alojamiento {name}',
-    button_show_ad: 'Show accomodation',
+    button_show_ad: 'Ver alojamiento',
     guests: 'Para {n} huéspedes',
     host: 'Anfitrión',
     dates: 'Fechas reserva',
@@ -266,6 +266,12 @@ export const es_msgs = {
         host: 'Del usuario',
       },
     },
+  },
+  user_upgrade_account_view: {
+    title: 'Actualiza tu cuenta a anfitrión',
+    subtitle: 'Publica alojamientos, revisa tus cuentas y obtén el máximo beneficio.',
+    confirm_changes: 'Para aplicar los cambios se cerrará la sesión',
+    upgrade_status_button: '🔥 Actualizando... | Actualizar cuenta'
   },
   accomodation_reviews: {
     title: 'Valoraciones',

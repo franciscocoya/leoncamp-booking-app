@@ -1,6 +1,11 @@
 <script setup>
+import { onMounted, onUnmounted } from "vue";
+
 // Componentes
 import BaseButton from "@/components/Buttons/BaseButton.vue";
+
+// Store
+import  { useAppContextStore } from "@/store/appContext";
 
 defineProps({
   images: {
@@ -8,11 +13,23 @@ defineProps({
     default: () => [],
   },
 });
+
+const appContextStore = useAppContextStore();
+
 const emit = defineEmits(["close-modal"]);
 
 const closeModal = () => {
   emit("close-modal");
 };
+
+onMounted(() => {
+  appContextStore.isModalOpen = true;
+});
+
+onUnmounted(() => {
+  appContextStore.isModalOpen = false;
+});
+
 </script>
 
 <template>
@@ -50,7 +67,6 @@ const closeModal = () => {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: calc(100vh - $header-height);
     z-index: $z-index-4;
   }
 
@@ -114,8 +130,7 @@ const closeModal = () => {
 
     .base-modal-window {
       width: 90%;
-      height: 70%;
-      margin-bottom: 30%;
+      height: 90%;
       padding: 10px;
 
       & > .base-modal__accomodation-images-container {

@@ -137,7 +137,7 @@ $home-section-margin: 50px;
   & > .home-view__wrapper {
     display: grid;
     height: calc(100vh - $header-height - 70px);
-    grid-template-columns: auto 50%;
+    grid-template-columns: repeat(2, 1fr);
     gap: 5px;
     margin-left: $home-section-margin;
     background-color: none;
@@ -168,7 +168,7 @@ $home-section-margin: 50px;
       margin: 20px;
       height: max-content;
       & > .home-accomodations-list {
-        overflow: auto;
+        overflow: hidden;
       }
     }
   }

@@ -75,7 +75,7 @@ onMounted(() => {
 
 <template class="app-root">
   <HeaderMobileItem
-    v-if="enableHeaderMobile == true"
+    v-if="enableHeaderMobile == true && appContextStore.isModalOpen == false"
     id="header-mobile-item"
     @showMenuMobile="showMenuMobile = !showMenuMobile"
   />
@@ -89,7 +89,7 @@ onMounted(() => {
   <Transition name="slide-fade">
     <MenuMobile
       v-if="showMenuMobile == true"
-      @hideMenu="() => (showMenuMobile = !showMenuMobile)"
+      @hideMenu="() => (showMenuMobile = false)"
     />
   </Transition>
 

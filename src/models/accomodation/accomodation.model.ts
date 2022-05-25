@@ -14,7 +14,8 @@ export interface Accomodation {
   area?: number;
   category?: string;
   accomodationLocation: {
-    coords: Coordinate;
+    latitude: Number,
+    longitude: Number,
     direction: string;
     city: string;
     zip: string;

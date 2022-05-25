@@ -96,13 +96,6 @@ const handleUpgradeAccount = async () => {
       // authStore.userData.id = data.id;
       window.confirm("Para aplicar los cambios debe cerrar sesión");
       authStore.logout();
-
-      // router.push({
-      //   name: "user-profile",
-      //   params: {
-      //     username: `${authStore?.userData?.name}-${authStore?.userData?.surname}`,
-      //   },
-      // });
     }
   }
 
@@ -116,16 +109,17 @@ onBeforeMount(async () => {
 
 <template>
   <div class="account-upgrade-view">
-    <h1>Actualiza tu cuenta a Anfitrión</h1>
+    <h1>{{$t('user_upgrade_account_view.title')}}</h1>
     <h2>
-      Publica alojamientos, revisa tus cuentas y obtén el máximo beneficio.
+      {{
+        $t('user_upgrade_account_view.subtitle')
+      }}
     </h2>
     <div class="account-upgrade-view__wrapper">
       <form>
         <!-- DNI -->
         <LabelFormInput
-          inputLabel="DNI"
-          inputPlaceholder="Introduce tu DNI"
+          :inputLabel="$t('components.forms.dni')"
           :inputValue="authStore?.userData?.dni"
           :inputMaxCharacters="9"
           @handleInput="(value) => (authStore.userData.dni = value)"
@@ -133,8 +127,7 @@ onBeforeMount(async () => {
 
         <!-- Dirección -->
         <LabelFormInput
-          inputLabel="Dirección postal"
-          inputPlaceholder="Introduce una dirección postal. Por ejemplo, Av. Roma 3, León 00002"
+          :inputLabel="$t('components.forms.zip')"
           :inputValue="authStore?.userData?.direction"
           :inputMaxCharacters="100"
           @handleInput="(value) => (authStore.userData.direction = value)"
@@ -153,7 +146,8 @@ onBeforeMount(async () => {
         <!-- Botón actualizar -->
         <BaseButton
           :text="`${
-            isUpdating == true ? '🔥 Actualizando...' : 'Actualizar cuenta'
+            isUpdating == true ? $tc('user_upgrade_account_view.upgrade_status_button', 1) 
+            : $tc('user_upgrade_account_view.upgrade_status_button', 2)
           }`"
           buttonStyle="baseButton-primary--filled"
           :fullWidth="appContextStore?.isMobile == true"

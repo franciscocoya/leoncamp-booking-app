@@ -69,7 +69,7 @@ const enablePasswordFields = (callback) => {
     authStore.password !== "" &&
     authStore.newPassword !== "" &&
     authStore.repeatedPassword !== "" &&
-    authStore.email !== "";
+    (authStore.email !== "" || authStore.userData?.email);
 };
 
 onMounted(() => {

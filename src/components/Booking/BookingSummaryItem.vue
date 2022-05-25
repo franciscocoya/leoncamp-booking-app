@@ -72,8 +72,8 @@ const props = defineProps({
 /**
  * Manejador del evento click de los botones de cambio de estado de las reservas.
  */
-const handleChangeBookingStatus = async (bookingId, bookingStatus) => {
-  await updateBookingStatus(bookingId, bookingStatus, (err) => {
+const handleChangeBookingStatus = (bookingId, bookingStatus) => {
+  updateBookingStatus(bookingId, bookingStatus, (err) => {
     console.log(err);
   });
   window.location.reload();
@@ -101,6 +101,7 @@ const getPaymentType = () => {
   }
   return paymentTypeIcon;
 };
+
 </script>
 
 <template>

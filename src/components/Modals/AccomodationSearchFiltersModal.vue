@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from "vue";
+import { onMounted, onUnmounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 
 // Componentes
@@ -8,12 +8,14 @@ import LabelFormInput from "@/components/Forms/LabelFormInput.vue";
 
 // Store
 import { useSearchStore } from "@/store/search";
+import { useAppContextStore } from "@/store/appContext";
 
 const emit = defineEmits(["closeModal", "handleClick"]);
 
 const router = useRouter();
 
 const searchStore = useSearchStore();
+const appContextStore = useAppContextStore();
 
 const closeModal = () => {
   emit("closeModal");
@@ -34,6 +36,14 @@ const handleFilterAccomodationResults = () => {
     },
   });
 };
+
+onMounted(() => {
+  appContextStore.isModalOpen = true;
+});
+
+onUnmounted(() => {
+  appContextStore.isModalOpen = false;
+});
 </script>
 
 <template>
@@ -203,7 +213,7 @@ const handleFilterAccomodationResults = () => {
     @include flex-column;
     gap: 20px;
     width: 50%;
-    height: 80%;
+    height: max-content;
     padding: 20px 50px;
     background-color: #fff;
     border-radius: $global-border-radius;
@@ -260,15 +270,29 @@ const handleFilterAccomodationResults = () => {
 @media screen and (max-width: $breakpoint-md) {
   .base-modal {
     @include flex-column;
-    justify-content: center;
-    height: 100vh;
     z-index: $z-index-5;
 
     & > .base-modal-window {
-      width: 80%;
-      height: 70%;
-      margin-bottom: 30%;
+      width: 90%;
+      height: 80%;
+      // margin-bottom: 50%;
       padding: 20px;
+      overflow-y: scroll;
+
+      & > div {
+        @include flex-column;
+        gap: 20px;
+
+        & > div {
+          display: grid;
+          @include flex-row;
+          flex-wrap: wrap;
+
+          & > span{
+            flex: 1;
+          }
+        }
+      }
     }
   }
 }
