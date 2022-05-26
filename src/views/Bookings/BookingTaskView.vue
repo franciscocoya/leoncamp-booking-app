@@ -165,7 +165,7 @@ const handleConfirmBooking = async () => {
       bookingStore.$state,
       paymentMethodToShow.value,
       (err) => {
-        console.log(err.data.message);
+        // console.log(err.data.message);
         bookingErrors.value.push(translatePaymentError(err.data.message));
         showBookingErrors.value = true;
 
@@ -261,7 +261,7 @@ const disableReservedDates = async (regNumber) => {
   const datesToDisable = await listAccomodationBookingDates(
     regNumber,
     (err) => {
-      console.log(err);
+      // console.log(err);
     }
   );
 

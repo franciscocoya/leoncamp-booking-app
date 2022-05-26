@@ -63,6 +63,7 @@ export const es_msgs = {
       total: 'Total',
     },
     location: 'Ubicación',
+    loading_map: 'Cargando mapa...',
   },
   accomodation_detail_view: {
     title: 'Detalles del alojamiento',
@@ -105,6 +106,8 @@ export const es_msgs = {
   },
   upload_accomodation_view: {
     title: 'Publicar un alojamiento',
+    subtitle: 'No actualices las páginas de los pasos durante el proceso, sino se borrarán los datos.',
+    steps_info: 'Si el botón "Siguiente" está deshabilitado en alguno de los pasos, revisa el contenido del formulario o de los pasos previos y posteriores.',
     step_display: 'Paso {n1} de {n2}',
     step1: {
       title: 'Datos básicos',
@@ -144,7 +147,7 @@ export const es_msgs = {
       dragArea: {
         title: 'Selecciona un o varios archivo/s o arrástralo/s aquí',
         image_format: 'jpg, jpeg, png, gif',
-        image_max_size: 'Tamaño máximo: 500Kb',
+        image_max_size: 'Tamaño máximo: 100Kb',
         infoIcon:
           'Haz click o selecciona las imágenes del alojamiento directamente',
       },
@@ -178,6 +181,7 @@ export const es_msgs = {
   account_view: {
     user_profile_view: {
       title: 'Información personal',
+      button_become_host: 'Convertirme a anfitrión',
       legal_name: 'Nombre legal',
       contact_data: 'Datos de contacto',
       host_data: {
@@ -332,7 +336,7 @@ export const es_msgs = {
       delete: 'Eliminar',
       info: 'Más información',
       register: 'Crear cuenta',
-      upload: 'Publicar',
+      upload: 'Publicar | Publicando...',
       add: 'Añadir',
       login: 'Iniciar sesión',
       close_session: 'Cerrar sesión',

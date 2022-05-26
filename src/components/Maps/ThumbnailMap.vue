@@ -55,60 +55,62 @@ let map = null;
 watch(
   () => [props.lat, props.lng],
    (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      console.log(oldVal, newVal);
-      map = new mapboxgl.Map({
-        accessToken: import.meta.env.VITE_MAPBOX_API_TOKEN,
-        container: "map", // container ID
-        style: "mapbox://styles/mapbox/streets-v11", // style URL
-        center: [
-          props.lng == 0 ? currentCoords.lng : props.lng,
-          props.lat == 0 ? currentCoords.lat : props.lat,
-        ],
-        minzoom: 1.3,
-        zoom: props.mapZoom, // starting zoom
-      });
-
-      // Marcador
-      const myMark = document.createElement("div");
-      myMark.style.backgroundImage = `url(${ICON_MAP_MARKER_TENTH})`;
-      myMark.style.backgroundRepeat = "no-repeat";
-      myMark.style.backgroundPosition = "center center";
-      myMark.style.backgroundColor = "rgba(245, 86, 42, 0.5)";
-      myMark.style.borderRadius = "50%";
-      myMark.style.padding = "8px";
-      myMark.style.width = "50px";
-      myMark.style.height = "50px";
-
-      let marker = new mapboxgl.Marker(myMark, {
-        draggable: props.isMarkerDraggable,
-      })
-        .setLngLat([
-          props.lng == 0 ? currentCoords.lng : props.lng,
-          props.lat == 0 ? currentCoords.lat : props.lat,
-        ])
-        .addTo(map);
-
-      marker.on("dragend", onDragEnd);
-
-      async function onDragEnd() {
-        const lngLat = await marker.getLngLat();
-        accomodationStore.accomodationLocation.latitude = lngLat.lat;
-        accomodationStore.accomodationLocation.longitude = lngLat.lng;
-        const resultLocation = await getAccomodationLocationByCoords({
-          lat: lngLat.lat,
-          lng: lngLat.lng,
-        });
-
-        accomodationStore.accomodationLocation.direction =
-          resultLocation.address;
-        accomodationStore.accomodationLocation.city = resultLocation.city;
-        accomodationStore.accomodationLocation.zip = resultLocation.cp;
-
-        formErrorsStore.enableNextButton =
-          accomodationStore.accomodationLocation !== null;
-      }
-    }
+     if(props.isMarkerDraggable == false){
+       if (newVal !== oldVal) {
+         console.log(oldVal, newVal);
+         map = new mapboxgl.Map({
+           accessToken: import.meta.env.VITE_MAPBOX_API_TOKEN,
+           container: "map", // container ID
+           style: "mapbox://styles/mapbox/streets-v11", // style URL
+           center: [
+             props.lng == 0 ? currentCoords.lng : props.lng,
+             props.lat == 0 ? currentCoords.lat : props.lat,
+           ],
+           minzoom: 1.3,
+           zoom: props.mapZoom, // starting zoom
+         });
+   
+         // Marcador
+         const myMark = document.createElement("div");
+         myMark.style.backgroundImage = `url(${ICON_MAP_MARKER_TENTH})`;
+         myMark.style.backgroundRepeat = "no-repeat";
+         myMark.style.backgroundPosition = "center center";
+         myMark.style.backgroundColor = "rgba(245, 86, 42, 0.5)";
+         myMark.style.borderRadius = "50%";
+         myMark.style.padding = "8px";
+         myMark.style.width = "50px";
+         myMark.style.height = "50px";
+   
+         let marker = new mapboxgl.Marker(myMark, {
+           draggable: props.isMarkerDraggable,
+         })
+           .setLngLat([
+             props.lng == 0 ? currentCoords.lng : props.lng,
+             props.lat == 0 ? currentCoords.lat : props.lat,
+           ])
+           .addTo(map);
+   
+         marker.on("dragend", onDragEnd);
+   
+         async function onDragEnd() {
+           const lngLat = await marker.getLngLat();
+           accomodationStore.accomodationLocation.latitude = lngLat.lat;
+           accomodationStore.accomodationLocation.longitude = lngLat.lng;
+           const resultLocation = await getAccomodationLocationByCoords({
+             lat: lngLat.lat,
+             lng: lngLat.lng,
+           });
+   
+           accomodationStore.accomodationLocation.direction =
+             resultLocation.address;
+           accomodationStore.accomodationLocation.city = resultLocation.city;
+           accomodationStore.accomodationLocation.zip = resultLocation.cp;
+   
+           formErrorsStore.enableNextButton =
+             accomodationStore.accomodationLocation !== null;
+         }
+       }
+     }
   }
 );
 

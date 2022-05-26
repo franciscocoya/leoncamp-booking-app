@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 // Componentes
 import AccomodationThumbnailItem from "@/components/Accomodation/AccomodationThumbnailItem.vue";

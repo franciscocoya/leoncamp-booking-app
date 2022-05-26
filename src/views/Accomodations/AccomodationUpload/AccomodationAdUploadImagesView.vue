@@ -191,7 +191,7 @@ const showImageMessage = (msg, type = "error") => {
 
 <template>
   <div class="accomodation-ad-upload-images-view">
-    <h2 v-once v-t="'upload_accomodation_view.step5.title'"></h2>
+    <h2>{{$t('upload_accomodation_view.step5.title')}}</h2>
     <p>
       {{
         $tc("upload_accomodation_view.step5.subtitle", {
@@ -233,13 +233,9 @@ const showImageMessage = (msg, type = "error") => {
             }}
 
             <br />
-            <span
-              v-t="'upload_accomodation_view.step5.dragArea.image_format'"
-            ></span>
+            <span>{{$t('upload_accomodation_view.step5.dragArea.image_format')}}</span>
             <br />
-            <span
-              v-t="'upload_accomodation_view.step5.dragArea.image_max_size'"
-            ></span>
+            <span>{{$t('upload_accomodation_view.step5.dragArea.image_max_size')}}</span>
           </label>
           <input
             type="file"

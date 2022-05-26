@@ -63,6 +63,7 @@ export const en_msgs = {
       total: 'Total',
     },
     location: 'Location',
+    loading_map: 'Loading map...',
   },
   accomodation_detail_view: {
     title: 'Accomodation details',
@@ -105,6 +106,8 @@ export const en_msgs = {
   },
   upload_accomodation_view: {
     title: 'Upload new accomodation',
+    subtitle: 'Do not update the step pages during the process, otherwise the data will be deleted.',
+    steps_info: 'If the "Next" button is disabled in any of the steps, check the content of the form or the previous and subsequent steps.',
     step_display: 'Step {n1} of {n2}',
     step1: {
       title: 'Basic data',
@@ -143,7 +146,7 @@ export const en_msgs = {
       dragArea: {
         title: 'Select a file(s) or drag it/them here',
         image_format: 'jpg, jpeg, png, gif',
-        image_max_size: 'Max. file size: 500Kb',
+        image_max_size: 'Max. file size: 100Kb',
         infoIcon: 'Click on or directly select the images of the accommodation',
       },
     },
@@ -176,6 +179,7 @@ export const en_msgs = {
   account_view: {
     user_profile_view: {
       title: 'Personal information',
+      button_become_host: 'Become a host',
       legal_name: 'Legal name',
       contact_data: 'Contact data',
       host_data: {
@@ -331,7 +335,7 @@ export const en_msgs = {
       info: 'More information',
       login: 'Sign In',
       register: 'Sign Up',
-      upload: 'Publish',
+      upload: 'Publish | Publishing...',
       add: 'Add',
       close_session: 'Close session',
       back: 'Return | Previous',

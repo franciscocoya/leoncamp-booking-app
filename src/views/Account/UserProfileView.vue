@@ -84,7 +84,7 @@ onBeforeMount(async () => {
 <template>
   <div class="user-profile-view">
     <main>
-      <h1 v-once v-t="'account_view.user_profile_view.title'"></h1>
+      <h1>{{$t('account_view.user_profile_view.title')}}</h1>
       <AccountIcon
         v-if="appContextStore.isMobile == true"
         width="120"
@@ -100,7 +100,7 @@ onBeforeMount(async () => {
         v-if="
           !authStore?.userData?.dni && authStore?.userData?.email !== adminEmail
         "
-        text="Hazte anfitrión"
+        :text="$t('account_view.user_profile_view.button_become_host')"
         buttonStyle="baseButton-primary--filled"
         class="btEditar-perfil-usuario"
         title="Comienza a publicar tus alojamientos con solo un click."
@@ -109,7 +109,7 @@ onBeforeMount(async () => {
       <div class="user-profile-view__wrapper">
         <form>
           <!-- Sección nombre y apellidos -->
-          <p v-once v-t="'account_view.user_profile_view.legal_name'"></p>
+          <p>{{$t('account_view.user_profile_view.legal_name')}}</p>
           <div class="user-profile-data__fullname">
             <!-- Nombre -->
             <LabelFormInput
@@ -143,7 +143,7 @@ onBeforeMount(async () => {
             />
           </div>
 
-          <p v-once v-t="'account_view.user_profile_view.contact_data'"></p>
+          <p>{{$t('account_view.user_profile_view.contact_data')}}</p>
           <!-- Sección teléfono e email -->
           <div class="user-profile-data__contact">
             <!-- Teléfono -->
@@ -196,10 +196,7 @@ onBeforeMount(async () => {
             v-if="authStore.userData?.dni || authStore?.userData?.bio"
             class="user-profile-data__host-data"
           >
-            <h2
-              v-once
-              v-t="'account_view.user_profile_view.host_data.title'"
-            ></h2>
+            <h2>{{$t('account_view.user_profile_view.host_data.title')}}</h2>
             <div class="user-profile-data__host-data__wrapper">
               <LabelFormInput
                 type="text"

@@ -222,9 +222,7 @@ onMounted(async () => {
             {{ bookingData?.idAccomodation?.idAccomodationLocation.zip }}
           </p>
           <ThumbnailMap
-            :lat="
-              bookingData?.idAccomodation?.idAccomodationLocation?.latitude
-            "
+            :lat="bookingData?.idAccomodation?.idAccomodationLocation?.latitude"
             :lng="
               bookingData?.idAccomodation?.idAccomodationLocation?.longitude
             "
@@ -235,33 +233,26 @@ onMounted(async () => {
       </div>
     </div>
     <!-- Mapa ubicación alojamiento -->
-    <div class="booking-detail_map" v-if="!appContextStore.isTablet">
-      <SingleAccomodationMap
-        :lat="bookingData?.idAccomodation?.idAccomodationLocation?.latitude"
-        :lng="bookingData?.idAccomodation?.idAccomodationLocation?.longitude"
-        :mapZoom="18"
-      />
-      <div class="booking-detail_map__direction">
-        <p>
-          {{
-            bookingData &&
-            bookingData?.idAccomodation?.idAccomodationLocation.direction
-          }}
-        </p>
-        <p>
-          {{
-            bookingData &&
-            bookingData?.idAccomodation?.idAccomodationLocation.city
-          }}
-        </p>
-        <p>
-          {{
-            bookingData &&
-            bookingData?.idAccomodation?.idAccomodationLocation.zip
-          }}
-        </p>
+    <Transition name="fade">
+      <div class="booking-detail_map" v-if="!appContextStore.isTablet">
+        <SingleAccomodationMap
+          :lat="bookingData?.idAccomodation?.idAccomodationLocation?.latitude"
+          :lng="bookingData?.idAccomodation?.idAccomodationLocation?.longitude"
+          :mapZoom="18"
+        />
+        <div class="booking-detail_map__direction">
+          <p>
+            {{ bookingData?.idAccomodation?.idAccomodationLocation.direction }}
+          </p>
+          <p>
+            {{ bookingData?.idAccomodation?.idAccomodationLocation.city }}
+          </p>
+          <p>
+            {{ bookingData?.idAccomodation?.idAccomodationLocation.zip }}
+          </p>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
@@ -376,10 +367,10 @@ onMounted(async () => {
         gap: 10px;
         padding: 0 25px;
 
-        & > h1{
+        & > h1 {
           @include flex-column;
           gap: 5px;
-          & > span{
+          & > span {
             font-size: 1.2rem;
           }
         }

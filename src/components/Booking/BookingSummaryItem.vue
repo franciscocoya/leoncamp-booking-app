@@ -21,6 +21,7 @@ import {
   ICON_PAYMENT_PAYPAL,
   ICON_PAYMENT_CREDIT_CARD,
 } from "@/helpers/iconConstants";
+import { watch, watchEffect } from "@vue/runtime-core";
 
 const router = useRouter();
 
@@ -72,12 +73,12 @@ const props = defineProps({
 /**
  * Manejador del evento click de los botones de cambio de estado de las reservas.
  */
-const handleChangeBookingStatus = (bookingId, bookingStatus) => {
-  updateBookingStatus(bookingId, bookingStatus, (err) => {
-    console.log(err);
-  });
-  window.location.reload();
-};
+  const handleChangeBookingStatus = (bookingId, bookingStatus) => {
+    updateBookingStatus(bookingId, bookingStatus, (err) => {
+      console.log(err);
+    });
+    // window.location.reload();
+  };
 
 /**
  * Redireccionamiento a la página de detalle de la reserva.

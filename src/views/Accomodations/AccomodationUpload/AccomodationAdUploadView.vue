@@ -32,6 +32,8 @@ const appContextStore = useAppContextStore();
 const authStore = useAuthStore();
 const formErrorsStore = useFormErrorsStore();
 
+const isUploading = ref(false);
+
 // Número de paso de subida de alojamiento
 const currentUploadStepNum = ref(1);
 
@@ -62,9 +64,11 @@ const showNextStep = () => {
  * de los 5 pasos (Datos básicos, ubicación, servicios, reglas e imagenes)
  */
 const handleUploadAccomodation = async () => {
+  isUploading.value = true;
   if (accomodationStore.accomodationImages.length > 0) {
     await addNewAccomodation(accomodationStore.$state);
   }
+  isUploading.value = false;
 };
 
 /**
@@ -106,7 +110,9 @@ onMounted(async () => {
 <template>
   <div class="accomodation-upload-view">
     <div class="accomodation-upload-view__header">
-      <h1 v-once v-t="'upload_accomodation_view.title'"></h1>
+      <h1>{{$t('upload_accomodation_view.title')}}</h1>
+      <p>{{$t('upload_accomodation_view.subtitle')}}</p>
+      <p>{{$t('upload_accomodation_view.steps_info')}}</p>
     </div>
     <div class="accomodation-upload-view__body">
       <Transition name="slide-right-fade">
@@ -129,6 +135,7 @@ onMounted(async () => {
             :text="`${
               currentUploadStepNum == 4
                 ? $t('components.buttons.finish')
+                : currentUploadStepNum == 4 && isUploading.value == true ? $tc('components.buttons.upload', 2)
                 : $t('components.buttons.next')
             }`"
             buttonStyle="baseButton-dark--filled--small"
@@ -179,9 +186,13 @@ onMounted(async () => {
 
     & > h1 {
       text-align: center;
-      margin-bottom: 30px;
       font-size: 1.5rem;
       font-weight: 400;
+    }
+
+    & > p{
+      text-align: center;
+      margin: 0 0 20px 0;
     }
   }
 
