@@ -21,7 +21,7 @@ const months = [
   'diciembre',
 ];
 
-const MAX_IMAGES_UPLOAD = 8;
+const MAX_IMAGES_UPLOAD = 5;
 
 const SCREEN_BREAKPOINTS = {
   xs: 480,

@@ -36,6 +36,7 @@ const handleDragImages = async (e) => {
   if (e.dataTransfer.items) {
     if (e.dataTransfer.items.length > MAX_IMAGES_UPLOAD) {
       showImageMessage("components.forms.messages.images.maxImages");
+      return;
     } else {
       // Usar la interfaz DataTransferItemList para acceder a el/los archivos)
       for (let i = 0; i < e.dataTransfer.items.length; i++) {
@@ -226,7 +227,7 @@ const showImageMessage = (msg, type = "error") => {
           <label for="">
             {{
               $tc(dragText, {
-                size: 500,
+                size: 100,
                 unit: "Kb",
               })
             }}

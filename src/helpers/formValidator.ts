@@ -25,7 +25,7 @@ const FILE_MIME_TYPES_VALID_REGEX = [
 ];
 
 // Tamaño máximo de una imagen.
-const MAX_FILE_SIZE = 500; // 500Kb
+const MAX_FILE_SIZE = 100; // 100Kb
 
 // ---------------------------------------------------------------------------------------------------------------------
 // -- Validaciones campos de texto
@@ -98,7 +98,8 @@ const checkPasswordMatch = (
  * @param value
  * @returns
  */
-const checkFieldNotContainSpecialCharacters = (value: string): boolean => /^[a-zA-Z0-9]+$/.test(value);
+const checkFieldNotContainSpecialCharacters = (value: string): boolean =>
+  /^[a-zA-Z0-9]+$/.test(value);
 
 // ---------------------------------------------------------------------------------------------------------------------
 // -- Validaciones archivos
@@ -110,7 +111,8 @@ const checkFieldNotContainSpecialCharacters = (value: string): boolean => /^[a-z
  * @param fileSize
  * @returns
  */
-const checkFileSize = (fileToCheck: File): boolean => Math.round((fileToCheck.size / 1024)) < MAX_FILE_SIZE;
+const checkFileSize = (fileToCheck: File): boolean =>
+  Math.round(fileToCheck.size / 1024) < MAX_FILE_SIZE;
 
 /**
  * Valida que el formato de imagen pasado como parámtro.
