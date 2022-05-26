@@ -97,10 +97,10 @@ onMounted(async () => {
 
 <template>
   <div class="account-configuration-view">
-    <h1 v-once v-t="'account_view.preferences.title'"></h1>
+    <h1>{{$t('account_view.preferences.title')}}</h1>
     <div class="account-configuration-view__wrapper">
       <section class="account-configuration__currency">
-        <h2 v-once v-t="'account_view.preferences.currency'"></h2>
+        <h2>{{$t('account_view.preferences.currency')}}</h2>
         <select
           name="currency-selector"
           @change="(e) => handleCurrencySelection(e)"
@@ -123,7 +123,7 @@ onMounted(async () => {
       </section>
 
       <section class="account-configuration__language">
-        <h2 v-once v-t="'account_view.preferences.lang.title'"></h2>
+        <h2>{{$t('account_view.preferences.lang.title')}}</h2>
         <fieldset>
           <div>
             <input

@@ -82,20 +82,20 @@ onBeforeMount(async () => {
       <div class="user_profile_sidebar__details">
         <p
           v-if="isHostUser"
-          v-once
-          v-t="'user_public_profile.userType.host'"
-        ></p>
+        >
+        {{$t('user_public_profile.userType.host')}}
+        </p>
         <div
           v-if="userData?.verified"
           class="user_profile_sidebar_details__fullVerified"
         >
           <img
-            v-once
+
             :src="ICON_FULL_VERIFIED"
             alt="El usuario ha verificado DNI, correo electrónico y teléfono"
           />
-          <p v-once v-t="'user_public_profile.verified.title'">
-            Identidad verificada
+          <p>
+            {{$t('user_public_profile.verified.title')}}
           </p>
         </div>
 
@@ -120,7 +120,7 @@ onBeforeMount(async () => {
               <VerifiedListItem :verifiedText="$t('components.forms.dni')" />
             </li>
             <li v-if="userData?.emailVerified">
-              <VerifiedListItem :verifiedText="$t('components.form.email')" />
+              <VerifiedListItem :verifiedText="$t('components.forms.email')" />
             </li>
             <li v-if="userData?.phoneVerified">
               <VerifiedListItem :verifiedText="$t('components.forms.phone')" />
@@ -144,7 +144,7 @@ onBeforeMount(async () => {
 
       <!-- Acerca del usuario -->
       <section v-if="isHostUser" class="user-profile-data__biography">
-        <h3 v-t="'user_public_profile.about.title'"></h3>
+        <h3>{{$t('user_public_profile.about.title')}}</h3>
         <p v-if="userData?.bio">
           {{ userData?.bio }}
         </p>
@@ -169,7 +169,7 @@ onBeforeMount(async () => {
 
       <!-- Anuncios publicados por el usuario -->
       <section class="user-profile-data__ads">
-        <h2 v-t="'user_public_profile.ads.title'"></h2>
+        <h2>{{$t('user_public_profile.ads.title')}}</h2>
         <div
           v-if="userAccomodationAds.length > 0"
           class="user-profile-data_ads__wrapper"
@@ -184,13 +184,13 @@ onBeforeMount(async () => {
           />
         </div>
         <div v-else>
-          <h3 v-t="'user_public_profile.ads.no_ads'"></h3>
+          <h3>{{$t('user_public_profile.ads.no_ads')}}</h3>
         </div>
       </section>
 
       <!-- Sección valoraciones -->
       <section class="user-profile-data__reviews">
-        <h2 v-t="'user_public_profile.reviews.title'"></h2>
+        <h2>{{$t('user_public_profile.reviews.title')}}</h2>
         <div class="user-profile-data_reviews__tabs">
           <span
             title="Valoraciones realizadas por los huéspedes que se han alojado en alguno de los alojamientos del usuario"
@@ -200,8 +200,9 @@ onBeforeMount(async () => {
               showUserReviewsSent = false;
               showUserReviewsReceived = true;
             "
-            v-t="'user_public_profile.reviews.tabs.users'"
-          ></span>
+          >
+          {{$t('user_public_profile.reviews.tabs.users')}}
+          </span>
           <span
             title="Valoraciones realizadas por el usuario en otros alojamientos"
             role="tab"
@@ -210,8 +211,9 @@ onBeforeMount(async () => {
               showUserReviewsReceived = false;
               showUserReviewsSent = true;
             "
-            v-t="'user_public_profile.reviews.tabs.host'"
-          ></span>
+          >
+          {{$t('user_public_profile.reviews.tabs.host')}}
+          </span>
         </div>
 
         <!-- Valoraciones recibidas -->

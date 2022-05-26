@@ -338,7 +338,7 @@ onMounted(async () => {
           alt=""
         />
         <div>
-          <h3 v-once v-t="'booking_task_view.pricing_details'"></h3>
+          <h3>{{$t('booking_task_view.pricing_details')}}</h3>
           <ul>
             <!-- Precio noche x días -->
             <li>
@@ -363,7 +363,7 @@ onMounted(async () => {
             </li>
             <!-- Comisión aplicada -->
             <li>
-              <p v-once v-t="'booking_task_view.service_fee'"></p>
+              <p>{{$t('booking_task_view.service_fee')}}</p>
               <p>
                 {{
                   bookingStore.serviceFee > 0 && range !== null
@@ -400,7 +400,7 @@ onMounted(async () => {
             </li>
             <!-- Precio total (EUR) -->
             <li>
-              <p v-once v-t="'booking_task_view.total'"></p>
+              <p>{{$t('booking_task_view.total')}}</p>
               <p>
                 {{
                   bookingStore.totalPrice > 0 && range !== null
@@ -515,11 +515,12 @@ onMounted(async () => {
           />
           <!-- Contenedor métodos de pago disponibles -->
           <div class="booking-payment-method-container">
-            <p v-once v-t="'booking_task_view.payment_method'"></p>
+            <p>{{$t('booking_task_view.payment_method')}}</p>
             <p
               class="payment-booking-info"
-              v-t="'booking_task_view.payment_info'"
-            ></p>
+            >
+            {{$t('booking_task_view.payment_info')}}
+            </p>
             <div class="booking-payment-method-container__radios">
               <div>
                 <input
@@ -529,7 +530,7 @@ onMounted(async () => {
                   checked
                   :isPasteAvailable="true"
                 />
-                <label v-t="'components.forms.cardNumber'"></label>
+                <label>{{$t('components.forms.cardNumber')}}</label>
                 <img
                   :src="ICON_PAYMENT_CREDIT_CARD"
                   alt="Pagar con tarjeta de crédito"
@@ -541,7 +542,7 @@ onMounted(async () => {
                   name="paymethod-type"
                   @change="showPaymentMethodInput(2)"
                 />
-                <label v-t="'components.forms.paypalAccount'">PayPal</label>
+                <label>{{$t('components.forms.paypalAccount')}}</label>
                 <img :src="ICON_PAYMENT_PAYPAL" alt="Pagar con Paypal" />
               </div>
             </div>

@@ -16,12 +16,12 @@ export const en_msgs = {
   administrator: {
     title: 'Administration panel',
     menu: {
-      accomodations: 'Accomodations',
+      accomodations: 'Accommodations',
       users: 'Users',
     },
   },
   saved_view: {
-    title: 'Saved accomodations',
+    title: 'Saved accommodations',
     not_saved: 'You have no saved accommodation',
     not_saved_subtitle: 'All saved accommodations will be displayed here.',
   },
@@ -29,12 +29,12 @@ export const en_msgs = {
     title: 'My bookings',
     not_bookings: 'You have no bookings',
     tabs: {
-      host: 'From my accomodations',
+      host: 'From my accommodations',
       guests: 'Made by guests',
     },
   },
   booking_task_view: {
-    title: 'Booking for accomodation {name}',
+    title: 'Booking for accommodation {name}',
     pricing_details: 'Price details',
     service_fee: 'Service fee',
     disccount: 'Disccount',
@@ -49,8 +49,8 @@ export const en_msgs = {
     button_confirm_booking: 'Confirm booking',
   },
   booking_details_view: {
-    title: 'Booking of accomodation {name}',
-    button_show_ad: 'Show accomodation',
+    title: 'Booking of accommodation {name}',
+    button_show_ad: 'Show accommodation',
     guests: 'For {n} guests',
     host: 'Host',
     dates: 'Booking dates',
@@ -66,7 +66,7 @@ export const en_msgs = {
     loading_map: 'Loading map...',
   },
   accomodation_detail_view: {
-    title: 'Accomodation details',
+    title: 'Accommodation details',
     imageGallery: {
       no_images: 'No images available',
       button: 'Show all',
@@ -96,7 +96,7 @@ export const en_msgs = {
       },
     },
     rules: {
-      title: 'Accomodation rules',
+      title: 'Accommodation rules',
     },
     reviews: {
       title: 'Reviews',
@@ -105,7 +105,7 @@ export const en_msgs = {
     },
   },
   upload_accomodation_view: {
-    title: 'Upload new accomodation',
+    title: 'Upload new accommodation',
     subtitle: 'Do not update the step pages during the process, otherwise the data will be deleted.',
     steps_info: 'If the "Next" button is disabled in any of the steps, check the content of the form or the previous and subsequent steps.',
     step_display: 'Step {n1} of {n2}',
@@ -174,7 +174,7 @@ export const en_msgs = {
     edit_basic_data_success_message:
       'The accommodation has been updated successfully.',
     edit_category_success_message:
-      'Accomodation category has been updated successfully.',
+      'Accommodation category has been updated successfully.',
   },
   account_view: {
     user_profile_view: {
@@ -204,7 +204,10 @@ export const en_msgs = {
       },
     },
     account_ads: {
-      title: 'My accomodations',
+      title: 'My accommodations',
+      loading_ads: 'Loading accommodations...',
+      no_ads: 'No accommodations available',
+      first_publish: 'Publish your first accommodation',
     },
     help_view: {
       title: 'Help',
@@ -218,13 +221,13 @@ export const en_msgs = {
       privacy: 'Security & privacy',
       config: 'Configuration & preferences',
       bookings: 'Bookings',
-      ads: 'Accomodation ads',
+      ads: 'Accommodation ads',
       upgrade_plan: 'Upgade plan',
       help: 'Help',
     },
   },
   accommodation_search_results_view: {
-    title: 'Accomodations in {city}',
+    title: 'Accommodations in {city}',
   },
   accommodation_results_filtered_view: {
     title: 'Search results',
@@ -238,7 +241,7 @@ export const en_msgs = {
       bathrooms: '{n} bathrooms',
       guests: '{n} guests',
     },
-    no_results: 'No accomodations found',
+    no_results: 'No accommodations found',
   },
   user_public_profile: {
     title: "Hello: I'm {name}",
@@ -258,7 +261,7 @@ export const en_msgs = {
       host: 'Host',
     },
     ads: {
-      title: 'Accomodation listings',
+      title: 'Accommodation listings',
       no_ads: 'No ads published',
     },
     reviews: {
@@ -274,21 +277,21 @@ export const en_msgs = {
     confirm_changes:
       'In order to confirm your changes, you will be logged out.',
     subtitle:
-      'Publish accomodations, view your finances and get the maximum benefit.',
+      'Publish accommodations, view your finances and get the maximum benefit.',
     upgrade_status_button: '🔥 Upgrading... | Upgrade account',
   },
   accomodation_thumbnail: {
-    title_click: 'Click here to see the accomodation',
+    title_click: 'Click here to see the accommodation',
     edit_button: {
-      title: 'Click here to edit the accomodation',
+      title: 'Click here to edit the accommodation',
     },
     delete_click: {
-      title: 'Click here to delete the accomodation',
+      title: 'Click here to delete the accommodation',
     },
     night: 'night',
   },
   saved_icon: {
-    title: ['Save accomodation', 'Accomodation saved'],
+    title: ['Save accommodation', 'Accommodation saved'],
   },
   accomodation_reviews: {
     title: 'Reviews',
@@ -309,7 +312,7 @@ export const en_msgs = {
       home: 'Home',
       saved: 'Saved',
       publish: {
-        title: 'Click here to publish an accomodation',
+        title: 'Click here to publish an accommodation',
       },
       bookings: 'Bookings',
       profile_icon: "{name}'s profile",
@@ -532,10 +535,10 @@ export const en_msgs = {
   },
   modals: {
     services: {
-      title: 'Accomodation amenities',
+      title: 'Accommodation amenities',
     },
     accomodation_images: {
-      title: 'Accomodation images',
+      title: 'Accommodation images',
     },
     accomodation_search_filters: {
       title: 'Search filters',

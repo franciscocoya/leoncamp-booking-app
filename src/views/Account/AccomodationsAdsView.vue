@@ -42,7 +42,7 @@ onMounted(async () => {
 <template>
   <div class="accomodations-ads-view">
     <div class="accomodations-ads-view__header">
-      <h1 v-once v-t="'account_view.account_ads.title'"></h1>
+      <h1>{{$t('account_view.account_ads.title')}}</h1>
       <BaseButton
         v-if="accomodations.length > 0"
         :text="$t('components.buttons.upload')"
@@ -62,14 +62,14 @@ onMounted(async () => {
           :showEditButton="true"
         />
 
-        <template #fallback>Cargando... </template>
+        <template #fallback>{{$t('account_view.account_ads.loading_ads')}}</template>
       </Suspense>
     </div>
     <div v-else class="not-acomodation-ads_container">
-      <h2>No tienes alojamientos publicados</h2>
-      <p>Publica tu primer anuncio</p>
+      <h2>{{$t('account_view.account_ads.no_ads')}}</h2>
+      <p>{{$t('account_view.account_ads.first_publish')}}</p>
       <BaseButton
-        text="Publicar"
+        :text="$tc('components.buttons.upload', 1)"
         buttonStyle="baseButton-dark--filled"
         buttonId="bt-ads-upload-new"
         @click="handleClickUploadButton"

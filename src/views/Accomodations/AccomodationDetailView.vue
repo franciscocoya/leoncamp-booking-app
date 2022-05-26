@@ -211,8 +211,9 @@ onUpdated(() => {
                 class="link-show-more"
                 :title="$t('accomodation_detail_view.show_more.title')"
                 @click.prevent="showAllDescription = true"
-                v-t="'accomodation_detail_view.show_more.title'"
-              ></span>
+              >
+              {{$t('accomodation_detail_view.show_more.title')}}
+              </span>
             </p>
           </div>
 
@@ -234,7 +235,7 @@ onUpdated(() => {
 
         <!-- Seccion servicios -->
         <section class="accomodation-detail__services">
-          <h2 v-t="'accomodation_detail_view.amenities.title'"></h2>
+          <h2>{{$t('accomodation_detail_view.amenities.title')}}</h2>
           <AccomodationServicesItem
             :services="accomodationStore?.accomodationServices"
             @show-modal="showServiceModal = true"
@@ -243,7 +244,7 @@ onUpdated(() => {
 
         <!-- Sección mapa ubicación alojamiento -->
         <section class="accomodation-detail__location">
-          <h2 v-t="'accomodation_detail_view.location.title'"></h2>
+          <h2>{{$t('accomodation_detail_view.location.title')}}</h2>
           <div class="accomodation-detail_location__direction">
             <img :src="ICON_MAP_MARKER" alt="" />
             <p>
@@ -261,7 +262,7 @@ onUpdated(() => {
 
         <!-- Sección detalles anfitrión -->
         <section class="accomodation-host">
-          <h2 v-t="'accomodation_detail_view.host.title'"></h2>
+          <h2>{{$t('accomodation_detail_view.host.title')}}</h2>
           <div class="accomodation-host-summary">
             <div class="accomodation-host__info">
               <div class="accomodation-host_info__details">
@@ -292,7 +293,7 @@ onUpdated(() => {
                 class="accomodation-host_info__verified"
               >
                 <img :src="ICON_VERIFIED_USER" alt="" />
-                <p v-t="'accomodation_detail_view.host.verified'"></p>
+                <p>{{$t('accomodation_detail_view.host.verified')}}</p>
               </div>
             </div>
             <BaseButton
@@ -312,7 +313,7 @@ onUpdated(() => {
 
         <!-- Sección normas del alojamiento -->
         <section class="accomodation-detail__rules">
-          <h2 v-t="'accomodation_detail_view.rules.title'"></h2>
+          <h2>{{$t('accomodation_detail_view.rules.title')}}</h2>
           <div class="accomodation-detail_rules__details">
             <ul>
               <li

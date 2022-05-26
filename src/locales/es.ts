@@ -119,10 +119,10 @@ export const es_msgs = {
         title: 'Selecciona un categoría',
       },
       area: {
-        title: 'Accomodation area',
+        title: 'Superficie',
       },
       guests: {
-        title: 'Maximum guests',
+        title: 'Número máximo de huéspedes',
       },
     },
     step2: {
@@ -207,6 +207,9 @@ export const es_msgs = {
     },
     account_ads: {
       title: 'Mis alojamientos',
+      loading_ads: 'Cargando alojamientos...',
+      no_ads: 'No tienes alojamientos',
+      first_publish: 'Publica tu primer alojamiento',
     },
     help_view: {
       title: 'Ayuda',
