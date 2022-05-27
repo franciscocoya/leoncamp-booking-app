@@ -37,15 +37,13 @@ const useUserStore = defineStore({
       },
     },
     profileImage: '',
-    datosHost: {
-      dni: '',
-      bio: '',
-      direction: '',
-      emailVerified: false,
-      dniVerified: false,
-      phoneVerified: false,
-      verified: false,
-    },
+    dni: '',
+    bio: '',
+    direction: '',
+    emailVerified: false,
+    dniVerified: false,
+    phoneVerified: false,
+    verified: false,
     createdAt: new Date(),
   }),
 
@@ -141,15 +139,13 @@ const useUserStore = defineStore({
         verified,
       } = userData;
 
-      this.datosHost = {
-        dni,
-        bio,
-        direction,
-        emailVerified,
-        dniVerified,
-        phoneVerified,
-        verified,
-      };
+        this.dni = dni;
+        this.bio = bio;
+        this.direction = direction;
+        this.emailVerified = emailVerified;
+        this.dniVerified = dniVerified;
+        this.phoneVerified = phoneVerified;
+        this.verified = verified;
 
       return userData;
     },

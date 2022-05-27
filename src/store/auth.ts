@@ -103,8 +103,8 @@ const useAuthStore = defineStore({
         this?.userData?.surname,
         this?.userData?.email,
         this?.userData?.phone,
-        this?.userData?.datosHost?.dni,
-        this?.userData?.datosHost?.bio,
+        this?.userData?.dni,
+        this?.userData?.bio,
         (err: any) => {
           return err;
         }
@@ -116,9 +116,9 @@ const useAuthStore = defineStore({
       this.userData.phone = updatedUserData?.phone;
 
       // Si el usuario es host, se actualizan los siguientes datos.
-      if (this.userData.datosHost?.dni && this.userData.datosHost?.bio) {
-        this.userData.datosHost.dni = updatedUserData?.datosHost?.dni!;
-        this.userData.datosHost.bio = updatedUserData?.datosHost?.bio!;
+      if (this.userData.dni && this.userData.bio) {
+        this.userData.dni = updatedUserData?.dni!;
+        this.userData.bio = updatedUserData?.bio!;
       }
     },
 
@@ -128,13 +128,13 @@ const useAuthStore = defineStore({
     async updateUserHost() {
       await updateUserHostData(
         this.userData?.id,
-        this.userData?.datosHost?.dni ?? '',
-        this.userData?.datosHost?.bio ?? '',
-        this.userData?.datosHost?.direction,
-        this.userData?.datosHost?.emailVerified,
-        this.userData?.datosHost?.dniVerified,
-        this.userData?.datosHost?.phoneVerified,
-        this.userData?.datosHost?.verified,
+        this.userData?.dni ?? '',
+        this.userData?.bio ?? '',
+        this.userData?.direction,
+        this.userData?.emailVerified,
+        this.userData?.dniVerified,
+        this.userData?.phoneVerified,
+        this.userData?.verified,
         (err: any) => {
           return err;
         }

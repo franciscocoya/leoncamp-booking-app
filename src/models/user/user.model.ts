@@ -16,14 +16,12 @@ export interface User {
     };
   };
   profileImage?: string;
-  datosHost?: {
-    dni: string;
-    bio?: string;
-    direction?: string;
-    emailVerified?: boolean;
-    dniVerified?: boolean;
-    phoneVerified?: boolean;
-    verified?: boolean;
-  };
+  dni: string;
+  bio?: string;
+  direction?: string;
+  emailVerified?: boolean;
+  dniVerified?: boolean;
+  phoneVerified?: boolean;
+  verified?: boolean;
   createdAt?: Date;
 }
