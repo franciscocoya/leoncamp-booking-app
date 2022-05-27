@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8b980a42-3362-4211-aa0f-1c8cf02e0b31/deploy-status)](https://app.netlify.com/sites/leoncamp/deploys)
+
 # leoncamp-app
 
 This template should help get you started developing with Vue 3 in Vite.
